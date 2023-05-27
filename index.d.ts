@@ -9,8 +9,14 @@
 declare type hash = {
 }
 
+/**
+ * A URL made from a socket, path, and optionally a fragment.
+ */
 declare type url = {
-}
+	socket: hash;
+	path: hash;
+	fragment?: hash;
+};
 
 declare type node = {
 }
