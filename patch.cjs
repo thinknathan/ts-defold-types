@@ -7,32 +7,61 @@ const fs = require('fs');
 const filePath = 'index.d.ts';
 
 const patches = [
-	// Add proper definitions for `url`
+	// Describe `url`
 	[
 		'declare type url = {\n}',
 		`/**
-			* A URL made from a socket, path, and optionally a fragment.
-			*/
-			declare type url = {
-				socket: hash;
-				path: hash;
-				fragment?: hash;
-			}`,
+		* A reference to game resources, such as game objects, components, and assets.
+		*/
+		declare type url = {
+			socket: hash;
+			path: hash;
+			fragment: hash | undefined;
+		};`,
+	],
+	// Describe `hash`
+	[
+		'declare type hash = {\n}',
+		`/**
+		* A unique identifier used to reference resources, messages, properties, and other entities within the game.
+		*/
+		declare type hash = Readonly<LuaUserdata>;`,
+	],
+	// Describe `node`
+	['declare type node = {\n}', 'declare type node = Readonly<LuaUserdata>;'],
+	// Describe `buffer`
+	[
+		'declare type buffer = {\n}',
+		`/**
+		* A block of memory that can store binary data.
+		*/
+		declare type buffer = Readonly<LuaUserdata>;`,
 	],
 	// Fix path to reference types
 	[
-		`/// <reference types="typescript-to-lua/language-extensions" />`,
-		`/// <reference types="@typescript-to-lua/language-extensions" />`,
+		'/// <reference types="typescript-to-lua/language-extensions" />',
+		'/// <reference types="@typescript-to-lua/language-extensions" />',
 	],
 	// Remove invalid null type
-	[`export let null: any`, ''],
+	['export let null: any', ''],
 	// Remove invalid optional param in middle of param order
 	[
-		`export function set_texture(path: hash | string, table?: any, buffer: buffer): void`,
-		`export function set_texture(path: hash | string, table: any, buffer: buffer): void`,
+		'export function set_texture(path: hash | string, table?: any, buffer: buffer): void',
+		'export function set_texture(path: hash | string, table: any, buffer: buffer): void',
 	],
-	// Replace all `any` keywords with unknown `keywords`
-	[/\: any/g, `: unknown`],
+	// Describe `euler`
+	['export let euler: any', 'export let euler: vmath.vector3'],
+	// Describe `buffer` types
+	[/(VALUE_TYPE_.+): any/g, '$1: number'],
+	// Describe easing types
+	[/(EASING_.+): any/g, '$1: number'],
+	// Describe playback types
+	[/(PLAYBACK_.+): any/g, '$1: number'],
+	// Describe tables as a stricter type
+	[/(table|tbl): any/g, '$1: LuaTable | object'],
+	// Replace remaining `any` keywords with `unknown` keywords
+	// This doesn't replace types in square or angle brackets, eg. LuaMultiReturn<[any]>
+	[/\: any/g, ': unknown'],
 ];
 
 // Load the contents of the file
