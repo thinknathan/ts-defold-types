@@ -35,6 +35,6 @@
 		"typescript-to-lua": "~1.15.1"
 	},
 	"peerDependencies": {
-		"typescript-to-lua": "~1.15.1"
+		"typescript-to-lua": "^1.0.1"
 	}
 }
