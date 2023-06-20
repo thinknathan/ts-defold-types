@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="@typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.4.6 (cb8b34230bd42a5e0b68c12441657f06485562a6)
+// DEFOLD. stable version 1.4.7 (7a608d3ce6ed895d484956c1e76110ed8b78422a)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 /**
@@ -4508,7 +4508,7 @@ The width of the text field. Not used if `line_break` is false.
 `leading`
 The leading (default 1.0)
 `tracking`
-The leading (default 0.0)
+The tracking (default 0.0)
 `line_break`
 If the calculation should consider line breaks (default false)
 
@@ -6640,6 +6640,19 @@ declare namespace label {
 	export function set_text(url: string | hash | url, text: string): void;
 
 	/**
+	 * The leading of the label. This value is used to scale the line spacing of text.
+	 * The type of the property is number.
+	 */
+	export let leading: unknown;
+
+	/**
+	 * The line break of the label.
+	 * This value is used to adjust the vertical spacing of characters in the text.
+	 * The type of the property is boolean.
+	 */
+	export let line_break: unknown;
+
+	/**
 	 * The material used when rendering the label. The type of the property is hash.
 	 */
 	export let material: unknown;
@@ -6665,6 +6678,13 @@ declare namespace label {
 	 * The type of the property is vector3.
 	 */
 	export let size: unknown;
+
+	/**
+	 * The tracking of the label.
+	 * This value is used to adjust the vertical spacing of characters in the text.
+	 * The type of the property is number.
+	 */
+	export let tracking: unknown;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
@@ -7148,6 +7168,11 @@ declare namespace sprite {
 	 * The normalized animation cursor. The type of the property is number.
 	 */
 	export let cursor: unknown;
+
+	/**
+	 * READ ONLY The frame count of the currently playing animation.
+	 */
+	export let frame_count: unknown;
 
 	/**
 	 * The image used when rendering the sprite. The type of the property is hash.

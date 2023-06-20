@@ -1,5 +1,17 @@
 # Changelog
 
+## v1.3.3
+
+- Update for Defold 1.4.7
+
+## v1.3.2
+
+- Same as v1.3.1, I just forgot to bump the version in package.json
+
+## v1.3.1
+
+- Widened peerDependencies
+
 ## v1.3.0
 
 - Replace `any` type with `unknown` in most places
