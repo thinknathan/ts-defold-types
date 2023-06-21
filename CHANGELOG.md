@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.3.4
+
+- Described more types
+- Replaced last remaining `any` with `unknown`
+
 ## v1.3.3
 
 - Update for Defold 1.4.7
