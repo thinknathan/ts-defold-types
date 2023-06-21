@@ -776,7 +776,7 @@ The id of the animated property.
 	 * @param url  url of the game object to check
 	 * @return exists  true if the game object exists
 	 */
-	export function exists(url: string | hash | url): unknown;
+	export function exists(url: string | hash | url): boolean;
 
 	/**
 	* gets a named property of the specified game object or component
@@ -5051,7 +5051,7 @@ The HTTP user agent, i.e. "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) Apple
 	 * @param filename  file to read from
 	 * @return loaded  lua table, which is empty if the file could not be found
 	 */
-	export function load(filename: string): unknown;
+	export function load(filename: string): object | LuaTable;
 
 	/**
 	 * Loads a custom resource. Specify the full filename of the resource that you want
