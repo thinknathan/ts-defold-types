@@ -995,7 +995,7 @@ declare namespace gui {
 	 * The fonts used in the gui. The type of the property is hash.
 	 * Key must be specified in options table.
 	 */
-	export let fonts: unknown;
+	export let fonts: hash;
 
 	/**
 	 * fit adjust mode
@@ -2700,7 +2700,7 @@ declare namespace physics {
 	/**
 	 * READ ONLY Returns the defined physical mass of the collision object component as a number.
 	 */
-	export let mass: unknown;
+	export let mass: Readonly<number>;
 
 	/**
 	 * fixed joint type
@@ -5589,6 +5589,7 @@ declare namespace json {
 	/**
 	 * null
 	 */
+	// export let null: null
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
@@ -6301,25 +6302,25 @@ declare namespace camera {
 	 * Camera frustum far plane.
 	 * The type of the property is float.
 	 */
-	export let far_z: unknown;
+	export let far_z: number;
 
 	/**
 	 * Vertical field of view of the camera.
 	 * The type of the property is float.
 	 */
-	export let fov: unknown;
+	export let fov: number;
 
 	/**
 	 * Camera frustum near plane.
 	 * The type of the property is float.
 	 */
-	export let near_z: unknown;
+	export let near_z: number;
 
 	/**
 	 * Zoom level when using an orthographic projection.
 	 * The type of the property is float.
 	 */
-	export let orthographic_zoom: unknown;
+	export let orthographic_zoom: number;
 
 	/**
 	 *
@@ -6625,12 +6626,12 @@ declare namespace label {
 	/**
 	 * The color of the label. The type of the property is vector4.
 	 */
-	export let color: unknown;
+	export let color: vmath.vector4;
 
 	/**
 	 * The font used when rendering the label. The type of the property is hash.
 	 */
-	export let font: unknown;
+	export let font: hash;
 
 	/**
 	 * Gets the text from a label component
@@ -6652,14 +6653,14 @@ declare namespace label {
 	 * The leading of the label. This value is used to scale the line spacing of text.
 	 * The type of the property is number.
 	 */
-	export let leading: unknown;
+	export let leading: number;
 
 	/**
 	 * The line break of the label.
 	 * This value is used to adjust the vertical spacing of characters in the text.
 	 * The type of the property is boolean.
 	 */
-	export let line_break: unknown;
+	export let line_break: boolean;
 
 	/**
 	 * The material used when rendering the label. The type of the property is hash.
@@ -6669,7 +6670,7 @@ declare namespace label {
 	/**
 	 * The outline color of the label. The type of the property is vector4.
 	 */
-	export let outline: unknown;
+	export let outline: vmath.vector4;
 
 	/**
 	 * The scale of the label. The type of the property is number (uniform)
@@ -6680,20 +6681,20 @@ declare namespace label {
 	/**
 	 * The shadow color of the label. The type of the property is vector4.
 	 */
-	export let shadow: unknown;
+	export let shadow: vmath.vector4;
 
 	/**
 	 * Returns the size of the label. The size will constrain the text if line break is enabled.
 	 * The type of the property is vector3.
 	 */
-	export let size: unknown;
+	export let size: vmath.vector3;
 
 	/**
 	 * The tracking of the label.
 	 * This value is used to adjust the vertical spacing of characters in the text.
 	 * The type of the property is number.
 	 */
-	export let tracking: unknown;
+	export let tracking: number;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
@@ -6701,13 +6702,13 @@ declare namespace model {
 	/**
 	 * The current animation set on the component. The type of the property is hash.
 	 */
-	export let animation: unknown;
+	export let animation: hash;
 
 	/**
 	 * The normalized animation cursor. The type of the property is number.
 	 * ⚠ Please note that model events may not fire as expected when the cursor is manipulated directly.
 	 */
-	export let cursor: unknown;
+	export let cursor: number;
 
 	/**
 	 * The material used when rendering the model. The type of the property is hash.
@@ -7181,12 +7182,12 @@ declare namespace sprite {
 	/**
 	 * READ ONLY The frame count of the currently playing animation.
 	 */
-	export let frame_count: unknown;
+	export let frame_count: Readonly<number>;
 
 	/**
 	 * The image used when rendering the sprite. The type of the property is hash.
 	 */
-	export let image: unknown;
+	export let image: hash;
 
 	/**
 	 * The material used when rendering the sprite. The type of the property is hash.
@@ -7284,7 +7285,7 @@ declare namespace tilemap {
 	/**
 	 * The tile source used when rendering the tile map. The type of the property is hash.
 	 */
-	export let tile_source: unknown;
+	export let tile_source: hash;
 
 	/**
 	 * flip tile horizontally
