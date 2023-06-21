@@ -25,17 +25,29 @@ const patches = [
 		`/**
 		* A unique identifier used to reference resources, messages, properties, and other entities within the game.
 		*/
-		declare type hash = Readonly<LuaUserdata>;`,
+		declare type hash = Readonly<LuaUserdata> &
+		Readonly<{
+			readonly __hash__: unique symbol;
+		}>;`,
 	],
 	// Describe `node`
-	['declare type node = {\n}', 'declare type node = Readonly<LuaUserdata>;'],
+	[
+		'declare type node = {\n}',
+		`declare type node = Readonly<LuaUserdata> &
+		Readonly<{
+			readonly __node__: unique symbol;
+		}>;`,
+	],
 	// Describe `buffer`
 	[
 		'declare type buffer = {\n}',
 		`/**
 		* A block of memory that can store binary data.
 		*/
-		declare type buffer = Readonly<LuaUserdata>;`,
+		declare type buffer = Readonly<LuaUserdata> &
+		Readonly<{
+			readonly __buffer__: unique symbol;
+		}>;`,
 	],
 	// Fix path to reference types
 	[
@@ -47,10 +59,18 @@ const patches = [
 	// Remove invalid optional param in middle of param order
 	[
 		'export function set_texture(path: hash | string, table?: any, buffer: buffer): void',
-		'export function set_texture(path: hash | string, table: any, buffer: buffer): void',
+		'export function set_texture(path: hash | string, table: LuaTable | object | undefined, buffer: buffer): void',
 	],
-	// Describe `euler`
+	// Describe internals
+	['export let sound: any', 'export let sound: hash'],
+	['export let playback_rate: any', 'export let playback_rate: number'],
+	['export let material: any', 'export let material: hash'],
+	['export let textures: any', 'export let textures: hash'],
+	// Describe math types
 	['export let euler: any', 'export let euler: vmath.vector3'],
+	['export let position: any', 'export let position: vmath.vector3'],
+	['export let rotation: any', 'export let rotation: vmath.quaternion'],
+	['export let scale: any', 'export let scale: number | vmath.vector3'],
 	// Describe `buffer` types
 	[/(VALUE_TYPE_.+): any/g, '$1: number'],
 	// Describe easing types
@@ -59,9 +79,16 @@ const patches = [
 	[/(PLAYBACK_.+): any/g, '$1: number'],
 	// Describe tables as a stricter type
 	[/(table|tbl): any/g, '$1: LuaTable | object'],
-	// Replace remaining `any` keywords with `unknown` keywords
-	// This doesn't replace types in square or angle brackets, eg. LuaMultiReturn<[any]>
+	// Describe some functions
+	[
+		'complete_function?: any',
+		'complete_function?: (...args: unknown[]) => void',
+	],
+	// Replace `any` keywords with `unknown` keywords
 	[/\: any/g, ': unknown'],
+	[/\[any/g, '[unknown'],
+	[/any,/g, 'unknown,'],
+	[/any\]/g, 'unknown]'],
 ];
 
 // Load the contents of the file

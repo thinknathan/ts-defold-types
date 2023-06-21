@@ -8,7 +8,10 @@
 /**
  * A unique identifier used to reference resources, messages, properties, and other entities within the game.
  */
-declare type hash = Readonly<LuaUserdata>;
+declare type hash = Readonly<LuaUserdata> &
+	Readonly<{
+		readonly __hash__: unique symbol;
+	}>;
 
 /**
  * A reference to game resources, such as game objects, components, and assets.
@@ -19,12 +22,18 @@ declare type url = {
 	fragment: hash | undefined;
 };
 
-declare type node = Readonly<LuaUserdata>;
+declare type node = Readonly<LuaUserdata> &
+	Readonly<{
+		readonly __node__: unique symbol;
+	}>;
 
 /**
  * A block of memory that can store binary data.
  */
-declare type buffer = Readonly<LuaUserdata>;
+declare type buffer = Readonly<LuaUserdata> &
+	Readonly<{
+		readonly __buffer__: unique symbol;
+	}>;
 
 declare type bufferstream = Array<number> & LuaUserdata & {};
 
@@ -132,7 +141,7 @@ declare namespace socket {
 		locaddr?: string,
 		locport?: number,
 		family?: string
-	): LuaMultiReturn<[any, string]>;
+	): LuaMultiReturn<[unknown, string]>;
 
 	/**
 	 * Returns the time in seconds, relative to the system epoch (Unix epoch time since January 1, 1970 (UTC) or Windows file time since January 1, 1601 (UTC)).
@@ -177,7 +186,7 @@ declare namespace socket {
 		recvt: unknown,
 		sendt: unknown,
 		timeout?: number
-	): LuaMultiReturn<[any, any, string]>;
+	): LuaMultiReturn<[unknown, unknown, string]>;
 
 	/**
 	 * This function drops a number of arguments and returns the remaining.
@@ -197,7 +206,7 @@ declare namespace socket {
 		ret1?: unknown,
 		ret2?: unknown,
 		retN?: unknown
-	): LuaMultiReturn<[any, any, any]> | undefined;
+	): LuaMultiReturn<[unknown, unknown, unknown]> | undefined;
 
 	/**
 	 * Freezes the program execution during a given amount of time.
@@ -210,7 +219,7 @@ declare namespace socket {
 	 * @return tcp_master  a new IPv4 TCP master object, or `nil` in case of error.
 	 * @return error  the error message, or `nil` if no error occurred.
 	 */
-	export function tcp(): LuaMultiReturn<[any, string]>;
+	export function tcp(): LuaMultiReturn<[unknown, string]>;
 
 	/**
 	 * Creates and returns an IPv6 TCP master object. A master object can be transformed into a server object with the method `listen` (after a call to `bind`) or into a client object with the method connect. The only other method supported by a master object is the close method.
@@ -218,14 +227,14 @@ declare namespace socket {
 	 * @return tcp_master  a new IPv6 TCP master object, or `nil` in case of error.
 	 * @return error  the error message, or `nil` if no error occurred.
 	 */
-	export function tcp6(): LuaMultiReturn<[any, string]>;
+	export function tcp6(): LuaMultiReturn<[unknown, string]>;
 
 	/**
 	 * Creates and returns an unconnected IPv4 UDP object. Unconnected objects support the `sendto`, `receive`, `receivefrom`, `getoption`, `getsockname`, `setoption`, `settimeout`, `setpeername`, `setsockname`, and `close` methods. The `setpeername` method is used to connect the object.
 	 * @return udp_unconnected  a new unconnected IPv4 UDP object, or `nil` in case of error.
 	 * @return error  the error message, or `nil` if no error occurred.
 	 */
-	export function udp(): LuaMultiReturn<[any, string]>;
+	export function udp(): LuaMultiReturn<[unknown, string]>;
 
 	/**
 	 * Creates and returns an unconnected IPv6 UDP object. Unconnected objects support the `sendto`, `receive`, `receivefrom`, `getoption`, `getsockname`, `setoption`, `settimeout`, `setpeername`, `setsockname`, and `close` methods. The `setpeername` method is used to connect the object.
@@ -233,7 +242,7 @@ declare namespace socket {
 	 * @return udp_unconnected  a new unconnected IPv6 UDP object, or `nil` in case of error.
 	 * @return error  the error message, or `nil` if no error occurred.
 	 */
-	export function udp6(): LuaMultiReturn<[any, string]>;
+	export function udp6(): LuaMultiReturn<[unknown, string]>;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
@@ -735,7 +744,7 @@ The id of the animated property.
 		easing: unknown,
 		duration: number,
 		delay?: number,
-		complete_function?: unknown
+		complete_function?: (...args: unknown[]) => void
 	): void;
 
 	/**
@@ -951,7 +960,7 @@ name of internal property
 	 * The position of the game object.
 	 * The type of the property is vector3.
 	 */
-	export let position: unknown;
+	export let position: vmath.vector3;
 
 	/**
 	 * Post this message to an instance to make that instance release the user input focus.
@@ -964,12 +973,12 @@ name of internal property
 	 * The rotation of the game object.
 	 * The type of the property is quaternion.
 	 */
-	export let rotation: unknown;
+	export let rotation: vmath.quaternion;
 
 	/**
 	 * The uniform scale of the game object. The type of the property is number.
 	 */
-	export let scale: unknown;
+	export let scale: number | vmath.vector3;
 
 	/**
 	 * When this message is sent to an instance, it sets the parent of that instance. This means that the instance will exist
@@ -2624,13 +2633,13 @@ the new state of the emitter:
 	/**
 	 * The material used when rendering the gui. The type of the property is hash.
 	 */
-	export let material: unknown;
+	export let material: hash;
 
 	/**
 	 * The textures used in the gui. The type of the property is hash.
 	 * Key must be specified in options table.
 	 */
-	export let textures: unknown;
+	export let textures: hash;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
@@ -4779,7 +4788,7 @@ optional specify the compression type for the data in the buffer object that hol
 	*/
 	export function set_texture(
 		path: hash | string,
-		table: LuaTable | object,
+		table: LuaTable | object | undefined,
 		buffer: buffer
 	): void;
 
@@ -5425,7 +5434,7 @@ declare namespace buffer {
 	export function get_metadata(
 		buf: buffer,
 		metadata_name: hash | string
-	): LuaMultiReturn<[any, any]>;
+	): LuaMultiReturn<[unknown, unknown]>;
 
 	/**
 	 * Get a specified stream from a buffer.
@@ -6804,7 +6813,7 @@ The invoker of the callback: the model component.
 	/**
 	 * The animation playback rate. A multiplier to the animation playback rate. The type of the property is number.
 	 */
-	export let playback_rate: unknown;
+	export let playback_rate: number;
 
 	/**
 	 * The texture hash id of the model. Used for getting/setting model texture for unit 0-7
@@ -6945,7 +6954,7 @@ declare namespace sound {
 	/**
 	 * The sound data used when playing the sound. The type of the property is hash.
 	 */
-	export let sound: unknown;
+	export let sound: hash;
 
 	/**
 	 * Get mixer group gain
