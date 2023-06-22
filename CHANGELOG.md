@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.3.5
+
+- Described more types
+- Replaced `nil` in comments with `undefined`
+- Replaced `self` in comments with `this`
+- Replaced `~=` in comments with `!==`
+- There are now around 300 unknown types to be documented (down from 500 in v1.2.21)
+
 ## v1.3.4
 
 - Described more types

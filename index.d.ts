@@ -132,8 +132,8 @@ declare namespace socket {
 	 * @param locaddr  optional local address to bind to.
 	 * @param locport  optional local port to bind to.
 	 * @param family  optional socket family to use, `"inet"` or `"inet6"`.
-	 * @return tcp_client  a new IPv6 TCP client object, or `nil` in case of error.
-	 * @return error  the error message, or `nil` if no error occurred.
+	 * @return tcp_client  a new IPv6 TCP client object, or `undefined` in case of error.
+	 * @return error  the error message, or `undefined` if no error occurred.
 	 */
 	export function connect(
 		address: string,
@@ -162,13 +162,13 @@ declare namespace socket {
 	 * Converts a function that throws exceptions into a safe function. This function only catches exceptions thrown by try functions. It does not catch normal Lua errors.
 	 * ⚠ Beware that if your function performs some illegal operation that raises an error, the protected function will catch the error and return it as a string. This is because try functions uses errors as the mechanism to throw exceptions.
 	 * @param func  a function that calls a try function (or assert, or error) to throw exceptions.
-	 * @return safe_func  an equivalent function that instead of throwing exceptions, returns `nil` followed by an error message.
+	 * @return safe_func  an equivalent function that instead of throwing exceptions, returns `undefined` followed by an error message.
 	 */
 	export function protect(func: unknown): unknown;
 
 	/**
-	 * The function returns a list with the sockets ready for reading, a list with the sockets ready for writing and an error message. The error message is "timeout" if a timeout condition was met and nil otherwise. The returned tables are doubly keyed both by integers and also by the sockets themselves, to simplify the test if a specific socket has changed status.
-	 * `Recvt` and `sendt` parameters can be empty tables or `nil`. Non-socket values (or values with non-numeric indices) in these arrays will be silently ignored.
+	 * The function returns a list with the sockets ready for reading, a list with the sockets ready for writing and an error message. The error message is "timeout" if a timeout condition was met and undefined otherwise. The returned tables are doubly keyed both by integers and also by the sockets themselves, to simplify the test if a specific socket has changed status.
+	 * `Recvt` and `sendt` parameters can be empty tables or `undefined`. Non-socket values (or values with non-numeric indices) in these arrays will be silently ignored.
 	 * The returned tables are doubly keyed both by integers and also by the sockets themselves, to simplify the test if a specific socket has changed status.
 	 * ⚠ This function can monitor a limited number of sockets, as defined by the constant socket._SETSIZE. This number may be as high as 1024 or as low as 64 by default, depending on the system. It is usually possible to change this at compile time. Invoking select with a larger number of sockets will raise an error.
 	 * ⚠ A known bug in WinSock causes select to fail on non-blocking TCP sockets. The function may return a socket as writable even though the socket is not ready for sending.
@@ -177,10 +177,10 @@ declare namespace socket {
 	 * (Using select with non-socket objects: Any object that implements `getfd` and `dirty` can be used with select, allowing objects from other libraries to be used within a socket.select driven loop.)
 	 * @param recvt  array with the sockets to test for characters available for reading.
 	 * @param sendt  array with sockets that are watched to see if it is OK to immediately write on them.
-	 * @param timeout  the maximum amount of time (in seconds) to wait for a change in status. Nil, negative or omitted timeout value allows the function to block indefinitely.
+	 * @param timeout  the maximum amount of time (in seconds) to wait for a change in status. Undefined, negative or omitted timeout value allows the function to block indefinitely.
 	 * @return sockets_r  a list with the sockets ready for reading.
 	 * @return sockets_w  a list with the sockets ready for writing.
-	 * @return error  an error message. "timeout" if a timeout condition was met, otherwise `nil`.
+	 * @return error  an error message. "timeout" if a timeout condition was met, otherwise `undefined`.
 	 */
 	export function select(
 		recvt: unknown,
@@ -216,31 +216,31 @@ declare namespace socket {
 
 	/**
 	 * Creates and returns an IPv4 TCP master object. A master object can be transformed into a server object with the method `listen` (after a call to `bind`) or into a client object with the method `connect`. The only other method supported by a master object is the `close` method.
-	 * @return tcp_master  a new IPv4 TCP master object, or `nil` in case of error.
-	 * @return error  the error message, or `nil` if no error occurred.
+	 * @return tcp_master  a new IPv4 TCP master object, or `undefined` in case of error.
+	 * @return error  the error message, or `undefined` if no error occurred.
 	 */
 	export function tcp(): LuaMultiReturn<[unknown, string]>;
 
 	/**
 	 * Creates and returns an IPv6 TCP master object. A master object can be transformed into a server object with the method `listen` (after a call to `bind`) or into a client object with the method connect. The only other method supported by a master object is the close method.
 	 * Note: The TCP object returned will have the option "ipv6-v6only" set to true.
-	 * @return tcp_master  a new IPv6 TCP master object, or `nil` in case of error.
-	 * @return error  the error message, or `nil` if no error occurred.
+	 * @return tcp_master  a new IPv6 TCP master object, or `undefined` in case of error.
+	 * @return error  the error message, or `undefined` if no error occurred.
 	 */
 	export function tcp6(): LuaMultiReturn<[unknown, string]>;
 
 	/**
 	 * Creates and returns an unconnected IPv4 UDP object. Unconnected objects support the `sendto`, `receive`, `receivefrom`, `getoption`, `getsockname`, `setoption`, `settimeout`, `setpeername`, `setsockname`, and `close` methods. The `setpeername` method is used to connect the object.
-	 * @return udp_unconnected  a new unconnected IPv4 UDP object, or `nil` in case of error.
-	 * @return error  the error message, or `nil` if no error occurred.
+	 * @return udp_unconnected  a new unconnected IPv4 UDP object, or `undefined` in case of error.
+	 * @return error  the error message, or `undefined` if no error occurred.
 	 */
 	export function udp(): LuaMultiReturn<[unknown, string]>;
 
 	/**
 	 * Creates and returns an unconnected IPv6 UDP object. Unconnected objects support the `sendto`, `receive`, `receivefrom`, `getoption`, `getsockname`, `setoption`, `settimeout`, `setpeername`, `setsockname`, and `close` methods. The `setpeername` method is used to connect the object.
 	 * Note: The UDP object returned will have the option "ipv6-v6only" set to true.
-	 * @return udp_unconnected  a new unconnected IPv6 UDP object, or `nil` in case of error.
-	 * @return error  the error message, or `nil` if no error occurred.
+	 * @return udp_unconnected  a new unconnected IPv6 UDP object, or `undefined` in case of error.
+	 * @return error  the error message, or `undefined` if no error occurred.
 	 */
 	export function udp6(): LuaMultiReturn<[unknown, string]>;
 }
@@ -347,7 +347,7 @@ declare namespace crash {
 	 * reads a system field from a loaded crash dump
 	 * @param handle  crash dump handle
 	 * @param index  system field enum. Must be less than crash.SYSFIELD_MAX
-	 * @return value  value recorded in the crash dump, or nil if it didn't exist
+	 * @return value  value recorded in the crash dump, or undefined if it didn't exist
 	 */
 	export function get_sys_field(handle: number, index: number): string;
 
@@ -362,7 +362,7 @@ declare namespace crash {
 	/**
 	 * The crash dump will be removed from disk upon a successful
 	 * load, so loading is one-shot.
-	 * @return handle  handle to the loaded dump, or nil if no dump was found
+	 * @return handle  handle to the loaded dump, or undefined if no dump was found
 	 */
 	export function load_previous(): number;
 
@@ -722,7 +722,7 @@ declare namespace go {
 	* @param delay  delay before the animation starts in seconds
 	* @param complete_function  optional function to call when the animation has completed
 
-`self`
+`this`
 
 The current object.
 
@@ -808,7 +808,7 @@ name of internal property
 	/**
 	 * Get the parent for a game object instance.
 	 * @param id  optional id of the game object instance to get parent for, defaults to the instance containing the calling script
-	 * @return parent_id  parent instance or nil
+	 * @return parent_id  parent instance or undefined
 	 */
 	export function get_parent(id?: string | hash | url): hash;
 
@@ -978,7 +978,7 @@ name of internal property
 	/**
 	 * The uniform scale of the game object. The type of the property is number.
 	 */
-	export let scale: number | vmath.vector3;
+	export let scale: number;
 
 	/**
 	 * When this message is sent to an instance, it sets the parent of that instance. This means that the instance will exist
@@ -1520,7 +1520,7 @@ with a custom curve. See the animation guide for more information.
 		easing: unknown,
 		duration: number,
 		delay?: number,
-		complete_function?: unknown,
+		complete_function?: (...args: unknown[]) => void,
 		playback?: unknown
 	): void;
 
@@ -1806,9 +1806,9 @@ with a custom curve. See the animation guide for more information.
 
 	/**
 	 * Returns the parent node of the specified node.
-	 * If the supplied node does not have a parent, `nil` is returned.
+	 * If the supplied node does not have a parent, `undefined` is returned.
 	 * @param node  the node from which to retrieve its parent
-	 * @return parent  parent instance or nil
+	 * @return parent  parent instance or undefined
 	 */
 	export function get_parent(node: node): node;
 
@@ -1992,7 +1992,7 @@ with a custom curve. See the animation guide for more information.
 	/**
 	 * Alters the ordering of the two supplied nodes by moving the first node
 	 * above the second.
-	 * If the second argument is `nil` the first node is moved to the top.
+	 * If the second argument is `undefined` the first node is moved to the top.
 	 * @param node  to move
 	 * @param node  reference node above which the first node should be moved
 	 */
@@ -2001,7 +2001,7 @@ with a custom curve. See the animation guide for more information.
 	/**
 	 * Alters the ordering of the two supplied nodes by moving the first node
 	 * below the second.
-	 * If the second argument is `nil` the first node is moved to the bottom.
+	 * If the second argument is `undefined` the first node is moved to the bottom.
 	 * @param node  to move
 	 * @param node  reference node below which the first node should be moved
 	 */
@@ -2094,7 +2094,7 @@ with a custom curve. See the animation guide for more information.
 	* @param animation  animation id
 	* @param complete_function  optional function to call when the animation has completed
 
-`self`
+`this`
 
 The current object.
 
@@ -2114,7 +2114,7 @@ The rate with which the animation will be played. Must be positive
 	export function play_flipbook(
 		node: node,
 		animation: string | hash,
-		complete_function?: unknown,
+		complete_function?: (...args: unknown[]) => void,
 		play_properties?: unknown
 	): void;
 
@@ -2123,10 +2123,10 @@ The rate with which the animation will be played. Must be positive
 	* @param node  node to play particle fx for
 	* @param emitter_state_function  optional callback function that will be called when an emitter attached to this particlefx changes state.
 
-`self`
+`this`
 The current object
 `node`
-The particle fx node, or `nil` if the node was deleted
+The particle fx node, or `undefined` if the node was deleted
 `emitter`
 The id of the emitter
 `state`
@@ -2141,7 +2141,7 @@ the new state of the emitter:
 	*/
 	export function play_particlefx(
 		node: node,
-		emitter_state_function?: unknown
+		emitter_state_function?: (...args: unknown[]) => void
 	): void;
 
 	/**
@@ -2853,7 +2853,7 @@ end
 `all`
 Set to `true` to return all ray cast hits. If `false`, it will only return the closest hit.
 
-	* @return result  It returns a list. If missed it returns nil. See `ray_cast_response` for details on the returned values.
+	* @return result  It returns a list. If missed it returns undefined. See `ray_cast_response` for details on the returned values.
 	*/
 	export function raycast(
 		from: vmath.vector3,
@@ -3350,22 +3350,22 @@ declare namespace render {
 	export let FORMAT_LUMINANCE: unknown;
 
 	/**
-	 * May be nil if the format isn't supported
+	 * May be undefined if the format isn't supported
 	 */
 	export let FORMAT_R16F: unknown;
 
 	/**
-	 * May be nil if the format isn't supported
+	 * May be undefined if the format isn't supported
 	 */
 	export let FORMAT_R32F: unknown;
 
 	/**
-	 * May be nil if the format isn't supported
+	 * May be undefined if the format isn't supported
 	 */
 	export let FORMAT_RG16F: unknown;
 
 	/**
-	 * May be nil if the format isn't supported
+	 * May be undefined if the format isn't supported
 	 */
 	export let FORMAT_RG32F: unknown;
 
@@ -3375,12 +3375,12 @@ declare namespace render {
 	export let FORMAT_RGB: unknown;
 
 	/**
-	 * May be nil if the format isn't supported
+	 * May be undefined if the format isn't supported
 	 */
 	export let FORMAT_RGB16F: unknown;
 
 	/**
-	 * May be nil if the format isn't supported
+	 * May be undefined if the format isn't supported
 	 */
 	export let FORMAT_RGB32F: unknown;
 
@@ -3390,12 +3390,12 @@ declare namespace render {
 	export let FORMAT_RGBA: unknown;
 
 	/**
-	 * May be nil if the format isn't supported
+	 * May be undefined if the format isn't supported
 	 */
 	export let FORMAT_RGBA16F: unknown;
 
 	/**
-	 * May be nil if the format isn't supported
+	 * May be undefined if the format isn't supported
 	 */
 	export let FORMAT_RGBA32F: unknown;
 
@@ -3555,7 +3555,7 @@ declare namespace render {
 	* @param options  optional table with properties:
 
 `frustum`
-A frustum matrix used to cull renderable items. (E.g. `local frustum = proj * view`). May be nil.
+A frustum matrix used to cull renderable items. (E.g. `local frustum = proj * view`). May be undefined.
 `constants`
 optional constants to use while rendering
 
@@ -3567,7 +3567,7 @@ optional constants to use while rendering
 	* @param options  optional table with properties:
 
 `frustum`
-A frustum matrix used to cull renderable items. (E.g. `local frustum = proj * view`). May be nil.
+A frustum matrix used to cull renderable items. (E.g. `local frustum = proj * view`). May be undefined.
 
 	*/
 	export function draw_debug3d(options?: unknown): void;
@@ -3747,7 +3747,7 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	 * It is not guaranteed that the device running the script can support creating render targets with multiple color attachments. To check if the device can support multiple attachments,
 	 * you can check if the `render` table contains any of the `BUFFER_COLOR1_BIT`, `BUFFER_COLOR2_BIT` or `BUFFER_COLOR3_BIT` constants:
 	 * `function init(self)
-	 *     if render.BUFFER_COLOR1_BIT == nil then
+	 *     if render.BUFFER_COLOR1_BIT == undefined then
 	 *         -- this devices does not support multiple color attachments
 	 *     end
 	 * end
@@ -4099,142 +4099,142 @@ declare namespace resource {
 	/**
 	 * BASIS_UASTC compression type
 	 */
-	export let COMPRESSION_TYPE_BASIS_UASTC: unknown;
+	export let COMPRESSION_TYPE_BASIS_UASTC: 3;
 
 	/**
 	 * COMPRESSION_TYPE_DEFAULT compression type
 	 */
-	export let COMPRESSION_TYPE_DEFAULT: unknown;
+	export let COMPRESSION_TYPE_DEFAULT: 0;
 
 	/**
 	 * luminance type texture format
 	 */
-	export let TEXTURE_FORMAT_LUMINANCE: unknown;
+	export let TEXTURE_FORMAT_LUMINANCE: 0;
 
 	/**
 	 * R16F type texture format
 	 */
-	export let TEXTURE_FORMAT_R16F: unknown;
+	export let TEXTURE_FORMAT_R16F: 26;
 
 	/**
 	 * R32F type texture format
 	 */
-	export let TEXTURE_FORMAT_R32F: unknown;
+	export let TEXTURE_FORMAT_R32F: 28;
 
 	/**
 	 * RG16F type texture format
 	 */
-	export let TEXTURE_FORMAT_RG16F: unknown;
+	export let TEXTURE_FORMAT_RG16F: 27;
 
 	/**
 	 * RG32F type texture format
 	 */
-	export let TEXTURE_FORMAT_RG32F: unknown;
+	export let TEXTURE_FORMAT_RG32F: 29;
 
 	/**
 	 * RGB type texture format
 	 */
-	export let TEXTURE_FORMAT_RGB: unknown;
+	export let TEXTURE_FORMAT_RGB: 2;
 
 	/**
 	 * RGB16F type texture format
 	 */
-	export let TEXTURE_FORMAT_RGB16F: unknown;
+	export let TEXTURE_FORMAT_RGB16F: 22;
 
 	/**
 	 * RGB32F type texture format
 	 */
-	export let TEXTURE_FORMAT_RGB32F: unknown;
+	export let TEXTURE_FORMAT_RGB32F: 23;
 
 	/**
 	 * RGBA type texture format
 	 */
-	export let TEXTURE_FORMAT_RGBA: unknown;
+	export let TEXTURE_FORMAT_RGBA: 3;
 
 	/**
 	 * RGBA16F type texture format
 	 */
-	export let TEXTURE_FORMAT_RGBA16F: unknown;
+	export let TEXTURE_FORMAT_RGBA16F: 24;
 
 	/**
 	 * RGBA32F type texture format
 	 */
-	export let TEXTURE_FORMAT_RGBA32F: unknown;
+	export let TEXTURE_FORMAT_RGBA32F: 25;
 
 	/**
 	 * RGBA_ASTC_4x4 type texture format
 	 */
-	export let TEXTURE_FORMAT_RGBA_ASTC_4x4: unknown;
+	export let TEXTURE_FORMAT_RGBA_ASTC_4x4: number;
 
 	/**
 	 * RGBA_BC3 type texture format
 	 */
-	export let TEXTURE_FORMAT_RGBA_BC3: unknown;
+	export let TEXTURE_FORMAT_RGBA_BC3: 18;
 
 	/**
 	 * RGBA_BC7 type texture format
 	 */
-	export let TEXTURE_FORMAT_RGBA_BC7: unknown;
+	export let TEXTURE_FORMAT_RGBA_BC7: number;
 
 	/**
 	 * RGBA_ETC2 type texture format
 	 */
-	export let TEXTURE_FORMAT_RGBA_ETC2: unknown;
+	export let TEXTURE_FORMAT_RGBA_ETC2: number;
 
 	/**
 	 * RGBA_PVRTC_2BPPV1 type texture format
 	 */
-	export let TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1: unknown;
+	export let TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1: number;
 
 	/**
 	 * RGBA_PVRTC_4BPPV1 type texture format
 	 */
-	export let TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1: unknown;
+	export let TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1: number;
 
 	/**
 	 * RGB_BC1 type texture format
 	 */
-	export let TEXTURE_FORMAT_RGB_BC1: unknown;
+	export let TEXTURE_FORMAT_RGB_BC1: 17;
 
 	/**
 	 * RGB_ETC1 type texture format
 	 */
-	export let TEXTURE_FORMAT_RGB_ETC1: unknown;
+	export let TEXTURE_FORMAT_RGB_ETC1: number;
 
 	/**
 	 * RGB_PVRTC_2BPPV1 type texture format
 	 */
-	export let TEXTURE_FORMAT_RGB_PVRTC_2BPPV1: unknown;
+	export let TEXTURE_FORMAT_RGB_PVRTC_2BPPV1: number;
 
 	/**
 	 * RGB_PVRTC_4BPPV1 type texture format
 	 */
-	export let TEXTURE_FORMAT_RGB_PVRTC_4BPPV1: unknown;
+	export let TEXTURE_FORMAT_RGB_PVRTC_4BPPV1: number;
 
 	/**
 	 * RG_BC5 type texture format
 	 */
-	export let TEXTURE_FORMAT_RG_BC5: unknown;
+	export let TEXTURE_FORMAT_RG_BC5: number;
 
 	/**
 	 * R_BC4 type texture format
 	 */
-	export let TEXTURE_FORMAT_R_BC4: unknown;
+	export let TEXTURE_FORMAT_R_BC4: number;
 
 	/**
 	 * 2D texture type
 	 */
-	export let TEXTURE_TYPE_2D: unknown;
+	export let TEXTURE_TYPE_2D: 0;
 
 	/**
 	 * 2D Array texture type
 	 */
-	export let TEXTURE_TYPE_2D_ARRAY: unknown;
+	export let TEXTURE_TYPE_2D_ARRAY: 1;
 
 	/**
 	 * Cube map texture type
 	 */
-	export let TEXTURE_TYPE_CUBE_MAP: unknown;
+	export let TEXTURE_TYPE_CUBE_MAP: 2;
 
 	/**
 	 * Constructor-like function with two purposes:
@@ -4367,7 +4367,10 @@ a list of the indices of the geometry in the form {i0, i1, i2, ..., in}. Each tr
 
 	* @return path  Returns the atlas resource path
 	*/
-	export function create_atlas(path: string, table?: unknown): hash;
+	export function create_atlas(
+		path: string,
+		table?: LuaTable | LuaSet | LuaMap | object
+	): hash;
 
 	/**
 	* This function creates a new buffer resource that can be used in the same way as any buffer created during build time.
@@ -4396,7 +4399,10 @@ optional flag to determine wether or not the resource should take over ownership
 
 	* @return path  Returns the buffer resource path
 	*/
-	export function create_buffer(path: string, table?: unknown): hash;
+	export function create_buffer(
+		path: string,
+		table?: LuaTable | LuaSet | LuaMap | object
+	): hash;
 
 	/**
 	* Creates a new texture resource that can be used in the same way as any texture created during build time.
@@ -4448,8 +4454,8 @@ These constants might not be available on the device:
 - `resource.TEXTURE_FORMAT_RG16F`
 - `resource.TEXTURE_FORMAT_R32F`
 - `resource.TEXTURE_FORMAT_RG32F`
-You can test if the device supports these values by checking if a specific enum is nil or not:
-`if resource.TEXTURE_FORMAT_RGBA16F ~= nil then
+You can test if the device supports these values by checking if a specific enum is undefined or not:
+`if resource.TEXTURE_FORMAT_RGBA16F !== undefined then
     -- it is safe to use this format
 end
 `
@@ -4470,7 +4476,7 @@ Creating an empty texture with no buffer data is not supported as a core feature
 	*/
 	export function create_texture(
 		path: string,
-		table?: unknown,
+		table?: LuaTable | LuaSet | LuaMap | object,
 		buffer?: buffer
 	): hash;
 
@@ -4701,7 +4707,10 @@ a list of the indices of the geometry in the form {i0, i1, i2, ..., in}. Each tr
 
 
 	*/
-	export function set_atlas(path: hash | string, table?: unknown): void;
+	export function set_atlas(
+		path: hash | string,
+		table?: LuaTable | LuaSet | LuaMap | object
+	): void;
 
 	/**
 	 * sets the buffer of a resource
@@ -4763,8 +4772,8 @@ These constants might not be available on the device:
 - `resource.TEXTURE_FORMAT_RG16F`
 - `resource.TEXTURE_FORMAT_R32F`
 - `resource.TEXTURE_FORMAT_RG32F`
-You can test if the device supports these values by checking if a specific enum is nil or not:
-`if resource.TEXTURE_FORMAT_RGBA16F ~= nil then
+You can test if the device supports these values by checking if a specific enum is undefined or not:
+`if resource.TEXTURE_FORMAT_RGBA16F !== undefined then
     -- it is safe to use this format
 end
 `
@@ -4788,7 +4797,7 @@ optional specify the compression type for the data in the buffer object that hol
 	*/
 	export function set_texture(
 		path: hash | string,
-		table: LuaTable | object | undefined,
+		table: LuaTable | LuaSet | LuaMap | object | undefined,
 		buffer: buffer
 	): void;
 
@@ -4951,7 +4960,7 @@ declare namespace sys {
 	 * Get string config value from the game.project configuration file with optional default value
 	 * @param key  key to get value for. The syntax is SECTION.KEY
 	 * @param default_value  (optional) default value to return if the value does not exist
-	 * @return value  config value as a string. default_value if the config key does not exist. nil if no default value was supplied.
+	 * @return value  config value as a string. default_value if the config key does not exist. undefined if no default value was supplied.
 	 */
 	export function get_config_string(
 		key: string,
@@ -4992,9 +5001,9 @@ If the engine is a debug or release version
 `name`
 Interface name
 `address`
-might be `nil` if not available.
+might be `undefined` if not available.
 `mac`
-might be nil if not available.
+might be undefined if not available.
 `up`
 `true` if the interface is up (available to transmit and receive data), `false` otherwise.
 `running`
@@ -5056,7 +5065,7 @@ The HTTP user agent, i.e. "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) Apple
 	/**
 	 * Loads a custom resource. Specify the full filename of the resource that you want
 	 * to load. When loaded, the file data is returned as a string.
-	 * If loading fails, the function returns nil plus the error message.
+	 * If loading fails, the function returns undefined plus the error message.
 	 * In order for the engine to include custom resources in the build process, you need
 	 * to specify them in the "custom_resources" key in your "game.project" settings file.
 	 * You can specify single resource files or directories. If a directory is included
@@ -5064,8 +5073,8 @@ The HTTP user agent, i.e. "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) Apple
 	 * included:
 	 * For example "main/data/,assets/level_data.json".
 	 * @param filename  resource to load, full path
-	 * @return data  loaded data, or `nil` if the resource could not be loaded
-	 * @return error  the error message, or `nil` if no error occurred
+	 * @return data  loaded data, or `undefined` if the resource could not be loaded
+	 * @return error  the error message, or `undefined` if no error occurred
 	 */
 	export function load_resource(
 		filename: string
@@ -5121,7 +5130,10 @@ The HTTP user agent, i.e. "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) Apple
 	 * @param table  lua table to save
 	 * @return success  a boolean indicating if the table could be saved or not
 	 */
-	export function save(filename: string, table: LuaTable | object): boolean;
+	export function save(
+		filename: string,
+		table: LuaTable | LuaSet | LuaMap | object
+	): boolean;
 
 	/**
 	 * The buffer can later deserialized by `sys.deserialize`.
@@ -5129,7 +5141,7 @@ The HTTP user agent, i.e. "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) Apple
 	 * @param table  lua table to serialize
 	 * @return buffer  serialized data buffer
 	 */
-	export function serialize(table: LuaTable | object): string;
+	export function serialize(table: LuaTable | LuaSet | LuaMap | object): string;
 
 	/**
 	 * Sets the host that is used to check for network connectivity against.
@@ -5205,42 +5217,42 @@ declare namespace window {
 	/**
 	 * dimming mode off
 	 */
-	export let DIMMING_OFF: unknown;
+	export let DIMMING_OFF: 2;
 
 	/**
 	 * dimming mode on
 	 */
-	export let DIMMING_ON: unknown;
+	export let DIMMING_ON: 1;
 
 	/**
 	 * dimming mode unknown
 	 */
-	export let DIMMING_UNKNOWN: unknown;
+	export let DIMMING_UNKNOWN: 0;
 
 	/**
 	 * deiconified window event
 	 */
-	export let WINDOW_EVENT_DEICONIFIED: unknown;
+	export let WINDOW_EVENT_DEICONIFIED: 4;
 
 	/**
 	 * focus gained window event
 	 */
-	export let WINDOW_EVENT_FOCUS_GAINED: unknown;
+	export let WINDOW_EVENT_FOCUS_GAINED: 1;
 
 	/**
 	 * focus lost window event
 	 */
-	export let WINDOW_EVENT_FOCUS_LOST: unknown;
+	export let WINDOW_EVENT_FOCUS_LOST: 0;
 
 	/**
 	 * iconify window event
 	 */
-	export let WINDOW_EVENT_ICONFIED: unknown;
+	export let WINDOW_EVENT_ICONFIED: 3;
 
 	/**
 	 * resized window event
 	 */
-	export let WINDOW_EVENT_RESIZED: unknown;
+	export let WINDOW_EVENT_RESIZED: 2;
 
 	/**
 	* 🤖 Returns the current dimming mode set on a mobile device.
@@ -5253,7 +5265,10 @@ declare namespace window {
 - `window.DIMMING_OFF`
 
 	*/
-	export function get_dim_mode(): unknown;
+	export function get_dim_mode():
+		| typeof window.DIMMING_UNKNOWN
+		| typeof window.DIMMING_ON
+		| typeof window.DIMMING_OFF;
 
 	/**
 	 * This returns the current lock state of the mouse cursor
@@ -5278,13 +5293,15 @@ declare namespace window {
 - `window.DIMMING_OFF`
 
 	*/
-	export function set_dim_mode(mode: unknown): void;
+	export function set_dim_mode(
+		mode: typeof window.DIMMING_ON | typeof window.DIMMING_OFF
+	): void;
 
 	/**
 	* Sets a window event listener.
-	* @param callback  A callback which receives info about window events. Pass an empty function or nil if you no longer wish to receive callbacks.
+	* @param callback  A callback which receives info about window events. Pass an empty function or undefined if you no longer wish to receive callbacks.
 
-`self`
+`this`
 The calling script
 `event`
 The type of event. Can be one of these:
@@ -5301,11 +5318,22 @@ The type of event. Can be one of these:
 The callback value `data` is a table which currently holds these values
 
 
-`width`: The width of a resize event. nil otherwise.
-`height`: The height of a resize event. nil otherwise.
+`width`: The width of a resize event. undefined otherwise.
+`height`: The height of a resize event. undefined otherwise.
 
 	*/
-	export function set_listener(callback: unknown): void;
+	export function set_listener(
+		callback: (
+			this: unknown,
+			event:
+				| typeof window.WINDOW_EVENT_FOCUS_LOST
+				| typeof window.WINDOW_EVENT_FOCUS_GAINED
+				| typeof window.WINDOW_EVENT_RESIZED
+				| typeof window.WINDOW_EVENT_ICONFIED
+				| typeof window.WINDOW_EVENT_DEICONIFIED,
+			data: { width: number | undefined; height: number | undefined }
+		) => void
+	): void;
 
 	/**
 	 * Set the locking state for current mouse cursor on a PC platform.
@@ -5428,8 +5456,8 @@ declare namespace buffer {
 	 * Get a named metadata entry from a buffer along with its type.
 	 * @param buf  the buffer to get the metadata from
 	 * @param metadata_name  name of the metadata entry
-	 * @return values  table of metadata values or nil if the entry does not exist
-	 * @return value_type  numeric type of values or nil
+	 * @return values  table of metadata values or undefined if the entry does not exist
+	 * @return value_type  numeric type of values or undefined
 	 */
 	export function get_metadata(
 		buf: buffer,
@@ -5479,9 +5507,9 @@ declare namespace html5 {
 	* invoked when a user interacts with the web page by clicking, touching or typing.
 	* The callback can then call DOM restricted actions like requesting a pointer lock,
 	* or start playing sounds the first time the callback is invoked.
-	* @param callback  The interaction callback. Pass an empty function or nil if you no longer wish to receive callbacks.
+	* @param callback  The interaction callback. Pass an empty function or undefined if you no longer wish to receive callbacks.
 
-`self`
+`this`
 The calling script
 
 	*/
@@ -5497,7 +5525,7 @@ declare namespace http {
 	* @param method  HTTP/HTTPS method, e.g. "GET", "PUT", "POST" etc.
 	* @param callback  response callback function
 
-`self`
+`this`
 The script instance
 `id`
 Internal message identifier. Do not use!
@@ -5536,23 +5564,23 @@ declare namespace image {
 	/**
 	 * luminance image type
 	 */
-	export let TYPE_LUMINANCE: unknown;
+	export let TYPE_LUMINANCE: 'l';
 
 	/**
 	 * RGB image type
 	 */
-	export let TYPE_RGB: unknown;
+	export let TYPE_RGB: 'rgb';
 
 	/**
 	 * RGBA image type
 	 */
-	export let TYPE_RGBA: unknown;
+	export let TYPE_RGBA: 'rgba';
 
 	/**
 	* Load image (PNG or JPEG) from buffer.
 	* @param buffer  image data buffer
 	* @param premult  optional flag if alpha should be premultiplied. Defaults to `false`
-	* @return image  object or `nil` if loading fails. The object is a table with the following fields:
+	* @return image  object or `undefined` if loading fails. The object is a table with the following fields:
 
 `width`: image width
 `height`: image height
@@ -5565,7 +5593,20 @@ declare namespace image {
 `buffer`: the raw image data
 
 	*/
-	export function load(buffer: string, premult?: boolean): unknown;
+	export function load(
+		buffer: string,
+		premult?: boolean
+	):
+		| undefined
+		| {
+				width: number;
+				height: number;
+				type:
+					| typeof image.TYPE_RGB
+					| typeof image.TYPE_RGBA
+					| typeof image.TYPE_LUMINANCE;
+				buffer: buffer;
+		  };
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
@@ -5584,12 +5625,13 @@ declare namespace json {
 	 * @param tbl  lua table to encode
 	 * @return json  encoded json
 	 */
-	export function encode(tbl: LuaTable | object): string;
+	export function encode(tbl: LuaTable | LuaSet | LuaMap | object): string;
 
 	/**
 	 * null
 	 */
-	// export let null: null
+	let $null: null;
+	export { $null as null };
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
@@ -5615,7 +5657,7 @@ declare namespace msg {
 	): void;
 
 	/**
-	 * This is equivalent to `msg.url(nil)` or `msg.url("#")`, which creates an url to the current
+	 * This is equivalent to `msg.url(undefined)` or `msg.url("#")`, which creates an url to the current
 	 * script component.
 	 * @return url  a new URL
 	 */
@@ -5679,7 +5721,7 @@ declare namespace timer {
 	* @param repeat  true = repeat timer until cancel, false = one-shot timer
 	* @param callback  timer callback function
 
-`self`
+`this`
 The current object
 `handle`
 The handle of the timer
@@ -5697,7 +5739,7 @@ The elapsed time - on first trigger it is time since timer.delay call, otherwise
 	/**
 	* Get information about timer.
 	* @param handle  the timer handle returned by timer.delay()
-	* @return data  or nil if timer is cancelled/completed. table with data in the following fields:
+	* @return data  or undefined if timer is cancelled/completed. table with data in the following fields:
 
 `time_remaining`
 Time remaining until the next time a timer.delay() fires.
@@ -6404,7 +6446,7 @@ declare namespace collectionfactory {
 	* @param url  the collection factory component to load
 	* @param complete_function  function to call when resources are loaded.
 
-`self`
+`this`
 The current object.
 `url`
 url of the collection factory component
@@ -6414,14 +6456,14 @@ True if resource were loaded successfully
 	*/
 	export function load(
 		url?: string | hash | url,
-		complete_function?: unknown
+		complete_function?: (...args: unknown[]) => void
 	): void;
 
 	/**
 	 * Changes the prototype for the collection factory.
-	 * Setting the prototype to "nil" will revert back to the original prototype.
+	 * Setting the prototype to "undefined" will revert back to the original prototype.
 	 * @param url  the collection factory component
-	 * @param prototype  the path to the new prototype, or nil
+	 * @param prototype  the path to the new prototype, or undefined
 	 */
 	export function set_prototype(
 		url?: string | hash | url,
@@ -6556,10 +6598,10 @@ declare namespace factory {
 	 * ⚠ Calling factory.create on a factory that is marked as dynamic without having loaded resources
 	 * using factory.load will synchronously load and create resources which may affect application performance.
 	 * @param url  the factory that should create a game object.
-	 * @param position  the position of the new game object, the position of the game object calling `factory.create()` is used by default, or if the value is `nil`.
-	 * @param rotation  the rotation of the new game object, the rotation of the game object calling `factory.create()` is used by default, or if the value is `nil`.
+	 * @param position  the position of the new game object, the position of the game object calling `factory.create()` is used by default, or if the value is `undefined`.
+	 * @param rotation  the rotation of the new game object, the rotation of the game object calling `factory.create()` is used by default, or if the value is `undefined`.
 	 * @param properties  the properties defined in a script attached to the new game object.
-	 * @param scale  the scale of the new game object (must be greater than 0), the scale of the game object containing the factory is used by default, or if the value is `nil`
+	 * @param scale  the scale of the new game object (must be greater than 0), the scale of the game object containing the factory is used by default, or if the value is `undefined`
 	 * @return id  the global id of the spawned game object
 	 */
 	export function create(
@@ -6590,7 +6632,7 @@ declare namespace factory {
 	* @param url  the factory component to load
 	* @param complete_function  function to call when resources are loaded.
 
-`self`
+`this`
 The current object.
 `url`
 url of the factory component
@@ -6600,13 +6642,13 @@ True if resources were loaded successfully
 	*/
 	export function load(
 		url?: string | hash | url,
-		complete_function?: unknown
+		complete_function?: (...args: unknown[]) => void
 	): void;
 
 	/**
 	 * Changes the prototype for the factory.
 	 * @param url  the factory component
-	 * @param prototype  the path to the new prototype, or nil
+	 * @param prototype  the path to the new prototype, or undefined
 	 */
 	export function set_prototype(
 		url?: string | hash | url,
@@ -6665,7 +6707,7 @@ declare namespace label {
 	/**
 	 * The material used when rendering the label. The type of the property is hash.
 	 */
-	export let material: unknown;
+	export let material: hash;
 
 	/**
 	 * The outline color of the label. The type of the property is vector4.
@@ -6676,7 +6718,7 @@ declare namespace label {
 	 * The scale of the label. The type of the property is number (uniform)
 	 * or vector3 (non uniform).
 	 */
-	export let scale: unknown;
+	export let scale: number | vmath.vector3;
 
 	/**
 	 * The shadow color of the label. The type of the property is vector4.
@@ -6713,7 +6755,7 @@ declare namespace model {
 	/**
 	 * The material used when rendering the model. The type of the property is hash.
 	 */
-	export let material: unknown;
+	export let material: hash;
 
 	/**
 	 * Cancels all animation on a model component.
@@ -6772,7 +6814,7 @@ The rate with which the animation will be played. Must be positive.
 
 	* @param complete_function  function to call when the animation has completed.
 
-`self`
+`this`
 The current object.
 `message_id`
 The name of the completion message, `"model_animation_done"`.
@@ -6793,7 +6835,7 @@ The invoker of the callback: the model component.
 		anim_id: string | hash,
 		playback: unknown,
 		play_properties?: unknown,
-		complete_function?: unknown
+		complete_function?: (...args: unknown[]) => void
 	): void;
 
 	/**
@@ -6852,7 +6894,7 @@ declare namespace particlefx {
 	* @param url  the particle fx that should start playing.
 	* @param emitter_state_function  optional callback function that will be called when an emitter attached to this particlefx changes state.
 
-`self`
+`this`
 The current object
 `id`
 The id of the particle fx component
@@ -6870,7 +6912,7 @@ the new state of the emitter:
 	*/
 	export function play(
 		url: string | hash | url,
-		emitter_state_function?: unknown
+		emitter_state_function?: (...args: unknown[]) => void
 	): void;
 
 	/**
@@ -7076,7 +7118,7 @@ sound speed where 1.0 is normal speed, 0.5 is half speed and 2.0 is double speed
 
 	* @param complete_function  function to call when the sound has finished playing.
 
-`self`
+`this`
 The current object.
 `message_id`
 The name of the completion message, `"sound_done"`.
@@ -7095,7 +7137,7 @@ The invoker of the callback: the sound component.
 	export function play(
 		url: string | hash | url,
 		play_properties?: unknown,
-		complete_function?: unknown
+		complete_function?: (...args: unknown[]) => void
 	): number;
 
 	/**
@@ -7157,7 +7199,7 @@ declare namespace sprite {
 	/**
 	 * hash.
 	 */
-	export let animation: unknown;
+	export let animation: hash;
 
 	/**
 	 * This message is sent to the sender of a `play_animation` message when the
@@ -7177,7 +7219,7 @@ declare namespace sprite {
 	/**
 	 * The normalized animation cursor. The type of the property is number.
 	 */
-	export let cursor: unknown;
+	export let cursor: number;
 
 	/**
 	 * READ ONLY The frame count of the currently playing animation.
@@ -7192,7 +7234,7 @@ declare namespace sprite {
 	/**
 	 * The material used when rendering the sprite. The type of the property is hash.
 	 */
-	export let material: unknown;
+	export let material: hash;
 
 	/**
 	 * Post this message to a sprite component to make it play an animation from its tile set.
@@ -7203,19 +7245,19 @@ declare namespace sprite {
 	 * number.
 	 * The playback_rate is a non-negative number, a negative value will be clamped to 0.
 	 */
-	export let playback_rate: unknown;
+	export let playback_rate: number;
 
 	/**
 	 * The non-uniform scale of the sprite. The type of the property is vector3.
 	 */
-	export let scale: unknown;
+	export let scale: vmath.vector3;
 
 	/**
 	 * The size of the sprite, not allowing for any additional scaling that may be applied.
 	 * The type of the property is vector3. It is not possible to set the size if the size mode
 	 * of the sprite is set to auto.
 	 */
-	export let size: unknown;
+	export let size: vmath.vector3;
 
 	/**
 	* Play an animation on a sprite component from its tile set
@@ -7226,7 +7268,7 @@ declare namespace sprite {
 	* @param id  hash name hash of the animation to play
 	* @param complete_function  function to call when the animation has completed.
 
-`self`
+`this`
 The current object.
 `message_id`
 The name of the completion message, `"animation_done"`.
@@ -7252,7 +7294,7 @@ the rate with which the animation will be played. Must be positive.
 	export function play_flipbook(
 		url: string | hash | url,
 		id: unknown,
-		complete_function?: unknown,
+		complete_function?: (...args: unknown[]) => void,
 		play_properties?: unknown
 	): void;
 
@@ -7280,7 +7322,7 @@ declare namespace tilemap {
 	/**
 	 * The material used when rendering the tile map. The type of the property is hash.
 	 */
-	export let material: unknown;
+	export let material: hash;
 
 	/**
 	 * The tile source used when rendering the tile map. The type of the property is hash.
