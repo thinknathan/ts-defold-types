@@ -9,9 +9,9 @@
 1. Get this package from npm
 
 ```bash
-yarn add git+https://git@github.com/thinknathan/ts-defold-types.git -D
+yarn add git+https://git@github.com/thinknathan/ts-defold-types.git#^1.3.0 -D
 # or
-npm install git+https://git@github.com/thinknathan/ts-defold-types.git --save-dev
+npm install git+https://git@github.com/thinknathan/ts-defold-types.git#^1.3.0 --save-dev
 ```
 
 2. Modify your `tsconfig.json`
