@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.3.6
+
+- Switch some let values to const
+
 ## v1.3.5
 
 - Described more types

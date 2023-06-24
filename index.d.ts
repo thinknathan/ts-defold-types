@@ -114,12 +114,12 @@ declare namespace socket {
 	/**
 	 * max numbers of sockets the select function can handle
 	 */
-	export let _SETSIZE: unknown;
+	export const _SETSIZE: unknown;
 
 	/**
 	 * the current LuaSocket version
 	 */
-	export let _VERSION: unknown;
+	export const _VERSION: unknown;
 
 	/**
 	 * This function is a shortcut that creates and returns a TCP client object connected to a remote
@@ -250,67 +250,67 @@ declare namespace crash {
 	/**
 	 * android build fingerprint
 	 */
-	export let SYSFIELD_ANDROID_BUILD_FINGERPRINT: unknown;
+	export const SYSFIELD_ANDROID_BUILD_FINGERPRINT: unknown;
 
 	/**
 	 * system device language as reported by sys.get_sys_info
 	 */
-	export let SYSFIELD_DEVICE_LANGUAGE: unknown;
+	export const SYSFIELD_DEVICE_LANGUAGE: unknown;
 
 	/**
 	 * device model as reported by sys.get_sys_info
 	 */
-	export let SYSFIELD_DEVICE_MODEL: unknown;
+	export const SYSFIELD_DEVICE_MODEL: unknown;
 
 	/**
 	 * engine version as hash
 	 */
-	export let SYSFIELD_ENGINE_HASH: unknown;
+	export const SYSFIELD_ENGINE_HASH: unknown;
 
 	/**
 	 * engine version as release number
 	 */
-	export let SYSFIELD_ENGINE_VERSION: unknown;
+	export const SYSFIELD_ENGINE_VERSION: unknown;
 
 	/**
 	 * system language as reported by sys.get_sys_info
 	 */
-	export let SYSFIELD_LANGUAGE: unknown;
+	export const SYSFIELD_LANGUAGE: unknown;
 
 	/**
 	 * device manufacturer as reported by sys.get_sys_info
 	 */
-	export let SYSFIELD_MANUFACTURER: unknown;
+	export const SYSFIELD_MANUFACTURER: unknown;
 
 	/**
 	 * The max number of sysfields.
 	 */
-	export let SYSFIELD_MAX: unknown;
+	export const SYSFIELD_MAX: unknown;
 
 	/**
 	 * system name as reported by sys.get_sys_info
 	 */
-	export let SYSFIELD_SYSTEM_NAME: unknown;
+	export const SYSFIELD_SYSTEM_NAME: unknown;
 
 	/**
 	 * system version as reported by sys.get_sys_info
 	 */
-	export let SYSFIELD_SYSTEM_VERSION: unknown;
+	export const SYSFIELD_SYSTEM_VERSION: unknown;
 
 	/**
 	 * system territory as reported by sys.get_sys_info
 	 */
-	export let SYSFIELD_TERRITORY: unknown;
+	export const SYSFIELD_TERRITORY: unknown;
 
 	/**
 	 * The max number of user fields.
 	 */
-	export let USERFIELD_MAX: unknown;
+	export const USERFIELD_MAX: unknown;
 
 	/**
 	 * The max size of a single user field.
 	 */
-	export let USERFIELD_SIZE: unknown;
+	export const USERFIELD_SIZE: unknown;
 
 	/**
 	 * A table is returned containing the addresses of the call stack.
@@ -459,242 +459,242 @@ declare namespace go {
 	/**
 	 * in-back
 	 */
-	export let EASING_INBACK: number;
+	export const EASING_INBACK: number;
 
 	/**
 	 * in-bounce
 	 */
-	export let EASING_INBOUNCE: number;
+	export const EASING_INBOUNCE: number;
 
 	/**
 	 * in-circlic
 	 */
-	export let EASING_INCIRC: number;
+	export const EASING_INCIRC: number;
 
 	/**
 	 * in-cubic
 	 */
-	export let EASING_INCUBIC: number;
+	export const EASING_INCUBIC: number;
 
 	/**
 	 * in-elastic
 	 */
-	export let EASING_INELASTIC: number;
+	export const EASING_INELASTIC: number;
 
 	/**
 	 * in-exponential
 	 */
-	export let EASING_INEXPO: number;
+	export const EASING_INEXPO: number;
 
 	/**
 	 * in-out-back
 	 */
-	export let EASING_INOUTBACK: number;
+	export const EASING_INOUTBACK: number;
 
 	/**
 	 * in-out-bounce
 	 */
-	export let EASING_INOUTBOUNCE: number;
+	export const EASING_INOUTBOUNCE: number;
 
 	/**
 	 * in-out-circlic
 	 */
-	export let EASING_INOUTCIRC: number;
+	export const EASING_INOUTCIRC: number;
 
 	/**
 	 * in-out-cubic
 	 */
-	export let EASING_INOUTCUBIC: number;
+	export const EASING_INOUTCUBIC: number;
 
 	/**
 	 * in-out-elastic
 	 */
-	export let EASING_INOUTELASTIC: number;
+	export const EASING_INOUTELASTIC: number;
 
 	/**
 	 * in-out-exponential
 	 */
-	export let EASING_INOUTEXPO: number;
+	export const EASING_INOUTEXPO: number;
 
 	/**
 	 * in-out-quadratic
 	 */
-	export let EASING_INOUTQUAD: number;
+	export const EASING_INOUTQUAD: number;
 
 	/**
 	 * in-out-quartic
 	 */
-	export let EASING_INOUTQUART: number;
+	export const EASING_INOUTQUART: number;
 
 	/**
 	 * in-out-quintic
 	 */
-	export let EASING_INOUTQUINT: number;
+	export const EASING_INOUTQUINT: number;
 
 	/**
 	 * in-out-sine
 	 */
-	export let EASING_INOUTSINE: number;
+	export const EASING_INOUTSINE: number;
 
 	/**
 	 * in-quadratic
 	 */
-	export let EASING_INQUAD: number;
+	export const EASING_INQUAD: number;
 
 	/**
 	 * in-quartic
 	 */
-	export let EASING_INQUART: number;
+	export const EASING_INQUART: number;
 
 	/**
 	 * in-quintic
 	 */
-	export let EASING_INQUINT: number;
+	export const EASING_INQUINT: number;
 
 	/**
 	 * in-sine
 	 */
-	export let EASING_INSINE: number;
+	export const EASING_INSINE: number;
 
 	/**
 	 * linear interpolation
 	 */
-	export let EASING_LINEAR: number;
+	export const EASING_LINEAR: number;
 
 	/**
 	 * out-back
 	 */
-	export let EASING_OUTBACK: number;
+	export const EASING_OUTBACK: number;
 
 	/**
 	 * out-bounce
 	 */
-	export let EASING_OUTBOUNCE: number;
+	export const EASING_OUTBOUNCE: number;
 
 	/**
 	 * out-circlic
 	 */
-	export let EASING_OUTCIRC: number;
+	export const EASING_OUTCIRC: number;
 
 	/**
 	 * out-cubic
 	 */
-	export let EASING_OUTCUBIC: number;
+	export const EASING_OUTCUBIC: number;
 
 	/**
 	 * out-elastic
 	 */
-	export let EASING_OUTELASTIC: number;
+	export const EASING_OUTELASTIC: number;
 
 	/**
 	 * out-exponential
 	 */
-	export let EASING_OUTEXPO: number;
+	export const EASING_OUTEXPO: number;
 
 	/**
 	 * out-in-back
 	 */
-	export let EASING_OUTINBACK: number;
+	export const EASING_OUTINBACK: number;
 
 	/**
 	 * out-in-bounce
 	 */
-	export let EASING_OUTINBOUNCE: number;
+	export const EASING_OUTINBOUNCE: number;
 
 	/**
 	 * out-in-circlic
 	 */
-	export let EASING_OUTINCIRC: number;
+	export const EASING_OUTINCIRC: number;
 
 	/**
 	 * out-in-cubic
 	 */
-	export let EASING_OUTINCUBIC: number;
+	export const EASING_OUTINCUBIC: number;
 
 	/**
 	 * out-in-elastic
 	 */
-	export let EASING_OUTINELASTIC: number;
+	export const EASING_OUTINELASTIC: number;
 
 	/**
 	 * out-in-exponential
 	 */
-	export let EASING_OUTINEXPO: number;
+	export const EASING_OUTINEXPO: number;
 
 	/**
 	 * out-in-quadratic
 	 */
-	export let EASING_OUTINQUAD: number;
+	export const EASING_OUTINQUAD: number;
 
 	/**
 	 * out-in-quartic
 	 */
-	export let EASING_OUTINQUART: number;
+	export const EASING_OUTINQUART: number;
 
 	/**
 	 * out-in-quintic
 	 */
-	export let EASING_OUTINQUINT: number;
+	export const EASING_OUTINQUINT: number;
 
 	/**
 	 * out-in-sine
 	 */
-	export let EASING_OUTINSINE: number;
+	export const EASING_OUTINSINE: number;
 
 	/**
 	 * out-quadratic
 	 */
-	export let EASING_OUTQUAD: number;
+	export const EASING_OUTQUAD: number;
 
 	/**
 	 * out-quartic
 	 */
-	export let EASING_OUTQUART: number;
+	export const EASING_OUTQUART: number;
 
 	/**
 	 * out-quintic
 	 */
-	export let EASING_OUTQUINT: number;
+	export const EASING_OUTQUINT: number;
 
 	/**
 	 * out-sine
 	 */
-	export let EASING_OUTSINE: number;
+	export const EASING_OUTSINE: number;
 
 	/**
 	 * loop backward
 	 */
-	export let PLAYBACK_LOOP_BACKWARD: number;
+	export const PLAYBACK_LOOP_BACKWARD: number;
 
 	/**
 	 * loop forward
 	 */
-	export let PLAYBACK_LOOP_FORWARD: number;
+	export const PLAYBACK_LOOP_FORWARD: number;
 
 	/**
 	 * ping pong loop
 	 */
-	export let PLAYBACK_LOOP_PINGPONG: number;
+	export const PLAYBACK_LOOP_PINGPONG: number;
 
 	/**
 	 * no playback
 	 */
-	export let PLAYBACK_NONE: number;
+	export const PLAYBACK_NONE: number;
 
 	/**
 	 * once backward
 	 */
-	export let PLAYBACK_ONCE_BACKWARD: number;
+	export const PLAYBACK_ONCE_BACKWARD: number;
 
 	/**
 	 * once forward
 	 */
-	export let PLAYBACK_ONCE_FORWARD: number;
+	export const PLAYBACK_ONCE_FORWARD: number;
 
 	/**
 	 * once ping pong
 	 */
-	export let PLAYBACK_ONCE_PINGPONG: number;
+	export const PLAYBACK_ONCE_PINGPONG: number;
 
 	/**
 	* This is only supported for numerical properties. If the node property is already being
@@ -1000,457 +1000,457 @@ declare namespace gui {
 	/**
 	 * fit adjust mode
 	 */
-	export let ADJUST_FIT: unknown;
+	export const ADJUST_FIT: unknown;
 
 	/**
 	 * stretch adjust mode
 	 */
-	export let ADJUST_STRETCH: unknown;
+	export const ADJUST_STRETCH: unknown;
 
 	/**
 	 * zoom adjust mode
 	 */
-	export let ADJUST_ZOOM: unknown;
+	export const ADJUST_ZOOM: unknown;
 
 	/**
 	 * bottom y-anchor
 	 */
-	export let ANCHOR_BOTTOM: unknown;
+	export const ANCHOR_BOTTOM: unknown;
 
 	/**
 	 * left x-anchor
 	 */
-	export let ANCHOR_LEFT: unknown;
+	export const ANCHOR_LEFT: unknown;
 
 	/**
 	 * no anchor
 	 */
-	export let ANCHOR_NONE: unknown;
+	export const ANCHOR_NONE: unknown;
 
 	/**
 	 * right x-anchor
 	 */
-	export let ANCHOR_RIGHT: unknown;
+	export const ANCHOR_RIGHT: unknown;
 
 	/**
 	 * top y-anchor
 	 */
-	export let ANCHOR_TOP: unknown;
+	export const ANCHOR_TOP: unknown;
 
 	/**
 	 * additive blending
 	 */
-	export let BLEND_ADD: unknown;
+	export const BLEND_ADD: unknown;
 
 	/**
 	 * additive alpha blending
 	 */
-	export let BLEND_ADD_ALPHA: unknown;
+	export const BLEND_ADD_ALPHA: unknown;
 
 	/**
 	 * alpha blending
 	 */
-	export let BLEND_ALPHA: unknown;
+	export const BLEND_ALPHA: unknown;
 
 	/**
 	 * multiply blending
 	 */
-	export let BLEND_MULT: unknown;
+	export const BLEND_MULT: unknown;
 
 	/**
 	 * clipping mode none
 	 */
-	export let CLIPPING_MODE_NONE: unknown;
+	export const CLIPPING_MODE_NONE: unknown;
 
 	/**
 	 * clipping mode stencil
 	 */
-	export let CLIPPING_MODE_STENCIL: unknown;
+	export const CLIPPING_MODE_STENCIL: unknown;
 
 	/**
 	 * in-back
 	 */
-	export let EASING_INBACK: number;
+	export const EASING_INBACK: number;
 
 	/**
 	 * in-bounce
 	 */
-	export let EASING_INBOUNCE: number;
+	export const EASING_INBOUNCE: number;
 
 	/**
 	 * in-circlic
 	 */
-	export let EASING_INCIRC: number;
+	export const EASING_INCIRC: number;
 
 	/**
 	 * in-cubic
 	 */
-	export let EASING_INCUBIC: number;
+	export const EASING_INCUBIC: number;
 
 	/**
 	 * in-elastic
 	 */
-	export let EASING_INELASTIC: number;
+	export const EASING_INELASTIC: number;
 
 	/**
 	 * in-exponential
 	 */
-	export let EASING_INEXPO: number;
+	export const EASING_INEXPO: number;
 
 	/**
 	 * in-out-back
 	 */
-	export let EASING_INOUTBACK: number;
+	export const EASING_INOUTBACK: number;
 
 	/**
 	 * in-out-bounce
 	 */
-	export let EASING_INOUTBOUNCE: number;
+	export const EASING_INOUTBOUNCE: number;
 
 	/**
 	 * in-out-circlic
 	 */
-	export let EASING_INOUTCIRC: number;
+	export const EASING_INOUTCIRC: number;
 
 	/**
 	 * in-out-cubic
 	 */
-	export let EASING_INOUTCUBIC: number;
+	export const EASING_INOUTCUBIC: number;
 
 	/**
 	 * in-out-elastic
 	 */
-	export let EASING_INOUTELASTIC: number;
+	export const EASING_INOUTELASTIC: number;
 
 	/**
 	 * in-out-exponential
 	 */
-	export let EASING_INOUTEXPO: number;
+	export const EASING_INOUTEXPO: number;
 
 	/**
 	 * in-out-quadratic
 	 */
-	export let EASING_INOUTQUAD: number;
+	export const EASING_INOUTQUAD: number;
 
 	/**
 	 * in-out-quartic
 	 */
-	export let EASING_INOUTQUART: number;
+	export const EASING_INOUTQUART: number;
 
 	/**
 	 * in-out-quintic
 	 */
-	export let EASING_INOUTQUINT: number;
+	export const EASING_INOUTQUINT: number;
 
 	/**
 	 * in-out-sine
 	 */
-	export let EASING_INOUTSINE: number;
+	export const EASING_INOUTSINE: number;
 
 	/**
 	 * in-quadratic
 	 */
-	export let EASING_INQUAD: number;
+	export const EASING_INQUAD: number;
 
 	/**
 	 * in-quartic
 	 */
-	export let EASING_INQUART: number;
+	export const EASING_INQUART: number;
 
 	/**
 	 * in-quintic
 	 */
-	export let EASING_INQUINT: number;
+	export const EASING_INQUINT: number;
 
 	/**
 	 * in-sine
 	 */
-	export let EASING_INSINE: number;
+	export const EASING_INSINE: number;
 
 	/**
 	 * linear interpolation
 	 */
-	export let EASING_LINEAR: number;
+	export const EASING_LINEAR: number;
 
 	/**
 	 * out-back
 	 */
-	export let EASING_OUTBACK: number;
+	export const EASING_OUTBACK: number;
 
 	/**
 	 * out-bounce
 	 */
-	export let EASING_OUTBOUNCE: number;
+	export const EASING_OUTBOUNCE: number;
 
 	/**
 	 * out-circlic
 	 */
-	export let EASING_OUTCIRC: number;
+	export const EASING_OUTCIRC: number;
 
 	/**
 	 * out-cubic
 	 */
-	export let EASING_OUTCUBIC: number;
+	export const EASING_OUTCUBIC: number;
 
 	/**
 	 * out-elastic
 	 */
-	export let EASING_OUTELASTIC: number;
+	export const EASING_OUTELASTIC: number;
 
 	/**
 	 * out-exponential
 	 */
-	export let EASING_OUTEXPO: number;
+	export const EASING_OUTEXPO: number;
 
 	/**
 	 * out-in-back
 	 */
-	export let EASING_OUTINBACK: number;
+	export const EASING_OUTINBACK: number;
 
 	/**
 	 * out-in-bounce
 	 */
-	export let EASING_OUTINBOUNCE: number;
+	export const EASING_OUTINBOUNCE: number;
 
 	/**
 	 * out-in-circlic
 	 */
-	export let EASING_OUTINCIRC: number;
+	export const EASING_OUTINCIRC: number;
 
 	/**
 	 * out-in-cubic
 	 */
-	export let EASING_OUTINCUBIC: number;
+	export const EASING_OUTINCUBIC: number;
 
 	/**
 	 * out-in-elastic
 	 */
-	export let EASING_OUTINELASTIC: number;
+	export const EASING_OUTINELASTIC: number;
 
 	/**
 	 * out-in-exponential
 	 */
-	export let EASING_OUTINEXPO: number;
+	export const EASING_OUTINEXPO: number;
 
 	/**
 	 * out-in-quadratic
 	 */
-	export let EASING_OUTINQUAD: number;
+	export const EASING_OUTINQUAD: number;
 
 	/**
 	 * out-in-quartic
 	 */
-	export let EASING_OUTINQUART: number;
+	export const EASING_OUTINQUART: number;
 
 	/**
 	 * out-in-quintic
 	 */
-	export let EASING_OUTINQUINT: number;
+	export const EASING_OUTINQUINT: number;
 
 	/**
 	 * out-in-sine
 	 */
-	export let EASING_OUTINSINE: number;
+	export const EASING_OUTINSINE: number;
 
 	/**
 	 * out-quadratic
 	 */
-	export let EASING_OUTQUAD: number;
+	export const EASING_OUTQUAD: number;
 
 	/**
 	 * out-quartic
 	 */
-	export let EASING_OUTQUART: number;
+	export const EASING_OUTQUART: number;
 
 	/**
 	 * out-quintic
 	 */
-	export let EASING_OUTQUINT: number;
+	export const EASING_OUTQUINT: number;
 
 	/**
 	 * out-sine
 	 */
-	export let EASING_OUTSINE: number;
+	export const EASING_OUTSINE: number;
 
 	/**
 	 * default keyboard
 	 */
-	export let KEYBOARD_TYPE_DEFAULT: unknown;
+	export const KEYBOARD_TYPE_DEFAULT: unknown;
 
 	/**
 	 * email keyboard
 	 */
-	export let KEYBOARD_TYPE_EMAIL: unknown;
+	export const KEYBOARD_TYPE_EMAIL: unknown;
 
 	/**
 	 * number input keyboard
 	 */
-	export let KEYBOARD_TYPE_NUMBER_PAD: unknown;
+	export const KEYBOARD_TYPE_NUMBER_PAD: unknown;
 
 	/**
 	 * password keyboard
 	 */
-	export let KEYBOARD_TYPE_PASSWORD: unknown;
+	export const KEYBOARD_TYPE_PASSWORD: unknown;
 
 	/**
 	 * elliptical pie node bounds
 	 */
-	export let PIEBOUNDS_ELLIPSE: unknown;
+	export const PIEBOUNDS_ELLIPSE: unknown;
 
 	/**
 	 * rectangular pie node bounds
 	 */
-	export let PIEBOUNDS_RECTANGLE: unknown;
+	export const PIEBOUNDS_RECTANGLE: unknown;
 
 	/**
 	 * center pivot
 	 */
-	export let PIVOT_CENTER: unknown;
+	export const PIVOT_CENTER: unknown;
 
 	/**
 	 * east pivot
 	 */
-	export let PIVOT_E: unknown;
+	export const PIVOT_E: unknown;
 
 	/**
 	 * north pivot
 	 */
-	export let PIVOT_N: unknown;
+	export const PIVOT_N: unknown;
 
 	/**
 	 * north-east pivot
 	 */
-	export let PIVOT_NE: unknown;
+	export const PIVOT_NE: unknown;
 
 	/**
 	 * north-west pivot
 	 */
-	export let PIVOT_NW: unknown;
+	export const PIVOT_NW: unknown;
 
 	/**
 	 * south pivot
 	 */
-	export let PIVOT_S: unknown;
+	export const PIVOT_S: unknown;
 
 	/**
 	 * south-east pivot
 	 */
-	export let PIVOT_SE: unknown;
+	export const PIVOT_SE: unknown;
 
 	/**
 	 * south-west pivot
 	 */
-	export let PIVOT_SW: unknown;
+	export const PIVOT_SW: unknown;
 
 	/**
 	 * west pivot
 	 */
-	export let PIVOT_W: unknown;
+	export const PIVOT_W: unknown;
 
 	/**
 	 * loop backward
 	 */
-	export let PLAYBACK_LOOP_BACKWARD: number;
+	export const PLAYBACK_LOOP_BACKWARD: number;
 
 	/**
 	 * loop forward
 	 */
-	export let PLAYBACK_LOOP_FORWARD: number;
+	export const PLAYBACK_LOOP_FORWARD: number;
 
 	/**
 	 * ping pong loop
 	 */
-	export let PLAYBACK_LOOP_PINGPONG: number;
+	export const PLAYBACK_LOOP_PINGPONG: number;
 
 	/**
 	 * once backward
 	 */
-	export let PLAYBACK_ONCE_BACKWARD: number;
+	export const PLAYBACK_ONCE_BACKWARD: number;
 
 	/**
 	 * once forward
 	 */
-	export let PLAYBACK_ONCE_FORWARD: number;
+	export const PLAYBACK_ONCE_FORWARD: number;
 
 	/**
 	 * once forward and then backward
 	 */
-	export let PLAYBACK_ONCE_PINGPONG: number;
+	export const PLAYBACK_ONCE_PINGPONG: number;
 
 	/**
 	 * color property
 	 */
-	export let PROP_COLOR: unknown;
+	export const PROP_COLOR: unknown;
 
 	/**
 	 * fill_angle property
 	 */
-	export let PROP_FILL_ANGLE: unknown;
+	export const PROP_FILL_ANGLE: unknown;
 
 	/**
 	 * inner_radius property
 	 */
-	export let PROP_INNER_RADIUS: unknown;
+	export const PROP_INNER_RADIUS: unknown;
 
 	/**
 	 * outline color property
 	 */
-	export let PROP_OUTLINE: unknown;
+	export const PROP_OUTLINE: unknown;
 
 	/**
 	 * position property
 	 */
-	export let PROP_POSITION: unknown;
+	export const PROP_POSITION: unknown;
 
 	/**
 	 * rotation property
 	 */
-	export let PROP_ROTATION: unknown;
+	export const PROP_ROTATION: unknown;
 
 	/**
 	 * scale property
 	 */
-	export let PROP_SCALE: unknown;
+	export const PROP_SCALE: unknown;
 
 	/**
 	 * shadow color property
 	 */
-	export let PROP_SHADOW: unknown;
+	export const PROP_SHADOW: unknown;
 
 	/**
 	 * size property
 	 */
-	export let PROP_SIZE: unknown;
+	export const PROP_SIZE: unknown;
 
 	/**
 	 * slice9 property
 	 */
-	export let PROP_SLICE9: unknown;
+	export const PROP_SLICE9: unknown;
 
 	/**
 	 * data error
 	 */
-	export let RESULT_DATA_ERROR: unknown;
+	export const RESULT_DATA_ERROR: unknown;
 
 	/**
 	 * out of resource
 	 */
-	export let RESULT_OUT_OF_RESOURCES: unknown;
+	export const RESULT_OUT_OF_RESOURCES: unknown;
 
 	/**
 	 * texture already exists
 	 */
-	export let RESULT_TEXTURE_ALREADY_EXISTS: unknown;
+	export const RESULT_TEXTURE_ALREADY_EXISTS: unknown;
 
 	/**
 	 * automatic size mode
 	 */
-	export let SIZE_MODE_AUTO: unknown;
+	export const SIZE_MODE_AUTO: unknown;
 
 	/**
 	 * manual size mode
 	 */
-	export let SIZE_MODE_MANUAL: unknown;
+	export const SIZE_MODE_MANUAL: unknown;
 
 	/**
 	* This starts an animation of a node property according to the specified parameters.
@@ -2705,27 +2705,27 @@ declare namespace physics {
 	/**
 	 * fixed joint type
 	 */
-	export let JOINT_TYPE_FIXED: unknown;
+	export const JOINT_TYPE_FIXED: unknown;
 
 	/**
 	 * hinge joint type
 	 */
-	export let JOINT_TYPE_HINGE: unknown;
+	export const JOINT_TYPE_HINGE: unknown;
 
 	/**
 	 * slider joint type
 	 */
-	export let JOINT_TYPE_SLIDER: unknown;
+	export const JOINT_TYPE_SLIDER: unknown;
 
 	/**
 	 * spring joint type
 	 */
-	export let JOINT_TYPE_SPRING: unknown;
+	export const JOINT_TYPE_SPRING: unknown;
 
 	/**
 	 * weld joint type
 	 */
-	export let JOINT_TYPE_WELD: unknown;
+	export const JOINT_TYPE_WELD: unknown;
 
 	/**
 	* Create a physics joint between two collision object components.
@@ -2994,32 +2994,32 @@ declare namespace profiler {
 	/**
 	 * pause on current frame
 	 */
-	export let MODE_PAUSE: unknown;
+	export const MODE_PAUSE: unknown;
 
 	/**
 	 * start recording
 	 */
-	export let MODE_RECORD: unknown;
+	export const MODE_RECORD: unknown;
 
 	/**
 	 * continously show latest frame
 	 */
-	export let MODE_RUN: unknown;
+	export const MODE_RUN: unknown;
 
 	/**
 	 * pause at peak frame
 	 */
-	export let MODE_SHOW_PEAK_FRAME: unknown;
+	export const MODE_SHOW_PEAK_FRAME: unknown;
 
 	/**
 	 * show full profiler ui
 	 */
-	export let VIEW_MODE_FULL: unknown;
+	export const VIEW_MODE_FULL: unknown;
 
 	/**
 	 * show mimimal profiler ui
 	 */
-	export let VIEW_MODE_MINIMIZED: unknown;
+	export const VIEW_MODE_MINIMIZED: unknown;
 
 	/**
 	 * Creates and shows or hides and destroys the on-sceen profiler ui
@@ -3167,332 +3167,332 @@ declare namespace render {
 	/**
 	 *
 	 */
-	export let BLEND_CONSTANT_ALPHA: unknown;
+	export const BLEND_CONSTANT_ALPHA: unknown;
 
 	/**
 	 *
 	 */
-	export let BLEND_CONSTANT_COLOR: unknown;
+	export const BLEND_CONSTANT_COLOR: unknown;
 
 	/**
 	 *
 	 */
-	export let BLEND_DST_ALPHA: unknown;
+	export const BLEND_DST_ALPHA: unknown;
 
 	/**
 	 *
 	 */
-	export let BLEND_DST_COLOR: unknown;
+	export const BLEND_DST_COLOR: unknown;
 
 	/**
 	 *
 	 */
-	export let BLEND_ONE: unknown;
+	export const BLEND_ONE: unknown;
 
 	/**
 	 *
 	 */
-	export let BLEND_ONE_MINUS_CONSTANT_ALPHA: unknown;
+	export const BLEND_ONE_MINUS_CONSTANT_ALPHA: unknown;
 
 	/**
 	 *
 	 */
-	export let BLEND_ONE_MINUS_CONSTANT_COLOR: unknown;
+	export const BLEND_ONE_MINUS_CONSTANT_COLOR: unknown;
 
 	/**
 	 *
 	 */
-	export let BLEND_ONE_MINUS_DST_ALPHA: unknown;
+	export const BLEND_ONE_MINUS_DST_ALPHA: unknown;
 
 	/**
 	 *
 	 */
-	export let BLEND_ONE_MINUS_DST_COLOR: unknown;
+	export const BLEND_ONE_MINUS_DST_COLOR: unknown;
 
 	/**
 	 *
 	 */
-	export let BLEND_ONE_MINUS_SRC_ALPHA: unknown;
+	export const BLEND_ONE_MINUS_SRC_ALPHA: unknown;
 
 	/**
 	 *
 	 */
-	export let BLEND_ONE_MINUS_SRC_COLOR: unknown;
+	export const BLEND_ONE_MINUS_SRC_COLOR: unknown;
 
 	/**
 	 *
 	 */
-	export let BLEND_SRC_ALPHA: unknown;
+	export const BLEND_SRC_ALPHA: unknown;
 
 	/**
 	 *
 	 */
-	export let BLEND_SRC_ALPHA_SATURATE: unknown;
+	export const BLEND_SRC_ALPHA_SATURATE: unknown;
 
 	/**
 	 *
 	 */
-	export let BLEND_SRC_COLOR: unknown;
+	export const BLEND_SRC_COLOR: unknown;
 
 	/**
 	 *
 	 */
-	export let BLEND_ZERO: unknown;
+	export const BLEND_ZERO: unknown;
 
 	/**
 	 *
 	 */
-	export let BUFFER_COLOR0_BIT: unknown;
+	export const BUFFER_COLOR0_BIT: unknown;
 
 	/**
 	 *
 	 */
-	export let BUFFER_COLOR1_BIT: unknown;
+	export const BUFFER_COLOR1_BIT: unknown;
 
 	/**
 	 *
 	 */
-	export let BUFFER_COLOR2_BIT: unknown;
+	export const BUFFER_COLOR2_BIT: unknown;
 
 	/**
 	 *
 	 */
-	export let BUFFER_COLOR3_BIT: unknown;
+	export const BUFFER_COLOR3_BIT: unknown;
 
 	/**
 	 *
 	 */
-	export let BUFFER_COLOR_BIT: unknown;
+	export const BUFFER_COLOR_BIT: unknown;
 
 	/**
 	 *
 	 */
-	export let BUFFER_DEPTH_BIT: unknown;
+	export const BUFFER_DEPTH_BIT: unknown;
 
 	/**
 	 *
 	 */
-	export let BUFFER_STENCIL_BIT: unknown;
+	export const BUFFER_STENCIL_BIT: unknown;
 
 	/**
 	 *
 	 */
-	export let COMPARE_FUNC_ALWAYS: unknown;
+	export const COMPARE_FUNC_ALWAYS: unknown;
 
 	/**
 	 *
 	 */
-	export let COMPARE_FUNC_EQUAL: unknown;
+	export const COMPARE_FUNC_EQUAL: unknown;
 
 	/**
 	 *
 	 */
-	export let COMPARE_FUNC_GEQUAL: unknown;
+	export const COMPARE_FUNC_GEQUAL: unknown;
 
 	/**
 	 *
 	 */
-	export let COMPARE_FUNC_GREATER: unknown;
+	export const COMPARE_FUNC_GREATER: unknown;
 
 	/**
 	 *
 	 */
-	export let COMPARE_FUNC_LEQUAL: unknown;
+	export const COMPARE_FUNC_LEQUAL: unknown;
 
 	/**
 	 *
 	 */
-	export let COMPARE_FUNC_LESS: unknown;
+	export const COMPARE_FUNC_LESS: unknown;
 
 	/**
 	 *
 	 */
-	export let COMPARE_FUNC_NEVER: unknown;
+	export const COMPARE_FUNC_NEVER: unknown;
 
 	/**
 	 *
 	 */
-	export let COMPARE_FUNC_NOTEQUAL: unknown;
+	export const COMPARE_FUNC_NOTEQUAL: unknown;
 
 	/**
 	 *
 	 */
-	export let FACE_BACK: unknown;
+	export const FACE_BACK: unknown;
 
 	/**
 	 *
 	 */
-	export let FACE_FRONT: unknown;
+	export const FACE_FRONT: unknown;
 
 	/**
 	 *
 	 */
-	export let FACE_FRONT_AND_BACK: unknown;
+	export const FACE_FRONT_AND_BACK: unknown;
 
 	/**
 	 *
 	 */
-	export let FILTER_LINEAR: unknown;
+	export const FILTER_LINEAR: unknown;
 
 	/**
 	 *
 	 */
-	export let FILTER_NEAREST: unknown;
+	export const FILTER_NEAREST: unknown;
 
 	/**
 	 *
 	 */
-	export let FORMAT_DEPTH: unknown;
+	export const FORMAT_DEPTH: unknown;
 
 	/**
 	 *
 	 */
-	export let FORMAT_LUMINANCE: unknown;
+	export const FORMAT_LUMINANCE: unknown;
 
 	/**
 	 * May be undefined if the format isn't supported
 	 */
-	export let FORMAT_R16F: unknown;
+	export const FORMAT_R16F: unknown;
 
 	/**
 	 * May be undefined if the format isn't supported
 	 */
-	export let FORMAT_R32F: unknown;
+	export const FORMAT_R32F: unknown;
 
 	/**
 	 * May be undefined if the format isn't supported
 	 */
-	export let FORMAT_RG16F: unknown;
+	export const FORMAT_RG16F: unknown;
 
 	/**
 	 * May be undefined if the format isn't supported
 	 */
-	export let FORMAT_RG32F: unknown;
+	export const FORMAT_RG32F: unknown;
 
 	/**
 	 *
 	 */
-	export let FORMAT_RGB: unknown;
+	export const FORMAT_RGB: unknown;
 
 	/**
 	 * May be undefined if the format isn't supported
 	 */
-	export let FORMAT_RGB16F: unknown;
+	export const FORMAT_RGB16F: unknown;
 
 	/**
 	 * May be undefined if the format isn't supported
 	 */
-	export let FORMAT_RGB32F: unknown;
+	export const FORMAT_RGB32F: unknown;
 
 	/**
 	 *
 	 */
-	export let FORMAT_RGBA: unknown;
+	export const FORMAT_RGBA: unknown;
 
 	/**
 	 * May be undefined if the format isn't supported
 	 */
-	export let FORMAT_RGBA16F: unknown;
+	export const FORMAT_RGBA16F: unknown;
 
 	/**
 	 * May be undefined if the format isn't supported
 	 */
-	export let FORMAT_RGBA32F: unknown;
+	export const FORMAT_RGBA32F: unknown;
 
 	/**
 	 *
 	 */
-	export let FORMAT_STENCIL: unknown;
+	export const FORMAT_STENCIL: unknown;
 
 	/**
 	 *
 	 */
-	export let RENDER_TARGET_DEFAULT: unknown;
+	export const RENDER_TARGET_DEFAULT: unknown;
 
 	/**
 	 *
 	 */
-	export let STATE_BLEND: unknown;
+	export const STATE_BLEND: unknown;
 
 	/**
 	 *
 	 */
-	export let STATE_CULL_FACE: unknown;
+	export const STATE_CULL_FACE: unknown;
 
 	/**
 	 *
 	 */
-	export let STATE_DEPTH_TEST: unknown;
+	export const STATE_DEPTH_TEST: unknown;
 
 	/**
 	 *
 	 */
-	export let STATE_POLYGON_OFFSET_FILL: unknown;
+	export const STATE_POLYGON_OFFSET_FILL: unknown;
 
 	/**
 	 *
 	 */
-	export let STATE_STENCIL_TEST: unknown;
+	export const STATE_STENCIL_TEST: unknown;
 
 	/**
 	 *
 	 */
-	export let STENCIL_OP_DECR: unknown;
+	export const STENCIL_OP_DECR: unknown;
 
 	/**
 	 *
 	 */
-	export let STENCIL_OP_DECR_WRAP: unknown;
+	export const STENCIL_OP_DECR_WRAP: unknown;
 
 	/**
 	 *
 	 */
-	export let STENCIL_OP_INCR: unknown;
+	export const STENCIL_OP_INCR: unknown;
 
 	/**
 	 *
 	 */
-	export let STENCIL_OP_INCR_WRAP: unknown;
+	export const STENCIL_OP_INCR_WRAP: unknown;
 
 	/**
 	 *
 	 */
-	export let STENCIL_OP_INVERT: unknown;
+	export const STENCIL_OP_INVERT: unknown;
 
 	/**
 	 *
 	 */
-	export let STENCIL_OP_KEEP: unknown;
+	export const STENCIL_OP_KEEP: unknown;
 
 	/**
 	 *
 	 */
-	export let STENCIL_OP_REPLACE: unknown;
+	export const STENCIL_OP_REPLACE: unknown;
 
 	/**
 	 *
 	 */
-	export let STENCIL_OP_ZERO: unknown;
+	export const STENCIL_OP_ZERO: unknown;
 
 	/**
 	 *
 	 */
-	export let WRAP_CLAMP_TO_BORDER: unknown;
+	export const WRAP_CLAMP_TO_BORDER: unknown;
 
 	/**
 	 *
 	 */
-	export let WRAP_CLAMP_TO_EDGE: unknown;
+	export const WRAP_CLAMP_TO_EDGE: unknown;
 
 	/**
 	 *
 	 */
-	export let WRAP_MIRRORED_REPEAT: unknown;
+	export const WRAP_MIRRORED_REPEAT: unknown;
 
 	/**
 	 *
 	 */
-	export let WRAP_REPEAT: unknown;
+	export const WRAP_REPEAT: unknown;
 
 	/**
 	* Clear buffers in the currently enabled render target with specified value. If the render target has been created with multiple
@@ -4099,67 +4099,67 @@ declare namespace resource {
 	/**
 	 * BASIS_UASTC compression type
 	 */
-	export let COMPRESSION_TYPE_BASIS_UASTC: 3;
+	export const COMPRESSION_TYPE_BASIS_UASTC: 3;
 
 	/**
 	 * COMPRESSION_TYPE_DEFAULT compression type
 	 */
-	export let COMPRESSION_TYPE_DEFAULT: 0;
+	export const COMPRESSION_TYPE_DEFAULT: 0;
 
 	/**
 	 * luminance type texture format
 	 */
-	export let TEXTURE_FORMAT_LUMINANCE: 0;
+	export const TEXTURE_FORMAT_LUMINANCE: 0;
 
 	/**
 	 * R16F type texture format
 	 */
-	export let TEXTURE_FORMAT_R16F: 26;
+	export const TEXTURE_FORMAT_R16F: 26;
 
 	/**
 	 * R32F type texture format
 	 */
-	export let TEXTURE_FORMAT_R32F: 28;
+	export const TEXTURE_FORMAT_R32F: 28;
 
 	/**
 	 * RG16F type texture format
 	 */
-	export let TEXTURE_FORMAT_RG16F: 27;
+	export const TEXTURE_FORMAT_RG16F: 27;
 
 	/**
 	 * RG32F type texture format
 	 */
-	export let TEXTURE_FORMAT_RG32F: 29;
+	export const TEXTURE_FORMAT_RG32F: 29;
 
 	/**
 	 * RGB type texture format
 	 */
-	export let TEXTURE_FORMAT_RGB: 2;
+	export const TEXTURE_FORMAT_RGB: 2;
 
 	/**
 	 * RGB16F type texture format
 	 */
-	export let TEXTURE_FORMAT_RGB16F: 22;
+	export const TEXTURE_FORMAT_RGB16F: 22;
 
 	/**
 	 * RGB32F type texture format
 	 */
-	export let TEXTURE_FORMAT_RGB32F: 23;
+	export const TEXTURE_FORMAT_RGB32F: 23;
 
 	/**
 	 * RGBA type texture format
 	 */
-	export let TEXTURE_FORMAT_RGBA: 3;
+	export const TEXTURE_FORMAT_RGBA: 3;
 
 	/**
 	 * RGBA16F type texture format
 	 */
-	export let TEXTURE_FORMAT_RGBA16F: 24;
+	export const TEXTURE_FORMAT_RGBA16F: 24;
 
 	/**
 	 * RGBA32F type texture format
 	 */
-	export let TEXTURE_FORMAT_RGBA32F: 25;
+	export const TEXTURE_FORMAT_RGBA32F: 25;
 
 	/**
 	 * RGBA_ASTC_4x4 type texture format
@@ -4169,72 +4169,72 @@ declare namespace resource {
 	/**
 	 * RGBA_BC3 type texture format
 	 */
-	export let TEXTURE_FORMAT_RGBA_BC3: 18;
+	export const TEXTURE_FORMAT_RGBA_BC3: 18;
 
 	/**
 	 * RGBA_BC7 type texture format
 	 */
-	export let TEXTURE_FORMAT_RGBA_BC7: number;
+	export const TEXTURE_FORMAT_RGBA_BC7: number;
 
 	/**
 	 * RGBA_ETC2 type texture format
 	 */
-	export let TEXTURE_FORMAT_RGBA_ETC2: number;
+	export const TEXTURE_FORMAT_RGBA_ETC2: number;
 
 	/**
 	 * RGBA_PVRTC_2BPPV1 type texture format
 	 */
-	export let TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1: number;
+	export const TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1: number;
 
 	/**
 	 * RGBA_PVRTC_4BPPV1 type texture format
 	 */
-	export let TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1: number;
+	export const TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1: number;
 
 	/**
 	 * RGB_BC1 type texture format
 	 */
-	export let TEXTURE_FORMAT_RGB_BC1: 17;
+	export const TEXTURE_FORMAT_RGB_BC1: 17;
 
 	/**
 	 * RGB_ETC1 type texture format
 	 */
-	export let TEXTURE_FORMAT_RGB_ETC1: number;
+	export const TEXTURE_FORMAT_RGB_ETC1: number;
 
 	/**
 	 * RGB_PVRTC_2BPPV1 type texture format
 	 */
-	export let TEXTURE_FORMAT_RGB_PVRTC_2BPPV1: number;
+	export const TEXTURE_FORMAT_RGB_PVRTC_2BPPV1: number;
 
 	/**
 	 * RGB_PVRTC_4BPPV1 type texture format
 	 */
-	export let TEXTURE_FORMAT_RGB_PVRTC_4BPPV1: number;
+	export const TEXTURE_FORMAT_RGB_PVRTC_4BPPV1: number;
 
 	/**
 	 * RG_BC5 type texture format
 	 */
-	export let TEXTURE_FORMAT_RG_BC5: number;
+	export const TEXTURE_FORMAT_RG_BC5: number;
 
 	/**
 	 * R_BC4 type texture format
 	 */
-	export let TEXTURE_FORMAT_R_BC4: number;
+	export const TEXTURE_FORMAT_R_BC4: number;
 
 	/**
 	 * 2D texture type
 	 */
-	export let TEXTURE_TYPE_2D: 0;
+	export const TEXTURE_TYPE_2D: 0;
 
 	/**
 	 * 2D Array texture type
 	 */
-	export let TEXTURE_TYPE_2D_ARRAY: 1;
+	export const TEXTURE_TYPE_2D_ARRAY: 1;
 
 	/**
 	 * Cube map texture type
 	 */
-	export let TEXTURE_TYPE_CUBE_MAP: 2;
+	export const TEXTURE_TYPE_CUBE_MAP: 2;
 
 	/**
 	 * Constructor-like function with two purposes:
@@ -4891,17 +4891,17 @@ declare namespace sys {
 	/**
 	 * network connected through other, non cellular, connection
 	 */
-	export let NETWORK_CONNECTED: unknown;
+	export const NETWORK_CONNECTED: unknown;
 
 	/**
 	 * network connected through mobile cellular
 	 */
-	export let NETWORK_CONNECTED_CELLULAR: unknown;
+	export const NETWORK_CONNECTED_CELLULAR: unknown;
 
 	/**
 	 * no network connection found
 	 */
-	export let NETWORK_DISCONNECTED: unknown;
+	export const NETWORK_DISCONNECTED: unknown;
 
 	/**
 	 * deserializes buffer into a lua table
@@ -5217,42 +5217,42 @@ declare namespace window {
 	/**
 	 * dimming mode off
 	 */
-	export let DIMMING_OFF: 2;
+	export const DIMMING_OFF: 2;
 
 	/**
 	 * dimming mode on
 	 */
-	export let DIMMING_ON: 1;
+	export const DIMMING_ON: 1;
 
 	/**
 	 * dimming mode unknown
 	 */
-	export let DIMMING_UNKNOWN: 0;
+	export const DIMMING_UNKNOWN: 0;
 
 	/**
 	 * deiconified window event
 	 */
-	export let WINDOW_EVENT_DEICONIFIED: 4;
+	export const WINDOW_EVENT_DEICONIFIED: 4;
 
 	/**
 	 * focus gained window event
 	 */
-	export let WINDOW_EVENT_FOCUS_GAINED: 1;
+	export const WINDOW_EVENT_FOCUS_GAINED: 1;
 
 	/**
 	 * focus lost window event
 	 */
-	export let WINDOW_EVENT_FOCUS_LOST: 0;
+	export const WINDOW_EVENT_FOCUS_LOST: 0;
 
 	/**
 	 * iconify window event
 	 */
-	export let WINDOW_EVENT_ICONFIED: 3;
+	export const WINDOW_EVENT_ICONFIED: 3;
 
 	/**
 	 * resized window event
 	 */
-	export let WINDOW_EVENT_RESIZED: 2;
+	export const WINDOW_EVENT_RESIZED: 2;
 
 	/**
 	* 🤖 Returns the current dimming mode set on a mobile device.
@@ -5349,47 +5349,47 @@ declare namespace buffer {
 	/**
 	 * float32
 	 */
-	export let VALUE_TYPE_FLOAT32: number;
+	export const VALUE_TYPE_FLOAT32: number;
 
 	/**
 	 * int16
 	 */
-	export let VALUE_TYPE_INT16: number;
+	export const VALUE_TYPE_INT16: number;
 
 	/**
 	 * int32
 	 */
-	export let VALUE_TYPE_INT32: number;
+	export const VALUE_TYPE_INT32: number;
 
 	/**
 	 * int64
 	 */
-	export let VALUE_TYPE_INT64: number;
+	export const VALUE_TYPE_INT64: number;
 
 	/**
 	 * int8
 	 */
-	export let VALUE_TYPE_INT8: number;
+	export const VALUE_TYPE_INT8: number;
 
 	/**
 	 * uint16
 	 */
-	export let VALUE_TYPE_UINT16: number;
+	export const VALUE_TYPE_UINT16: number;
 
 	/**
 	 * uint32
 	 */
-	export let VALUE_TYPE_UINT32: number;
+	export const VALUE_TYPE_UINT32: number;
 
 	/**
 	 * uint64
 	 */
-	export let VALUE_TYPE_UINT64: number;
+	export const VALUE_TYPE_UINT64: number;
 
 	/**
 	 * uint8
 	 */
-	export let VALUE_TYPE_UINT8: number;
+	export const VALUE_TYPE_UINT8: number;
 
 	/**
 	 * Copy all data streams from one buffer to another, element wise.
@@ -5564,17 +5564,17 @@ declare namespace image {
 	/**
 	 * luminance image type
 	 */
-	export let TYPE_LUMINANCE: 'l';
+	export const TYPE_LUMINANCE: 'l';
 
 	/**
 	 * RGB image type
 	 */
-	export let TYPE_RGB: 'rgb';
+	export const TYPE_RGB: 'rgb';
 
 	/**
 	 * RGBA image type
 	 */
-	export let TYPE_RGBA: 'rgba';
+	export const TYPE_RGBA: 'rgba';
 
 	/**
 	* Load image (PNG or JPEG) from buffer.
@@ -5700,7 +5700,7 @@ declare namespace timer {
 	/**
 	 * Indicates an invalid timer handle
 	 */
-	export let INVALID_TIMER_HANDLE: unknown;
+	export const INVALID_TIMER_HANDLE: unknown;
 
 	/**
 	 * You may cancel a timer from inside a timer callback.
@@ -6385,17 +6385,17 @@ declare namespace collectionfactory {
 	/**
 	 * loaded
 	 */
-	export let STATUS_LOADED: unknown;
+	export const STATUS_LOADED: unknown;
 
 	/**
 	 * loading
 	 */
-	export let STATUS_LOADING: unknown;
+	export const STATUS_LOADING: unknown;
 
 	/**
 	 * unloaded
 	 */
-	export let STATUS_UNLOADED: unknown;
+	export const STATUS_UNLOADED: unknown;
 
 	/**
 	 * The URL identifies the collectionfactory component that should do the spawning.
@@ -6578,17 +6578,17 @@ declare namespace factory {
 	/**
 	 * loaded
 	 */
-	export let STATUS_LOADED: unknown;
+	export const STATUS_LOADED: unknown;
 
 	/**
 	 * loading
 	 */
-	export let STATUS_LOADING: unknown;
+	export const STATUS_LOADING: unknown;
 
 	/**
 	 * unloaded
 	 */
-	export let STATUS_UNLOADED: unknown;
+	export const STATUS_UNLOADED: unknown;
 
 	/**
 	 * The URL identifies which factory should create the game object.
@@ -6869,22 +6869,22 @@ declare namespace particlefx {
 	/**
 	 * postspawn state
 	 */
-	export let EMITTER_STATE_POSTSPAWN: unknown;
+	export const EMITTER_STATE_POSTSPAWN: unknown;
 
 	/**
 	 * prespawn state
 	 */
-	export let EMITTER_STATE_PRESPAWN: unknown;
+	export const EMITTER_STATE_PRESPAWN: unknown;
 
 	/**
 	 * sleeping state
 	 */
-	export let EMITTER_STATE_SLEEPING: unknown;
+	export const EMITTER_STATE_SLEEPING: unknown;
 
 	/**
 	 * spawning state
 	 */
-	export let EMITTER_STATE_SPAWNING: unknown;
+	export const EMITTER_STATE_SPAWNING: unknown;
 
 	/**
 	* Starts playing a particle FX component.
@@ -7332,27 +7332,27 @@ declare namespace tilemap {
 	/**
 	 * flip tile horizontally
 	 */
-	export let H_FLIP: unknown;
+	export const H_FLIP: unknown;
 
 	/**
 	 * rotate tile 180 degrees clockwise
 	 */
-	export let ROTATE_180: unknown;
+	export const ROTATE_180: unknown;
 
 	/**
 	 * rotate tile 270 degrees clockwise
 	 */
-	export let ROTATE_270: unknown;
+	export const ROTATE_270: unknown;
 
 	/**
 	 * rotate tile 90 degrees clockwise
 	 */
-	export let ROTATE_90: unknown;
+	export const ROTATE_90: unknown;
 
 	/**
 	 * flip tile vertically
 	 */
-	export let V_FLIP: unknown;
+	export const V_FLIP: unknown;
 
 	/**
 	 * Get the bounds for a tile map. This function returns multiple values:

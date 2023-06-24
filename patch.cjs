@@ -220,6 +220,8 @@ const patches = [
 	[/\[any/g, '[unknown'],
 	[/any,/g, 'unknown,'],
 	[/any\]/g, 'unknown]'],
+	// Change uppercase variables to const
+	[/let (?:\b|\W)([A-Z0-9_]+)(?:\b|\W)/g, 'const $1'],
 ];
 
 // Load the contents of the file
