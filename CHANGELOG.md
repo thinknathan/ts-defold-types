@@ -2,6 +2,7 @@
 
 ## v1.3.6
 
+- Fix return type of sys.load
 - Switch some let values to const
 
 ## v1.3.5

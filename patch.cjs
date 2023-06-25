@@ -75,7 +75,7 @@ const patches = [
 	],
 	[
 		'function load(filename: string): any',
-		'function load(filename: string): object | LuaTable',
+		'function load(filename: string): LuaMap',
 	],
 	// Describe internals
 	['let sound: any', 'let sound: hash'],

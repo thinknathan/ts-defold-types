@@ -5060,7 +5060,7 @@ The HTTP user agent, i.e. "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) Apple
 	 * @param filename  file to read from
 	 * @return loaded  lua table, which is empty if the file could not be found
 	 */
-	export function load(filename: string): object | LuaTable;
+	export function load(filename: string): LuaMap;
 
 	/**
 	 * Loads a custom resource. Specify the full filename of the resource that you want
