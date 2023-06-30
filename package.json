@@ -31,8 +31,8 @@
 	"devDependencies": {
 		"@ts-defold/type-gen": "^0.5.2",
 		"prettier": "^2.8.8",
-		"typescript": "~5.0.4",
-		"typescript-to-lua": "~1.15.1"
+		"typescript": "~5.1.0",
+		"typescript-to-lua": "~1.16.0"
 	},
 	"peerDependencies": {
 		"typescript-to-lua": "^1.0.1"
