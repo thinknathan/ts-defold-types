@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.3.7
+
+- Update to latest version of `type-gen`
+- Update to latest version of `prettier`
+
 ## v1.3.6
 
 - Fix return type of sys.load

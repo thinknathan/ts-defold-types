@@ -3,9 +3,9 @@
 
 
 "@ts-defold/type-gen@^0.5.2":
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/@ts-defold/type-gen/-/type-gen-0.5.2.tgz#9261070fb29effa369f7473643b10919e65d696c"
-  integrity sha512-yXMYD0ueM5MURacL0UBU5kvUe+WMQwzctYkJI/NYmZNUelf41QvOSxzsFjyWB+QljqNZK6vFjsSXDLc8ETOCzQ==
+  version "0.5.4"
+  resolved "https://registry.yarnpkg.com/@ts-defold/type-gen/-/type-gen-0.5.4.tgz#0a6fe4bf820380db62f82cf16b92bce1f1b3451f"
+  integrity sha512-CBU7whomIYwDDFR4G/1/tg50EZqWfaNF3zeSldtCdYNjBppjyXMwnno0T3KdM/G1V4jpKuU1Kouffx14bkMJSQ==
   dependencies:
     adm-zip "^0.5.5"
     node-fetch "^2.6.1"
@@ -132,10 +132,10 @@ path-parse@^1.0.7:
   resolved "https://registry.yarnpkg.com/path-parse/-/path-parse-1.0.7.tgz#fbc114b60ca42b30d9daf5858e4bd68bbedb6735"
   integrity sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw==
 
-prettier@^2.8.8:
-  version "2.8.8"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.8.8.tgz#e8c5d7e98a4305ffe3de2e1fc4aca1a71c28b1da"
-  integrity sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q==
+prettier@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-3.0.0.tgz#e7b19f691245a21d618c68bc54dc06122f6105ae"
+  integrity sha512-zBf5eHpwHOGPC47h0zrPyNn+eAEIdEzfywMoYn2XPi0P44Zp0tSq64rq0xAREh4auw2cJZHo9QUob+NqCQky4g==
 
 require-directory@^2.1.1:
   version "2.1.1"
@@ -152,9 +152,9 @@ resolve@^1.15.1:
     supports-preserve-symlinks-flag "^1.0.0"
 
 semver@^7.3.2:
-  version "7.5.3"
-  resolved "https://registry.yarnpkg.com/semver/-/semver-7.5.3.tgz#161ce8c2c6b4b3bdca6caadc9fa3317a4c4fe88e"
-  integrity sha512-QBlUtyVk/5EeHbi7X0fw6liDZc7BBmEaSYn01fMU1OUYbf6GPsbTtd8WmnqbI20SeycoHSeiybkE/q1Q+qlThQ==
+  version "7.5.4"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-7.5.4.tgz#483986ec4ed38e1c6c48c34894a9182dbff68a6e"
+  integrity sha512-1bCSESV6Pv+i21Hvpxp3Dx+pSD8lIPt8uVjRrxAUt/nbswYc+tK6Y2btiULjd4+fnq15PX+nqQDC7Oft7WkwcA==
   dependencies:
     lru-cache "^6.0.0"
 
@@ -195,9 +195,9 @@ tr46@~0.0.3:
   integrity sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==
 
 typescript-to-lua@~1.16.0:
-  version "1.16.2"
-  resolved "https://registry.yarnpkg.com/typescript-to-lua/-/typescript-to-lua-1.16.2.tgz#b1a74aa6d5a40549a648ca0493bd55d58e6e08ab"
-  integrity sha512-QtkQCDMNWMVilw/MsgIMLEVKYmSXvTgM21Li77KKKOyDJ+sSxph2oJfQ8XvXI3X6sse9VZhYC7gKLWi7qHKr7w==
+  version "1.16.3"
+  resolved "https://registry.yarnpkg.com/typescript-to-lua/-/typescript-to-lua-1.16.3.tgz#2546fb5b0f657e039dc8b77472c65dbd922f6f0f"
+  integrity sha512-vWJIfupLO6u22tMYmlczdcb5TtFUv8Mwf79ZKUyxqX4td5xWv3L2wu5WCx0YrOZ4//JwDQohrkfX1y4LbZTugQ==
   dependencies:
     "@typescript-to-lua/language-extensions" "1.0.0"
     enhanced-resolve "^5.8.2"

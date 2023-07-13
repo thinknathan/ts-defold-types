@@ -140,7 +140,7 @@ declare namespace socket {
 		port: number,
 		locaddr?: string,
 		locport?: number,
-		family?: string
+		family?: string,
 	): LuaMultiReturn<[unknown, string]>;
 
 	/**
@@ -185,7 +185,7 @@ declare namespace socket {
 	export function select(
 		recvt: unknown,
 		sendt: unknown,
-		timeout?: number
+		timeout?: number,
 	): LuaMultiReturn<[unknown, unknown, string]>;
 
 	/**
@@ -205,7 +205,7 @@ declare namespace socket {
 		d: number,
 		ret1?: unknown,
 		ret2?: unknown,
-		retN?: unknown
+		retN?: unknown,
 	): LuaMultiReturn<[unknown, unknown, unknown]> | undefined;
 
 	/**
@@ -744,7 +744,7 @@ The id of the animated property.
 		easing: unknown,
 		duration: number,
 		delay?: number,
-		complete_function?: (...args: unknown[]) => void
+		complete_function?: (...args: unknown[]) => void,
 	): void;
 
 	/**
@@ -755,7 +755,7 @@ The id of the animated property.
 	 */
 	export function cancel_animations(
 		url: string | hash | url,
-		property?: string | hash
+		property?: string | hash,
 	): void;
 
 	/**
@@ -790,7 +790,7 @@ name of internal property
 	export function get(
 		url: string | hash | url,
 		property: string | hash,
-		options?: unknown
+		options?: unknown,
 	): unknown;
 
 	/**
@@ -855,7 +855,7 @@ name of internal property
 	 * @return rotation  instance world rotation
 	 */
 	export function get_world_rotation(
-		id?: string | hash | url
+		id?: string | hash | url,
 	): vmath.quaternion;
 
 	/**
@@ -905,7 +905,7 @@ name of internal property
 		url: string | hash | url,
 		property: string | hash,
 		value: unknown,
-		options?: unknown
+		options?: unknown,
 	): void;
 
 	/**
@@ -922,7 +922,7 @@ name of internal property
 	export function set_parent(
 		id?: string | hash | url,
 		parent_id?: string | hash | url,
-		keep_world_transform?: boolean
+		keep_world_transform?: boolean,
 	): void;
 
 	/**
@@ -932,7 +932,7 @@ name of internal property
 	 */
 	export function set_position(
 		position: vmath.vector3,
-		id?: string | hash | url
+		id?: string | hash | url,
 	): void;
 
 	/**
@@ -942,7 +942,7 @@ name of internal property
 	 */
 	export function set_rotation(
 		rotation: vmath.quaternion,
-		id?: string | hash | url
+		id?: string | hash | url,
 	): void;
 
 	/**
@@ -953,7 +953,7 @@ name of internal property
 	 */
 	export function set_scale(
 		scale: number | vmath.vector3,
-		id?: string | hash | url
+		id?: string | hash | url,
 	): void;
 
 	/**
@@ -1521,7 +1521,7 @@ with a custom curve. See the animation guide for more information.
 		duration: number,
 		delay?: number,
 		complete_function?: (...args: unknown[]) => void,
-		playback?: unknown
+		playback?: unknown,
 	): void;
 
 	/**
@@ -2015,7 +2015,7 @@ with a custom curve. See the animation guide for more information.
 	 */
 	export function new_box_node(
 		pos: vmath.vector3 | vmath.vector4,
-		size: vmath.vector3
+		size: vmath.vector3,
 	): node;
 
 	/**
@@ -2026,7 +2026,7 @@ with a custom curve. See the animation guide for more information.
 	 */
 	export function new_particlefx_node(
 		pos: vmath.vector3 | vmath.vector4,
-		particlefx: hash | string
+		particlefx: hash | string,
 	): node;
 
 	/**
@@ -2037,7 +2037,7 @@ with a custom curve. See the animation guide for more information.
 	 */
 	export function new_pie_node(
 		pos: vmath.vector3 | vmath.vector4,
-		size: vmath.vector3
+		size: vmath.vector3,
 	): node;
 
 	/**
@@ -2048,7 +2048,7 @@ with a custom curve. See the animation guide for more information.
 	 */
 	export function new_text_node(
 		pos: vmath.vector3 | vmath.vector4,
-		text: string
+		text: string,
 	): node;
 
 	/**
@@ -2073,7 +2073,7 @@ with a custom curve. See the animation guide for more information.
 		height: number,
 		type: unknown,
 		buffer: string,
-		flip: boolean
+		flip: boolean,
 	): LuaMultiReturn<[boolean, number]>;
 
 	/**
@@ -2115,7 +2115,7 @@ The rate with which the animation will be played. Must be positive
 		node: node,
 		animation: string | hash,
 		complete_function?: (...args: unknown[]) => void,
-		play_properties?: unknown
+		play_properties?: unknown,
 	): void;
 
 	/**
@@ -2141,7 +2141,7 @@ the new state of the emitter:
 	*/
 	export function play_particlefx(
 		node: node,
-		emitter_state_function?: (...args: unknown[]) => void
+		emitter_state_function?: (...args: unknown[]) => void,
 	): void;
 
 	/**
@@ -2164,7 +2164,7 @@ the new state of the emitter:
 	 */
 	export function screen_to_local(
 		node: node,
-		screen_position: vmath.vector3
+		screen_position: vmath.vector3,
 	): vmath.vector3;
 
 	/**
@@ -2261,7 +2261,7 @@ the new state of the emitter:
 	 */
 	export function set_color(
 		node: node,
-		color: vmath.vector3 | vmath.vector4
+		color: vmath.vector3 | vmath.vector4,
 	): void;
 
 	/**
@@ -2293,7 +2293,7 @@ the new state of the emitter:
 	 */
 	export function set_flipbook_playback_rate(
 		node: node,
-		playback_rate: number
+		playback_rate: number,
 	): void;
 
 	/**
@@ -2373,7 +2373,7 @@ the new state of the emitter:
 	 */
 	export function set_outline(
 		node: node,
-		color: vmath.vector3 | vmath.vector4
+		color: vmath.vector3 | vmath.vector4,
 	): void;
 
 	/**
@@ -2385,7 +2385,7 @@ the new state of the emitter:
 	export function set_parent(
 		node: node,
 		parent: node,
-		keep_scene_transform?: boolean
+		keep_scene_transform?: boolean,
 	): void;
 
 	/**
@@ -2427,7 +2427,7 @@ the new state of the emitter:
 	 */
 	export function set_position(
 		node: node,
-		position: vmath.vector3 | vmath.vector4
+		position: vmath.vector3 | vmath.vector4,
 	): void;
 
 	/**
@@ -2448,7 +2448,7 @@ the new state of the emitter:
 	 */
 	export function set_rotation(
 		node: node,
-		rotation: vmath.vector3 | vmath.vector4
+		rotation: vmath.vector3 | vmath.vector4,
 	): void;
 
 	/**
@@ -2458,7 +2458,7 @@ the new state of the emitter:
 	 */
 	export function set_scale(
 		node: node,
-		scale: vmath.vector3 | vmath.vector4
+		scale: vmath.vector3 | vmath.vector4,
 	): void;
 
 	/**
@@ -2468,7 +2468,7 @@ the new state of the emitter:
 	 */
 	export function set_screen_position(
 		node: node,
-		screen_position: vmath.vector3
+		screen_position: vmath.vector3,
 	): void;
 
 	/**
@@ -2479,7 +2479,7 @@ the new state of the emitter:
 	 */
 	export function set_shadow(
 		node: node,
-		color: vmath.vector3 | vmath.vector4
+		color: vmath.vector3 | vmath.vector4,
 	): void;
 
 	/**
@@ -2490,7 +2490,7 @@ the new state of the emitter:
 	 */
 	export function set_size(
 		node: node,
-		size: vmath.vector3 | vmath.vector4
+		size: vmath.vector3 | vmath.vector4,
 	): void;
 
 	/**
@@ -2556,7 +2556,7 @@ the new state of the emitter:
 		height: number,
 		type: unknown,
 		buffer: string,
-		flip: boolean
+		flip: boolean,
 	): boolean;
 
 	/**
@@ -2747,7 +2747,7 @@ See each joint type for possible properties field. The one field that is accepte
 		position_a: vmath.vector3,
 		collisionobject_b: string | hash | url,
 		position_b: vmath.vector3,
-		properties?: unknown
+		properties?: unknown,
 	): void;
 
 	/**
@@ -2759,7 +2759,7 @@ See each joint type for possible properties field. The one field that is accepte
 	 */
 	export function destroy_joint(
 		collisionobject: string | hash | url,
-		joint_id: string | hash
+		joint_id: string | hash,
 	): void;
 
 	/**
@@ -2795,7 +2795,7 @@ end
 	*/
 	export function get_joint_properties(
 		collisionobject: string | hash | url,
-		joint_id: string | hash
+		joint_id: string | hash,
 	): unknown;
 
 	/**
@@ -2808,7 +2808,7 @@ end
 	 */
 	export function get_joint_reaction_force(
 		collisionobject: string | hash | url,
-		joint_id: string | hash
+		joint_id: string | hash,
 	): vmath.vector3;
 
 	/**
@@ -2821,7 +2821,7 @@ end
 	 */
 	export function get_joint_reaction_torque(
 		collisionobject: string | hash | url,
-		joint_id: string | hash
+		joint_id: string | hash,
 	): unknown;
 
 	/**
@@ -2859,7 +2859,7 @@ Set to `true` to return all ray cast hits. If `false`, it will only return the c
 		from: vmath.vector3,
 		to: vmath.vector3,
 		groups: unknown,
-		options: unknown
+		options: unknown,
 	): unknown;
 
 	/**
@@ -2882,7 +2882,7 @@ Set to `true` to return all ray cast hits. If `false`, it will only return the c
 		from: vmath.vector3,
 		to: vmath.vector3,
 		groups: unknown,
-		request_id?: number
+		request_id?: number,
 	): void;
 
 	/**
@@ -2925,7 +2925,7 @@ Note: The `collide_connected` field cannot be updated/changed after a connection
 	export function set_joint_properties(
 		collisionobject: string | hash | url,
 		joint_id: string | hash,
-		properties: unknown
+		properties: unknown,
 	): void;
 
 	/**
@@ -2942,7 +2942,7 @@ end
 	export function set_maskbit(
 		url: string | hash | url,
 		group: string,
-		maskbit: boolean
+		maskbit: boolean,
 	): void;
 
 	/**
@@ -3619,7 +3619,7 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	export function enable_texture(
 		unit: number,
 		render_target: unknown,
-		buffer_type?: unknown
+		buffer_type?: unknown,
 	): void;
 
 	/**
@@ -3643,7 +3643,7 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	*/
 	export function get_render_target_height(
 		render_target: unknown,
-		buffer_type: unknown
+		buffer_type: unknown,
 	): number;
 
 	/**
@@ -3659,7 +3659,7 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	*/
 	export function get_render_target_width(
 		render_target: unknown,
-		buffer_type: unknown
+		buffer_type: unknown,
 	): number;
 
 	/**
@@ -3858,7 +3858,7 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	 */
 	export function set_blend_func(
 		source_factor: unknown,
-		destination_factor: unknown
+		destination_factor: unknown,
 	): void;
 
 	/**
@@ -3873,7 +3873,7 @@ to enable those textures as well. Currently 4 color attachments are supported:
 		red: boolean,
 		green: boolean,
 		blue: boolean,
-		alpha: boolean
+		alpha: boolean,
 	): void;
 
 	/**
@@ -3968,7 +3968,7 @@ Transient frame buffer types are only valid while the render target is active, i
 	*/
 	export function set_render_target(
 		render_target: unknown,
-		options?: unknown
+		options?: unknown,
 	): void;
 
 	/**
@@ -3980,7 +3980,7 @@ Transient frame buffer types are only valid while the render target is active, i
 	export function set_render_target_size(
 		render_target: unknown,
 		width: number,
-		height: number
+		height: number,
 	): void;
 
 	/**
@@ -4015,7 +4015,7 @@ Transient frame buffer types are only valid while the render target is active, i
 	export function set_stencil_func(
 		func: unknown,
 		ref: number,
-		mask: number
+		mask: number,
 	): void;
 
 	/**
@@ -4059,7 +4059,7 @@ Transient frame buffer types are only valid while the render target is active, i
 	export function set_stencil_op(
 		sfail: unknown,
 		dpfail: unknown,
-		dppass: unknown
+		dppass: unknown,
 	): void;
 
 	/**
@@ -4079,7 +4079,7 @@ Transient frame buffer types are only valid while the render target is active, i
 		x: number,
 		y: number,
 		width: number,
-		height: number
+		height: number,
 	): void;
 
 	/**
@@ -4369,7 +4369,7 @@ a list of the indices of the geometry in the form {i0, i1, i2, ..., in}. Each tr
 	*/
 	export function create_atlas(
 		path: string,
-		table?: LuaTable | LuaSet | LuaMap | object
+		table: LuaTable | LuaSet | LuaMap | object,
 	): hash;
 
 	/**
@@ -4401,7 +4401,7 @@ optional flag to determine wether or not the resource should take over ownership
 	*/
 	export function create_buffer(
 		path: string,
-		table?: LuaTable | LuaSet | LuaMap | object
+		table: LuaTable | LuaSet | LuaMap | object,
 	): hash;
 
 	/**
@@ -4476,8 +4476,8 @@ Creating an empty texture with no buffer data is not supported as a core feature
 	*/
 	export function create_texture(
 		path: string,
-		table?: LuaTable | LuaSet | LuaMap | object,
-		buffer?: buffer
+		table: LuaTable | LuaSet | LuaMap | object,
+		buffer?: buffer,
 	): hash;
 
 	/**
@@ -4538,7 +4538,7 @@ If the calculation should consider line breaks (default false)
 	export function get_text_metrics(
 		url: hash,
 		text: string,
-		options?: unknown
+		options?: unknown,
 	): unknown;
 
 	/**
@@ -4709,7 +4709,7 @@ a list of the indices of the geometry in the form {i0, i1, i2, ..., in}. Each tr
 	*/
 	export function set_atlas(
 		path: hash | string,
-		table?: LuaTable | LuaSet | LuaMap | object
+		table: LuaTable | LuaSet | LuaMap | object,
 	): void;
 
 	/**
@@ -4797,8 +4797,8 @@ optional specify the compression type for the data in the buffer object that hol
 	*/
 	export function set_texture(
 		path: hash | string,
-		table: LuaTable | LuaSet | LuaMap | object | undefined,
-		buffer: buffer
+		table: LuaTable | LuaSet | LuaMap | object,
+		buffer: buffer,
 	): void;
 
 	/**
@@ -4953,7 +4953,7 @@ declare namespace sys {
 	 */
 	export function get_config_number(
 		key: string,
-		default_value?: number
+		default_value?: number,
 	): number;
 
 	/**
@@ -4964,7 +4964,7 @@ declare namespace sys {
 	 */
 	export function get_config_string(
 		key: string,
-		default_value?: string
+		default_value?: string,
 	): string;
 
 	/**
@@ -5020,7 +5020,7 @@ might be undefined if not available.
 	 */
 	export function get_save_file(
 		application_id: string,
-		file_name: string
+		file_name: string,
 	): string;
 
 	/**
@@ -5077,7 +5077,7 @@ The HTTP user agent, i.e. "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) Apple
 	 * @return error  the error message, or `undefined` if no error occurred
 	 */
 	export function load_resource(
-		filename: string
+		filename: string,
 	): LuaMultiReturn<[string, string]>;
 
 	/**
@@ -5114,7 +5114,7 @@ The HTTP user agent, i.e. "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) Apple
 		arg3: string,
 		arg4: string,
 		arg5: string,
-		arg6: string
+		arg6: string,
 	): void;
 
 	/**
@@ -5132,7 +5132,7 @@ The HTTP user agent, i.e. "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) Apple
 	 */
 	export function save(
 		filename: string,
-		table: LuaTable | LuaSet | LuaMap | object
+		table: LuaTable | LuaSet | LuaMap | object,
 	): boolean;
 
 	/**
@@ -5294,7 +5294,7 @@ declare namespace window {
 
 	*/
 	export function set_dim_mode(
-		mode: typeof window.DIMMING_ON | typeof window.DIMMING_OFF
+		mode: typeof window.DIMMING_ON | typeof window.DIMMING_OFF,
 	): void;
 
 	/**
@@ -5331,8 +5331,8 @@ The callback value `data` is a table which currently holds these values
 				| typeof window.WINDOW_EVENT_RESIZED
 				| typeof window.WINDOW_EVENT_ICONFIED
 				| typeof window.WINDOW_EVENT_DEICONIFIED,
-			data: { width: number | undefined; height: number | undefined }
-		) => void
+			data: { width: number | undefined; height: number | undefined },
+		) => void,
 	): void;
 
 	/**
@@ -5407,7 +5407,7 @@ declare namespace buffer {
 		dstoffset: number,
 		src: buffer,
 		srcoffset: number,
-		count: number
+		count: number,
 	): void;
 
 	/**
@@ -5425,7 +5425,7 @@ declare namespace buffer {
 		dstoffset: number,
 		src: bufferstream,
 		srcoffset: number,
-		count: number
+		count: number,
 	): void;
 
 	/**
@@ -5461,7 +5461,7 @@ declare namespace buffer {
 	 */
 	export function get_metadata(
 		buf: buffer,
-		metadata_name: hash | string
+		metadata_name: hash | string,
 	): LuaMultiReturn<[unknown, unknown]>;
 
 	/**
@@ -5472,7 +5472,7 @@ declare namespace buffer {
 	 */
 	export function get_stream(
 		buffer: buffer,
-		stream_name: hash | string
+		stream_name: hash | string,
 	): bufferstream;
 
 	/**
@@ -5487,7 +5487,7 @@ declare namespace buffer {
 		buf: buffer,
 		metadata_name: hash | string,
 		values: unknown,
-		value_type: unknown
+		value_type: unknown,
 	): void;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
@@ -5555,7 +5555,7 @@ The response data. Contains the fields:
 		callback: unknown,
 		headers?: unknown,
 		post_data?: string,
-		options?: unknown
+		options?: unknown,
 	): void;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
@@ -5595,7 +5595,7 @@ declare namespace image {
 	*/
 	export function load(
 		buffer: string,
-		premult?: boolean
+		premult?: boolean,
 	):
 		| undefined
 		| {
@@ -5630,8 +5630,8 @@ declare namespace json {
 	/**
 	 * null
 	 */
-	let $null: null;
-	export { $null as null };
+	let null$: null;
+	export { null$ as null };
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
@@ -5653,7 +5653,7 @@ declare namespace msg {
 	export function post(
 		receiver: string | url | hash,
 		message_id: string | hash,
-		message?: unknown
+		message?: unknown,
 	): void;
 
 	/**
@@ -5691,7 +5691,7 @@ declare namespace msg {
 	export function url(
 		socket?: string | hash,
 		path?: string | hash,
-		fragment?: string | hash
+		fragment?: string | hash,
 	): url;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
@@ -5733,7 +5733,7 @@ The elapsed time - on first trigger it is time since timer.delay call, otherwise
 	export function delay(
 		delay: number,
 		repeat: boolean,
-		callback: unknown
+		callback: unknown,
 	): hash;
 
 	/**
@@ -5799,7 +5799,7 @@ declare namespace vmath {
 	 */
 	export function dot(
 		v1: vmath.vector3 | vmath.vector4,
-		v2: vmath.vector3 | vmath.vector4
+		v2: vmath.vector3 | vmath.vector4,
 	): number;
 
 	/**
@@ -5822,7 +5822,7 @@ declare namespace vmath {
 	 * @return n  length
 	 */
 	export function length(
-		v: vmath.vector3 | vmath.vector4 | vmath.quaternion
+		v: vmath.vector3 | vmath.vector4 | vmath.quaternion,
 	): number;
 
 	/**
@@ -5831,7 +5831,7 @@ declare namespace vmath {
 	 * @return n  squared length
 	 */
 	export function length_sqr(
-		v: vmath.vector3 | vmath.vector4 | vmath.quaternion
+		v: vmath.vector3 | vmath.vector4 | vmath.quaternion,
 	): number;
 
 	/**
@@ -5848,12 +5848,12 @@ declare namespace vmath {
 	export function lerp(
 		t: number,
 		v1: vmath.vector3,
-		v2: vmath.vector3
+		v2: vmath.vector3,
 	): vmath.vector3;
 	export function lerp(
 		t: number,
 		v1: vmath.vector4,
-		v2: vmath.vector4
+		v2: vmath.vector4,
 	): vmath.vector4;
 
 	/**
@@ -5870,7 +5870,7 @@ declare namespace vmath {
 	export function lerp(
 		t: number,
 		q1: vmath.quaternion,
-		q2: vmath.quaternion
+		q2: vmath.quaternion,
 	): vmath.quaternion;
 
 	/**
@@ -5908,7 +5908,7 @@ declare namespace vmath {
 	 */
 	export function matrix4_axis_angle(
 		v: vmath.vector3,
-		angle: number
+		angle: number,
 	): vmath.matrix4;
 
 	/**
@@ -5937,7 +5937,7 @@ declare namespace vmath {
 		bottom: number,
 		top: number,
 		near: number,
-		far: number
+		far: number,
 	): vmath.matrix4;
 
 	/**
@@ -5952,7 +5952,7 @@ declare namespace vmath {
 	export function matrix4_look_at(
 		eye: vmath.vector3,
 		look_at: vmath.vector3,
-		up: vmath.vector3
+		up: vmath.vector3,
 	): vmath.matrix4;
 
 	/**
@@ -5972,7 +5972,7 @@ declare namespace vmath {
 		bottom: number,
 		top: number,
 		near: number,
-		far: number
+		far: number,
 	): vmath.matrix4;
 
 	/**
@@ -5988,7 +5988,7 @@ declare namespace vmath {
 		fov: number,
 		aspect: number,
 		near: number,
-		far: number
+		far: number,
 	): vmath.matrix4;
 
 	/**
@@ -6022,7 +6022,7 @@ declare namespace vmath {
 	 * @return m  matrix from the supplied position vector
 	 */
 	export function matrix4_translation(
-		position: vmath.vector3 | vmath.vector4
+		position: vmath.vector3 | vmath.vector4,
 	): vmath.matrix4;
 
 	/**
@@ -6035,11 +6035,11 @@ declare namespace vmath {
 	 */
 	export function mul_per_elem(
 		v1: vmath.vector3,
-		v2: vmath.vector3
+		v2: vmath.vector3,
 	): vmath.vector3;
 	export function mul_per_elem(
 		v1: vmath.vector4,
-		v2: vmath.vector4
+		v2: vmath.vector4,
 	): vmath.vector4;
 
 	/**
@@ -6106,7 +6106,7 @@ declare namespace vmath {
 		x: number,
 		y: number,
 		z: number,
-		w: number
+		w: number,
 	): vmath.quaternion;
 
 	/**
@@ -6118,7 +6118,7 @@ declare namespace vmath {
 	 */
 	export function quat_axis_angle(
 		v: vmath.vector3,
-		angle: number
+		angle: number,
 	): vmath.quaternion;
 
 	/**
@@ -6133,7 +6133,7 @@ declare namespace vmath {
 	export function quat_basis(
 		x: vmath.vector3,
 		y: vmath.vector3,
-		z: vmath.vector3
+		z: vmath.vector3,
 	): vmath.quaternion;
 
 	/**
@@ -6148,7 +6148,7 @@ declare namespace vmath {
 	 */
 	export function quat_from_to(
 		v1: vmath.vector3,
-		v2: vmath.vector3
+		v2: vmath.vector3,
 	): vmath.quaternion;
 
 	/**
@@ -6202,12 +6202,12 @@ declare namespace vmath {
 	export function slerp(
 		t: number,
 		v1: vmath.vector3,
-		v2: vmath.vector3
+		v2: vmath.vector3,
 	): vmath.vector3;
 	export function slerp(
 		t: number,
 		v1: vmath.vector4,
-		v2: vmath.vector4
+		v2: vmath.vector4,
 	): vmath.vector4;
 
 	/**
@@ -6226,7 +6226,7 @@ declare namespace vmath {
 	export function slerp(
 		t: number,
 		q1: vmath.quaternion,
-		q2: vmath.quaternion
+		q2: vmath.quaternion,
 	): vmath.quaternion;
 
 	/**
@@ -6309,7 +6309,7 @@ declare namespace vmath {
 		x: number,
 		y: number,
 		z: number,
-		w: number
+		w: number,
 	): vmath.vector4;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
@@ -6424,7 +6424,7 @@ declare namespace collectionfactory {
 		position?: vmath.vector3,
 		rotation?: vmath.quaternion,
 		properties?: unknown,
-		scale?: number
+		scale?: number,
 	): unknown;
 
 	/**
@@ -6456,7 +6456,7 @@ True if resource were loaded successfully
 	*/
 	export function load(
 		url?: string | hash | url,
-		complete_function?: (...args: unknown[]) => void
+		complete_function?: (...args: unknown[]) => void,
 	): void;
 
 	/**
@@ -6467,7 +6467,7 @@ True if resource were loaded successfully
 	 */
 	export function set_prototype(
 		url?: string | hash | url,
-		prototype?: unknown
+		prototype?: unknown,
 	): void;
 
 	/**
@@ -6609,7 +6609,7 @@ declare namespace factory {
 		position?: vmath.vector3,
 		rotation?: vmath.quaternion,
 		properties?: unknown,
-		scale?: number | vmath.vector3
+		scale?: number | vmath.vector3,
 	): hash;
 
 	/**
@@ -6642,7 +6642,7 @@ True if resources were loaded successfully
 	*/
 	export function load(
 		url?: string | hash | url,
-		complete_function?: (...args: unknown[]) => void
+		complete_function?: (...args: unknown[]) => void,
 	): void;
 
 	/**
@@ -6652,7 +6652,7 @@ True if resources were loaded successfully
 	 */
 	export function set_prototype(
 		url?: string | hash | url,
-		prototype?: unknown
+		prototype?: unknown,
 	): void;
 
 	/**
@@ -6774,7 +6774,7 @@ declare namespace model {
 	 */
 	export function get_go(
 		url: string | hash | url,
-		bone_id: string | hash
+		bone_id: string | hash,
 	): hash;
 
 	/**
@@ -6835,7 +6835,7 @@ The invoker of the callback: the model component.
 		anim_id: string | hash,
 		playback: unknown,
 		play_properties?: unknown,
-		complete_function?: (...args: unknown[]) => void
+		complete_function?: (...args: unknown[]) => void,
 	): void;
 
 	/**
@@ -6912,7 +6912,7 @@ the new state of the emitter:
 	*/
 	export function play(
 		url: string | hash | url,
-		emitter_state_function?: (...args: unknown[]) => void
+		emitter_state_function?: (...args: unknown[]) => void,
 	): void;
 
 	/**
@@ -6927,7 +6927,7 @@ the new state of the emitter:
 	export function reset_constant(
 		url: string | hash | url,
 		emitter: string | hash,
-		constant: string | hash
+		constant: string | hash,
 	): void;
 
 	/**
@@ -6945,7 +6945,7 @@ the new state of the emitter:
 		url: string | hash | url,
 		emitter: string | hash,
 		constant: string | hash,
-		value: vmath.vector4
+		value: vmath.vector4,
 	): void;
 
 	/**
@@ -7041,7 +7041,7 @@ declare namespace sound {
 	 */
 	export function get_peak(
 		group: string | hash,
-		window: number
+		window: number,
 	): LuaMultiReturn<[number, number]>;
 
 	/**
@@ -7059,7 +7059,7 @@ declare namespace sound {
 	 */
 	export function get_rms(
 		group: string | hash,
-		window: number
+		window: number,
 	): LuaMultiReturn<[number, number]>;
 
 	/**
@@ -7137,7 +7137,7 @@ The invoker of the callback: the sound component.
 	export function play(
 		url: string | hash | url,
 		play_properties?: unknown,
-		complete_function?: (...args: unknown[]) => void
+		complete_function?: (...args: unknown[]) => void,
 	): number;
 
 	/**
@@ -7295,7 +7295,7 @@ the rate with which the animation will be played. Must be positive.
 		url: string | hash | url,
 		id: unknown,
 		complete_function?: (...args: unknown[]) => void,
-		play_properties?: unknown
+		play_properties?: unknown,
 	): void;
 
 	/**
@@ -7367,7 +7367,7 @@ declare namespace tilemap {
 	 * @return h  number of rows (height) in the tile map
 	 */
 	export function get_bounds(
-		url: string | hash | url
+		url: string | hash | url,
 	): LuaMultiReturn<[number, number, number, number]>;
 
 	/**
@@ -7386,7 +7386,7 @@ declare namespace tilemap {
 		url: string | hash | url,
 		layer: string | hash,
 		x: number,
-		y: number
+		y: number,
 	): number;
 
 	/**
@@ -7425,7 +7425,7 @@ declare namespace tilemap {
 		x: number,
 		y: number,
 		tile: number,
-		transform_bitmask?: number
+		transform_bitmask?: number,
 	): void;
 
 	/**
@@ -7437,7 +7437,7 @@ declare namespace tilemap {
 	export function set_visible(
 		url: string | hash | url,
 		layer: string | hash,
-		visible: boolean
+		visible: boolean,
 	): void;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //

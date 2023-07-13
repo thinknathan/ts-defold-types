@@ -6,6 +6,7 @@ const fs = require('fs');
 
 const filePath = 'index.d.ts';
 
+// Matched pairs of text to replace and replacements
 const patches = [
 	// Describe `url`
 	[
@@ -49,11 +50,6 @@ const patches = [
 			readonly __buffer__: unique symbol;
 		}>;`,
 	],
-	// Fix path to reference types
-	[
-		'/// <reference types="typescript-to-lua/language-extensions" />',
-		'/// <reference types="@typescript-to-lua/language-extensions" />',
-	],
 	// Replace nil with undefined
 	[/nil/g, 'undefined'],
 	[/Nil/g, 'Undefined'],
@@ -62,12 +58,7 @@ const patches = [
 	// Replace lua self with TS this
 	[/`self`/g, '`this`'],
 	// Change invalid null type
-	['export let null: any', 'let $null: null; export { $null as null }'],
-	// Remove invalid optional param in middle of param order
-	[
-		'function set_texture(path: hash | string, table?: any, buffer: buffer): void',
-		'function set_texture(path: hash | string, table: LuaTable | LuaSet | LuaMap | object | undefined, buffer: buffer): void',
-	],
+	['let null$: any', 'let null$: null'],
 	// Return types
 	[
 		'function exists(url: string | hash | url): any',
@@ -196,7 +187,6 @@ const patches = [
 	[/(PLAYBACK_.+): any/g, '$1: number'],
 	// Describe tables as a stricter type
 	[/(table|tbl): any/g, '$1: LuaTable | LuaSet | LuaMap | object'],
-	[/table\?: any/g, 'table?: LuaTable | LuaSet | LuaMap | object'],
 	// Describe some functions
 	// Could be improved by describing the args
 	[
