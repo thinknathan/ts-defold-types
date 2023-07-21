@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.3.8
+
+- Updated for Defold 1.4.8
+- Described more constants
+
 ## v1.3.7
 
 - Update to latest version of `type-gen`

@@ -2,16 +2,17 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="@typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.4.7 (7a608d3ce6ed895d484956c1e76110ed8b78422a)
+// DEFOLD. stable version 1.4.8 (504de7800fa81847bfc2e26a21973899db9dd747)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 /**
  * A unique identifier used to reference resources, messages, properties, and other entities within the game.
  */
-declare type hash = Readonly<LuaUserdata> &
-	Readonly<{
+declare type hash = Readonly<
+	LuaUserdata & {
 		readonly __hash__: unique symbol;
-	}>;
+	}
+>;
 
 /**
  * A reference to game resources, such as game objects, components, and assets.
@@ -22,18 +23,20 @@ declare type url = {
 	fragment: hash | undefined;
 };
 
-declare type node = Readonly<LuaUserdata> &
-	Readonly<{
+declare type node = Readonly<
+	LuaUserdata & {
 		readonly __node__: unique symbol;
-	}>;
+	}
+>;
 
 /**
  * A block of memory that can store binary data.
  */
-declare type buffer = Readonly<LuaUserdata> &
-	Readonly<{
+declare type buffer = Readonly<
+	LuaUserdata & {
 		readonly __buffer__: unique symbol;
-	}>;
+	}
+>;
 
 declare type bufferstream = Array<number> & LuaUserdata & {};
 
@@ -106,7 +109,7 @@ declare function hash_to_hex(h: hash): string;
  * will recurse.
  * @param v  value to print
  */
-declare function pprint(v: unknown): void;
+declare function pprint(v: unknown[]): void;
 
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
@@ -114,12 +117,12 @@ declare namespace socket {
 	/**
 	 * max numbers of sockets the select function can handle
 	 */
-	export const _SETSIZE: unknown;
+	export const _SETSIZE: number;
 
 	/**
 	 * the current LuaSocket version
 	 */
-	export const _VERSION: unknown;
+	export const _VERSION: string;
 
 	/**
 	 * This function is a shortcut that creates and returns a TCP client object connected to a remote
@@ -250,67 +253,67 @@ declare namespace crash {
 	/**
 	 * android build fingerprint
 	 */
-	export const SYSFIELD_ANDROID_BUILD_FINGERPRINT: unknown;
+	export const SYSFIELD_ANDROID_BUILD_FINGERPRINT: number;
 
 	/**
 	 * system device language as reported by sys.get_sys_info
 	 */
-	export const SYSFIELD_DEVICE_LANGUAGE: unknown;
+	export const SYSFIELD_DEVICE_LANGUAGE: number;
 
 	/**
 	 * device model as reported by sys.get_sys_info
 	 */
-	export const SYSFIELD_DEVICE_MODEL: unknown;
+	export const SYSFIELD_DEVICE_MODEL: number;
 
 	/**
 	 * engine version as hash
 	 */
-	export const SYSFIELD_ENGINE_HASH: unknown;
+	export const SYSFIELD_ENGINE_HASH: number;
 
 	/**
 	 * engine version as release number
 	 */
-	export const SYSFIELD_ENGINE_VERSION: unknown;
+	export const SYSFIELD_ENGINE_VERSION: number;
 
 	/**
 	 * system language as reported by sys.get_sys_info
 	 */
-	export const SYSFIELD_LANGUAGE: unknown;
+	export const SYSFIELD_LANGUAGE: number;
 
 	/**
 	 * device manufacturer as reported by sys.get_sys_info
 	 */
-	export const SYSFIELD_MANUFACTURER: unknown;
+	export const SYSFIELD_MANUFACTURER: number;
 
 	/**
 	 * The max number of sysfields.
 	 */
-	export const SYSFIELD_MAX: unknown;
+	export const SYSFIELD_MAX: number;
 
 	/**
 	 * system name as reported by sys.get_sys_info
 	 */
-	export const SYSFIELD_SYSTEM_NAME: unknown;
+	export const SYSFIELD_SYSTEM_NAME: number;
 
 	/**
 	 * system version as reported by sys.get_sys_info
 	 */
-	export const SYSFIELD_SYSTEM_VERSION: unknown;
+	export const SYSFIELD_SYSTEM_VERSION: number;
 
 	/**
 	 * system territory as reported by sys.get_sys_info
 	 */
-	export const SYSFIELD_TERRITORY: unknown;
+	export const SYSFIELD_TERRITORY: number;
 
 	/**
 	 * The max number of user fields.
 	 */
-	export const USERFIELD_MAX: unknown;
+	export const USERFIELD_MAX: number;
 
 	/**
 	 * The max size of a single user field.
 	 */
-	export const USERFIELD_SIZE: unknown;
+	export const USERFIELD_SIZE: number;
 
 	/**
 	 * A table is returned containing the addresses of the call stack.
@@ -1000,72 +1003,72 @@ declare namespace gui {
 	/**
 	 * fit adjust mode
 	 */
-	export const ADJUST_FIT: unknown;
+	export const ADJUST_FIT: number;
 
 	/**
 	 * stretch adjust mode
 	 */
-	export const ADJUST_STRETCH: unknown;
+	export const ADJUST_STRETCH: number;
 
 	/**
 	 * zoom adjust mode
 	 */
-	export const ADJUST_ZOOM: unknown;
+	export const ADJUST_ZOOM: number;
 
 	/**
 	 * bottom y-anchor
 	 */
-	export const ANCHOR_BOTTOM: unknown;
+	export const ANCHOR_BOTTOM: number;
 
 	/**
 	 * left x-anchor
 	 */
-	export const ANCHOR_LEFT: unknown;
+	export const ANCHOR_LEFT: number;
 
 	/**
 	 * no anchor
 	 */
-	export const ANCHOR_NONE: unknown;
+	export const ANCHOR_NONE: number;
 
 	/**
 	 * right x-anchor
 	 */
-	export const ANCHOR_RIGHT: unknown;
+	export const ANCHOR_RIGHT: number;
 
 	/**
 	 * top y-anchor
 	 */
-	export const ANCHOR_TOP: unknown;
+	export const ANCHOR_TOP: number;
 
 	/**
 	 * additive blending
 	 */
-	export const BLEND_ADD: unknown;
+	export const BLEND_ADD: number;
 
 	/**
 	 * additive alpha blending
 	 */
-	export const BLEND_ADD_ALPHA: unknown;
+	export const BLEND_ADD_ALPHA: number;
 
 	/**
 	 * alpha blending
 	 */
-	export const BLEND_ALPHA: unknown;
+	export const BLEND_ALPHA: number;
 
 	/**
 	 * multiply blending
 	 */
-	export const BLEND_MULT: unknown;
+	export const BLEND_MULT: number;
 
 	/**
 	 * clipping mode none
 	 */
-	export const CLIPPING_MODE_NONE: unknown;
+	export const CLIPPING_MODE_NONE: number;
 
 	/**
 	 * clipping mode stencil
 	 */
-	export const CLIPPING_MODE_STENCIL: unknown;
+	export const CLIPPING_MODE_STENCIL: number;
 
 	/**
 	 * in-back
@@ -1275,77 +1278,77 @@ declare namespace gui {
 	/**
 	 * default keyboard
 	 */
-	export const KEYBOARD_TYPE_DEFAULT: unknown;
+	export const KEYBOARD_TYPE_DEFAULT: number;
 
 	/**
 	 * email keyboard
 	 */
-	export const KEYBOARD_TYPE_EMAIL: unknown;
+	export const KEYBOARD_TYPE_EMAIL: number;
 
 	/**
 	 * number input keyboard
 	 */
-	export const KEYBOARD_TYPE_NUMBER_PAD: unknown;
+	export const KEYBOARD_TYPE_NUMBER_PAD: number;
 
 	/**
 	 * password keyboard
 	 */
-	export const KEYBOARD_TYPE_PASSWORD: unknown;
+	export const KEYBOARD_TYPE_PASSWORD: number;
 
 	/**
 	 * elliptical pie node bounds
 	 */
-	export const PIEBOUNDS_ELLIPSE: unknown;
+	export const PIEBOUNDS_ELLIPSE: number;
 
 	/**
 	 * rectangular pie node bounds
 	 */
-	export const PIEBOUNDS_RECTANGLE: unknown;
+	export const PIEBOUNDS_RECTANGLE: number;
 
 	/**
 	 * center pivot
 	 */
-	export const PIVOT_CENTER: unknown;
+	export const PIVOT_CENTER: number;
 
 	/**
 	 * east pivot
 	 */
-	export const PIVOT_E: unknown;
+	export const PIVOT_E: number;
 
 	/**
 	 * north pivot
 	 */
-	export const PIVOT_N: unknown;
+	export const PIVOT_N: number;
 
 	/**
 	 * north-east pivot
 	 */
-	export const PIVOT_NE: unknown;
+	export const PIVOT_NE: number;
 
 	/**
 	 * north-west pivot
 	 */
-	export const PIVOT_NW: unknown;
+	export const PIVOT_NW: number;
 
 	/**
 	 * south pivot
 	 */
-	export const PIVOT_S: unknown;
+	export const PIVOT_S: number;
 
 	/**
 	 * south-east pivot
 	 */
-	export const PIVOT_SE: unknown;
+	export const PIVOT_SE: number;
 
 	/**
 	 * south-west pivot
 	 */
-	export const PIVOT_SW: unknown;
+	export const PIVOT_SW: number;
 
 	/**
 	 * west pivot
 	 */
-	export const PIVOT_W: unknown;
+	export const PIVOT_W: number;
 
 	/**
 	 * loop backward
@@ -1380,77 +1383,77 @@ declare namespace gui {
 	/**
 	 * color property
 	 */
-	export const PROP_COLOR: unknown;
+	export const PROP_COLOR: string;
 
 	/**
 	 * fill_angle property
 	 */
-	export const PROP_FILL_ANGLE: unknown;
+	export const PROP_FILL_ANGLE: string;
 
 	/**
 	 * inner_radius property
 	 */
-	export const PROP_INNER_RADIUS: unknown;
+	export const PROP_INNER_RADIUS: string;
 
 	/**
 	 * outline color property
 	 */
-	export const PROP_OUTLINE: unknown;
+	export const PROP_OUTLINE: string;
 
 	/**
 	 * position property
 	 */
-	export const PROP_POSITION: unknown;
+	export const PROP_POSITION: string;
 
 	/**
 	 * rotation property
 	 */
-	export const PROP_ROTATION: unknown;
+	export const PROP_ROTATION: string;
 
 	/**
 	 * scale property
 	 */
-	export const PROP_SCALE: unknown;
+	export const PROP_SCALE: string;
 
 	/**
 	 * shadow color property
 	 */
-	export const PROP_SHADOW: unknown;
+	export const PROP_SHADOW: string;
 
 	/**
 	 * size property
 	 */
-	export const PROP_SIZE: unknown;
+	export const PROP_SIZE: string;
 
 	/**
 	 * slice9 property
 	 */
-	export const PROP_SLICE9: unknown;
+	export const PROP_SLICE9: string;
 
 	/**
 	 * data error
 	 */
-	export const RESULT_DATA_ERROR: unknown;
+	export const RESULT_DATA_ERROR: number;
 
 	/**
 	 * out of resource
 	 */
-	export const RESULT_OUT_OF_RESOURCES: unknown;
+	export const RESULT_OUT_OF_RESOURCES: number;
 
 	/**
 	 * texture already exists
 	 */
-	export const RESULT_TEXTURE_ALREADY_EXISTS: unknown;
+	export const RESULT_TEXTURE_ALREADY_EXISTS: number;
 
 	/**
 	 * automatic size mode
 	 */
-	export const SIZE_MODE_AUTO: unknown;
+	export const SIZE_MODE_AUTO: number;
 
 	/**
 	 * manual size mode
 	 */
-	export const SIZE_MODE_MANUAL: unknown;
+	export const SIZE_MODE_MANUAL: number;
 
 	/**
 	* This starts an animation of a node property according to the specified parameters.
@@ -1541,7 +1544,20 @@ with a custom curve. See the animation guide for more information.
 - `"slice9"` (slice9)
 
 	*/
-	export function cancel_animation(node: node, property: unknown): void;
+	export function cancel_animation(
+		node: node,
+		property:
+			| 'position'
+			| 'rotation'
+			| 'scale'
+			| 'color'
+			| 'outline'
+			| 'shadow'
+			| 'size'
+			| 'fill_angle'
+			| 'inner_radius'
+			| 'slice9',
+	): void;
 
 	/**
 	 * Cancels any running flipbook animation on the specified node.
@@ -1938,6 +1954,13 @@ with a custom curve. See the animation guide for more information.
 	export function get_tracking(node: node): number;
 
 	/**
+	 * Get a node and all its children as a Lua table.
+	 * @param node  root node to get node tree from
+	 * @return clones  a table mapping node ids to the corresponding nodes
+	 */
+	export function get_tree(node: node): unknown;
+
+	/**
 	 * Returns `true` if a node is visible and `false` if it's not.
 	 * Invisible nodes are not rendered.
 	 * @param node  node to query
@@ -1996,7 +2019,7 @@ with a custom curve. See the animation guide for more information.
 	 * @param node  to move
 	 * @param node  reference node above which the first node should be moved
 	 */
-	export function move_above(node: node, node1: unknown): void;
+	export function move_above(node: node, node1: node): void;
 
 	/**
 	 * Alters the ordering of the two supplied nodes by moving the first node
@@ -2005,7 +2028,7 @@ with a custom curve. See the animation guide for more information.
 	 * @param node  to move
 	 * @param node  reference node below which the first node should be moved
 	 */
-	export function move_below(node: node, node1: unknown): void;
+	export function move_below(node: node, node1: node): void;
 
 	/**
 	 * Dynamically create a new box node.
@@ -2700,32 +2723,32 @@ declare namespace physics {
 	/**
 	 * READ ONLY Returns the defined physical mass of the collision object component as a number.
 	 */
-	export let mass: Readonly<number>;
+	export const mass: number;
 
 	/**
 	 * fixed joint type
 	 */
-	export const JOINT_TYPE_FIXED: unknown;
+	export const JOINT_TYPE_FIXED: number;
 
 	/**
 	 * hinge joint type
 	 */
-	export const JOINT_TYPE_HINGE: unknown;
+	export const JOINT_TYPE_HINGE: number;
 
 	/**
 	 * slider joint type
 	 */
-	export const JOINT_TYPE_SLIDER: unknown;
+	export const JOINT_TYPE_SLIDER: number;
 
 	/**
 	 * spring joint type
 	 */
-	export const JOINT_TYPE_SPRING: unknown;
+	export const JOINT_TYPE_SPRING: number;
 
 	/**
 	 * weld joint type
 	 */
-	export const JOINT_TYPE_WELD: unknown;
+	export const JOINT_TYPE_WELD: number;
 
 	/**
 	* Create a physics joint between two collision object components.
@@ -2994,32 +3017,32 @@ declare namespace profiler {
 	/**
 	 * pause on current frame
 	 */
-	export const MODE_PAUSE: unknown;
+	export const MODE_PAUSE: number;
 
 	/**
 	 * start recording
 	 */
-	export const MODE_RECORD: unknown;
+	export const MODE_RECORD: number;
 
 	/**
 	 * continously show latest frame
 	 */
-	export const MODE_RUN: unknown;
+	export const MODE_RUN: number;
 
 	/**
 	 * pause at peak frame
 	 */
-	export const MODE_SHOW_PEAK_FRAME: unknown;
+	export const MODE_SHOW_PEAK_FRAME: number;
 
 	/**
 	 * show full profiler ui
 	 */
-	export const VIEW_MODE_FULL: unknown;
+	export const VIEW_MODE_FULL: number;
 
 	/**
 	 * show mimimal profiler ui
 	 */
-	export const VIEW_MODE_MINIMIZED: unknown;
+	export const VIEW_MODE_MINIMIZED: number;
 
 	/**
 	 * Creates and shows or hides and destroys the on-sceen profiler ui
@@ -3167,332 +3190,332 @@ declare namespace render {
 	/**
 	 *
 	 */
-	export const BLEND_CONSTANT_ALPHA: unknown;
+	export const BLEND_CONSTANT_ALPHA: number;
 
 	/**
 	 *
 	 */
-	export const BLEND_CONSTANT_COLOR: unknown;
+	export const BLEND_CONSTANT_COLOR: number;
 
 	/**
 	 *
 	 */
-	export const BLEND_DST_ALPHA: unknown;
+	export const BLEND_DST_ALPHA: number;
 
 	/**
 	 *
 	 */
-	export const BLEND_DST_COLOR: unknown;
+	export const BLEND_DST_COLOR: number;
 
 	/**
 	 *
 	 */
-	export const BLEND_ONE: unknown;
+	export const BLEND_ONE: number;
 
 	/**
 	 *
 	 */
-	export const BLEND_ONE_MINUS_CONSTANT_ALPHA: unknown;
+	export const BLEND_ONE_MINUS_CONSTANT_ALPHA: number;
 
 	/**
 	 *
 	 */
-	export const BLEND_ONE_MINUS_CONSTANT_COLOR: unknown;
+	export const BLEND_ONE_MINUS_CONSTANT_COLOR: number;
 
 	/**
 	 *
 	 */
-	export const BLEND_ONE_MINUS_DST_ALPHA: unknown;
+	export const BLEND_ONE_MINUS_DST_ALPHA: number;
 
 	/**
 	 *
 	 */
-	export const BLEND_ONE_MINUS_DST_COLOR: unknown;
+	export const BLEND_ONE_MINUS_DST_COLOR: number;
 
 	/**
 	 *
 	 */
-	export const BLEND_ONE_MINUS_SRC_ALPHA: unknown;
+	export const BLEND_ONE_MINUS_SRC_ALPHA: number;
 
 	/**
 	 *
 	 */
-	export const BLEND_ONE_MINUS_SRC_COLOR: unknown;
+	export const BLEND_ONE_MINUS_SRC_COLOR: number;
 
 	/**
 	 *
 	 */
-	export const BLEND_SRC_ALPHA: unknown;
+	export const BLEND_SRC_ALPHA: number;
 
 	/**
 	 *
 	 */
-	export const BLEND_SRC_ALPHA_SATURATE: unknown;
+	export const BLEND_SRC_ALPHA_SATURATE: number;
 
 	/**
 	 *
 	 */
-	export const BLEND_SRC_COLOR: unknown;
+	export const BLEND_SRC_COLOR: number;
 
 	/**
 	 *
 	 */
-	export const BLEND_ZERO: unknown;
+	export const BLEND_ZERO: number;
 
 	/**
 	 *
 	 */
-	export const BUFFER_COLOR0_BIT: unknown;
+	export const BUFFER_COLOR0_BIT: number;
 
 	/**
 	 *
 	 */
-	export const BUFFER_COLOR1_BIT: unknown;
+	export const BUFFER_COLOR1_BIT: number;
 
 	/**
 	 *
 	 */
-	export const BUFFER_COLOR2_BIT: unknown;
+	export const BUFFER_COLOR2_BIT: number;
 
 	/**
 	 *
 	 */
-	export const BUFFER_COLOR3_BIT: unknown;
+	export const BUFFER_COLOR3_BIT: number;
 
 	/**
 	 *
 	 */
-	export const BUFFER_COLOR_BIT: unknown;
+	export const BUFFER_COLOR_BIT: number;
 
 	/**
 	 *
 	 */
-	export const BUFFER_DEPTH_BIT: unknown;
+	export const BUFFER_DEPTH_BIT: number;
 
 	/**
 	 *
 	 */
-	export const BUFFER_STENCIL_BIT: unknown;
+	export const BUFFER_STENCIL_BIT: number;
 
 	/**
 	 *
 	 */
-	export const COMPARE_FUNC_ALWAYS: unknown;
+	export const COMPARE_FUNC_ALWAYS: number;
 
 	/**
 	 *
 	 */
-	export const COMPARE_FUNC_EQUAL: unknown;
+	export const COMPARE_FUNC_EQUAL: number;
 
 	/**
 	 *
 	 */
-	export const COMPARE_FUNC_GEQUAL: unknown;
+	export const COMPARE_FUNC_GEQUAL: number;
 
 	/**
 	 *
 	 */
-	export const COMPARE_FUNC_GREATER: unknown;
+	export const COMPARE_FUNC_GREATER: number;
 
 	/**
 	 *
 	 */
-	export const COMPARE_FUNC_LEQUAL: unknown;
+	export const COMPARE_FUNC_LEQUAL: number;
 
 	/**
 	 *
 	 */
-	export const COMPARE_FUNC_LESS: unknown;
+	export const COMPARE_FUNC_LESS: number;
 
 	/**
 	 *
 	 */
-	export const COMPARE_FUNC_NEVER: unknown;
+	export const COMPARE_FUNC_NEVER: number;
 
 	/**
 	 *
 	 */
-	export const COMPARE_FUNC_NOTEQUAL: unknown;
+	export const COMPARE_FUNC_NOTEQUAL: number;
 
 	/**
 	 *
 	 */
-	export const FACE_BACK: unknown;
+	export const FACE_BACK: number;
 
 	/**
 	 *
 	 */
-	export const FACE_FRONT: unknown;
+	export const FACE_FRONT: number;
 
 	/**
 	 *
 	 */
-	export const FACE_FRONT_AND_BACK: unknown;
+	export const FACE_FRONT_AND_BACK: number;
 
 	/**
 	 *
 	 */
-	export const FILTER_LINEAR: unknown;
+	export const FILTER_LINEAR: number;
 
 	/**
 	 *
 	 */
-	export const FILTER_NEAREST: unknown;
+	export const FILTER_NEAREST: number;
 
 	/**
 	 *
 	 */
-	export const FORMAT_DEPTH: unknown;
+	export const FORMAT_DEPTH: number;
 
 	/**
 	 *
 	 */
-	export const FORMAT_LUMINANCE: unknown;
+	export const FORMAT_LUMINANCE: number;
 
 	/**
 	 * May be undefined if the format isn't supported
 	 */
-	export const FORMAT_R16F: unknown;
+	export const FORMAT_R16F: number | undefined;
 
 	/**
 	 * May be undefined if the format isn't supported
 	 */
-	export const FORMAT_R32F: unknown;
+	export const FORMAT_R32F: number | undefined;
 
 	/**
 	 * May be undefined if the format isn't supported
 	 */
-	export const FORMAT_RG16F: unknown;
+	export const FORMAT_RG16F: number | undefined;
 
 	/**
 	 * May be undefined if the format isn't supported
 	 */
-	export const FORMAT_RG32F: unknown;
+	export const FORMAT_RG32F: number | undefined;
 
 	/**
 	 *
 	 */
-	export const FORMAT_RGB: unknown;
+	export const FORMAT_RGB: number;
 
 	/**
 	 * May be undefined if the format isn't supported
 	 */
-	export const FORMAT_RGB16F: unknown;
+	export const FORMAT_RGB16F: number | undefined;
 
 	/**
 	 * May be undefined if the format isn't supported
 	 */
-	export const FORMAT_RGB32F: unknown;
+	export const FORMAT_RGB32F: number | undefined;
 
 	/**
 	 *
 	 */
-	export const FORMAT_RGBA: unknown;
+	export const FORMAT_RGBA: number;
 
 	/**
 	 * May be undefined if the format isn't supported
 	 */
-	export const FORMAT_RGBA16F: unknown;
+	export const FORMAT_RGBA16F: number | undefined;
 
 	/**
 	 * May be undefined if the format isn't supported
 	 */
-	export const FORMAT_RGBA32F: unknown;
+	export const FORMAT_RGBA32F: number | undefined;
 
 	/**
 	 *
 	 */
-	export const FORMAT_STENCIL: unknown;
+	export const FORMAT_STENCIL: number;
 
 	/**
 	 *
 	 */
-	export const RENDER_TARGET_DEFAULT: unknown;
+	export const RENDER_TARGET_DEFAULT: number;
 
 	/**
 	 *
 	 */
-	export const STATE_BLEND: unknown;
+	export const STATE_BLEND: number;
 
 	/**
 	 *
 	 */
-	export const STATE_CULL_FACE: unknown;
+	export const STATE_CULL_FACE: number;
 
 	/**
 	 *
 	 */
-	export const STATE_DEPTH_TEST: unknown;
+	export const STATE_DEPTH_TEST: number;
 
 	/**
 	 *
 	 */
-	export const STATE_POLYGON_OFFSET_FILL: unknown;
+	export const STATE_POLYGON_OFFSET_FILL: number;
 
 	/**
 	 *
 	 */
-	export const STATE_STENCIL_TEST: unknown;
+	export const STATE_STENCIL_TEST: number;
 
 	/**
 	 *
 	 */
-	export const STENCIL_OP_DECR: unknown;
+	export const STENCIL_OP_DECR: number;
 
 	/**
 	 *
 	 */
-	export const STENCIL_OP_DECR_WRAP: unknown;
+	export const STENCIL_OP_DECR_WRAP: number;
 
 	/**
 	 *
 	 */
-	export const STENCIL_OP_INCR: unknown;
+	export const STENCIL_OP_INCR: number;
 
 	/**
 	 *
 	 */
-	export const STENCIL_OP_INCR_WRAP: unknown;
+	export const STENCIL_OP_INCR_WRAP: number;
 
 	/**
 	 *
 	 */
-	export const STENCIL_OP_INVERT: unknown;
+	export const STENCIL_OP_INVERT: number;
 
 	/**
 	 *
 	 */
-	export const STENCIL_OP_KEEP: unknown;
+	export const STENCIL_OP_KEEP: number;
 
 	/**
 	 *
 	 */
-	export const STENCIL_OP_REPLACE: unknown;
+	export const STENCIL_OP_REPLACE: number;
 
 	/**
 	 *
 	 */
-	export const STENCIL_OP_ZERO: unknown;
+	export const STENCIL_OP_ZERO: number;
 
 	/**
 	 *
 	 */
-	export const WRAP_CLAMP_TO_BORDER: unknown;
+	export const WRAP_CLAMP_TO_BORDER: number;
 
 	/**
 	 *
 	 */
-	export const WRAP_CLAMP_TO_EDGE: unknown;
+	export const WRAP_CLAMP_TO_EDGE: number;
 
 	/**
 	 *
 	 */
-	export const WRAP_MIRRORED_REPEAT: unknown;
+	export const WRAP_MIRRORED_REPEAT: number;
 
 	/**
 	 *
 	 */
-	export const WRAP_REPEAT: unknown;
+	export const WRAP_REPEAT: number;
 
 	/**
 	* Clear buffers in the currently enabled render target with specified value. If the render target has been created with multiple
@@ -4099,77 +4122,77 @@ declare namespace resource {
 	/**
 	 * BASIS_UASTC compression type
 	 */
-	export const COMPRESSION_TYPE_BASIS_UASTC: 3;
+	export const COMPRESSION_TYPE_BASIS_UASTC: number;
 
 	/**
 	 * COMPRESSION_TYPE_DEFAULT compression type
 	 */
-	export const COMPRESSION_TYPE_DEFAULT: 0;
+	export const COMPRESSION_TYPE_DEFAULT: number;
 
 	/**
 	 * luminance type texture format
 	 */
-	export const TEXTURE_FORMAT_LUMINANCE: 0;
+	export const TEXTURE_FORMAT_LUMINANCE: number;
 
 	/**
 	 * R16F type texture format
 	 */
-	export const TEXTURE_FORMAT_R16F: 26;
+	export const TEXTURE_FORMAT_R16F: number;
 
 	/**
 	 * R32F type texture format
 	 */
-	export const TEXTURE_FORMAT_R32F: 28;
+	export const TEXTURE_FORMAT_R32F: number;
 
 	/**
 	 * RG16F type texture format
 	 */
-	export const TEXTURE_FORMAT_RG16F: 27;
+	export const TEXTURE_FORMAT_RG16F: number;
 
 	/**
 	 * RG32F type texture format
 	 */
-	export const TEXTURE_FORMAT_RG32F: 29;
+	export const TEXTURE_FORMAT_RG32F: number;
 
 	/**
 	 * RGB type texture format
 	 */
-	export const TEXTURE_FORMAT_RGB: 2;
+	export const TEXTURE_FORMAT_RGB: number;
 
 	/**
 	 * RGB16F type texture format
 	 */
-	export const TEXTURE_FORMAT_RGB16F: 22;
+	export const TEXTURE_FORMAT_RGB16F: number;
 
 	/**
 	 * RGB32F type texture format
 	 */
-	export const TEXTURE_FORMAT_RGB32F: 23;
+	export const TEXTURE_FORMAT_RGB32F: number;
 
 	/**
 	 * RGBA type texture format
 	 */
-	export const TEXTURE_FORMAT_RGBA: 3;
+	export const TEXTURE_FORMAT_RGBA: number;
 
 	/**
 	 * RGBA16F type texture format
 	 */
-	export const TEXTURE_FORMAT_RGBA16F: 24;
+	export const TEXTURE_FORMAT_RGBA16F: number;
 
 	/**
 	 * RGBA32F type texture format
 	 */
-	export const TEXTURE_FORMAT_RGBA32F: 25;
+	export const TEXTURE_FORMAT_RGBA32F: number;
 
 	/**
 	 * RGBA_ASTC_4x4 type texture format
 	 */
-	export let TEXTURE_FORMAT_RGBA_ASTC_4x4: number;
+	export const TEXTURE_FORMAT_RGBA_ASTC_4x4: number;
 
 	/**
 	 * RGBA_BC3 type texture format
 	 */
-	export const TEXTURE_FORMAT_RGBA_BC3: 18;
+	export const TEXTURE_FORMAT_RGBA_BC3: number;
 
 	/**
 	 * RGBA_BC7 type texture format
@@ -4194,7 +4217,7 @@ declare namespace resource {
 	/**
 	 * RGB_BC1 type texture format
 	 */
-	export const TEXTURE_FORMAT_RGB_BC1: 17;
+	export const TEXTURE_FORMAT_RGB_BC1: number;
 
 	/**
 	 * RGB_ETC1 type texture format
@@ -4224,17 +4247,17 @@ declare namespace resource {
 	/**
 	 * 2D texture type
 	 */
-	export const TEXTURE_TYPE_2D: 0;
+	export const TEXTURE_TYPE_2D: number;
 
 	/**
 	 * 2D Array texture type
 	 */
-	export const TEXTURE_TYPE_2D_ARRAY: 1;
+	export const TEXTURE_TYPE_2D_ARRAY: number;
 
 	/**
 	 * Cube map texture type
 	 */
-	export const TEXTURE_TYPE_CUBE_MAP: 2;
+	export const TEXTURE_TYPE_CUBE_MAP: number;
 
 	/**
 	 * Constructor-like function with two purposes:
@@ -4995,6 +5018,14 @@ If the engine is a debug or release version
 	export function get_engine_info(): unknown;
 
 	/**
+	 * Create a path to the host device for unit testing
+	 * Useful for saving logs etc during development
+	 * @param filename  file to read from
+	 * @return host_path  the path prefixed with the proper host mount
+	 */
+	export function get_host_path(filename: string): string;
+
+	/**
 	* Returns an array of tables with information on network interfaces.
 	* @return ifaddrs  an array of tables. Each table entry contain the following fields:
 
@@ -5217,42 +5248,42 @@ declare namespace window {
 	/**
 	 * dimming mode off
 	 */
-	export const DIMMING_OFF: 2;
+	export const DIMMING_OFF: number;
 
 	/**
 	 * dimming mode on
 	 */
-	export const DIMMING_ON: 1;
+	export const DIMMING_ON: number;
 
 	/**
 	 * dimming mode unknown
 	 */
-	export const DIMMING_UNKNOWN: 0;
+	export const DIMMING_UNKNOWN: number;
 
 	/**
 	 * deiconified window event
 	 */
-	export const WINDOW_EVENT_DEICONIFIED: 4;
+	export const WINDOW_EVENT_DEICONIFIED: number;
 
 	/**
 	 * focus gained window event
 	 */
-	export const WINDOW_EVENT_FOCUS_GAINED: 1;
+	export const WINDOW_EVENT_FOCUS_GAINED: number;
 
 	/**
 	 * focus lost window event
 	 */
-	export const WINDOW_EVENT_FOCUS_LOST: 0;
+	export const WINDOW_EVENT_FOCUS_LOST: number;
 
 	/**
 	 * iconify window event
 	 */
-	export const WINDOW_EVENT_ICONFIED: 3;
+	export const WINDOW_EVENT_ICONFIED: number;
 
 	/**
 	 * resized window event
 	 */
-	export const WINDOW_EVENT_RESIZED: 2;
+	export const WINDOW_EVENT_RESIZED: number;
 
 	/**
 	* 🤖 Returns the current dimming mode set on a mobile device.
@@ -6341,6 +6372,13 @@ declare namespace camera {
 	export type acquire_camera_focus = 'acquire_camera_focus';
 
 	/**
+	 * The ratio between the frustum width and height. Used when calculating the
+	 * projection of a perspective camera.
+	 * The type of the property is number.
+	 */
+	export let aspect_ratio: number;
+
+	/**
 	 * Camera frustum far plane.
 	 * The type of the property is float.
 	 */
@@ -6365,6 +6403,12 @@ declare namespace camera {
 	export let orthographic_zoom: number;
 
 	/**
+	 * READ ONLY The calculated projection matrix of the camera.
+	 * The type of the property is matrix4.
+	 */
+	export const projection: Readonly<vmath.matrix4>;
+
+	/**
 	 *
 	 * Post this message to a camera-component to deactivate it. The camera is then removed from the active cameras.
 	 * See `acquire_camera_focus` for more information how the active cameras are used in rendering.
@@ -6378,6 +6422,12 @@ declare namespace camera {
 	 *
 	 */
 	export type set_camera = 'set_camera';
+
+	/**
+	 * READ ONLY The calculated view matrix of the camera.
+	 * The type of the property is matrix4.
+	 */
+	export const view: Readonly<vmath.matrix4>;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
@@ -7224,7 +7274,7 @@ declare namespace sprite {
 	/**
 	 * READ ONLY The frame count of the currently playing animation.
 	 */
-	export let frame_count: Readonly<number>;
+	export const frame_count: number;
 
 	/**
 	 * The image used when rendering the sprite. The type of the property is hash.
@@ -7332,27 +7382,27 @@ declare namespace tilemap {
 	/**
 	 * flip tile horizontally
 	 */
-	export const H_FLIP: unknown;
+	export const H_FLIP: number;
 
 	/**
 	 * rotate tile 180 degrees clockwise
 	 */
-	export const ROTATE_180: unknown;
+	export const ROTATE_180: number;
 
 	/**
 	 * rotate tile 270 degrees clockwise
 	 */
-	export const ROTATE_270: unknown;
+	export const ROTATE_270: number;
 
 	/**
 	 * rotate tile 90 degrees clockwise
 	 */
-	export const ROTATE_90: unknown;
+	export const ROTATE_90: number;
 
 	/**
 	 * flip tile vertically
 	 */
-	export const V_FLIP: unknown;
+	export const V_FLIP: number;
 
 	/**
 	 * Get the bounds for a tile map. This function returns multiple values:
