@@ -109,7 +109,7 @@ declare function hash_to_hex(h: hash): string;
  * will recurse.
  * @param v  value to print
  */
-declare function pprint(v: unknown[]): void;
+declare function pprint(...args: unknown[]): void;
 
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 

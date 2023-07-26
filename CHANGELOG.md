@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.3.9
+
+- Fix pprint definition
+
 ## v1.3.8
 
 - Updated for Defold 1.4.8

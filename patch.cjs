@@ -249,7 +249,7 @@ const patches = [
 	['SYSFIELD_MAX: any', 'SYSFIELD_MAX: number'],
 	['USERFIELD_MAX: any', 'USERFIELD_MAX: number'],
 	['USERFIELD_SIZE: any', 'USERFIELD_SIZE: number'],
-	['function pprint(v: any)', 'function pprint(v: unknown[])'],
+	['function pprint(v: any)', 'function pprint(...args: unknown[])'],
 	['let aspect_ratio: any', 'let aspect_ratio: number'],
 	['let projection: any', 'const projection: Readonly<vmath.matrix4>'],
 	['let view: any', 'const view: Readonly<vmath.matrix4>'],
