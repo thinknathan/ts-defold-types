@@ -279,6 +279,7 @@ const patches = [
 	['let image: any', 'let image: hash'],
 	['let tile_source: any', 'let tile_source: hash'],
 	['let mass: any', 'const mass: number'],
+	['let materials: any', 'let materials: hash'],
 	['let TEXTURE_TYPE_2D: any', 'let TEXTURE_TYPE_2D: number'],
 	['let TEXTURE_TYPE_CUBE_MAP: any', 'let TEXTURE_TYPE_CUBE_MAP: number'],
 	['let TEXTURE_TYPE_2D_ARRAY: any', 'let TEXTURE_TYPE_2D_ARRAY: number'],
