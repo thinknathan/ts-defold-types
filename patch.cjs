@@ -86,12 +86,12 @@ const patches = [
 	['ROTATE_90: any', 'ROTATE_90: number'],
 	['V_FLIP: any', 'V_FLIP: number'],
 	[
-		'function move_below(node: node, node1: any)',
-		'function move_below(node: node, node1: node)',
+		'function move_below(node: node, reference: any)',
+		'function move_below(node: node, reference: node)',
 	],
 	[
-		'function move_above(node: node, node1: any)',
-		'function move_above(node: node, node1: node)',
+		'function move_above(node: node, reference: any)',
+		'function move_above(node: node, reference: node)',
 	],
 	[
 		'function cancel_animation(node: node, property: any)',
@@ -358,10 +358,10 @@ const patches = [
 	['let TYPE_LUMINANCE: any', 'let TYPE_LUMINANCE: "l"'],
 	['let TYPE_RGB: any', 'let TYPE_RGB: "rgb"'],
 	['let TYPE_RGBA: any', 'let TYPE_RGBA: "rgba"'],
-	[
-		'function load(buffer: string, premult?: boolean): any',
-		'function load(buffer: string, premult?: boolean): undefined | { width: number, height: number, type: typeof image.TYPE_RGB | typeof image.TYPE_RGBA | typeof image.TYPE_LUMINANCE, buffer: buffer }',
-	],
+	// [
+	// 	'function load(buffer: string, premult?: boolean): any',
+	// 	'function load(buffer: string, premult?: boolean): undefined | { width: number, height: number, type: typeof image.TYPE_RGB | typeof image.TYPE_RGBA | typeof image.TYPE_LUMINANCE, buffer: buffer }',
+	// ],
 	// Callbacks
 	[
 		'function set_listener(callback: any)',
