@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="@typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.6.1 (27bbea23f00cfb65707cb096fbe82ba7b78723f6)
+// DEFOLD. stable version 1.6.2 (4e156b7cf37a380122aada30dacbf2b590ead76b)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 /**
@@ -159,7 +159,9 @@ declare namespace socket {
 	 * @param finalizer  a function that will be called before the try throws the exception.
 	 * @return try  the customized try function.
 	 */
-	export function newtry(finalizer: unknown): unknown;
+	export function newtry(
+		finalizer: (...args: unknown[]) => unknown,
+	): (...args: unknown[]) => unknown;
 
 	/**
 	 * Converts a function that throws exceptions into a safe function. This function only catches exceptions thrown by try functions. It does not catch normal Lua errors.
@@ -167,7 +169,9 @@ declare namespace socket {
 	 * @param func  a function that calls a try function (or assert, or error) to throw exceptions.
 	 * @return safe_func  an equivalent function that instead of throwing exceptions, returns `undefined` followed by an error message.
 	 */
-	export function protect(func: unknown): unknown;
+	export function protect(
+		func: (...args: unknown[]) => unknown,
+	): (...args: unknown[]) => unknown;
 
 	/**
 	 * The function returns a list with the sockets ready for reading, a list with the sockets ready for writing and an error message. The error message is "timeout" if a timeout condition was met and undefined otherwise. The returned tables are doubly keyed both by integers and also by the sockets themselves, to simplify the test if a specific socket has changed status.
@@ -326,7 +330,9 @@ declare namespace crash {
 	 * @param handle  crash dump handle
 	 * @return backtrace  table containing the backtrace
 	 */
-	export function get_backtrace(handle: number): unknown;
+	export function get_backtrace(
+		handle: number,
+	): LuaTable | LuaSet | LuaMap | object;
 
 	/**
 	 * The format of read text blob is platform specific
@@ -343,7 +349,9 @@ declare namespace crash {
 	 * @param handle  crash dump handle
 	 * @return modules  module table
 	 */
-	export function get_modules(handle: number): unknown;
+	export function get_modules(
+		handle: number,
+	): LuaTable | LuaSet | LuaMap | object;
 
 	/**
 	 * read signal number from a crash report
@@ -751,7 +759,13 @@ The id of the animated property.
 	export function animate(
 		url: string | hash | url,
 		property: string | hash,
-		playback: unknown,
+		playback:
+			| typeof go.PLAYBACK_ONCE_FORWARD
+			| typeof go.PLAYBACK_ONCE_BACKWARD
+			| typeof go.PLAYBACK_ONCE_PINGPONG
+			| typeof go.PLAYBACK_LOOP_FORWARD
+			| typeof go.PLAYBACK_LOOP_BACKWARD
+			| typeof go.PLAYBACK_LOOP_PINGPONG,
 		to: number | vmath.vector3 | vmath.vector4 | vmath.quaternion,
 		easing: unknown,
 		duration: number,
@@ -1529,13 +1543,29 @@ with a custom curve. See the animation guide for more information.
 	*/
 	export function animate(
 		node: node,
-		property: unknown,
+		property:
+			| typeof gui.PROP_POSITION
+			| typeof gui.PROP_ROTATION
+			| typeof gui.PROP_SCALE
+			| typeof gui.PROP_COLOR
+			| typeof gui.PROP_OUTLINE
+			| typeof gui.PROP_SHADOW
+			| typeof gui.PROP_SIZE
+			| typeof gui.PROP_FILL_ANGLE
+			| typeof gui.PROP_INNER_RADIUS
+			| typeof gui.PROP_SLICE9,
 		to: number | vmath.vector3 | vmath.vector4 | vmath.quaternion,
 		easing: unknown,
 		duration: number,
 		delay?: number,
 		complete_function?: (...args: unknown[]) => void,
-		playback?: unknown,
+		playback?:
+			| typeof gui.PLAYBACK_ONCE_FORWARD
+			| typeof gui.PLAYBACK_ONCE_BACKWARD
+			| typeof gui.PLAYBACK_ONCE_PINGPONG
+			| typeof gui.PLAYBACK_LOOP_FORWARD
+			| typeof gui.PLAYBACK_LOOP_BACKWARD
+			| typeof gui.PLAYBACK_LOOP_PINGPONG,
 	): void;
 
 	/**
@@ -1618,7 +1648,9 @@ with a custom curve. See the animation guide for more information.
 - `gui.ADJUST_STRETCH`
 
 	*/
-	export function get_adjust_mode(node: node): unknown;
+	export function get_adjust_mode(
+		node: node,
+	): typeof gui.ADJUST_FIT | typeof gui.ADJUST_ZOOM | typeof gui.ADJUST_STRETCH;
 
 	/**
 	 * gets the node alpha
@@ -1638,7 +1670,13 @@ with a custom curve. See the animation guide for more information.
 - `gui.BLEND_MULT`
 
 	*/
-	export function get_blend_mode(node: node): unknown;
+	export function get_blend_mode(
+		node: node,
+	):
+		| typeof gui.BLEND_ALPHA
+		| typeof gui.BLEND_ADD
+		| typeof gui.BLEND_ADD_ALPHA
+		| typeof gui.BLEND_MULT;
 
 	/**
 	 * If node is set as an inverted clipping node, it will clip anything inside as opposed to outside.
@@ -1656,7 +1694,9 @@ with a custom curve. See the animation guide for more information.
 - `gui.CLIPPING_MODE_STENCIL`
 
 	*/
-	export function get_clipping_mode(node: node): unknown;
+	export function get_clipping_mode(
+		node: node,
+	): typeof gui.CLIPPING_MODE_NONE | typeof gui.CLIPPING_MODE_STENCIL;
 
 	/**
 	 * If node is set as visible clipping node, it will be shown as well as clipping. Otherwise, it will only clip but not show visually.
@@ -1828,7 +1868,9 @@ with a custom curve. See the animation guide for more information.
 - `gui.PIEBOUNDS_ELLIPSE`
 
 	*/
-	export function get_outer_bounds(node: node): unknown;
+	export function get_outer_bounds(
+		node: node,
+	): typeof gui.PIEBOUNDS_RECTANGLE | typeof gui.PIEBOUNDS_ELLIPSE;
 
 	/**
 	 * Returns the outline color of the supplied node.
@@ -1877,7 +1919,18 @@ with a custom curve. See the animation guide for more information.
 - `gui.PIVOT_NW`
 
 	*/
-	export function get_pivot(node: node): unknown;
+	export function get_pivot(
+		node: node,
+	):
+		| typeof gui.PIVOT_CENTER
+		| typeof gui.PIVOT_N
+		| typeof gui.PIVOT_NE
+		| typeof gui.PIVOT_E
+		| typeof gui.PIVOT_SE
+		| typeof gui.PIVOT_S
+		| typeof gui.PIVOT_SW
+		| typeof gui.PIVOT_W
+		| typeof gui.PIVOT_NW;
 
 	/**
 	 * Returns the position of the supplied node.
@@ -1939,7 +1992,9 @@ with a custom curve. See the animation guide for more information.
 - `gui.SIZE_MODE_AUTO`
 
 	*/
-	export function get_size_mode(node: node): unknown;
+	export function get_size_mode(
+		node: node,
+	): typeof gui.SIZE_MODE_MANUAL | typeof gui.SIZE_MODE_AUTO;
 
 	/**
 	 * Returns the slice9 configuration values for the node.
@@ -2002,7 +2057,9 @@ with a custom curve. See the animation guide for more information.
 - `gui.ANCHOR_RIGHT`
 
 	*/
-	export function get_xanchor(node: node): unknown;
+	export function get_xanchor(
+		node: node,
+	): typeof gui.ANCHOR_NONE | typeof gui.ANCHOR_LEFT | typeof gui.ANCHOR_RIGHT;
 
 	/**
 	* The y-anchor specifies how the node is moved when the game is run in a different resolution.
@@ -2014,7 +2071,9 @@ with a custom curve. See the animation guide for more information.
 - `gui.ANCHOR_BOTTOM`
 
 	*/
-	export function get_yanchor(node: node): unknown;
+	export function get_yanchor(
+		node: node,
+	): typeof gui.ANCHOR_NONE | typeof gui.ANCHOR_LEFT | typeof gui.ANCHOR_RIGHT;
 
 	/**
 	 * Hides the on-display touch keyboard on the device.
@@ -2640,7 +2699,13 @@ the new state of the emitter:
 - `gui.ANCHOR_RIGHT`
 
 	*/
-	export function set_xanchor(node: node, anchor: unknown): void;
+	export function set_xanchor(
+		node: node,
+		anchor:
+			| typeof gui.ANCHOR_NONE
+			| typeof gui.ANCHOR_LEFT
+			| typeof gui.ANCHOR_RIGHT,
+	): void;
 
 	/**
 	* The y-anchor specifies how the node is moved when the game is run in a different resolution.
@@ -2652,7 +2717,13 @@ the new state of the emitter:
 - `gui.ANCHOR_BOTTOM`
 
 	*/
-	export function set_yanchor(node: node, anchor: unknown): void;
+	export function set_yanchor(
+		node: node,
+		anchor:
+			| typeof gui.ANCHOR_NONE
+			| typeof gui.ANCHOR_LEFT
+			| typeof gui.ANCHOR_RIGHT,
+	): void;
 
 	/**
 	* Shows the on-display touch keyboard.
@@ -2668,7 +2739,14 @@ the new state of the emitter:
 
 	* @param autoclose  if the keyboard should automatically close when clicking outside
 	*/
-	export function show_keyboard(type: unknown, autoclose: boolean): void;
+	export function show_keyboard(
+		type:
+			| typeof gui.KEYBOARD_TYPE_DEFAULT
+			| typeof gui.KEYBOARD_TYPE_EMAIL
+			| typeof gui.KEYBOARD_TYPE_NUMBER_PAD
+			| typeof gui.KEYBOARD_TYPE_PASSWORD,
+		autoclose: boolean,
+	): void;
 
 	/**
 	* Stops the particle fx for a gui node
@@ -2710,14 +2788,14 @@ declare namespace physics {
 	 * The angular damping value for the collision object. Setting this value alters the damping of
 	 * angular motion of the object (rotation). Valid values are between 0 (no damping) and 1 (full damping).
 	 */
-	export let angular_damping: unknown;
+	export let angular_damping: number;
 
 	/**
 	 * vector3.
 	 * The velocity is measured as a rotation around the vector with a speed equivalent to the vector length
 	 * in radians/s.
 	 */
-	export let angular_velocity: unknown;
+	export let angular_velocity: vmath.vector3;
 
 	/**
 	 * Post this message to a collision-object-component to apply the specified force on the collision object.
@@ -2751,13 +2829,13 @@ declare namespace physics {
 	 * The linear damping value for the collision object. Setting this value alters the damping of
 	 * linear motion of the object. Valid values are between 0 (no damping) and 1 (full damping).
 	 */
-	export let linear_damping: unknown;
+	export let linear_damping: number;
 
 	/**
 	 * The current linear velocity of the collision object component as a vector3.
 	 * The velocity is measured in units/s (pixels/s).
 	 */
-	export let linear_velocity: unknown;
+	export let linear_velocity: vmath.vector3;
 
 	/**
 	 * READ ONLY Returns the defined physical mass of the collision object component as a number.
@@ -3170,7 +3248,13 @@ You can also use the `view_recorded_frame` function to display a recorded frame.
 Every time you switch to recording mode the recording buffer is cleared.
 The recording buffer is also cleared when setting the `MODE_SHOW_PEAK_FRAME` mode.
 	*/
-	export function set_ui_mode(mode: unknown): void;
+	export function set_ui_mode(
+		mode:
+			| typeof profiler.MODE_RUN
+			| typeof profiler.MODE_PAUSE
+			| typeof profiler.MODE_SHOW_PEAK_FRAME
+			| typeof profiler.MODE_RECORD,
+	): void;
 
 	/**
 	* Set the on-screen profile view mode - minimized or expanded
@@ -3180,7 +3264,9 @@ The recording buffer is also cleared when setting the `MODE_SHOW_PEAK_FRAME` mod
 - `profiler.VIEW_MODE_MINIMIZED` Minimized mode which only shows the top header (fps counters and ui profiler mode)
 
 	*/
-	export function set_ui_view_mode(mode: unknown): void;
+	export function set_ui_view_mode(
+		mode: typeof profiler.VIEW_MODE_FULL | typeof profiler.VIEW_MODE_MINIMIZED,
+	): void;
 
 	/**
 	 * Shows or hides the time the engine waits for vsync in the on-screen profiler
@@ -3469,12 +3555,12 @@ declare namespace render {
 	/**
 	 *
 	 */
-	export const FRUSTUM_PLANES_ALL: unknown;
+	export const FRUSTUM_PLANES_ALL: number;
 
 	/**
 	 *
 	 */
-	export const FRUSTUM_PLANES_SIDES: unknown;
+	export const FRUSTUM_PLANES_SIDES: number;
 
 	/**
 	 *
@@ -3610,7 +3696,14 @@ declare namespace render {
 - `render.STATE_POLYGON_OFFSET_FILL`
 
 	*/
-	export function disable_state(state: unknown): void;
+	export function disable_state(
+		state:
+			| typeof render.STATE_DEPTH_TEST
+			| typeof render.STATE_STENCIL_TEST
+			| typeof render.STATE_BLEND
+			| typeof render.STATE_CULL_FACE
+			| typeof render.STATE_POLYGON_OFFSET_FILL,
+	): void;
 
 	/**
 	 * Disables a texture unit for a render target that has previourly been enabled.
@@ -3679,7 +3772,14 @@ Determines which sides of the frustum will be used. Default is render.FRUSTUM_PL
 - `render.STATE_POLYGON_OFFSET_FILL`
 
 	*/
-	export function enable_state(state: unknown): void;
+	export function enable_state(
+		state:
+			| typeof render.STATE_DEPTH_TEST
+			| typeof render.STATE_STENCIL_TEST
+			| typeof render.STATE_BLEND
+			| typeof render.STATE_CULL_FACE
+			| typeof render.STATE_POLYGON_OFFSET_FILL,
+	): void;
 
 	/**
 	* Sets the specified render target's specified buffer to be
@@ -3785,7 +3885,9 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	 * @param tags  table of tags that the predicate should match. The tags can be of either hash or string type
 	 * @return predicate  new predicate
 	 */
-	export function predicate(tags: unknown): unknown;
+	export function predicate(
+		tags: Array<string | hash> | LuaSet<string | hash>,
+	): unknown;
 
 	/**
 	 * Creates a new render target according to the supplied
@@ -3983,7 +4085,12 @@ to enable those textures as well. Currently 4 color attachments are supported:
 - `render.FACE_FRONT_AND_BACK`
 
 	*/
-	export function set_cull_face(face_type: unknown): void;
+	export function set_cull_face(
+		face_type:
+			| typeof render.FACE_FRONT
+			| typeof render.FACE_BACK
+			| typeof render.FACE_FRONT_AND_BACK,
+	): void;
 
 	/**
 	 * Specifies the function that should be used to compare each incoming pixel
@@ -4004,7 +4111,17 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	 * The depth function is initially set to `render.COMPARE_FUNC_LESS`.
 	 * @param func  depth test function, see the description for available values
 	 */
-	export function set_depth_func(func: unknown): void;
+	export function set_depth_func(
+		func:
+			| typeof render.COMPARE_FUNC_NEVER
+			| typeof render.COMPARE_FUNC_LESS
+			| typeof render.COMPARE_FUNC_LEQUAL
+			| typeof render.COMPARE_FUNC_GREATER
+			| typeof render.COMPARE_FUNC_GEQUAL
+			| typeof render.COMPARE_FUNC_EQUAL
+			| typeof render.COMPARE_FUNC_NOTEQUAL
+			| typeof render.COMPARE_FUNC_ALWAYS,
+	): void;
 
 	/**
 	 * Specifies whether the depth buffer is enabled for writing. The supplied mask governs
@@ -5004,17 +5121,17 @@ declare namespace sys {
 	/**
 	 * network connected through other, non cellular, connection
 	 */
-	export const NETWORK_CONNECTED: unknown;
+	export const NETWORK_CONNECTED: number;
 
 	/**
 	 * network connected through mobile cellular
 	 */
-	export const NETWORK_CONNECTED_CELLULAR: unknown;
+	export const NETWORK_CONNECTED_CELLULAR: number;
 
 	/**
 	 * no network connection found
 	 */
-	export const NETWORK_DISCONNECTED: unknown;
+	export const NETWORK_DISCONNECTED: number;
 
 	/**
 	 * deserializes buffer into a lua table
@@ -5029,7 +5146,7 @@ declare namespace sys {
 	 * @param path  path to check
 	 * @return result  `true` if the path exists, `false` otherwise
 	 */
-	export function exists(path: string): unknown;
+	export function exists(path: string): boolean;
 
 	/**
 	 * Terminates the game application and reports the specified `code` to the OS.
@@ -5064,7 +5181,7 @@ declare namespace sys {
 	 * @param default_value  (optional) default value to return if the value does not exist
 	 * @return value  config value as an integer. default_value if the config key does not exist. 0 if no default value was supplied.
 	 */
-	export function get_config_int(key: string, default_value?: unknown): unknown;
+	export function get_config_int(key: string, default_value?: number): number;
 
 	/**
 	 * Get number config value from the game.project configuration file with optional default value
@@ -5099,7 +5216,10 @@ declare namespace sys {
 - `sys.NETWORK_CONNECTED` (otherwise, Wifi)
 
 	*/
-	export function get_connectivity(): unknown;
+	export function get_connectivity():
+		| typeof sys.NETWORK_DISCONNECTED
+		| typeof sys.NETWORK_CONNECTED_CELLULAR
+		| typeof sys.NETWORK_CONNECTED;
 
 	/**
 	* Returns a table with engine information.
@@ -5113,7 +5233,11 @@ The SHA1 for the current engine build, i.e. "0060183cce2e29dbd09c85ece83cbb72068
 If the engine is a debug or release version
 
 	*/
-	export function get_engine_info(): unknown;
+	export function get_engine_info(): {
+		version: string;
+		version_sha1: string;
+		is_debug: boolean;
+	};
 
 	/**
 	 * Create a path to the host device for unit testing
@@ -5290,7 +5414,9 @@ The source file, line number and error message.
 The stack traceback.
 
 	*/
-	export function set_error_handler(error_handler: unknown): void;
+	export function set_error_handler(
+		error_handler: (...args: unknown[]) => unknown,
+	): void;
 
 	/**
 	 * Set game update-frequency (frame cap). This option is equivalent to `display.update_frequency` in
@@ -5641,7 +5767,9 @@ declare namespace html5 {
 The calling script
 
 	*/
-	export function set_interaction_listener(callback: unknown): void;
+	export function set_interaction_listener(
+		callback: (...args: unknown[]) => unknown,
+	): void;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
@@ -5695,6 +5823,11 @@ declare namespace image {
 	export const TYPE_LUMINANCE: 'l';
 
 	/**
+	 * luminance image type
+	 */
+	export const TYPE_LUMINANCE_ALPHA: 'la';
+
+	/**
 	 * RGB image type
 	 */
 	export const TYPE_RGB: 'rgb';
@@ -5716,6 +5849,7 @@ declare namespace image {
 - `image.TYPE_RGB`
 - `image.TYPE_RGBA`
 - `image.TYPE_LUMINANCE`
+- `image.TYPE_LUMINANCE_ALPHA`
 
 
 `buffer`: the raw image data
@@ -5771,7 +5905,7 @@ declare namespace msg {
 	export function post(
 		receiver: string | url | hash,
 		message_id: string | hash,
-		message?: unknown,
+		message?: LuaTable | LuaSet | LuaMap | object,
 	): void;
 
 	/**
@@ -5818,7 +5952,7 @@ declare namespace timer {
 	/**
 	 * Indicates an invalid timer handle
 	 */
-	export const INVALID_TIMER_HANDLE: unknown;
+	export const INVALID_TIMER_HANDLE: number;
 
 	/**
 	 * You may cancel a timer from inside a timer callback.
@@ -6356,7 +6490,9 @@ declare namespace vmath {
 	 * @param t  table of numbers
 	 * @return v  new vector
 	 */
-	export function vector(t: unknown): unknown;
+	export function vector(
+		t: number[] | LuaSet<number>,
+	): vmath.vector3 | vmath.vector4;
 
 	/**
 	 * Creates a new zero vector with all components set to 0.
@@ -6522,17 +6658,17 @@ declare namespace collectionfactory {
 	/**
 	 * loaded
 	 */
-	export const STATUS_LOADED: unknown;
+	export const STATUS_LOADED: number;
 
 	/**
 	 * loading
 	 */
-	export const STATUS_LOADING: unknown;
+	export const STATUS_LOADING: number;
 
 	/**
 	 * unloaded
 	 */
-	export const STATUS_UNLOADED: unknown;
+	export const STATUS_UNLOADED: number;
 
 	/**
 	 * The URL identifies the collectionfactory component that should do the spawning.
@@ -6575,7 +6711,12 @@ declare namespace collectionfactory {
 - `collectionfactory.STATUS_LOADED`
 
 	*/
-	export function get_status(url?: string | hash | url): unknown;
+	export function get_status(
+		url?: string | hash | url,
+	):
+		| typeof collectionfactory.STATUS_UNLOADED
+		| typeof collectionfactory.STATUS_LOADING
+		| typeof collectionfactory.STATUS_LOADED;
 
 	/**
 	* Resources loaded are referenced by the collection factory component until the existing (parent) collection is destroyed or collectionfactory.unload is called.
@@ -6715,17 +6856,17 @@ declare namespace factory {
 	/**
 	 * loaded
 	 */
-	export const STATUS_LOADED: unknown;
+	export const STATUS_LOADED: number;
 
 	/**
 	 * loading
 	 */
-	export const STATUS_LOADING: unknown;
+	export const STATUS_LOADING: number;
 
 	/**
 	 * unloaded
 	 */
-	export const STATUS_UNLOADED: unknown;
+	export const STATUS_UNLOADED: number;
 
 	/**
 	 * The URL identifies which factory should create the game object.
@@ -6761,7 +6902,12 @@ declare namespace factory {
 - `factory.STATUS_LOADED`
 
 	*/
-	export function get_status(url?: string | hash | url): unknown;
+	export function get_status(
+		url?: string | hash | url,
+	):
+		| typeof factory.STATUS_UNLOADED
+		| typeof factory.STATUS_LOADING
+		| typeof factory.STATUS_LOADED;
 
 	/**
 	* Resources are referenced by the factory component until the existing (parent) collection is destroyed or factory.unload is called.
@@ -7029,22 +7175,22 @@ declare namespace particlefx {
 	/**
 	 * postspawn state
 	 */
-	export const EMITTER_STATE_POSTSPAWN: unknown;
+	export const EMITTER_STATE_POSTSPAWN: number;
 
 	/**
 	 * prespawn state
 	 */
-	export const EMITTER_STATE_PRESPAWN: unknown;
+	export const EMITTER_STATE_PRESPAWN: number;
 
 	/**
 	 * sleeping state
 	 */
-	export const EMITTER_STATE_SLEEPING: unknown;
+	export const EMITTER_STATE_SLEEPING: number;
 
 	/**
 	 * spawning state
 	 */
-	export const EMITTER_STATE_SPAWNING: unknown;
+	export const EMITTER_STATE_SPAWNING: number;
 
 	/**
 	* Starts playing a particle FX component.
@@ -7127,13 +7273,13 @@ declare namespace sound {
 	 * The gain on the sound-component. Note that gain is in linear scale,
 	 * between 0 and 1.
 	 */
-	export let gain: unknown;
+	export let gain: number;
 
 	/**
 	 * The pan on the sound-component. The valid range is from -1.0 to 1.0,
 	 * representing -45 degrees left, to +45 degrees right.
 	 */
-	export let pan: unknown;
+	export let pan: number;
 
 	/**
 	 * Post this message to a sound-component to make it play its sound. Multiple voices is supported. The limit is set to 32 voices per sound component.
@@ -7352,7 +7498,7 @@ The invoker of the callback: the sound component.
 	 * The speed on the sound-component where 1.0 is normal speed, 0.5 is half
 	 * speed and 2.0 is double speed.
 	 */
-	export let speed: unknown;
+	export let speed: number;
 
 	/**
 	 * Post this message to a sound-component to make it stop playing all active voices

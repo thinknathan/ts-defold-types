@@ -1,55 +1,62 @@
 /**
- * Automatically make opinionated changes to the output of type-gen
+ * Automatically make opinionated changes to the output of `type-gen`.
+ * Uses arrays of data pairs ['findThis', 'replaceWithThis']
+ * Ultimately uses `String.replace`, which accepts either strings or regex.
  */
 
 const fs = require('fs');
-
 const filePath = 'index.d.ts';
 
-// Matched pairs of text to replace and replacements
-const patches = [
+/** Defold's basic types */
+const defoldBasics = [
 	// Describe `url`
 	[
 		'declare type url = {\n}',
 		`/**
-		* A reference to game resources, such as game objects, components, and assets.
-		*/
-		declare type url = {
-			socket: hash;
-			path: hash;
-			fragment: hash | undefined;
-		};`,
+	* A reference to game resources, such as game objects, components, and assets.
+	*/
+	declare type url = {
+		socket: hash;
+		path: hash;
+		fragment: hash | undefined;
+	};`,
 	],
 	// Describe `hash`
 	[
 		'declare type hash = {\n}',
 		`/**
-		* A unique identifier used to reference resources, messages, properties, and other entities within the game.
-		*/
-		declare type hash = Readonly<LuaUserdata &
-		{
-			readonly __hash__: unique symbol;
-		}>;`,
+	* A unique identifier used to reference resources, messages, properties, and other entities within the game.
+	*/
+	declare type hash = Readonly<LuaUserdata &
+	{
+		readonly __hash__: unique symbol;
+	}>;`,
 	],
 	// Describe `node`
 	[
 		'declare type node = {\n}',
 		`declare type node = Readonly<LuaUserdata &
-		{
-			readonly __node__: unique symbol;
-		}>;`,
+	{
+		readonly __node__: unique symbol;
+	}>;`,
 	],
 	// Describe `buffer`
 	[
 		'declare type buffer = {\n}',
 		`/**
-		* A block of memory that can store binary data.
-		*/
-		declare type buffer = Readonly<LuaUserdata &
-		{
-			readonly __buffer__: unique symbol;
-		}>;`,
+	* A block of memory that can store binary data.
+	*/
+	declare type buffer = Readonly<LuaUserdata &
+	{
+		readonly __buffer__: unique symbol;
+	}>;`,
 	],
+	// Pretty print
+	['function pprint(v: any)', 'function pprint(...args: unknown[])'],
+];
+
+/** Changes to smooth differences between Lua and TS */
+const languageQuirks = [
 	// Replace nil with undefined
 	[/nil/g, 'undefined'],
 	[/Nil/g, 'Undefined'],
@@ -57,46 +64,226 @@ const patches = [
 	[/~=/g, '!=='],
 	// Replace lua self with TS this
 	[/`self`/g, '`this`'],
-	// Change invalid null type
+	// Change invalid JSON null type
 	['let null$: any', 'let null$: null'],
-	// Return types
+];
+
+/** image namespace */
+const image = [
+	['let TYPE_LUMINANCE: any', 'let TYPE_LUMINANCE: "l"'],
+	['let TYPE_LUMINANCE_ALPHA: any', 'let TYPE_LUMINANCE_ALPHA: "la"'],
+	['let TYPE_RGB: any', 'let TYPE_RGB: "rgb"'],
+	['let TYPE_RGBA: any', 'let TYPE_RGBA: "rgba"'],
+];
+
+/** buffer namespace */
+const bufferChanges = [
+	// Describe `buffer` types
+	// Greedy changes apply multiple times
+	[/(VALUE_TYPE_.+): any/g, '$1: number'],
+];
+
+/** go namespace */
+const go = [
+	['let euler: any', 'let euler: vmath.vector3'],
+	['let position: any', 'let position: vmath.vector3'],
+	['let rotation: any', 'let rotation: vmath.quaternion'],
+	// Describe easing types
+	// Greedy changes apply multiple times
+	[/(EASING_.+): any/g, '$1: number'],
+	// Describe playback types
+	// Greedy changes apply multiple times
+	[/(PLAYBACK_.+): any/g, '$1: number'],
+	// function animate
+	[
+		'playback: any,',
+		'playback: typeof go.PLAYBACK_ONCE_FORWARD | typeof go.PLAYBACK_ONCE_BACKWARD | typeof go.PLAYBACK_ONCE_PINGPONG | typeof go.PLAYBACK_LOOP_FORWARD | typeof go.PLAYBACK_LOOP_BACKWARD | typeof go.PLAYBACK_LOOP_PINGPONG,',
+	],
+	[
+		'function exists(url: string | hash | url): any',
+		'function exists(url: string | hash | url): boolean',
+	],
+	[
+		'function cancel_animation(node: node, property: any)',
+		'function cancel_animation(node: node, property: "position" | "rotation" | "scale" | "color" | "outline" | "shadow" | "size" | "fill_angle" | "inner_radius" | "slice9")',
+	],
+];
+
+/** window namespace */
+const windowChanges = [
+	['let DIMMING_OFF: any', 'let DIMMING_OFF: number'],
+	['let DIMMING_ON: any', 'let DIMMING_ON: number'],
+	['let DIMMING_UNKNOWN: any', 'let DIMMING_UNKNOWN: number'],
+	['let WINDOW_EVENT_DEICONIFIED: any', 'let WINDOW_EVENT_DEICONIFIED: number'],
+	[
+		'let WINDOW_EVENT_FOCUS_GAINED: any',
+		'let WINDOW_EVENT_FOCUS_GAINED: number',
+	],
+	['let WINDOW_EVENT_FOCUS_LOST: any', 'let WINDOW_EVENT_FOCUS_LOST: number'],
+	// Iconfied is sometimes spelled Iconified. Probably a typo?
+	['let WINDOW_EVENT_ICONFIED: any', 'let WINDOW_EVENT_ICONFIED: number'],
+	['let WINDOW_EVENT_RESIZED: any', 'let WINDOW_EVENT_RESIZED: number'],
+	[
+		'function get_dim_mode(): any',
+		'function get_dim_mode(): typeof window.DIMMING_UNKNOWN | typeof window.DIMMING_ON | typeof window.DIMMING_OFF',
+	],
+	[
+		'function set_dim_mode(mode: any)',
+		'function set_dim_mode(mode: typeof window.DIMMING_ON | typeof window.DIMMING_OFF)',
+	],
+	[
+		'function set_listener(callback: any)',
+		'function set_listener(callback: (this: unknown, event: typeof window.WINDOW_EVENT_FOCUS_LOST | typeof window.WINDOW_EVENT_FOCUS_GAINED | typeof window.WINDOW_EVENT_RESIZED | typeof window.WINDOW_EVENT_ICONFIED | typeof window.WINDOW_EVENT_DEICONIFIED, data: { width: number | undefined, height: number | undefined	}) => void)',
+	],
+];
+
+/** resource namespace */
+const resource = [
+	[
+		'let COMPRESSION_TYPE_BASIS_UASTC: any',
+		'let COMPRESSION_TYPE_BASIS_UASTC: number',
+	],
+	['let COMPRESSION_TYPE_DEFAULT: any', 'let COMPRESSION_TYPE_DEFAULT: number'],
+	['let TEXTURE_FORMAT_LUMINANCE: any', 'let TEXTURE_FORMAT_LUMINANCE: number'],
+	['let TEXTURE_FORMAT_R16F: any', 'let TEXTURE_FORMAT_R16F: number'],
+	['let TEXTURE_FORMAT_R32F: any', 'let TEXTURE_FORMAT_R32F: number'],
+	['let TEXTURE_FORMAT_RG16F: any', 'let TEXTURE_FORMAT_RG16F: number'],
+	['let TEXTURE_FORMAT_RG32F: any', 'let TEXTURE_FORMAT_RG32F: number'],
+	['let TEXTURE_FORMAT_RGB: any', 'let TEXTURE_FORMAT_RGB: number'],
+	['let TEXTURE_FORMAT_RGB16F: any', 'let TEXTURE_FORMAT_RGB16F: number'],
+	['let TEXTURE_FORMAT_RGB32F: any', 'let TEXTURE_FORMAT_RGB32F: number'],
+	['let TEXTURE_FORMAT_RGBA: any', 'let TEXTURE_FORMAT_RGBA: number'],
+	['let TEXTURE_FORMAT_RGBA16F: any', 'let TEXTURE_FORMAT_RGBA16F: number'],
+	['let TEXTURE_FORMAT_RGBA32F: any', 'let TEXTURE_FORMAT_RGBA32F: number'],
+	[
+		'let TEXTURE_FORMAT_RGBA_ASTC_4x4: any',
+		'const TEXTURE_FORMAT_RGBA_ASTC_4x4: number',
+	],
+	['let TEXTURE_FORMAT_RGBA_BC3: any', 'let TEXTURE_FORMAT_RGBA_BC3: number'],
+	['let TEXTURE_FORMAT_RGBA_BC7: any', 'let TEXTURE_FORMAT_RGBA_BC7: number'],
+	['let TEXTURE_FORMAT_RGBA_ETC2: any', 'let TEXTURE_FORMAT_RGBA_ETC2: number'],
+	[
+		'let TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1: any',
+		'let TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1: number',
+	],
+	[
+		'let TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1: any',
+		'let TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1: number',
+	],
+	['let TEXTURE_FORMAT_RGB_BC1: any', 'let TEXTURE_FORMAT_RGB_BC1: number'],
+	['let TEXTURE_FORMAT_RGB_ETC1: any', 'let TEXTURE_FORMAT_RGB_ETC1: number'],
+	[
+		'let TEXTURE_FORMAT_RGB_PVRTC_2BPPV1: any',
+		'let TEXTURE_FORMAT_RGB_PVRTC_2BPPV1: number',
+	],
+	[
+		'let TEXTURE_FORMAT_RGB_PVRTC_4BPPV1: any',
+		'let TEXTURE_FORMAT_RGB_PVRTC_4BPPV1: number',
+	],
+	['let TEXTURE_FORMAT_RG_BC5: any', 'let TEXTURE_FORMAT_RG_BC5: number'],
+	['let TEXTURE_FORMAT_R_BC4: any', 'let TEXTURE_FORMAT_R_BC4: number'],
+	['let TEXTURE_TYPE_2D: any', 'let TEXTURE_TYPE_2D: number'],
+	['let TEXTURE_TYPE_2D_ARRAY: any', 'let TEXTURE_TYPE_2D_ARRAY: number'],
+	['let TEXTURE_TYPE_CUBE_MAP: any', 'let TEXTURE_TYPE_CUBE_MAP: number'],
+];
+
+/** profiler namespace */
+const profiler = [
 	['MODE_PAUSE: any', 'MODE_PAUSE: number'],
 	['MODE_RECORD: any', 'MODE_RECORD: number'],
 	['MODE_RUN: any', 'MODE_RUN: number'],
 	['MODE_SHOW_PEAK_FRAME: any', 'MODE_SHOW_PEAK_FRAME: number'],
 	['VIEW_MODE_FULL: any', 'VIEW_MODE_FULL: number'],
 	['VIEW_MODE_MINIMIZED: any', 'VIEW_MODE_MINIMIZED: number'],
+	[
+		'function set_ui_mode(mode: any',
+		'function set_ui_mode(mode: typeof profiler.MODE_RUN | typeof profiler.MODE_PAUSE | typeof profiler.MODE_SHOW_PEAK_FRAME | typeof profiler.MODE_RECORD',
+	],
+	[
+		'function set_ui_view_mode(mode: any',
+		'function set_ui_view_mode(mode: typeof profiler.VIEW_MODE_FULL | typeof profiler.VIEW_MODE_MINIMIZED',
+	],
+];
+
+/** physics namespace */
+const physics = [
+	['let angular_damping: any', 'let angular_damping: number'],
+	['let angular_velocity: any', 'let angular_velocity: vmath.vector3'],
+	['let linear_damping: any', 'let linear_damping: number'],
+	['let linear_velocity: any', 'let linear_velocity: vmath.vector3'],
+	['let mass: any', 'const mass: number'],
 	['JOINT_TYPE_FIXED: any', 'JOINT_TYPE_FIXED: number'],
 	['JOINT_TYPE_HINGE: any', 'JOINT_TYPE_HINGE: number'],
 	['JOINT_TYPE_SLIDER: any', 'JOINT_TYPE_SLIDER: number'],
 	['JOINT_TYPE_SPRING: any', 'JOINT_TYPE_SPRING: number'],
 	['JOINT_TYPE_WELD: any', 'JOINT_TYPE_WELD: number'],
+];
+
+/** sys namespace */
+const sys = [
+	['let NETWORK_CONNECTED: any', 'let NETWORK_CONNECTED: number'],
 	[
-		'function exists(url: string | hash | url): any',
-		'function exists(url: string | hash | url): boolean',
+		'let NETWORK_CONNECTED_CELLULAR: any',
+		'let NETWORK_CONNECTED_CELLULAR: number',
+	],
+	['let NETWORK_DISCONNECTED: any', 'let NETWORK_DISCONNECTED: number'],
+	[
+		'function exists(path: string): any',
+		'function exists(path: string): boolean',
+	],
+	[
+		'function get_config_int(key: string, default_value?: any): any',
+		'function get_config_int(key: string, default_value?: number): number',
+	],
+	[
+		'function get_connectivity(): any',
+		'function get_connectivity(): typeof sys.NETWORK_DISCONNECTED | typeof sys.NETWORK_CONNECTED_CELLULAR | typeof sys.NETWORK_CONNECTED',
+	],
+	[
+		'function get_engine_info(): any',
+		'function get_engine_info(): { version: string, version_sha1: string, is_debug: boolean }',
 	],
 	[
 		'function load(filename: string): any',
 		'function load(filename: string): LuaMap',
 	],
-	// Describe internals
+	[
+		'function set_error_handler(error_handler: any',
+		'function set_error_handler(error_handler: (...args: unknown[]) => unknown',
+	],
+];
+
+/** msg namespace */
+const msg = [
+	['message?: any', 'message?: LuaTable | LuaSet | LuaMap | object'],
+];
+
+/** timer namespace */
+const timer = [
+	['let INVALID_TIMER_HANDLE: any', 'let INVALID_TIMER_HANDLE: number'],
+];
+
+/** html5 namespace */
+const html5 = [
+	[
+		'function set_interaction_listener(callback: any',
+		'function set_interaction_listener(callback: (...args: unknown[]) => unknown',
+	],
+];
+
+/** tilemap namespace */
+const tilemap = [
+	['let tile_source: any', 'let tile_source: hash'],
 	['H_FLIP: any', 'H_FLIP: number'],
 	['ROTATE_180: any', 'ROTATE_180: number'],
 	['ROTATE_270: any', 'ROTATE_270: number'],
 	['ROTATE_90: any', 'ROTATE_90: number'],
 	['V_FLIP: any', 'V_FLIP: number'],
-	[
-		'function move_below(node: node, reference: any)',
-		'function move_below(node: node, reference: node)',
-	],
-	[
-		'function move_above(node: node, reference: any)',
-		'function move_above(node: node, reference: node)',
-	],
-	[
-		'function cancel_animation(node: node, property: any)',
-		'function cancel_animation(node: node, property: "position" | "rotation" | "scale" | "color" | "outline" | "shadow" | "size" | "fill_angle" | "inner_radius" | "slice9")',
-	],
+];
+
+/** gui namespace */
+const gui = [
+	['let fonts: any', 'let fonts: hash'],
 	['let ADJUST_FIT: any', 'let ADJUST_FIT: number'],
 	['let ADJUST_STRETCH: any', 'let ADJUST_STRETCH: number'],
 	['let ADJUST_ZOOM: any', 'let ADJUST_ZOOM: number'],
@@ -144,6 +331,73 @@ const patches = [
 	],
 	['let SIZE_MODE_AUTO: any', 'let SIZE_MODE_AUTO: number'],
 	['let SIZE_MODE_MANUAL: any', 'let SIZE_MODE_MANUAL: number'],
+	// function animate
+	[
+		'property: any',
+		'property: typeof gui.PROP_POSITION | typeof gui.PROP_ROTATION | typeof gui.PROP_SCALE | typeof gui.PROP_COLOR | typeof gui.PROP_OUTLINE | typeof gui.PROP_SHADOW | typeof gui.PROP_SIZE | typeof gui.PROP_FILL_ANGLE | typeof gui.PROP_INNER_RADIUS | typeof gui.PROP_SLICE9',
+	],
+	[
+		'playback?: any',
+		'playback?: typeof gui.PLAYBACK_ONCE_FORWARD | typeof gui.PLAYBACK_ONCE_BACKWARD | typeof gui.PLAYBACK_ONCE_PINGPONG | typeof gui.PLAYBACK_LOOP_FORWARD | typeof gui.PLAYBACK_LOOP_BACKWARD | typeof gui.PLAYBACK_LOOP_PINGPONG',
+	],
+	[
+		'function get_adjust_mode(node: node): any',
+		'function get_adjust_mode(node: node): typeof gui.ADJUST_FIT | typeof gui.ADJUST_ZOOM | typeof gui.ADJUST_STRETCH',
+	],
+	[
+		'function get_blend_mode(node: node): any',
+		'function get_blend_mode(node: node): typeof gui.BLEND_ALPHA | typeof gui.BLEND_ADD | typeof gui.BLEND_ADD_ALPHA | typeof gui.BLEND_MULT ',
+	],
+	[
+		'function get_clipping_mode(node: node): any',
+		'function get_clipping_mode(node: node): typeof gui.CLIPPING_MODE_NONE | typeof gui.CLIPPING_MODE_STENCIL',
+	],
+	[
+		'function get_outer_bounds(node: node): any',
+		'function get_outer_bounds(node: node): typeof gui.PIEBOUNDS_RECTANGLE | typeof gui.PIEBOUNDS_ELLIPSE',
+	],
+	[
+		'function get_pivot(node: node): any',
+		'function get_pivot(node: node): typeof gui.PIVOT_CENTER | typeof gui.PIVOT_N | typeof gui.PIVOT_NE | typeof gui.PIVOT_E | typeof gui.PIVOT_SE | typeof gui.PIVOT_S | typeof gui.PIVOT_SW | typeof gui.PIVOT_W | typeof gui.PIVOT_NW',
+	],
+	[
+		'function get_size_mode(node: node): any',
+		'function get_size_mode(node: node): typeof gui.SIZE_MODE_MANUAL | typeof gui.SIZE_MODE_AUTO',
+	],
+	[
+		'function get_xanchor(node: node): any',
+		'function get_xanchor(node: node): typeof gui.ANCHOR_NONE | typeof gui.ANCHOR_LEFT | typeof gui.ANCHOR_RIGHT',
+	],
+	[
+		'function get_yanchor(node: node): any',
+		'function get_yanchor(node: node): typeof gui.ANCHOR_NONE | typeof gui.ANCHOR_LEFT | typeof gui.ANCHOR_RIGHT',
+	],
+	[
+		'function set_xanchor(node: node, anchor: any)',
+		'function set_xanchor(node: node, anchor: typeof gui.ANCHOR_NONE | typeof gui.ANCHOR_LEFT | typeof gui.ANCHOR_RIGHT)',
+	],
+	[
+		'function set_yanchor(node: node, anchor: any)',
+		'function set_yanchor(node: node, anchor: typeof gui.ANCHOR_NONE | typeof gui.ANCHOR_LEFT | typeof gui.ANCHOR_RIGHT)',
+	],
+	[
+		'function show_keyboard(type: any',
+		'function show_keyboard(type: typeof gui.KEYBOARD_TYPE_DEFAULT | typeof gui.KEYBOARD_TYPE_EMAIL | typeof gui.KEYBOARD_TYPE_NUMBER_PAD | typeof gui.KEYBOARD_TYPE_PASSWORD',
+	],
+	[
+		'function move_below(node: node, reference: any)',
+		'function move_below(node: node, reference: node)',
+	],
+	[
+		'function move_above(node: node, reference: any)',
+		'function move_above(node: node, reference: node)',
+	],
+	['let materials: any', 'let materials: hash'],
+	['let textures: any', 'let textures: hash'],
+];
+
+/** render namespace */
+const render = [
 	['let BLEND_CONSTANT_ALPHA: any', 'let BLEND_CONSTANT_ALPHA: number'],
 	['let BLEND_CONSTANT_COLOR: any', 'let BLEND_CONSTANT_COLOR: number'],
 	['let BLEND_DST_ALPHA: any', 'let BLEND_DST_ALPHA: number'],
@@ -210,6 +464,8 @@ const patches = [
 	['let FORMAT_RGBA16F: any', 'let FORMAT_RGBA16F: number | undefined'],
 	['let FORMAT_RGBA32F: any', 'let FORMAT_RGBA32F: number | undefined'],
 	['let FORMAT_STENCIL: any', 'let FORMAT_STENCIL: number'],
+	['let FRUSTUM_PLANES_ALL: any', 'let FRUSTUM_PLANES_ALL: number'],
+	['let FRUSTUM_PLANES_SIDES: any', 'let FRUSTUM_PLANES_SIDES: number'],
 	['let RENDER_TARGET_DEFAULT: any', 'let RENDER_TARGET_DEFAULT: number'],
 	['let STATE_BLEND: any', 'let STATE_BLEND: number'],
 	['let STATE_CULL_FACE: any', 'let STATE_CULL_FACE: number'],
@@ -231,101 +487,152 @@ const patches = [
 	['let WRAP_CLAMP_TO_EDGE: any', 'let WRAP_CLAMP_TO_EDGE: number'],
 	['let WRAP_MIRRORED_REPEAT: any', 'let WRAP_MIRRORED_REPEAT: number'],
 	['let WRAP_REPEAT: any', 'let WRAP_REPEAT: number'],
-	['_VERSION: any', '_VERSION: string'],
+	[
+		'function disable_state(state: any',
+		'function disable_state(state: typeof render.STATE_DEPTH_TEST | typeof render.STATE_STENCIL_TEST | typeof render.STATE_BLEND | typeof render.STATE_CULL_FACE | typeof render.STATE_POLYGON_OFFSET_FILL',
+	],
+	[
+		'function enable_state(state: any',
+		'function enable_state(state: typeof render.STATE_DEPTH_TEST | typeof render.STATE_STENCIL_TEST | typeof render.STATE_BLEND | typeof render.STATE_CULL_FACE | typeof render.STATE_POLYGON_OFFSET_FILL',
+	],
+	[
+		'function predicate(tags: any',
+		'function predicate(tags: Array<string|hash> | LuaSet<string|hash>',
+	],
+	[
+		'function set_cull_face(face_type: any',
+		'function set_cull_face(face_type: typeof render.FACE_FRONT | typeof render.FACE_BACK | typeof render.FACE_FRONT_AND_BACK',
+	],
+	[
+		'function set_depth_func(func: any',
+		'function set_depth_func(func: typeof render.COMPARE_FUNC_NEVER | typeof render.COMPARE_FUNC_LESS | typeof render.COMPARE_FUNC_LEQUAL | typeof render.COMPARE_FUNC_GREATER | typeof render.COMPARE_FUNC_GEQUAL | typeof render.COMPARE_FUNC_EQUAL | typeof render.COMPARE_FUNC_NOTEQUAL | typeof render.COMPARE_FUNC_ALWAYS',
+	],
+];
+
+/** socket namespace */
+const socket = [
 	['_SETSIZE: any', '_SETSIZE: number'],
-	['SYSFIELD_ENGINE_VERSION: any', 'SYSFIELD_ENGINE_VERSION: number'],
-	['SYSFIELD_ENGINE_HASH: any', 'SYSFIELD_ENGINE_HASH: number'],
-	['SYSFIELD_DEVICE_MODEL: any', 'SYSFIELD_DEVICE_MODEL: number'],
-	['SYSFIELD_MANUFACTURER: any', 'SYSFIELD_MANUFACTURER: number'],
-	['SYSFIELD_SYSTEM_NAME: any', 'SYSFIELD_SYSTEM_NAME: number'],
-	['SYSFIELD_SYSTEM_VERSION: any', 'SYSFIELD_SYSTEM_VERSION: number'],
-	['SYSFIELD_LANGUAGE: any', 'SYSFIELD_LANGUAGE: number'],
-	['SYSFIELD_DEVICE_LANGUAGE: any', 'SYSFIELD_DEVICE_LANGUAGE: number'],
-	['SYSFIELD_TERRITORY: any', 'SYSFIELD_TERRITORY: number'],
+	['_VERSION: any', '_VERSION: string'],
+	[
+		'newtry(finalizer: any): any',
+		'newtry(finalizer: (...args: unknown[]) => unknown): (...args: unknown[]) => unknown',
+	],
+	[
+		'protect(func: any): any',
+		'protect(func: (...args: unknown[]) => unknown): (...args: unknown[]) => unknown',
+	],
+];
+
+/** crash namespace */
+const crash = [
 	[
 		'SYSFIELD_ANDROID_BUILD_FINGERPRINT: any',
 		'SYSFIELD_ANDROID_BUILD_FINGERPRINT: number',
 	],
+	['SYSFIELD_DEVICE_LANGUAGE: any', 'SYSFIELD_DEVICE_LANGUAGE: number'],
+	['SYSFIELD_DEVICE_MODEL: any', 'SYSFIELD_DEVICE_MODEL: number'],
+	['SYSFIELD_ENGINE_HASH: any', 'SYSFIELD_ENGINE_HASH: number'],
+	['SYSFIELD_ENGINE_VERSION: any', 'SYSFIELD_ENGINE_VERSION: number'],
+	['SYSFIELD_LANGUAGE: any', 'SYSFIELD_LANGUAGE: number'],
+	['SYSFIELD_MANUFACTURER: any', 'SYSFIELD_MANUFACTURER: number'],
 	['SYSFIELD_MAX: any', 'SYSFIELD_MAX: number'],
+	['SYSFIELD_SYSTEM_NAME: any', 'SYSFIELD_SYSTEM_NAME: number'],
+	['SYSFIELD_SYSTEM_VERSION: any', 'SYSFIELD_SYSTEM_VERSION: number'],
+	['SYSFIELD_TERRITORY: any', 'SYSFIELD_TERRITORY: number'],
 	['USERFIELD_MAX: any', 'USERFIELD_MAX: number'],
 	['USERFIELD_SIZE: any', 'USERFIELD_SIZE: number'],
-	['function pprint(v: any)', 'function pprint(...args: unknown[])'],
+	[
+		'get_backtrace(handle: number): any',
+		'get_backtrace(handle: number): LuaTable | LuaSet | LuaMap | object',
+	],
+	[
+		'get_modules(handle: number): any',
+		'get_modules(handle: number): LuaTable | LuaSet | LuaMap | object',
+	],
+];
+
+/** camera namespace */
+const camera = [
 	['let aspect_ratio: any', 'let aspect_ratio: number'],
-	['let projection: any', 'const projection: Readonly<vmath.matrix4>'],
-	['let view: any', 'const view: Readonly<vmath.matrix4>'],
-	['let sound: any', 'let sound: hash'],
-	[/let playback_rate: any/g, 'let playback_rate: number'],
-	[/let material: any/g, 'let material: hash'],
-	['let textures: any', 'let textures: hash'],
-	['let fonts: any', 'let fonts: hash'],
 	['let far_z: any', 'let far_z: number'],
 	['let fov: any', 'let fov: number'],
 	['let near_z: any', 'let near_z: number'],
 	['let orthographic_zoom: any', 'let orthographic_zoom: number'],
+	['let projection: any', 'const projection: Readonly<vmath.matrix4>'],
+	['let view: any', 'const view: Readonly<vmath.matrix4>'],
+];
+
+/** sound namespace */
+const sound = [
+	['let sound: any', 'let sound: hash'],
+	['let gain: any', 'let gain: number'],
+	['let pan: any', 'let pan: number'],
+	['let speed: any', 'let speed: number'],
+];
+
+/** label namespace */
+const label = [
 	['let color: any', 'let color: vmath.vector4'],
 	['let font: any', 'let font: hash'],
 	['let leading: any', 'let leading: number'],
 	['let line_break: any', 'let line_break: boolean'],
 	['let outline: any', 'let outline: vmath.vector4'],
 	['let shadow: any', 'let shadow: vmath.vector4'],
-	[/let size: any/g, 'let size: vmath.vector3'],
 	['let tracking: any', 'let tracking: number'],
-	[/let animation: any/g, 'let animation: hash'],
-	['let euler: any', 'let euler: vmath.vector3'],
-	['let position: any', 'let position: vmath.vector3'],
-	['let rotation: any', 'let rotation: vmath.quaternion'],
-	[/let cursor: any/g, 'let cursor: number'],
+];
+
+/** sprite namespace */
+const sprite = [
 	['let frame_count: any', 'const frame_count: number'],
 	['let image: any', 'let image: hash'],
-	['let tile_source: any', 'let tile_source: hash'],
-	['let mass: any', 'const mass: number'],
-	['let materials: any', 'let materials: hash'],
-	['let TEXTURE_TYPE_2D: any', 'let TEXTURE_TYPE_2D: number'],
-	['let TEXTURE_TYPE_CUBE_MAP: any', 'let TEXTURE_TYPE_CUBE_MAP: number'],
-	['let TEXTURE_TYPE_2D_ARRAY: any', 'let TEXTURE_TYPE_2D_ARRAY: number'],
-	['let TEXTURE_FORMAT_LUMINANCE: any', 'let TEXTURE_FORMAT_LUMINANCE: number'],
-	['let TEXTURE_FORMAT_RGB: any', 'let TEXTURE_FORMAT_RGB: number'],
-	['let TEXTURE_FORMAT_RGBA: any', 'let TEXTURE_FORMAT_RGBA: number'],
-	['let TEXTURE_FORMAT_RGBA_BC3: any', 'let TEXTURE_FORMAT_RGBA_BC3: number'],
-	['let TEXTURE_FORMAT_RGB32F: any', 'let TEXTURE_FORMAT_RGB32F: number'],
-	['let TEXTURE_FORMAT_RGBA16F: any', 'let TEXTURE_FORMAT_RGBA16F: number'],
-	['let TEXTURE_FORMAT_RGBA32F: any', 'let TEXTURE_FORMAT_RGBA32F: number'],
-	['let TEXTURE_FORMAT_R16F: any', 'let TEXTURE_FORMAT_R16F: number'],
-	['let TEXTURE_FORMAT_R32F: any', 'let TEXTURE_FORMAT_R32F: number'],
-	['let TEXTURE_FORMAT_RG32F: any', 'let TEXTURE_FORMAT_RG32F: number'],
-	['let COMPRESSION_TYPE_DEFAULT: any', 'let COMPRESSION_TYPE_DEFAULT: number'],
+];
+
+/** collectionFactory namespace */
+const collectionFactory = [
+	['let STATUS_LOADED: any', 'const STATUS_LOADED: number'],
+	['let STATUS_LOADING: any', 'const STATUS_LOADING: number'],
+	['let STATUS_UNLOADED: any', 'const STATUS_UNLOADED: number'],
 	[
-		'let COMPRESSION_TYPE_BASIS_UASTC: any',
-		'let COMPRESSION_TYPE_BASIS_UASTC: number',
+		'function get_status(url?: string | hash | url): any',
+		'function get_status(url?: string | hash | url): typeof collectionfactory.STATUS_UNLOADED | typeof collectionfactory.STATUS_LOADING | typeof collectionfactory.STATUS_LOADED',
 	],
+];
+
+/** factory namespace */
+const factory = [
+	['let STATUS_LOADED: any', 'const STATUS_LOADED: number'],
+	['let STATUS_LOADING: any', 'const STATUS_LOADING: number'],
+	['let STATUS_UNLOADED: any', 'const STATUS_UNLOADED: number'],
 	[
-		'let TEXTURE_FORMAT_RGBA_ASTC_4x4: any',
-		'const TEXTURE_FORMAT_RGBA_ASTC_4x4: number',
+		'function get_status(url?: string | hash | url): any',
+		'function get_status(url?: string | hash | url): typeof factory.STATUS_UNLOADED | typeof factory.STATUS_LOADING | typeof factory.STATUS_LOADED',
 	],
-	['let TEXTURE_FORMAT_RGBA_BC7: any', 'let TEXTURE_FORMAT_RGBA_BC7: number'],
-	['let TEXTURE_FORMAT_RGBA_ETC2: any', 'let TEXTURE_FORMAT_RGBA_ETC2: number'],
+];
+
+/** particlefx namespace */
+const particleFx = [
+	['let EMITTER_STATE_POSTSPAWN: any', 'const EMITTER_STATE_POSTSPAWN: number'],
+	['let EMITTER_STATE_PRESPAWN: any', 'const EMITTER_STATE_PRESPAWN: number'],
+	['let EMITTER_STATE_SLEEPING: any', 'const EMITTER_STATE_SLEEPING: number'],
+	['let EMITTER_STATE_SPAWNING: any', 'const EMITTER_STATE_SPAWNING: number'],
+];
+
+/** vmath namespace */
+const vmathChanges = [
 	[
-		'let TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1: any',
-		'let TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1: number',
+		'function vector(t: any): any',
+		'function vector(t: number[] | LuaSet<number>): vmath.vector3 | vmath.vector4',
 	],
-	[
-		'let TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1: any',
-		'let TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1: number',
-	],
-	['let TEXTURE_FORMAT_RGB_ETC1: any', 'let TEXTURE_FORMAT_RGB_ETC1: number'],
-	[
-		'let TEXTURE_FORMAT_RGB_PVRTC_2BPPV1: any',
-		'let TEXTURE_FORMAT_RGB_PVRTC_2BPPV1: number',
-	],
-	[
-		'let TEXTURE_FORMAT_RGB_PVRTC_4BPPV1: any',
-		'let TEXTURE_FORMAT_RGB_PVRTC_4BPPV1: number',
-	],
-	['let TEXTURE_FORMAT_RG_BC5: any', 'let TEXTURE_FORMAT_RG_BC5: number'],
-	['let TEXTURE_FORMAT_R_BC4: any', 'let TEXTURE_FORMAT_R_BC4: number'],
-	['let TEXTURE_FORMAT_RG16F: any', 'let TEXTURE_FORMAT_RG16F: number'],
-	['let TEXTURE_FORMAT_RGB_BC1: any', 'let TEXTURE_FORMAT_RGB_BC1: number'],
-	['let TEXTURE_FORMAT_RGB16F: any', 'let TEXTURE_FORMAT_RGB16F: number'],
+];
+
+/** Late changes that don't fit anywhere else */
+const finalChanges = [
+	// Greedy changes apply multiple times
+	[/let playback_rate: any/g, 'let playback_rate: number'],
+	[/let material: any/g, 'let material: hash'],
+	[/let size: any/g, 'let size: vmath.vector3'],
+	[/let animation: any/g, 'let animation: hash'],
+	[/let cursor: any/g, 'let cursor: number'],
 	// This might be fragile!
 	// Searches for `let scale: any` three times
 	// assuming they're in a consistent order
@@ -333,48 +640,6 @@ const patches = [
 	['let scale: any', 'let scale: number'],
 	['let scale: any', 'let scale: number | vmath.vector3'],
 	['let scale: any', 'let scale: vmath.vector3'],
-	// Window consts
-	['let DIMMING_UNKNOWN: any', 'let DIMMING_UNKNOWN: number'],
-	['let DIMMING_ON: any', 'let DIMMING_ON: number'],
-	['let DIMMING_OFF: any', 'let DIMMING_OFF: number'],
-	['let WINDOW_EVENT_FOCUS_LOST: any', 'let WINDOW_EVENT_FOCUS_LOST: number'],
-	[
-		'let WINDOW_EVENT_FOCUS_GAINED: any',
-		'let WINDOW_EVENT_FOCUS_GAINED: number',
-	],
-	['let WINDOW_EVENT_RESIZED: any', 'let WINDOW_EVENT_RESIZED: number'],
-	// Iconfied is sometimes spelled Iconified. Probably a typo?
-	['let WINDOW_EVENT_ICONFIED: any', 'let WINDOW_EVENT_ICONFIED: number'],
-	['let WINDOW_EVENT_DEICONIFIED: any', 'let WINDOW_EVENT_DEICONIFIED: number'],
-	[
-		'function get_dim_mode(): any',
-		'function get_dim_mode(): typeof window.DIMMING_UNKNOWN | typeof window.DIMMING_ON | typeof window.DIMMING_OFF',
-	],
-	[
-		'function set_dim_mode(mode: any)',
-		'function set_dim_mode(mode: typeof window.DIMMING_ON | typeof window.DIMMING_OFF)',
-	],
-	// Image
-	['let TYPE_LUMINANCE: any', 'let TYPE_LUMINANCE: "l"'],
-	['let TYPE_RGB: any', 'let TYPE_RGB: "rgb"'],
-	['let TYPE_RGBA: any', 'let TYPE_RGBA: "rgba"'],
-	// [
-	// 	'function load(buffer: string, premult?: boolean): any',
-	// 	'function load(buffer: string, premult?: boolean): undefined | { width: number, height: number, type: typeof image.TYPE_RGB | typeof image.TYPE_RGBA | typeof image.TYPE_LUMINANCE, buffer: buffer }',
-	// ],
-	// Callbacks
-	[
-		'function set_listener(callback: any)',
-		'function set_listener(callback: (this: unknown, event: typeof window.WINDOW_EVENT_FOCUS_LOST | typeof window.WINDOW_EVENT_FOCUS_GAINED | typeof window.WINDOW_EVENT_RESIZED | typeof window.WINDOW_EVENT_ICONFIED | typeof window.WINDOW_EVENT_DEICONIFIED, data: { width: number | undefined, height: number | undefined	}) => void)',
-	],
-	// Describe `buffer` types
-	[/(VALUE_TYPE_.+): any/g, '$1: number'],
-	// Describe easing types
-	[/(EASING_.+): any/g, '$1: number'],
-	// Describe playback types
-	[/(PLAYBACK_.+): any/g, '$1: number'],
-	// Describe tables as a stricter type
-	[/(table|tbl): any/g, '$1: LuaTable | LuaSet | LuaMap | object'],
 	// Describe some functions
 	// Could be improved by describing the args
 	[
@@ -385,7 +650,9 @@ const patches = [
 		/emitter_state_function\?: any/g,
 		'emitter_state_function?: (...args: unknown[]) => void',
 	],
-	// Replace `any` keywords with `unknown` keywords
+	// Describe tables as a stricter type
+	[/(table|tbl): any/g, '$1: LuaTable | LuaSet | LuaMap | object'],
+	// Replace `any` keyword with `unknown`
 	[/\: any/g, ': unknown'],
 	[/\[any/g, '[unknown'],
 	[/any,/g, 'unknown,'],
@@ -394,16 +661,47 @@ const patches = [
 	[/let (?:\b|\W)([A-Z0-9_]+)(?:\b|\W)/g, 'const $1'],
 ];
 
-// Load the contents of the file
+const patches = [
+	...defoldBasics,
+	...languageQuirks,
+	...image,
+	...profiler,
+	...physics,
+	...sys,
+	...msg,
+	...timer,
+	...html5,
+	...tilemap,
+	...gui,
+	...render,
+	...socket,
+	...crash,
+	...camera,
+	...label,
+	...sprite,
+	...resource,
+	...windowChanges,
+	...bufferChanges,
+	...go,
+	...collectionFactory,
+	...factory,
+	...particleFx,
+	...vmathChanges,
+	...sound,
+	...finalChanges,
+];
+
+/**
+ * Load the contents of the file
+ */
 fs.readFile(filePath, 'utf8', (err, data) => {
 	if (err) {
 		console.error('Error reading file:', err);
 		return;
 	}
-
+	console.time('Patching definitions');
 	// Make find and replace changes
 	patches.forEach((pair) => (data = data.replace(pair[0], pair[1])));
-
 	// Save the modified contents back to the file
 	fs.writeFile(filePath, data, 'utf8', (err) => {
 		if (err) {
@@ -412,4 +710,5 @@ fs.readFile(filePath, 'utf8', (err, data) => {
 		}
 		console.log('File saved successfully.');
 	});
+	console.timeEnd('Patching definitions');
 });

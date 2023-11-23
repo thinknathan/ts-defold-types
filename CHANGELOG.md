@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.3.13
+
+- Updated for Defold 1.6.2
+- There are now less than 200 unknown types left to be documented
+
 ## v1.3.12
 
 - Updated for Defold 1.6.1

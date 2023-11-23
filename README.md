@@ -2,11 +2,17 @@
 
 <a href="https://discord.gg/eukcq5m"><img alt="Chat with us!" src="https://img.shields.io/discord/766898804896038942.svg?colorB=7581dc&logo=discord&logoColor=white"></a>
 
-> TypeScript definitions for [Defold](https://defold.com/)
+> TypeScript definitions for [Defold](https://defold.com/), a high-performance cross-platform game engine.
+
+## This Fork
+
+This fork has more detailed types than the origin repo. My hand-written patch replaces many of the `any` keywords with specific types, sets constant values to use `const`, etc. See the changelog for details.
+
+Can be used as a drop-in replacement of the original.
 
 ## Installation
 
-1. Get this package from npm
+1. Get this package from Github
 
 ```bash
 yarn add git+https://git@github.com/thinknathan/ts-defold-types.git#^1.3.0 -D
@@ -19,7 +25,8 @@ npm install git+https://git@github.com/thinknathan/ts-defold-types.git#^1.3.0 --
 ```diff
 {
   "compilerOptions": {
-+    "types": ["@ts-defold/types"]
++    "typeRoots": ["./node_modules/@ts-defold"],
++    "types": ["types"]
   }
 }
 ```
