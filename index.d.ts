@@ -340,7 +340,7 @@ declare namespace crash {
 	 */
 	export function get_backtrace(
 		handle: number,
-	): LuaTable | LuaSet | LuaMap | object;
+	): LuaTable | LuaSet | LuaMap | object | unknown[];
 
 	/**
 	 * The format of read text blob is platform specific
@@ -359,7 +359,7 @@ declare namespace crash {
 	 */
 	export function get_modules(
 		handle: number,
-	): LuaTable | LuaSet | LuaMap | object;
+	): LuaTable | LuaSet | LuaMap | object | unknown[];
 
 	/**
 	 * read signal number from a crash report
@@ -985,7 +985,7 @@ name of internal property
 		url: string | hash | url,
 		property: string | hash,
 		value: unknown,
-		options?: unknown,
+		options?: LuaTable | LuaSet | LuaMap | object | unknown[],
 	): void;
 
 	/**
@@ -5416,7 +5416,7 @@ The HTTP user agent, i.e. "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) Apple
 	 * @param filename  file to read from
 	 * @return loaded  lua table, which is empty if the file could not be found
 	 */
-	export function load(filename: string): LuaMap;
+	export function load(filename: string): LuaTable | LuaMap | object;
 
 	/**
 	 * Loads a custom resource. Specify the full filename of the resource that you want
@@ -6012,7 +6012,7 @@ declare namespace msg {
 	export function post(
 		receiver: string | url | hash,
 		message_id: string | hash,
-		message?: LuaTable | LuaSet | LuaMap | object,
+		message?: LuaTable | LuaMap | object,
 	): void;
 
 	/**

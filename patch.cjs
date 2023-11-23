@@ -7,6 +7,9 @@
 const fs = require('fs');
 const filePath = 'index.d.ts';
 
+const genericTable = 'LuaTable | LuaSet | LuaMap | object | unknown[]';
+const indexedTable = 'LuaTable | LuaMap | object';
+
 /** Defold's basic types */
 const defoldBasics = [
 	// Describe `url`
@@ -109,10 +112,9 @@ const go = [
 		'function exists(url: string | hash | url): boolean',
 	],
 	// function get
-	[
-		'options?: any',
-		'options?: LuaTable | LuaSet | LuaMap | object | unknown[]',
-	],
+	['options?: any', `options?: ${genericTable}`],
+	// function set
+	['options?: any', `options?: ${genericTable}`],
 	[
 		'function cancel_animation(node: node, property: any)',
 		'function cancel_animation(node: node, property: "position" | "rotation" | "scale" | "color" | "outline" | "shadow" | "size" | "fill_angle" | "inner_radius" | "slice9")',
@@ -255,7 +257,7 @@ const sys = [
 	],
 	[
 		'function load(filename: string): any',
-		'function load(filename: string): LuaMap',
+		`function load(filename: string): ${indexedTable}`,
 	],
 	[
 		'function set_error_handler(error_handler: any',
@@ -264,9 +266,7 @@ const sys = [
 ];
 
 /** msg namespace */
-const msg = [
-	['message?: any', 'message?: LuaTable | LuaSet | LuaMap | object'],
-];
+const msg = [['message?: any', `message?: ${indexedTable}`]];
 
 /** timer namespace */
 const timer = [
@@ -570,11 +570,11 @@ const crash = [
 	['USERFIELD_SIZE: any', 'USERFIELD_SIZE: number'],
 	[
 		'get_backtrace(handle: number): any',
-		'get_backtrace(handle: number): LuaTable | LuaSet | LuaMap | object',
+		`get_backtrace(handle: number): ${genericTable}`,
 	],
 	[
 		'get_modules(handle: number): any',
-		'get_modules(handle: number): LuaTable | LuaSet | LuaMap | object',
+		`get_modules(handle: number): ${genericTable}`,
 	],
 	// Functions can also return `undefined`
 	[
@@ -696,7 +696,7 @@ const finalChanges = [
 		'complete_function?: (...args: unknown[]) => void',
 	],
 	// Generic tables as slightly stricter type
-	[/(table|tbl): any/g, '$1: LuaTable | LuaSet | LuaMap | object | unknown[]'],
+	[/(table|tbl): any/g, `$1: ${genericTable}`],
 	// Replace `any` keyword with `unknown`
 	[/\: any/g, ': unknown'],
 	[/\[any/g, '[unknown'],
