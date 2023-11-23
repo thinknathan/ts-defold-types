@@ -70,6 +70,15 @@ const languageQuirks = [
 	['let null$: any', 'let null$: null'],
 ];
 
+/** http namespace */
+const http = [
+	// function request
+	[
+		'callback: any,',
+		'callback: (this: unknown, id: unknown, response: { status: unknown, response?: unknown, headers: unknown, path?: unknown, error?: unknown }) => unknown,',
+	],
+];
+
 /** image namespace */
 const image = [
 	['let TYPE_LUMINANCE: any', 'let TYPE_LUMINANCE: "l"'],
@@ -276,6 +285,11 @@ const msg = [
 /** timer namespace */
 const timer = [
 	['let INVALID_TIMER_HANDLE: any', 'let INVALID_TIMER_HANDLE: number'],
+	// function delay
+	[
+		'callback: any',
+		'callback: (this: unknown, handle: unknown, time_elapsed: number) => unknown',
+	],
 ];
 
 /** html5 namespace */
@@ -717,6 +731,7 @@ const patches = [
 	...windowChanges,
 	...bufferChanges,
 	...html5,
+	...http,
 	...image,
 	...msg,
 	...timer,

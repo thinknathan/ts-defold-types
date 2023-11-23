@@ -5909,7 +5909,17 @@ The response data. Contains the fields:
 	export function request(
 		url: string,
 		method: string,
-		callback: unknown,
+		callback: (
+			this: unknown,
+			id: unknown,
+			response: {
+				status: unknown;
+				response?: unknown;
+				headers: unknown;
+				path?: unknown;
+				error?: unknown;
+			},
+		) => unknown,
 		headers?: unknown,
 		post_data?: string,
 		options?: unknown,
@@ -6090,7 +6100,7 @@ The elapsed time - on first trigger it is time since timer.delay call, otherwise
 	export function delay(
 		delay: number,
 		repeat: boolean,
-		callback: unknown,
+		callback: (this: unknown, handle: unknown, time_elapsed: number) => unknown,
 	): hash;
 
 	/**
