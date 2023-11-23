@@ -5516,7 +5516,11 @@ The stack traceback.
 
 	*/
 	export function set_error_handler(
-		error_handler: (...args: unknown[]) => unknown,
+		error_handler: (
+			source: string,
+			message: unknown,
+			traceback: unknown,
+		) => void,
 	): void;
 
 	/**
@@ -5869,7 +5873,7 @@ The calling script
 
 	*/
 	export function set_interaction_listener(
-		callback: (...args: unknown[]) => unknown,
+		callback: undefined | ((this: unknown) => void),
 	): void;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //

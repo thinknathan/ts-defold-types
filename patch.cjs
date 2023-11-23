@@ -269,7 +269,7 @@ const sys = [
 	],
 	[
 		'function set_error_handler(error_handler: any',
-		'function set_error_handler(error_handler: (...args: unknown[]) => unknown',
+		'function set_error_handler(error_handler: (source: string, message: unknown, traceback: unknown) => void',
 	],
 ];
 
@@ -296,7 +296,7 @@ const timer = [
 const html5 = [
 	[
 		'function set_interaction_listener(callback: any',
-		'function set_interaction_listener(callback: (...args: unknown[]) => unknown',
+		'function set_interaction_listener(callback: undefined | ((this: unknown) => void)',
 	],
 ];
 
