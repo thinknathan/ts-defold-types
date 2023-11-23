@@ -1607,7 +1607,49 @@ with a custom curve. See the animation guide for more information.
 			| typeof gui.PROP_INNER_RADIUS
 			| typeof gui.PROP_SLICE9,
 		to: number | vmath.vector3 | vmath.vector4 | vmath.quaternion,
-		easing: unknown,
+		easing:
+			| vmath.vector3
+			| typeof gui.EASING_INBACK
+			| typeof gui.EASING_INBOUNCE
+			| typeof gui.EASING_INCIRC
+			| typeof gui.EASING_INCUBIC
+			| typeof gui.EASING_INELASTIC
+			| typeof gui.EASING_INEXPO
+			| typeof gui.EASING_INOUTBACK
+			| typeof gui.EASING_INOUTBOUNCE
+			| typeof gui.EASING_INOUTCIRC
+			| typeof gui.EASING_INOUTCUBIC
+			| typeof gui.EASING_INOUTELASTIC
+			| typeof gui.EASING_INOUTEXPO
+			| typeof gui.EASING_INOUTQUAD
+			| typeof gui.EASING_INOUTQUART
+			| typeof gui.EASING_INOUTQUINT
+			| typeof gui.EASING_INOUTSINE
+			| typeof gui.EASING_INQUAD
+			| typeof gui.EASING_INQUART
+			| typeof gui.EASING_INQUINT
+			| typeof gui.EASING_INSINE
+			| typeof gui.EASING_LINEAR
+			| typeof gui.EASING_OUTBACK
+			| typeof gui.EASING_OUTBOUNCE
+			| typeof gui.EASING_OUTCIRC
+			| typeof gui.EASING_OUTCUBIC
+			| typeof gui.EASING_OUTELASTIC
+			| typeof gui.EASING_OUTEXPO
+			| typeof gui.EASING_OUTINBACK
+			| typeof gui.EASING_OUTINBOUNCE
+			| typeof gui.EASING_OUTINCIRC
+			| typeof gui.EASING_OUTINCUBIC
+			| typeof gui.EASING_OUTINELASTIC
+			| typeof gui.EASING_OUTINEXPO
+			| typeof gui.EASING_OUTINQUAD
+			| typeof gui.EASING_OUTINQUART
+			| typeof gui.EASING_OUTINQUINT
+			| typeof gui.EASING_OUTINSINE
+			| typeof gui.EASING_OUTQUAD
+			| typeof gui.EASING_OUTQUART
+			| typeof gui.EASING_OUTQUINT
+			| typeof gui.EASING_OUTSINE,
 		duration: number,
 		delay?: number,
 		complete_function?: (...args: unknown[]) => void,
