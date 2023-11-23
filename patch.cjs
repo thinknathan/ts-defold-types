@@ -521,6 +521,14 @@ const socket = [
 		'protect(func: any): any',
 		'protect(func: (...args: unknown[]) => unknown): (...args: unknown[]) => unknown',
 	],
+	// function select
+	['recvt: any', 'recvt: unknown[] | LuaSet'],
+	['sendt: any', 'sendt: unknown[] | LuaSet'],
+	// Functions can also return `undefined`
+	['function tcp():', 'function tcp(): undefined |'],
+	['function tcp6():', 'function tcp6(): undefined |'],
+	['function udp():', 'function udp(): undefined |'],
+	['function udp6():', 'function udp6(): undefined |'],
 ];
 
 /** crash namespace */
@@ -549,6 +557,12 @@ const crash = [
 		'get_modules(handle: number): any',
 		'get_modules(handle: number): LuaTable | LuaSet | LuaMap | object',
 	],
+	// Functions can also return `undefined`
+	[
+		'get_sys_field(handle: number, index: number):',
+		'get_sys_field(handle: number, index: number): undefined |',
+	],
+	['function load_previous():', 'function load_previous(): undefined |'],
 ];
 
 /** camera namespace */

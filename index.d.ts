@@ -190,8 +190,8 @@ declare namespace socket {
 	 * @return error  an error message. "timeout" if a timeout condition was met, otherwise `undefined`.
 	 */
 	export function select(
-		recvt: unknown,
-		sendt: unknown,
+		recvt: unknown[] | LuaSet,
+		sendt: unknown[] | LuaSet,
 		timeout?: number,
 	): LuaMultiReturn<[unknown, unknown, string, unknown]>;
 
@@ -232,7 +232,9 @@ declare namespace socket {
 	 * @return tcp_master  a new IPv4 TCP master object, or `undefined` in case of error.
 	 * @return error  the error message, or `undefined` if no error occurred.
 	 */
-	export function tcp(): LuaMultiReturn<[unknown, unknown, string, unknown]>;
+	export function tcp():
+		| undefined
+		| LuaMultiReturn<[unknown, unknown, string, unknown]>;
 
 	/**
 	 * Creates and returns an IPv6 TCP master object. A master object can be transformed into a server object with the method `listen` (after a call to `bind`) or into a client object with the method connect. The only other method supported by a master object is the close method.
@@ -240,14 +242,18 @@ declare namespace socket {
 	 * @return tcp_master  a new IPv6 TCP master object, or `undefined` in case of error.
 	 * @return error  the error message, or `undefined` if no error occurred.
 	 */
-	export function tcp6(): LuaMultiReturn<[unknown, unknown, string, unknown]>;
+	export function tcp6():
+		| undefined
+		| LuaMultiReturn<[unknown, unknown, string, unknown]>;
 
 	/**
 	 * Creates and returns an unconnected IPv4 UDP object. Unconnected objects support the `sendto`, `receive`, `receivefrom`, `getoption`, `getsockname`, `setoption`, `settimeout`, `setpeername`, `setsockname`, and `close` methods. The `setpeername` method is used to connect the object.
 	 * @return udp_unconnected  a new unconnected IPv4 UDP object, or `undefined` in case of error.
 	 * @return error  the error message, or `undefined` if no error occurred.
 	 */
-	export function udp(): LuaMultiReturn<[unknown, unknown, string, unknown]>;
+	export function udp():
+		| undefined
+		| LuaMultiReturn<[unknown, unknown, string, unknown]>;
 
 	/**
 	 * Creates and returns an unconnected IPv6 UDP object. Unconnected objects support the `sendto`, `receive`, `receivefrom`, `getoption`, `getsockname`, `setoption`, `settimeout`, `setpeername`, `setsockname`, and `close` methods. The `setpeername` method is used to connect the object.
@@ -255,7 +261,9 @@ declare namespace socket {
 	 * @return udp_unconnected  a new unconnected IPv6 UDP object, or `undefined` in case of error.
 	 * @return error  the error message, or `undefined` if no error occurred.
 	 */
-	export function udp6(): LuaMultiReturn<[unknown, unknown, string, unknown]>;
+	export function udp6():
+		| undefined
+		| LuaMultiReturn<[unknown, unknown, string, unknown]>;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
@@ -369,7 +377,7 @@ declare namespace crash {
 	export function get_sys_field(
 		handle: number,
 		index: number,
-	): LuaMultiReturn<[string, unknown]>;
+	): undefined | LuaMultiReturn<[string, unknown]>;
 
 	/**
 	 * reads user field from a loaded crash dump
@@ -384,7 +392,9 @@ declare namespace crash {
 	 * load, so loading is one-shot.
 	 * @return handle  handle to the loaded dump, or `undefined` if no dump was found
 	 */
-	export function load_previous(): LuaMultiReturn<[number, unknown]>;
+	export function load_previous():
+		| undefined
+		| LuaMultiReturn<[number, unknown]>;
 
 	/**
 	 * releases a previously loaded crash dump
