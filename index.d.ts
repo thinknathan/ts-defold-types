@@ -868,7 +868,7 @@ name of internal property
 	export function get(
 		url: string | hash | url,
 		property: string | hash,
-		options?: unknown,
+		options?: LuaTable | LuaSet | LuaMap | object | unknown[],
 	): unknown;
 
 	/**
@@ -4641,7 +4641,7 @@ a list of the indices of the geometry in the form {i0, i1, i2, ..., in}. Each tr
 	*/
 	export function create_atlas(
 		path: string,
-		table: LuaTable | LuaSet | LuaMap | object,
+		table: LuaTable | LuaSet | LuaMap | object | unknown[],
 	): hash;
 
 	/**
@@ -4673,7 +4673,7 @@ optional flag to determine wether or not the resource should take over ownership
 	*/
 	export function create_buffer(
 		path: string,
-		table: LuaTable | LuaSet | LuaMap | object,
+		table: LuaTable | LuaSet | LuaMap | object | unknown[],
 	): hash;
 
 	/**
@@ -4748,7 +4748,7 @@ Creating an empty texture with no buffer data is not supported as a core feature
 	*/
 	export function create_texture(
 		path: string,
-		table: LuaTable | LuaSet | LuaMap | object,
+		table: LuaTable | LuaSet | LuaMap | object | unknown[],
 		buffer?: buffer,
 	): hash;
 
@@ -4981,7 +4981,7 @@ a list of the indices of the geometry in the form {i0, i1, i2, ..., in}. Each tr
 	*/
 	export function set_atlas(
 		path: hash | string,
-		table: LuaTable | LuaSet | LuaMap | object,
+		table: LuaTable | LuaSet | LuaMap | object | unknown[],
 	): void;
 
 	/**
@@ -5007,7 +5007,7 @@ optional flag to determine wether or not the resource should take over ownership
 	export function set_buffer(
 		path: hash | string,
 		buffer: buffer,
-		table: LuaTable | LuaSet | LuaMap | object,
+		table: LuaTable | LuaSet | LuaMap | object | unknown[],
 	): void;
 
 	/**
@@ -5088,7 +5088,7 @@ optional specify the compression type for the data in the buffer object that hol
 	*/
 	export function set_texture(
 		path: hash | string,
-		table: LuaTable | LuaSet | LuaMap | object,
+		table: LuaTable | LuaSet | LuaMap | object | unknown[],
 		buffer: buffer,
 	): void;
 
@@ -5445,7 +5445,7 @@ The HTTP user agent, i.e. "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) Apple
 	 */
 	export function save(
 		filename: string,
-		table: LuaTable | LuaSet | LuaMap | object,
+		table: LuaTable | LuaSet | LuaMap | object | unknown[],
 	): boolean;
 
 	/**
@@ -5454,7 +5454,9 @@ The HTTP user agent, i.e. "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) Apple
 	 * @param table  lua table to serialize
 	 * @return buffer  serialized data buffer
 	 */
-	export function serialize(table: LuaTable | LuaSet | LuaMap | object): string;
+	export function serialize(
+		table: LuaTable | LuaSet | LuaMap | object | unknown[],
+	): string;
 
 	/**
 	 * Sets the host that is used to check for network connectivity against.
@@ -5938,7 +5940,9 @@ declare namespace json {
 	 * @param tbl  lua table to encode
 	 * @return json  encoded json
 	 */
-	export function encode(tbl: LuaTable | LuaSet | LuaMap | object): string;
+	export function encode(
+		tbl: LuaTable | LuaSet | LuaMap | object | unknown[],
+	): string;
 
 	/**
 	 * null

@@ -108,6 +108,11 @@ const go = [
 		'function exists(url: string | hash | url): any',
 		'function exists(url: string | hash | url): boolean',
 	],
+	// function get
+	[
+		'options?: any',
+		'options?: LuaTable | LuaSet | LuaMap | object | unknown[]',
+	],
 	[
 		'function cancel_animation(node: node, property: any)',
 		'function cancel_animation(node: node, property: "position" | "rotation" | "scale" | "color" | "outline" | "shadow" | "size" | "fill_angle" | "inner_radius" | "slice9")',
@@ -687,7 +692,7 @@ const finalChanges = [
 		'complete_function?: (...args: unknown[]) => void',
 	],
 	// Generic tables as slightly stricter type
-	[/(table|tbl): any/g, '$1: LuaTable | LuaSet | LuaMap | object'],
+	[/(table|tbl): any/g, '$1: LuaTable | LuaSet | LuaMap | object | unknown[]'],
 	// Replace `any` keyword with `unknown`
 	[/\: any/g, ': unknown'],
 	[/\[any/g, '[unknown'],
