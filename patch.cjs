@@ -432,6 +432,11 @@ const gui = [
 		'emitter_state_function?: any',
 		'emitter_state_function?: (this: unknown, node: node | undefined, emitter: unknown, state: typeof particlefx.EMITTER_STATE_SLEEPING | typeof particlefx.EMITTER_STATE_PRESPAWN | typeof particlefx.EMITTER_STATE_SPAWNING | typeof particlefx.EMITTER_STATE_POSTSPAWN) => void',
 	],
+	// function play_flipbook
+	[
+		'play_properties?: any',
+		'play_properties?: { offset: number, playback_rate: number }',
+	],
 ];
 
 /** render namespace */
@@ -609,6 +614,11 @@ const sound = [
 	['let gain: any', 'let gain: number'],
 	['let pan: any', 'let pan: number'],
 	['let speed: any', 'let speed: number'],
+	// function play
+	[
+		'play_properties?: any',
+		'play_properties?: { delay: number, gain: number, pan: number, speed: number }',
+	],
 ];
 
 /** label namespace */
@@ -638,6 +648,11 @@ const sprite = [
 	['let animation: any', 'let animation: hash'],
 	// Prop also exists in model namespace
 	['let cursor: any', 'let cursor: number'],
+	// function play_flipbook
+	[
+		'play_properties?: any',
+		'play_properties?: { offset: number, playback_rate: number }',
+	],
 ];
 
 /** collectionFactory namespace */
@@ -670,6 +685,11 @@ const model = [
 	['let animation: any', 'let animation: hash'],
 	// Prop also exists in sprite namespace
 	['let cursor: any', 'let cursor: number'],
+	// function play_anim
+	[
+		'play_properties?: any',
+		'play_properties?: { blend_duration: number, offset: number, playback_rate: number }',
+	],
 ];
 
 /** particlefx namespace */

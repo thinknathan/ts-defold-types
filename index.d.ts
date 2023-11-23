@@ -2305,7 +2305,7 @@ The rate with which the animation will be played. Must be positive
 		node: node,
 		animation: string | hash,
 		complete_function?: (...args: unknown[]) => void,
-		play_properties?: unknown,
+		play_properties?: { offset: number; playback_rate: number },
 	): void;
 
 	/**
@@ -7247,7 +7247,11 @@ The invoker of the callback: the model component.
 		url: string | hash | url,
 		anim_id: string | hash,
 		playback: unknown,
-		play_properties?: unknown,
+		play_properties?: {
+			blend_duration: number;
+			offset: number;
+			playback_rate: number;
+		},
 		complete_function?: (...args: unknown[]) => void,
 	): void;
 
@@ -7570,7 +7574,12 @@ The invoker of the callback: the sound component.
 	*/
 	export function play(
 		url: string | hash | url,
-		play_properties?: unknown,
+		play_properties?: {
+			delay: number;
+			gain: number;
+			pan: number;
+			speed: number;
+		},
 		complete_function?: (...args: unknown[]) => void,
 	): number;
 
@@ -7735,7 +7744,7 @@ the rate with which the animation will be played. Must be positive.
 		url: string | hash | url,
 		id: string | hash,
 		complete_function?: (...args: unknown[]) => void,
-		play_properties?: unknown,
+		play_properties?: { offset: number; playback_rate: number },
 	): void;
 
 	/**
