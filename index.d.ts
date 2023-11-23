@@ -2251,7 +2251,16 @@ the new state of the emitter:
 	*/
 	export function play_particlefx(
 		node: node,
-		emitter_state_function?: (...args: unknown[]) => void,
+		emitter_state_function?: (
+			this: unknown,
+			node: node | undefined,
+			emitter: unknown,
+			state:
+				| typeof particlefx.EMITTER_STATE_SLEEPING
+				| typeof particlefx.EMITTER_STATE_PRESPAWN
+				| typeof particlefx.EMITTER_STATE_SPAWNING
+				| typeof particlefx.EMITTER_STATE_POSTSPAWN,
+		) => void,
 	): void;
 
 	/**
@@ -7228,7 +7237,16 @@ the new state of the emitter:
 	*/
 	export function play(
 		url: string | hash | url,
-		emitter_state_function?: (...args: unknown[]) => void,
+		emitter_state_function?: (
+			this: unknown,
+			id: unknown,
+			emitter: unknown,
+			state:
+				| typeof particlefx.EMITTER_STATE_SLEEPING
+				| typeof particlefx.EMITTER_STATE_PRESPAWN
+				| typeof particlefx.EMITTER_STATE_SPAWNING
+				| typeof particlefx.EMITTER_STATE_POSTSPAWN,
+		) => void,
 	): void;
 
 	/**

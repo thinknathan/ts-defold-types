@@ -88,6 +88,7 @@ const go = [
 	['let euler: any', 'let euler: vmath.vector3'],
 	['let position: any', 'let position: vmath.vector3'],
 	['let rotation: any', 'let rotation: vmath.quaternion'],
+	['let scale: any', 'let scale: number'],
 	// Describe easing types
 	// Greedy changes apply multiple times
 	[/(EASING_.+): any/g, '$1: number'],
@@ -394,6 +395,11 @@ const gui = [
 	],
 	['let materials: any', 'let materials: hash'],
 	['let textures: any', 'let textures: hash'],
+	// function play_particlefx
+	[
+		'emitter_state_function?: any',
+		'emitter_state_function?: (this: unknown, node: node | undefined, emitter: unknown, state: typeof particlefx.EMITTER_STATE_SLEEPING | typeof particlefx.EMITTER_STATE_PRESPAWN | typeof particlefx.EMITTER_STATE_SPAWNING | typeof particlefx.EMITTER_STATE_POSTSPAWN) => void',
+	],
 ];
 
 /** render namespace */
@@ -591,14 +597,26 @@ const label = [
 	['let leading: any', 'let leading: number'],
 	['let line_break: any', 'let line_break: boolean'],
 	['let outline: any', 'let outline: vmath.vector4'],
+	['let scale: any', 'let scale: number | vmath.vector3'],
 	['let shadow: any', 'let shadow: vmath.vector4'],
 	['let tracking: any', 'let tracking: number'],
+	// Prop also exists in sprite namespace
+	['let size: any', 'let size: vmath.vector3'],
 ];
 
 /** sprite namespace */
 const sprite = [
 	['let frame_count: any', 'const frame_count: number'],
 	['let image: any', 'let image: hash'],
+	// Prop also exists in model namespace
+	['let playback_rate: any', 'let playback_rate: number'],
+	['let scale: any', 'let scale: vmath.vector3'],
+	// Prop also exists in label namespace
+	['let size: any', 'let size: vmath.vector3'],
+	// Prop also exists in model namespace
+	['let animation: any', 'let animation: hash'],
+	// Prop also exists in model namespace
+	['let cursor: any', 'let cursor: number'],
 ];
 
 /** collectionFactory namespace */
@@ -623,12 +641,27 @@ const factory = [
 	],
 ];
 
+/** model namespace */
+const model = [
+	// Prop also exists in sprite namespace
+	['let playback_rate: any', 'let playback_rate: number'],
+	// Prop also exists in sprite namespace
+	['let animation: any', 'let animation: hash'],
+	// Prop also exists in sprite namespace
+	['let cursor: any', 'let cursor: number'],
+];
+
 /** particlefx namespace */
 const particleFx = [
 	['let EMITTER_STATE_POSTSPAWN: any', 'const EMITTER_STATE_POSTSPAWN: number'],
 	['let EMITTER_STATE_PRESPAWN: any', 'const EMITTER_STATE_PRESPAWN: number'],
 	['let EMITTER_STATE_SLEEPING: any', 'const EMITTER_STATE_SLEEPING: number'],
 	['let EMITTER_STATE_SPAWNING: any', 'const EMITTER_STATE_SPAWNING: number'],
+	// function play
+	[
+		'emitter_state_function?: any',
+		'emitter_state_function?: (this: unknown, id: unknown, emitter: unknown, state: typeof particlefx.EMITTER_STATE_SLEEPING | typeof particlefx.EMITTER_STATE_PRESPAWN | typeof particlefx.EMITTER_STATE_SPAWNING | typeof particlefx.EMITTER_STATE_POSTSPAWN) => void',
+	],
 ];
 
 /** vmath namespace */
@@ -642,29 +675,14 @@ const vmathChanges = [
 /** Late changes that don't fit anywhere else */
 const finalChanges = [
 	// Greedy changes apply multiple times
-	[/let playback_rate: any/g, 'let playback_rate: number'],
+	// Prop exists in gui, label, model, sprite, tilemap namespaces
 	[/let material: any/g, 'let material: hash'],
-	[/let size: any/g, 'let size: vmath.vector3'],
-	[/let animation: any/g, 'let animation: hash'],
-	[/let cursor: any/g, 'let cursor: number'],
-	// This might be fragile!
-	// Searches for `let scale: any` three times
-	// assuming they're in a consistent order
-	// and there are only three total.
-	['let scale: any', 'let scale: number'],
-	['let scale: any', 'let scale: number | vmath.vector3'],
-	['let scale: any', 'let scale: vmath.vector3'],
-	// Describe some functions
-	// Could be improved by describing the args
+	// Generic functions could be improved by describing the args
 	[
 		/complete_function\?: any/g,
 		'complete_function?: (...args: unknown[]) => void',
 	],
-	[
-		/emitter_state_function\?: any/g,
-		'emitter_state_function?: (...args: unknown[]) => void',
-	],
-	// Describe tables as a stricter type
+	// Generic tables as slightly stricter type
 	[/(table|tbl): any/g, '$1: LuaTable | LuaSet | LuaMap | object'],
 	// Replace `any` keyword with `unknown`
 	[/\: any/g, ': unknown'],
@@ -699,6 +717,7 @@ const patches = [
 	...collectionFactory,
 	...factory,
 	...label,
+	...model,
 	...particleFx,
 	...sound,
 	...sprite,
