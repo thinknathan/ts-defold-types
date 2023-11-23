@@ -190,8 +190,8 @@ declare namespace socket {
 	 * @return error  an error message. "timeout" if a timeout condition was met, otherwise `undefined`.
 	 */
 	export function select(
-		recvt: unknown[] | LuaSet,
-		sendt: unknown[] | LuaSet,
+		recvt: unknown,
+		sendt: unknown,
 		timeout?: number,
 	): LuaMultiReturn<[unknown, unknown, string, unknown]>;
 
@@ -338,9 +338,7 @@ declare namespace crash {
 	 * @param handle  crash dump handle
 	 * @return backtrace  table containing the backtrace
 	 */
-	export function get_backtrace(
-		handle: number,
-	): LuaTable | LuaSet | LuaMap | object | unknown[];
+	export function get_backtrace(handle: number): unknown;
 
 	/**
 	 * The format of read text blob is platform specific
@@ -357,9 +355,7 @@ declare namespace crash {
 	 * @param handle  crash dump handle
 	 * @return modules  module table
 	 */
-	export function get_modules(
-		handle: number,
-	): LuaTable | LuaSet | LuaMap | object | unknown[];
+	export function get_modules(handle: number): unknown;
 
 	/**
 	 * read signal number from a crash report
@@ -868,7 +864,7 @@ name of internal property
 	export function get(
 		url: string | hash | url,
 		property: string | hash,
-		options?: LuaTable | LuaSet | LuaMap | object | unknown[],
+		options?: LuaTable | LuaSet | LuaMap | object | AnyNotNil[],
 	): unknown;
 
 	/**
@@ -985,7 +981,7 @@ name of internal property
 		url: string | hash | url,
 		property: string | hash,
 		value: unknown,
-		options?: LuaTable | LuaSet | LuaMap | object | unknown[],
+		options?: LuaTable | LuaSet | LuaMap | object | AnyNotNil[],
 	): void;
 
 	/**
@@ -4683,7 +4679,7 @@ a list of the indices of the geometry in the form {i0, i1, i2, ..., in}. Each tr
 	*/
 	export function create_atlas(
 		path: string,
-		table: LuaTable | LuaSet | LuaMap | object | unknown[],
+		table: LuaTable | LuaSet | LuaMap | object | AnyNotNil[],
 	): hash;
 
 	/**
@@ -4715,7 +4711,7 @@ optional flag to determine wether or not the resource should take over ownership
 	*/
 	export function create_buffer(
 		path: string,
-		table: LuaTable | LuaSet | LuaMap | object | unknown[],
+		table: LuaTable | LuaSet | LuaMap | object | AnyNotNil[],
 	): hash;
 
 	/**
@@ -4790,7 +4786,7 @@ Creating an empty texture with no buffer data is not supported as a core feature
 	*/
 	export function create_texture(
 		path: string,
-		table: LuaTable | LuaSet | LuaMap | object | unknown[],
+		table: LuaTable | LuaSet | LuaMap | object | AnyNotNil[],
 		buffer?: buffer,
 	): hash;
 
@@ -5023,7 +5019,7 @@ a list of the indices of the geometry in the form {i0, i1, i2, ..., in}. Each tr
 	*/
 	export function set_atlas(
 		path: hash | string,
-		table: LuaTable | LuaSet | LuaMap | object | unknown[],
+		table: LuaTable | LuaSet | LuaMap | object | AnyNotNil[],
 	): void;
 
 	/**
@@ -5049,7 +5045,7 @@ optional flag to determine wether or not the resource should take over ownership
 	export function set_buffer(
 		path: hash | string,
 		buffer: buffer,
-		table: LuaTable | LuaSet | LuaMap | object | unknown[],
+		table: LuaTable | LuaSet | LuaMap | object | AnyNotNil[],
 	): void;
 
 	/**
@@ -5130,7 +5126,7 @@ optional specify the compression type for the data in the buffer object that hol
 	*/
 	export function set_texture(
 		path: hash | string,
-		table: LuaTable | LuaSet | LuaMap | object | unknown[],
+		table: LuaTable | LuaSet | LuaMap | object | AnyNotNil[],
 		buffer: buffer,
 	): void;
 
@@ -5416,7 +5412,7 @@ The HTTP user agent, i.e. "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) Apple
 	 * @param filename  file to read from
 	 * @return loaded  lua table, which is empty if the file could not be found
 	 */
-	export function load(filename: string): LuaTable | LuaMap | object;
+	export function load(filename: string): LuaMap<AnyNotNil, unknown>;
 
 	/**
 	 * Loads a custom resource. Specify the full filename of the resource that you want
@@ -5487,7 +5483,7 @@ The HTTP user agent, i.e. "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) Apple
 	 */
 	export function save(
 		filename: string,
-		table: LuaTable | LuaSet | LuaMap | object | unknown[],
+		table: LuaTable | LuaSet | LuaMap | object | AnyNotNil[],
 	): boolean;
 
 	/**
@@ -5497,7 +5493,7 @@ The HTTP user agent, i.e. "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) Apple
 	 * @return buffer  serialized data buffer
 	 */
 	export function serialize(
-		table: LuaTable | LuaSet | LuaMap | object | unknown[],
+		table: LuaTable | LuaSet | LuaMap | object | AnyNotNil[],
 	): string;
 
 	/**
@@ -5983,7 +5979,7 @@ declare namespace json {
 	 * @return json  encoded json
 	 */
 	export function encode(
-		tbl: LuaTable | LuaSet | LuaMap | object | unknown[],
+		tbl: LuaTable | LuaSet | LuaMap | object | AnyNotNil[],
 	): string;
 
 	/**
@@ -6012,7 +6008,9 @@ declare namespace msg {
 	export function post(
 		receiver: string | url | hash,
 		message_id: string | hash,
-		message?: LuaTable | LuaMap | object,
+		message?:
+			| LuaMap<AnyNotNil, AnyNotNil>
+			| { [key: string | number | symbol]: AnyNotNil },
 	): void;
 
 	/**

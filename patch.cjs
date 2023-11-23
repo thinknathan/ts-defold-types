@@ -7,8 +7,7 @@
 const fs = require('fs');
 const filePath = 'index.d.ts';
 
-const genericTable = 'LuaTable | LuaSet | LuaMap | object | unknown[]';
-const indexedTable = 'LuaTable | LuaMap | object';
+const genericTable = 'LuaTable | LuaSet | LuaMap | object | AnyNotNil[]';
 
 /** Defold's basic types */
 const defoldBasics = [
@@ -257,7 +256,7 @@ const sys = [
 	],
 	[
 		'function load(filename: string): any',
-		`function load(filename: string): ${indexedTable}`,
+		'function load(filename: string): LuaMap<AnyNotNil, unknown>',
 	],
 	[
 		'function set_error_handler(error_handler: any',
@@ -266,7 +265,13 @@ const sys = [
 ];
 
 /** msg namespace */
-const msg = [['message?: any', `message?: ${indexedTable}`]];
+const msg = [
+	// function post
+	[
+		'message?: any',
+		'message?: LuaMap<AnyNotNil, AnyNotNil> | { [key: string | number | symbol]: AnyNotNil }',
+	],
+];
 
 /** timer namespace */
 const timer = [
@@ -540,9 +545,6 @@ const socket = [
 		'protect(func: any): any',
 		'protect(func: (...args: unknown[]) => unknown): (...args: unknown[]) => unknown',
 	],
-	// function select
-	['recvt: any', 'recvt: unknown[] | LuaSet'],
-	['sendt: any', 'sendt: unknown[] | LuaSet'],
 	// Functions can also return `undefined`
 	['function tcp():', 'function tcp(): undefined |'],
 	['function tcp6():', 'function tcp6(): undefined |'],
@@ -568,14 +570,6 @@ const crash = [
 	['SYSFIELD_TERRITORY: any', 'SYSFIELD_TERRITORY: number'],
 	['USERFIELD_MAX: any', 'USERFIELD_MAX: number'],
 	['USERFIELD_SIZE: any', 'USERFIELD_SIZE: number'],
-	[
-		'get_backtrace(handle: number): any',
-		`get_backtrace(handle: number): ${genericTable}`,
-	],
-	[
-		'get_modules(handle: number): any',
-		`get_modules(handle: number): ${genericTable}`,
-	],
 	// Functions can also return `undefined`
 	[
 		'get_sys_field(handle: number, index: number):',
