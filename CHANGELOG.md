@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.3.15
+
+- More detailed constant types
+
 ## v1.3.14
 
 - More detailed types

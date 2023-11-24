@@ -81,15 +81,23 @@ const socket = [
 /** crash namespace */
 const crash = [
 	// (greedy)
-	[/let (SYSFIELD_.+): any/g, 'const $1: number'],
-	// (greedy)
-	[/let (USERFIELD_.+): any/g, 'const $1: number'],
-	// Functions can also return `undefined`
 	[
-		'get_sys_field(handle: number, index: number):',
-		'get_sys_field(handle: number, index: number): undefined |',
+		/let (SYSFIELD_.+): any/g,
+		'const $1: number & { readonly _SYSFIELD_: unique symbol }',
 	],
-	['function load_previous():', 'function load_previous(): undefined |'],
+	// (greedy)
+	[
+		/let (USERFIELD_.+): any/g,
+		'const $1: number & { readonly _USERFIELD_: unique symbol }',
+	],
+	[
+		'get_sys_field(handle: number, index: number): LuaMultiReturn<[string, any]>',
+		'get_sys_field(handle: number, index: number): undefined | string',
+	],
+	[
+		'function load_previous(): LuaMultiReturn<[number, any]>',
+		'function load_previous(): undefined | number',
+	],
 ];
 
 /** go namespace */
@@ -99,9 +107,15 @@ const go = [
 	['let rotation: any', 'let rotation: vmath.quaternion'],
 	['let scale: any', 'let scale: number'],
 	// (greedy)
-	[/let (EASING_.+): any/g, 'const $1: number'],
+	[
+		/let (EASING_.+): any/g,
+		'const $1: number & { readonly _EASING_: unique symbol }',
+	],
 	// (greedy)
-	[/let (PLAYBACK_.+): any/g, 'const $1: number'],
+	[
+		/let (PLAYBACK_.+): any/g,
+		'const $1: number & { readonly _PLAYBACK_: unique symbol }',
+	],
 	// function animate
 	[
 		'playback: any,',
@@ -127,6 +141,11 @@ const go = [
 		'function cancel_animation(node: node, property: any)',
 		'function cancel_animation(node: node, property: "position" | "rotation" | "scale" | "color" | "outline" | "shadow" | "size" | "fill_angle" | "inner_radius" | "slice9")',
 	],
+	// TO-DO: confirm this type
+	[
+		'function get_parent(id?: string | hash | url): LuaMultiReturn<[hash, any]>',
+		'function get_parent(id?: string | hash | url): hash | undefined',
+	],
 ];
 
 /** gui namespace */
@@ -134,29 +153,65 @@ const gui = [
 	['let material: any', 'let material: hash'],
 	['let fonts: any', 'let fonts: hash'],
 	// (greedy)
-	[/let (EASING_.+): any/g, 'const $1: number'],
+	[
+		/let (EASING_.+): any/g,
+		'const $1: number & { readonly _EASING_: unique symbol }',
+	],
 	// (greedy)
-	[/let (PLAYBACK_.+): any/g, 'const $1: number'],
+	[
+		/let (PLAYBACK_.+): any/g,
+		'const $1: number & { readonly _PLAYBACK_: unique symbol }',
+	],
 	// (greedy)
-	[/let (ADJUST_.+): any/g, 'const $1: number'],
+	[
+		/let (ADJUST_.+): any/g,
+		'const $1: number & { readonly _ADJUST_: unique symbol }',
+	],
 	// (greedy)
-	[/let (ANCHOR_.+): any/g, 'const $1: number'],
+	[
+		/let (ANCHOR_.+): any/g,
+		'const $1: number & { readonly _ANCHOR_: unique symbol }',
+	],
 	// (greedy)
-	[/let (BLEND_.+): any/g, 'const $1: number'],
+	[
+		/let (BLEND_.+): any/g,
+		'const $1: number & { readonly _BLEND_: unique symbol }',
+	],
 	// (greedy)
-	[/let (CLIPPING_MODE_.+): any/g, 'const $1: number'],
+	[
+		/let (CLIPPING_MODE_.+): any/g,
+		'const $1: number & { readonly _CLIPPING_MODE_: unique symbol }',
+	],
 	// (greedy)
-	[/let (KEYBOARD_TYPE_.+): any/g, 'const $1: number'],
+	[
+		/let (KEYBOARD_TYPE_.+): any/g,
+		'const $1: number & { readonly _KEYBOARD_TYPE_: unique symbol }',
+	],
 	// (greedy)
-	[/let (PIEBOUNDS_.+): any/g, 'const $1: number'],
+	[
+		/let (PIEBOUNDS_.+): any/g,
+		'const $1: number & { readonly _PIEBOUNDS_: unique symbol }',
+	],
 	// (greedy)
-	[/let (PIVOT_.+): any/g, 'const $1: number'],
+	[
+		/let (PIVOT_.+): any/g,
+		'const $1: number & { readonly _PIVOT_: unique symbol }',
+	],
 	// (greedy)
-	[/let (PROP_.+): any/g, 'const $1: string'],
+	[
+		/let (PROP_.+): any/g,
+		'const $1: string & { readonly _PROP_: unique symbol }',
+	],
 	// (greedy)
-	[/let (RESULT_.+): any/g, 'const $1: number'],
+	[
+		/let (RESULT_.+): any/g,
+		'const $1: number & { readonly _RESULT_: unique symbol }',
+	],
 	// (greedy)
-	[/let (SIZE_MODE_.+): any/g, 'const $1: number'],
+	[
+		/let (SIZE_MODE_.+): any/g,
+		'const $1: number & { readonly _SIZE_MODE_: unique symbol }',
+	],
 	// function animate
 	[
 		'property: any',
@@ -274,6 +329,11 @@ const gui = [
 		'function cancel_animation(node: node, property: any)',
 		'function cancel_animation(node: node, property: "position" | "rotation" | "scale" | "color" | "outline" | "shadow" | "size" | "fill_angle" | "inner_radius" | "slice9")',
 	],
+	// TO-DO: confirm this type
+	[
+		'function get_parent(node: node): LuaMultiReturn<[node, any]>',
+		'function get_parent(node: node): node | undefined',
+	],
 ];
 
 /** physics namespace */
@@ -284,15 +344,24 @@ const physics = [
 	['let linear_velocity: any', 'let linear_velocity: vmath.vector3'],
 	['let mass: any', 'const mass: number'],
 	// (greedy)
-	[/let (JOINT_TYPE.+): any/g, 'const $1: number'],
+	[
+		/let (JOINT_TYPE.+): any/g,
+		'const $1: number & { readonly _JOINT_TYPE_: unique symbol }',
+	],
 ];
 
 /** profiler namespace */
 const profiler = [
 	// (greedy)
-	[/let (MODE_.+): any/g, 'const $1: number'],
+	[
+		/let (MODE_.+): any/g,
+		'const $1: number & { readonly _MODE_: unique symbol }',
+	],
 	// (greedy)
-	[/let (VIEW_MODE_.+): any/g, 'const $1: number'],
+	[
+		/let (VIEW_MODE_.+): any/g,
+		'const $1: number & { readonly _VIEW_MODE_: unique symbol }',
+	],
 	[
 		'function set_ui_mode(mode: any',
 		'function set_ui_mode(mode: typeof profiler.MODE_RUN | typeof profiler.MODE_PAUSE | typeof profiler.MODE_SHOW_PEAK_FRAME | typeof profiler.MODE_RECORD',
@@ -306,34 +375,91 @@ const profiler = [
 /** render namespace */
 const render = [
 	// (greedy)
-	[/let (BLEND_.+): any/g, 'const $1: number'],
+	[
+		/let (BLEND_.+): any/g,
+		'const $1: number & { readonly _BLEND_: unique symbol }',
+	],
 	// (greedy)
-	[/let (BUFFER_.+): any/g, 'const $1: number'],
+	[
+		/let (BUFFER_.+): any/g,
+		'const $1: number & { readonly _BUFFER_: unique symbol }',
+	],
 	// (greedy)
-	[/let (COMPARE_FUNC_.+): any/g, 'const $1: number'],
+	[
+		/let (COMPARE_FUNC_.+): any/g,
+		'const $1: number & { readonly _COMPARE_FUNC_: unique symbol }',
+	],
 	// (greedy)
-	[/let (FACE_.+): any/g, 'const $1: number'],
+	[
+		/let (FACE_.+): any/g,
+		'const $1: number & { readonly _FACE_: unique symbol }',
+	],
 	// (greedy)
-	[/let (FILTER_.+): any/g, 'const $1: number'],
-	['let FORMAT_R16F: any', 'const FORMAT_R16F: number | undefined'],
-	['let FORMAT_R32F: any', 'const FORMAT_R32F: number | undefined'],
-	['let FORMAT_RG16F: any', 'const FORMAT_RG16F: number | undefined'],
-	['let FORMAT_RG32F: any', 'const FORMAT_RG32F: number | undefined'],
-	['let FORMAT_RGB16F: any', 'const FORMAT_RGB16F: number | undefined'],
-	['let FORMAT_RGB32F: any', 'const FORMAT_RGB32F: number | undefined'],
-	['let FORMAT_RGBA16F: any', 'const FORMAT_RGBA16F: number | undefined'],
-	['let FORMAT_RGBA32F: any', 'const FORMAT_RGBA32F: number | undefined'],
+	[
+		/let (FILTER_.+): any/g,
+		'const $1: number & { readonly _FILTER_: unique symbol }',
+	],
+	[
+		'let FORMAT_R16F: any',
+		'const FORMAT_R16F: number & { readonly _FORMAT_: unique symbol } | undefined',
+	],
+	[
+		'let FORMAT_R32F: any',
+		'const FORMAT_R32F: number & { readonly _FORMAT_: unique symbol } | undefined',
+	],
+	[
+		'let FORMAT_RG16F: any',
+		'const FORMAT_RG16F: number & { readonly _FORMAT_: unique symbol } | undefined',
+	],
+	[
+		'let FORMAT_RG32F: any',
+		'const FORMAT_RG32F: number & { readonly _FORMAT_: unique symbol } | undefined',
+	],
+	[
+		'let FORMAT_RGB16F: any',
+		'const FORMAT_RGB16F: number & { readonly _FORMAT_: unique symbol } | undefined',
+	],
+	[
+		'let FORMAT_RGB32F: any',
+		'const FORMAT_RGB32F: number & { readonly _FORMAT_: unique symbol } | undefined',
+	],
+	[
+		'let FORMAT_RGBA16F: any',
+		'const FORMAT_RGBA16F: number & { readonly _FORMAT_: unique symbol } | undefined',
+	],
+	[
+		'let FORMAT_RGBA32F: any',
+		'const FORMAT_RGBA32F: number & { readonly _FORMAT_: unique symbol } | undefined',
+	],
 	// (greedy)
-	[/let (FORMAT_.+): any/g, 'const $1: number'],
+	[
+		/let (FORMAT_.+): any/g,
+		'const $1: number & { readonly _FORMAT_: unique symbol }',
+	],
 	// (greedy)
-	[/let (FRUSTUM_PLANES_.+): any/g, 'const $1: number'],
-	['let RENDER_TARGET_DEFAULT: any', 'const RENDER_TARGET_DEFAULT: number'],
+	[
+		/let (FRUSTUM_PLANES_.+): any/g,
+		'const $1: number & { readonly _FRUSTUM_PLANES_: unique symbol }',
+	],
+	[
+		'let RENDER_TARGET_DEFAULT: any',
+		'const RENDER_TARGET_DEFAULT: number & { readonly _RENDER_TARGET_DEFAULT: unique symbol }',
+	],
 	// (greedy)
-	[/let (STATE_.+): any/g, 'const $1: number'],
+	[
+		/let (STATE_.+): any/g,
+		'const $1: number & { readonly _STATE_: unique symbol }',
+	],
 	// (greedy)
-	[/let (STENCIL_.+): any/g, 'const $1: number'],
+	[
+		/let (STENCIL_.+): any/g,
+		'const $1: number & { readonly _STENCIL_: unique symbol }',
+	],
 	// (greedy)
-	[/let (WRAP_.+): any/g, 'const $1: number'],
+	[
+		/let (WRAP_.+): any/g,
+		'const $1: number & { readonly _WRAP_: unique symbol }',
+	],
 	[
 		'function disable_state(state: any',
 		'function disable_state(state: typeof render.STATE_DEPTH_TEST | typeof render.STATE_STENCIL_TEST | typeof render.STATE_BLEND | typeof render.STATE_CULL_FACE | typeof render.STATE_POLYGON_OFFSET_FILL',
@@ -379,15 +505,24 @@ const render = [
 /** resource namespace */
 const resource = [
 	// (greedy)
-	[/let (COMPRESSION_.+): any/g, 'const $1: number'],
+	[
+		/let (COMPRESSION_.+): any/g,
+		'const $1: number & { readonly _COMPRESSION_: unique symbol }',
+	],
 	// (greedy)
-	[/let (TEXTURE_.+): any/g, 'const $1: number'],
+	[
+		/let (TEXTURE_.+): any/g,
+		'const $1: number & { readonly _TEXTURE_: unique symbol }',
+	],
 ];
 
 /** sys namespace */
 const sys = [
 	// (greedy)
-	[/let (NETWORK_.+): any/g, 'const $1: number'],
+	[
+		/let (NETWORK_.+): any/g,
+		'const $1: number & { readonly _NETWORK_: unique symbol }',
+	],
 	[
 		'function exists(path: string): any',
 		'function exists(path: string): boolean',
@@ -417,9 +552,15 @@ const sys = [
 /** window namespace */
 const windowChanges = [
 	// (greedy)
-	[/let (DIMMING_.+): any/g, 'const $1: number'],
+	[
+		/let (DIMMING_.+): any/g,
+		'const $1: number & { readonly _DIMMING_: unique symbol }',
+	],
 	// (greedy)
-	[/let (WINDOW_EVENT_.+): any/g, 'const $1: number'],
+	[
+		/let (WINDOW_EVENT_.+): any/g,
+		'const $1: number & { readonly _WINDOW_EVENT_: unique symbol }',
+	],
 	[
 		'function get_dim_mode(): any',
 		'function get_dim_mode(): typeof window.DIMMING_UNKNOWN | typeof window.DIMMING_ON | typeof window.DIMMING_OFF',
@@ -437,7 +578,10 @@ const windowChanges = [
 /** buffer namespace */
 const bufferChanges = [
 	// (greedy)
-	[/let (VALUE_TYPE_.+): any/g, 'const $1: number'],
+	[
+		/let (VALUE_TYPE_.+): any/g,
+		'const $1: number & { readonly _VALUE_TYPE_: unique symbol }',
+	],
 ];
 
 /** html5 namespace */
@@ -482,7 +626,10 @@ const msg = [
 
 /** timer namespace */
 const timer = [
-	['let INVALID_TIMER_HANDLE: any', 'const INVALID_TIMER_HANDLE: number'],
+	[
+		'let INVALID_TIMER_HANDLE: any',
+		'const INVALID_TIMER_HANDLE: number & { readonly _INVALID_TIMER_: unique symbol }',
+	],
 	// function delay
 	[
 		'callback: any',
@@ -494,7 +641,7 @@ const timer = [
 const vmathChanges = [
 	[
 		'function vector(t: any): any',
-		'function vector(t: number[] | LuaSet<number>): vmath.vector3 | vmath.vector4',
+		'function vector(t: number[]): vmath.vector3 | vmath.vector4',
 	],
 ];
 
@@ -515,7 +662,10 @@ const camera = [
 /** collectionFactory namespace */
 const collectionFactory = [
 	// (greedy)
-	[/let (STATUS_.+): any/g, 'const $1: number'],
+	[
+		/let (STATUS_.+): any/g,
+		'const $1: number & { readonly _STATUS_: unique symbol }',
+	],
 	[
 		'function get_status(url?: string | hash | url): any',
 		'function get_status(url?: string | hash | url): typeof collectionfactory.STATUS_UNLOADED | typeof collectionfactory.STATUS_LOADING | typeof collectionfactory.STATUS_LOADED',
@@ -533,7 +683,10 @@ const collectionProxy = [['', '']];
 /** factory namespace */
 const factory = [
 	// (greedy)
-	[/let (STATUS_.+): any/g, 'const $1: number'],
+	[
+		/let (STATUS_.+): any/g,
+		'const $1: number & { readonly _STATUS_: unique symbol }',
+	],
 	[
 		'function get_status(url?: string | hash | url): any',
 		'function get_status(url?: string | hash | url): typeof factory.STATUS_UNLOADED | typeof factory.STATUS_LOADING | typeof factory.STATUS_LOADED',
@@ -579,7 +732,10 @@ const model = [
 /** particlefx namespace */
 const particleFx = [
 	// (greedy)
-	[/let (EMITTER_STATE_.+): any/g, 'const $1: number'],
+	[
+		/let (EMITTER_STATE_.+): any/g,
+		'const $1: number & { readonly _EMITTER_STATE_: unique symbol }',
+	],
 	// function play
 	[
 		'emitter_state_function?: any',
@@ -629,10 +785,19 @@ const sprite = [
 const tilemap = [
 	['let material: any', 'let material: hash'],
 	['let tile_source: any', 'let tile_source: hash'],
-	['let H_FLIP: any', 'const H_FLIP: number'],
+	[
+		'let H_FLIP: any',
+		'const H_FLIP: number & { readonly __FLIP_: unique symbol }',
+	],
 	// (greedy)
-	[/let (ROTATE_.+): any/g, 'const $1: number'],
-	['let V_FLIP: any', 'const V_FLIP: number'],
+	[
+		/let (ROTATE_.+): any/g,
+		'const $1: number & { readonly _ROTATE_: unique symbol }',
+	],
+	[
+		'let V_FLIP: any',
+		'const V_FLIP: number & { readonly __FLIP_: unique symbol }',
+	],
 ];
 
 /** Late changes that don't fit anywhere else */
