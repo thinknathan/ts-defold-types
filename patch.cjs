@@ -66,8 +66,8 @@ const earlyChanges = [
 
 /** socket namespace */
 const socket = [
-	['_SETSIZE: any', '_SETSIZE: number'],
-	['_VERSION: any', '_VERSION: string'],
+	['let _SETSIZE: any', 'const _SETSIZE: number'],
+	['let _VERSION: any', 'const _VERSION: string'],
 	[
 		'newtry(finalizer: any): any',
 		'newtry(finalizer: (...args: unknown[]) => unknown): (...args: unknown[]) => unknown',
@@ -80,22 +80,10 @@ const socket = [
 
 /** crash namespace */
 const crash = [
-	[
-		'SYSFIELD_ANDROID_BUILD_FINGERPRINT: any',
-		'SYSFIELD_ANDROID_BUILD_FINGERPRINT: number',
-	],
-	['SYSFIELD_DEVICE_LANGUAGE: any', 'SYSFIELD_DEVICE_LANGUAGE: number'],
-	['SYSFIELD_DEVICE_MODEL: any', 'SYSFIELD_DEVICE_MODEL: number'],
-	['SYSFIELD_ENGINE_HASH: any', 'SYSFIELD_ENGINE_HASH: number'],
-	['SYSFIELD_ENGINE_VERSION: any', 'SYSFIELD_ENGINE_VERSION: number'],
-	['SYSFIELD_LANGUAGE: any', 'SYSFIELD_LANGUAGE: number'],
-	['SYSFIELD_MANUFACTURER: any', 'SYSFIELD_MANUFACTURER: number'],
-	['SYSFIELD_MAX: any', 'SYSFIELD_MAX: number'],
-	['SYSFIELD_SYSTEM_NAME: any', 'SYSFIELD_SYSTEM_NAME: number'],
-	['SYSFIELD_SYSTEM_VERSION: any', 'SYSFIELD_SYSTEM_VERSION: number'],
-	['SYSFIELD_TERRITORY: any', 'SYSFIELD_TERRITORY: number'],
-	['USERFIELD_MAX: any', 'USERFIELD_MAX: number'],
-	['USERFIELD_SIZE: any', 'USERFIELD_SIZE: number'],
+	// (greedy)
+	[/let (SYSFIELD_.+): any/g, 'const $1: number'],
+	// (greedy)
+	[/let (USERFIELD_.+): any/g, 'const $1: number'],
 	// Functions can also return `undefined`
 	[
 		'get_sys_field(handle: number, index: number):',
@@ -110,12 +98,10 @@ const go = [
 	['let position: any', 'let position: vmath.vector3'],
 	['let rotation: any', 'let rotation: vmath.quaternion'],
 	['let scale: any', 'let scale: number'],
-	// Describe easing types
-	// Greedy changes apply multiple times
-	[/(EASING_.+): any/g, '$1: number'],
-	// Describe playback types
-	// Greedy changes apply multiple times
-	[/(PLAYBACK_.+): any/g, '$1: number'],
+	// (greedy)
+	[/let (EASING_.+): any/g, 'const $1: number'],
+	// (greedy)
+	[/let (PLAYBACK_.+): any/g, 'const $1: number'],
 	// function animate
 	[
 		'playback: any,',
@@ -145,60 +131,32 @@ const go = [
 
 /** gui namespace */
 const gui = [
+	['let material: any', 'let material: hash'],
 	['let fonts: any', 'let fonts: hash'],
-	// Describe easing types
-	// Greedy changes apply multiple times
-	[/(EASING_.+): any/g, '$1: number'],
-	// Describe playback types
-	// Greedy changes apply multiple times
-	[/(PLAYBACK_.+): any/g, '$1: number'],
-	['let ADJUST_FIT: any', 'let ADJUST_FIT: number'],
-	['let ADJUST_STRETCH: any', 'let ADJUST_STRETCH: number'],
-	['let ADJUST_ZOOM: any', 'let ADJUST_ZOOM: number'],
-	['let ANCHOR_BOTTOM: any', 'let ANCHOR_BOTTOM: number'],
-	['let ANCHOR_LEFT: any', 'let ANCHOR_LEFT: number'],
-	['let ANCHOR_NONE: any', 'let ANCHOR_NONE: number'],
-	['let ANCHOR_RIGHT: any', 'let ANCHOR_RIGHT: number'],
-	['let ANCHOR_TOP: any', 'let ANCHOR_TOP: number'],
-	['let BLEND_ADD: any', 'let BLEND_ADD: number'],
-	['let BLEND_ADD_ALPHA: any', 'let BLEND_ADD_ALPHA: number'],
-	['let BLEND_ALPHA: any', 'let BLEND_ALPHA: number'],
-	['let BLEND_MULT: any', 'let BLEND_MULT: number'],
-	['let CLIPPING_MODE_NONE: any', 'let CLIPPING_MODE_NONE: number'],
-	['let CLIPPING_MODE_STENCIL: any', 'let CLIPPING_MODE_STENCIL: number'],
-	['let KEYBOARD_TYPE_DEFAULT: any', 'let KEYBOARD_TYPE_DEFAULT: number'],
-	['let KEYBOARD_TYPE_EMAIL: any', 'let KEYBOARD_TYPE_EMAIL: number'],
-	['let KEYBOARD_TYPE_NUMBER_PAD: any', 'let KEYBOARD_TYPE_NUMBER_PAD: number'],
-	['let KEYBOARD_TYPE_PASSWORD: any', 'let KEYBOARD_TYPE_PASSWORD: number'],
-	['let PIEBOUNDS_ELLIPSE: any', 'let PIEBOUNDS_ELLIPSE: number'],
-	['let PIEBOUNDS_RECTANGLE: any', 'let PIEBOUNDS_RECTANGLE: number'],
-	['let PIVOT_CENTER: any', 'let PIVOT_CENTER: number'],
-	['let PIVOT_E: any', 'let PIVOT_E: number'],
-	['let PIVOT_N: any', 'let PIVOT_N: number'],
-	['let PIVOT_NE: any', 'let PIVOT_NE: number'],
-	['let PIVOT_NW: any', 'let PIVOT_NW: number'],
-	['let PIVOT_S: any', 'let PIVOT_S: number'],
-	['let PIVOT_SE: any', 'let PIVOT_SE: number'],
-	['let PIVOT_SW: any', 'let PIVOT_SW: number'],
-	['let PIVOT_W: any', 'let PIVOT_W: number'],
-	['let PROP_COLOR: any', 'let PROP_COLOR: string'],
-	['let PROP_FILL_ANGLE: any', 'let PROP_FILL_ANGLE: string'],
-	['let PROP_INNER_RADIUS: any', 'let PROP_INNER_RADIUS: string'],
-	['let PROP_OUTLINE: any', 'let PROP_OUTLINE: string'],
-	['let PROP_POSITION: any', 'let PROP_POSITION: string'],
-	['let PROP_ROTATION: any', 'let PROP_ROTATION: string'],
-	['let PROP_SCALE: any', 'let PROP_SCALE: string'],
-	['let PROP_SHADOW: any', 'let PROP_SHADOW: string'],
-	['let PROP_SIZE: any', 'let PROP_SIZE: string'],
-	['let PROP_SLICE9: any', 'let PROP_SLICE9: string'],
-	['let RESULT_DATA_ERROR: any', 'let RESULT_DATA_ERROR: number'],
-	['let RESULT_OUT_OF_RESOURCES: any', 'let RESULT_OUT_OF_RESOURCES: number'],
-	[
-		'let RESULT_TEXTURE_ALREADY_EXISTS: any',
-		'let RESULT_TEXTURE_ALREADY_EXISTS: number',
-	],
-	['let SIZE_MODE_AUTO: any', 'let SIZE_MODE_AUTO: number'],
-	['let SIZE_MODE_MANUAL: any', 'let SIZE_MODE_MANUAL: number'],
+	// (greedy)
+	[/let (EASING_.+): any/g, 'const $1: number'],
+	// (greedy)
+	[/let (PLAYBACK_.+): any/g, 'const $1: number'],
+	// (greedy)
+	[/let (ADJUST_.+): any/g, 'const $1: number'],
+	// (greedy)
+	[/let (ANCHOR_.+): any/g, 'const $1: number'],
+	// (greedy)
+	[/let (BLEND_.+): any/g, 'const $1: number'],
+	// (greedy)
+	[/let (CLIPPING_MODE_.+): any/g, 'const $1: number'],
+	// (greedy)
+	[/let (KEYBOARD_TYPE_.+): any/g, 'const $1: number'],
+	// (greedy)
+	[/let (PIEBOUNDS_.+): any/g, 'const $1: number'],
+	// (greedy)
+	[/let (PIVOT_.+): any/g, 'const $1: number'],
+	// (greedy)
+	[/let (PROP_.+): any/g, 'const $1: string'],
+	// (greedy)
+	[/let (RESULT_.+): any/g, 'const $1: number'],
+	// (greedy)
+	[/let (SIZE_MODE_.+): any/g, 'const $1: number'],
 	// function animate
 	[
 		'property: any',
@@ -325,21 +283,16 @@ const physics = [
 	['let linear_damping: any', 'let linear_damping: number'],
 	['let linear_velocity: any', 'let linear_velocity: vmath.vector3'],
 	['let mass: any', 'const mass: number'],
-	['JOINT_TYPE_FIXED: any', 'JOINT_TYPE_FIXED: number'],
-	['JOINT_TYPE_HINGE: any', 'JOINT_TYPE_HINGE: number'],
-	['JOINT_TYPE_SLIDER: any', 'JOINT_TYPE_SLIDER: number'],
-	['JOINT_TYPE_SPRING: any', 'JOINT_TYPE_SPRING: number'],
-	['JOINT_TYPE_WELD: any', 'JOINT_TYPE_WELD: number'],
+	// (greedy)
+	[/let (JOINT_TYPE.+): any/g, 'const $1: number'],
 ];
 
 /** profiler namespace */
 const profiler = [
-	['MODE_PAUSE: any', 'MODE_PAUSE: number'],
-	['MODE_RECORD: any', 'MODE_RECORD: number'],
-	['MODE_RUN: any', 'MODE_RUN: number'],
-	['MODE_SHOW_PEAK_FRAME: any', 'MODE_SHOW_PEAK_FRAME: number'],
-	['VIEW_MODE_FULL: any', 'VIEW_MODE_FULL: number'],
-	['VIEW_MODE_MINIMIZED: any', 'VIEW_MODE_MINIMIZED: number'],
+	// (greedy)
+	[/let (MODE_.+): any/g, 'const $1: number'],
+	// (greedy)
+	[/let (VIEW_MODE_.+): any/g, 'const $1: number'],
 	[
 		'function set_ui_mode(mode: any',
 		'function set_ui_mode(mode: typeof profiler.MODE_RUN | typeof profiler.MODE_PAUSE | typeof profiler.MODE_SHOW_PEAK_FRAME | typeof profiler.MODE_RECORD',
@@ -352,95 +305,35 @@ const profiler = [
 
 /** render namespace */
 const render = [
-	['let BLEND_CONSTANT_ALPHA: any', 'let BLEND_CONSTANT_ALPHA: number'],
-	['let BLEND_CONSTANT_COLOR: any', 'let BLEND_CONSTANT_COLOR: number'],
-	['let BLEND_DST_ALPHA: any', 'let BLEND_DST_ALPHA: number'],
-	['let BLEND_DST_COLOR: any', 'let BLEND_DST_COLOR: number'],
-	['let BLEND_ONE: any', 'let BLEND_ONE: number'],
-	[
-		'let BLEND_ONE_MINUS_CONSTANT_ALPHA: any',
-		'let BLEND_ONE_MINUS_CONSTANT_ALPHA: number',
-	],
-	[
-		'let BLEND_ONE_MINUS_CONSTANT_COLOR: any',
-		'let BLEND_ONE_MINUS_CONSTANT_COLOR: number',
-	],
-	[
-		'let BLEND_ONE_MINUS_DST_ALPHA: any',
-		'let BLEND_ONE_MINUS_DST_ALPHA: number',
-	],
-	[
-		'let BLEND_ONE_MINUS_DST_COLOR: any',
-		'let BLEND_ONE_MINUS_DST_COLOR: number',
-	],
-	[
-		'let BLEND_ONE_MINUS_SRC_ALPHA: any',
-		'let BLEND_ONE_MINUS_SRC_ALPHA: number',
-	],
-	[
-		'let BLEND_ONE_MINUS_SRC_COLOR: any',
-		'let BLEND_ONE_MINUS_SRC_COLOR: number',
-	],
-	['let BLEND_SRC_ALPHA: any', 'let BLEND_SRC_ALPHA: number'],
-	['let BLEND_SRC_ALPHA_SATURATE: any', 'let BLEND_SRC_ALPHA_SATURATE: number'],
-	['let BLEND_SRC_COLOR: any', 'let BLEND_SRC_COLOR: number'],
-	['let BLEND_ZERO: any', 'let BLEND_ZERO: number'],
-	['let BUFFER_COLOR0_BIT: any', 'let BUFFER_COLOR0_BIT: number'],
-	['let BUFFER_COLOR1_BIT: any', 'let BUFFER_COLOR1_BIT: number'],
-	['let BUFFER_COLOR2_BIT: any', 'let BUFFER_COLOR2_BIT: number'],
-	['let BUFFER_COLOR3_BIT: any', 'let BUFFER_COLOR3_BIT: number'],
-	['let BUFFER_COLOR_BIT: any', 'let BUFFER_COLOR_BIT: number'],
-	['let BUFFER_DEPTH_BIT: any', 'let BUFFER_DEPTH_BIT: number'],
-	['let BUFFER_STENCIL_BIT: any', 'let BUFFER_STENCIL_BIT: number'],
-	['let COMPARE_FUNC_ALWAYS: any', 'let COMPARE_FUNC_ALWAYS: number'],
-	['let COMPARE_FUNC_EQUAL: any', 'let COMPARE_FUNC_EQUAL: number'],
-	['let COMPARE_FUNC_GEQUAL: any', 'let COMPARE_FUNC_GEQUAL: number'],
-	['let COMPARE_FUNC_GREATER: any', 'let COMPARE_FUNC_GREATER: number'],
-	['let COMPARE_FUNC_LEQUAL: any', 'let COMPARE_FUNC_LEQUAL: number'],
-	['let COMPARE_FUNC_LESS: any', 'let COMPARE_FUNC_LESS: number'],
-	['let COMPARE_FUNC_NEVER: any', 'let COMPARE_FUNC_NEVER: number'],
-	['let COMPARE_FUNC_NOTEQUAL: any', 'let COMPARE_FUNC_NOTEQUAL: number'],
-	['let FACE_BACK: any', 'let FACE_BACK: number'],
-	['let FACE_FRONT: any', 'let FACE_FRONT: number'],
-	['let FACE_FRONT_AND_BACK: any', 'let FACE_FRONT_AND_BACK: number'],
-	['let FILTER_LINEAR: any', 'let FILTER_LINEAR: number'],
-	['let FILTER_NEAREST: any', 'let FILTER_NEAREST: number'],
-	['let FORMAT_DEPTH: any', 'let FORMAT_DEPTH: number'],
-	['let FORMAT_LUMINANCE: any', 'let FORMAT_LUMINANCE: number'],
-	['let FORMAT_R16F: any', 'let FORMAT_R16F: number | undefined'],
-	['let FORMAT_R32F: any', 'let FORMAT_R32F: number | undefined'],
-	['let FORMAT_RG16F: any', 'let FORMAT_RG16F: number | undefined'],
-	['let FORMAT_RG32F: any', 'let FORMAT_RG32F: number | undefined'],
-	['let FORMAT_RGB: any', 'let FORMAT_RGB: number'],
-	['let FORMAT_RGB16F: any', 'let FORMAT_RGB16F: number | undefined'],
-	['let FORMAT_RGB32F: any', 'let FORMAT_RGB32F: number | undefined'],
-	['let FORMAT_RGBA: any', 'let FORMAT_RGBA: number'],
-	['let FORMAT_RGBA16F: any', 'let FORMAT_RGBA16F: number | undefined'],
-	['let FORMAT_RGBA32F: any', 'let FORMAT_RGBA32F: number | undefined'],
-	['let FORMAT_STENCIL: any', 'let FORMAT_STENCIL: number'],
-	['let FRUSTUM_PLANES_ALL: any', 'let FRUSTUM_PLANES_ALL: number'],
-	['let FRUSTUM_PLANES_SIDES: any', 'let FRUSTUM_PLANES_SIDES: number'],
-	['let RENDER_TARGET_DEFAULT: any', 'let RENDER_TARGET_DEFAULT: number'],
-	['let STATE_BLEND: any', 'let STATE_BLEND: number'],
-	['let STATE_CULL_FACE: any', 'let STATE_CULL_FACE: number'],
-	['let STATE_DEPTH_TEST: any', 'let STATE_DEPTH_TEST: number'],
-	[
-		'let STATE_POLYGON_OFFSET_FILL: any',
-		'let STATE_POLYGON_OFFSET_FILL: number',
-	],
-	['let STATE_STENCIL_TEST: any', 'let STATE_STENCIL_TEST: number'],
-	['let STENCIL_OP_DECR: any', 'let STENCIL_OP_DECR: number'],
-	['let STENCIL_OP_DECR_WRAP: any', 'let STENCIL_OP_DECR_WRAP: number'],
-	['let STENCIL_OP_INCR: any', 'let STENCIL_OP_INCR: number'],
-	['let STENCIL_OP_INCR_WRAP: any', 'let STENCIL_OP_INCR_WRAP: number'],
-	['let STENCIL_OP_INVERT: any', 'let STENCIL_OP_INVERT: number'],
-	['let STENCIL_OP_KEEP: any', 'let STENCIL_OP_KEEP: number'],
-	['let STENCIL_OP_REPLACE: any', 'let STENCIL_OP_REPLACE: number'],
-	['let STENCIL_OP_ZERO: any', 'let STENCIL_OP_ZERO: number'],
-	['let WRAP_CLAMP_TO_BORDER: any', 'let WRAP_CLAMP_TO_BORDER: number'],
-	['let WRAP_CLAMP_TO_EDGE: any', 'let WRAP_CLAMP_TO_EDGE: number'],
-	['let WRAP_MIRRORED_REPEAT: any', 'let WRAP_MIRRORED_REPEAT: number'],
-	['let WRAP_REPEAT: any', 'let WRAP_REPEAT: number'],
+	// (greedy)
+	[/let (BLEND_.+): any/g, 'const $1: number'],
+	// (greedy)
+	[/let (BUFFER_.+): any/g, 'const $1: number'],
+	// (greedy)
+	[/let (COMPARE_FUNC_.+): any/g, 'const $1: number'],
+	// (greedy)
+	[/let (FACE_.+): any/g, 'const $1: number'],
+	// (greedy)
+	[/let (FILTER_.+): any/g, 'const $1: number'],
+	['let FORMAT_R16F: any', 'const FORMAT_R16F: number | undefined'],
+	['let FORMAT_R32F: any', 'const FORMAT_R32F: number | undefined'],
+	['let FORMAT_RG16F: any', 'const FORMAT_RG16F: number | undefined'],
+	['let FORMAT_RG32F: any', 'const FORMAT_RG32F: number | undefined'],
+	['let FORMAT_RGB16F: any', 'const FORMAT_RGB16F: number | undefined'],
+	['let FORMAT_RGB32F: any', 'const FORMAT_RGB32F: number | undefined'],
+	['let FORMAT_RGBA16F: any', 'const FORMAT_RGBA16F: number | undefined'],
+	['let FORMAT_RGBA32F: any', 'const FORMAT_RGBA32F: number | undefined'],
+	// (greedy)
+	[/let (FORMAT_.+): any/g, 'const $1: number'],
+	// (greedy)
+	[/let (FRUSTUM_PLANES_.+): any/g, 'const $1: number'],
+	['let RENDER_TARGET_DEFAULT: any', 'const RENDER_TARGET_DEFAULT: number'],
+	// (greedy)
+	[/let (STATE_.+): any/g, 'const $1: number'],
+	// (greedy)
+	[/let (STENCIL_.+): any/g, 'const $1: number'],
+	// (greedy)
+	[/let (WRAP_.+): any/g, 'const $1: number'],
 	[
 		'function disable_state(state: any',
 		'function disable_state(state: typeof render.STATE_DEPTH_TEST | typeof render.STATE_STENCIL_TEST | typeof render.STATE_BLEND | typeof render.STATE_CULL_FACE | typeof render.STATE_POLYGON_OFFSET_FILL',
@@ -485,62 +378,16 @@ const render = [
 
 /** resource namespace */
 const resource = [
-	[
-		'let COMPRESSION_TYPE_BASIS_UASTC: any',
-		'let COMPRESSION_TYPE_BASIS_UASTC: number',
-	],
-	['let COMPRESSION_TYPE_DEFAULT: any', 'let COMPRESSION_TYPE_DEFAULT: number'],
-	['let TEXTURE_FORMAT_LUMINANCE: any', 'let TEXTURE_FORMAT_LUMINANCE: number'],
-	['let TEXTURE_FORMAT_R16F: any', 'let TEXTURE_FORMAT_R16F: number'],
-	['let TEXTURE_FORMAT_R32F: any', 'let TEXTURE_FORMAT_R32F: number'],
-	['let TEXTURE_FORMAT_RG16F: any', 'let TEXTURE_FORMAT_RG16F: number'],
-	['let TEXTURE_FORMAT_RG32F: any', 'let TEXTURE_FORMAT_RG32F: number'],
-	['let TEXTURE_FORMAT_RGB: any', 'let TEXTURE_FORMAT_RGB: number'],
-	['let TEXTURE_FORMAT_RGB16F: any', 'let TEXTURE_FORMAT_RGB16F: number'],
-	['let TEXTURE_FORMAT_RGB32F: any', 'let TEXTURE_FORMAT_RGB32F: number'],
-	['let TEXTURE_FORMAT_RGBA: any', 'let TEXTURE_FORMAT_RGBA: number'],
-	['let TEXTURE_FORMAT_RGBA16F: any', 'let TEXTURE_FORMAT_RGBA16F: number'],
-	['let TEXTURE_FORMAT_RGBA32F: any', 'let TEXTURE_FORMAT_RGBA32F: number'],
-	[
-		'let TEXTURE_FORMAT_RGBA_ASTC_4x4: any',
-		'const TEXTURE_FORMAT_RGBA_ASTC_4x4: number',
-	],
-	['let TEXTURE_FORMAT_RGBA_BC3: any', 'let TEXTURE_FORMAT_RGBA_BC3: number'],
-	['let TEXTURE_FORMAT_RGBA_BC7: any', 'let TEXTURE_FORMAT_RGBA_BC7: number'],
-	['let TEXTURE_FORMAT_RGBA_ETC2: any', 'let TEXTURE_FORMAT_RGBA_ETC2: number'],
-	[
-		'let TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1: any',
-		'let TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1: number',
-	],
-	[
-		'let TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1: any',
-		'let TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1: number',
-	],
-	['let TEXTURE_FORMAT_RGB_BC1: any', 'let TEXTURE_FORMAT_RGB_BC1: number'],
-	['let TEXTURE_FORMAT_RGB_ETC1: any', 'let TEXTURE_FORMAT_RGB_ETC1: number'],
-	[
-		'let TEXTURE_FORMAT_RGB_PVRTC_2BPPV1: any',
-		'let TEXTURE_FORMAT_RGB_PVRTC_2BPPV1: number',
-	],
-	[
-		'let TEXTURE_FORMAT_RGB_PVRTC_4BPPV1: any',
-		'let TEXTURE_FORMAT_RGB_PVRTC_4BPPV1: number',
-	],
-	['let TEXTURE_FORMAT_RG_BC5: any', 'let TEXTURE_FORMAT_RG_BC5: number'],
-	['let TEXTURE_FORMAT_R_BC4: any', 'let TEXTURE_FORMAT_R_BC4: number'],
-	['let TEXTURE_TYPE_2D: any', 'let TEXTURE_TYPE_2D: number'],
-	['let TEXTURE_TYPE_2D_ARRAY: any', 'let TEXTURE_TYPE_2D_ARRAY: number'],
-	['let TEXTURE_TYPE_CUBE_MAP: any', 'let TEXTURE_TYPE_CUBE_MAP: number'],
+	// (greedy)
+	[/let (COMPRESSION_.+): any/g, 'const $1: number'],
+	// (greedy)
+	[/let (TEXTURE_.+): any/g, 'const $1: number'],
 ];
 
 /** sys namespace */
 const sys = [
-	['let NETWORK_CONNECTED: any', 'let NETWORK_CONNECTED: number'],
-	[
-		'let NETWORK_CONNECTED_CELLULAR: any',
-		'let NETWORK_CONNECTED_CELLULAR: number',
-	],
-	['let NETWORK_DISCONNECTED: any', 'let NETWORK_DISCONNECTED: number'],
+	// (greedy)
+	[/let (NETWORK_.+): any/g, 'const $1: number'],
 	[
 		'function exists(path: string): any',
 		'function exists(path: string): boolean',
@@ -569,18 +416,10 @@ const sys = [
 
 /** window namespace */
 const windowChanges = [
-	['let DIMMING_OFF: any', 'let DIMMING_OFF: number'],
-	['let DIMMING_ON: any', 'let DIMMING_ON: number'],
-	['let DIMMING_UNKNOWN: any', 'let DIMMING_UNKNOWN: number'],
-	['let WINDOW_EVENT_DEICONIFIED: any', 'let WINDOW_EVENT_DEICONIFIED: number'],
-	[
-		'let WINDOW_EVENT_FOCUS_GAINED: any',
-		'let WINDOW_EVENT_FOCUS_GAINED: number',
-	],
-	['let WINDOW_EVENT_FOCUS_LOST: any', 'let WINDOW_EVENT_FOCUS_LOST: number'],
-	// Iconfied is sometimes spelled Iconified. Probably a typo?
-	['let WINDOW_EVENT_ICONFIED: any', 'let WINDOW_EVENT_ICONFIED: number'],
-	['let WINDOW_EVENT_RESIZED: any', 'let WINDOW_EVENT_RESIZED: number'],
+	// (greedy)
+	[/let (DIMMING_.+): any/g, 'const $1: number'],
+	// (greedy)
+	[/let (WINDOW_EVENT_.+): any/g, 'const $1: number'],
 	[
 		'function get_dim_mode(): any',
 		'function get_dim_mode(): typeof window.DIMMING_UNKNOWN | typeof window.DIMMING_ON | typeof window.DIMMING_OFF',
@@ -597,9 +436,8 @@ const windowChanges = [
 
 /** buffer namespace */
 const bufferChanges = [
-	// Describe `buffer` types
-	// Greedy changes apply multiple times
-	[/(VALUE_TYPE_.+): any/g, '$1: number'],
+	// (greedy)
+	[/let (VALUE_TYPE_.+): any/g, 'const $1: number'],
 ];
 
 /** html5 namespace */
@@ -621,10 +459,10 @@ const http = [
 
 /** image namespace */
 const image = [
-	['let TYPE_LUMINANCE: any', 'let TYPE_LUMINANCE: "l"'],
-	['let TYPE_LUMINANCE_ALPHA: any', 'let TYPE_LUMINANCE_ALPHA: "la"'],
-	['let TYPE_RGB: any', 'let TYPE_RGB: "rgb"'],
-	['let TYPE_RGBA: any', 'let TYPE_RGBA: "rgba"'],
+	['let TYPE_LUMINANCE: any', 'const TYPE_LUMINANCE: "l"'],
+	['let TYPE_LUMINANCE_ALPHA: any', 'const TYPE_LUMINANCE_ALPHA: "la"'],
+	['let TYPE_RGB: any', 'const TYPE_RGB: "rgb"'],
+	['let TYPE_RGBA: any', 'const TYPE_RGBA: "rgba"'],
 ];
 
 /** json namespace */
@@ -644,7 +482,7 @@ const msg = [
 
 /** timer namespace */
 const timer = [
-	['let INVALID_TIMER_HANDLE: any', 'let INVALID_TIMER_HANDLE: number'],
+	['let INVALID_TIMER_HANDLE: any', 'const INVALID_TIMER_HANDLE: number'],
 	// function delay
 	[
 		'callback: any',
@@ -676,9 +514,8 @@ const camera = [
 
 /** collectionFactory namespace */
 const collectionFactory = [
-	['let STATUS_LOADED: any', 'const STATUS_LOADED: number'],
-	['let STATUS_LOADING: any', 'const STATUS_LOADING: number'],
-	['let STATUS_UNLOADED: any', 'const STATUS_UNLOADED: number'],
+	// (greedy)
+	[/let (STATUS_.+): any/g, 'const $1: number'],
 	[
 		'function get_status(url?: string | hash | url): any',
 		'function get_status(url?: string | hash | url): typeof collectionfactory.STATUS_UNLOADED | typeof collectionfactory.STATUS_LOADING | typeof collectionfactory.STATUS_LOADED',
@@ -695,9 +532,8 @@ const collectionProxy = [['', '']];
 
 /** factory namespace */
 const factory = [
-	['let STATUS_LOADED: any', 'const STATUS_LOADED: number'],
-	['let STATUS_LOADING: any', 'const STATUS_LOADING: number'],
-	['let STATUS_UNLOADED: any', 'const STATUS_UNLOADED: number'],
+	// (greedy)
+	[/let (STATUS_.+): any/g, 'const $1: number'],
 	[
 		'function get_status(url?: string | hash | url): any',
 		'function get_status(url?: string | hash | url): typeof factory.STATUS_UNLOADED | typeof factory.STATUS_LOADING | typeof factory.STATUS_LOADED',
@@ -711,6 +547,7 @@ const factory = [
 
 /** label namespace */
 const label = [
+	['let material: any', 'let material: hash'],
 	['let color: any', 'let color: vmath.vector4'],
 	['let font: any', 'let font: hash'],
 	['let leading: any', 'let leading: number'],
@@ -719,17 +556,14 @@ const label = [
 	['let scale: any', 'let scale: number | vmath.vector3'],
 	['let shadow: any', 'let shadow: vmath.vector4'],
 	['let tracking: any', 'let tracking: number'],
-	// Prop also exists in sprite namespace
 	['let size: any', 'let size: vmath.vector3'],
 ];
 
 /** model namespace */
 const model = [
-	// Prop also exists in sprite namespace
+	['let material: any', 'let material: hash'],
 	['let playback_rate: any', 'let playback_rate: number'],
-	// Prop also exists in sprite namespace
 	['let animation: any', 'let animation: hash'],
-	// Prop also exists in sprite namespace
 	['let cursor: any', 'let cursor: number'],
 	// function play_anim
 	[
@@ -744,10 +578,8 @@ const model = [
 
 /** particlefx namespace */
 const particleFx = [
-	['let EMITTER_STATE_POSTSPAWN: any', 'const EMITTER_STATE_POSTSPAWN: number'],
-	['let EMITTER_STATE_PRESPAWN: any', 'const EMITTER_STATE_PRESPAWN: number'],
-	['let EMITTER_STATE_SLEEPING: any', 'const EMITTER_STATE_SLEEPING: number'],
-	['let EMITTER_STATE_SPAWNING: any', 'const EMITTER_STATE_SPAWNING: number'],
+	// (greedy)
+	[/let (EMITTER_STATE_.+): any/g, 'const $1: number'],
 	// function play
 	[
 		'emitter_state_function?: any',
@@ -774,16 +606,13 @@ const sound = [
 
 /** sprite namespace */
 const sprite = [
+	['let material: any', 'let material: hash'],
 	['let frame_count: any', 'const frame_count: number'],
 	['let image: any', 'let image: hash'],
-	// Prop also exists in model namespace
 	['let playback_rate: any', 'let playback_rate: number'],
 	['let scale: any', 'let scale: vmath.vector3'],
-	// Prop also exists in label namespace
 	['let size: any', 'let size: vmath.vector3'],
-	// Prop also exists in model namespace
 	['let animation: any', 'let animation: hash'],
-	// Prop also exists in model namespace
 	['let cursor: any', 'let cursor: number'],
 	// function play_flipbook
 	[
@@ -798,27 +627,24 @@ const sprite = [
 
 /** tilemap namespace */
 const tilemap = [
+	['let material: any', 'let material: hash'],
 	['let tile_source: any', 'let tile_source: hash'],
-	['H_FLIP: any', 'H_FLIP: number'],
-	['ROTATE_180: any', 'ROTATE_180: number'],
-	['ROTATE_270: any', 'ROTATE_270: number'],
-	['ROTATE_90: any', 'ROTATE_90: number'],
-	['V_FLIP: any', 'V_FLIP: number'],
+	['let H_FLIP: any', 'const H_FLIP: number'],
+	// (greedy)
+	[/let (ROTATE_.+): any/g, 'const $1: number'],
+	['let V_FLIP: any', 'const V_FLIP: number'],
 ];
 
 /** Late changes that don't fit anywhere else */
 const finalChanges = [
-	// Greedy changes apply multiple times
-	// Prop exists in gui, label, model, sprite, tilemap namespaces
-	[/let material: any/g, 'let material: hash'],
-	// Generic tables as slightly stricter type
+	// Generic tables as slightly stricter type (greedy)
 	[/(table|tbl): any/g, `$1: ${genericTable}`],
-	// Replace `any` keyword with `unknown`
+	// Replace `any` keyword with `unknown` (greedy)
 	[/\: any/g, ': unknown'],
 	[/\[any/g, '[unknown'],
 	[/any,/g, 'unknown,'],
 	[/any\]/g, 'unknown]'],
-	// Change uppercase variables to const
+	// Change uppercase variables to const (greedy)
 	[/let (?:\b|\W)([A-Z0-9_]+)(?:\b|\W)/g, 'const $1'],
 ];
 
