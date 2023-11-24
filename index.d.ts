@@ -232,9 +232,7 @@ declare namespace socket {
 	 * @return tcp_master  a new IPv4 TCP master object, or `undefined` in case of error.
 	 * @return error  the error message, or `undefined` if no error occurred.
 	 */
-	export function tcp():
-		| undefined
-		| LuaMultiReturn<[unknown, unknown, string, unknown]>;
+	export function tcp(): LuaMultiReturn<[unknown, unknown, string, unknown]>;
 
 	/**
 	 * Creates and returns an IPv6 TCP master object. A master object can be transformed into a server object with the method `listen` (after a call to `bind`) or into a client object with the method connect. The only other method supported by a master object is the close method.
@@ -242,18 +240,14 @@ declare namespace socket {
 	 * @return tcp_master  a new IPv6 TCP master object, or `undefined` in case of error.
 	 * @return error  the error message, or `undefined` if no error occurred.
 	 */
-	export function tcp6():
-		| undefined
-		| LuaMultiReturn<[unknown, unknown, string, unknown]>;
+	export function tcp6(): LuaMultiReturn<[unknown, unknown, string, unknown]>;
 
 	/**
 	 * Creates and returns an unconnected IPv4 UDP object. Unconnected objects support the `sendto`, `receive`, `receivefrom`, `getoption`, `getsockname`, `setoption`, `settimeout`, `setpeername`, `setsockname`, and `close` methods. The `setpeername` method is used to connect the object.
 	 * @return udp_unconnected  a new unconnected IPv4 UDP object, or `undefined` in case of error.
 	 * @return error  the error message, or `undefined` if no error occurred.
 	 */
-	export function udp():
-		| undefined
-		| LuaMultiReturn<[unknown, unknown, string, unknown]>;
+	export function udp(): LuaMultiReturn<[unknown, unknown, string, unknown]>;
 
 	/**
 	 * Creates and returns an unconnected IPv6 UDP object. Unconnected objects support the `sendto`, `receive`, `receivefrom`, `getoption`, `getsockname`, `setoption`, `settimeout`, `setpeername`, `setsockname`, and `close` methods. The `setpeername` method is used to connect the object.
@@ -261,9 +255,7 @@ declare namespace socket {
 	 * @return udp_unconnected  a new unconnected IPv6 UDP object, or `undefined` in case of error.
 	 * @return error  the error message, or `undefined` if no error occurred.
 	 */
-	export function udp6():
-		| undefined
-		| LuaMultiReturn<[unknown, unknown, string, unknown]>;
+	export function udp6(): LuaMultiReturn<[unknown, unknown, string, unknown]>;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
@@ -818,7 +810,11 @@ The id of the animated property.
 			| typeof go.EASING_OUTSINE,
 		duration: number,
 		delay?: number,
-		complete_function?: (...args: unknown[]) => void,
+		complete_function?: (
+			this: unknown,
+			url: unknown,
+			property: unknown,
+		) => void,
 	): void;
 
 	/**
@@ -2261,7 +2257,7 @@ with a custom curve. See the animation guide for more information.
 		texture: string | hash,
 		width: number,
 		height: number,
-		type: unknown,
+		type: 'rgb' | 'rgba' | 'l',
 		buffer: string,
 		flip: boolean,
 	): LuaMultiReturn<[boolean, number]>;
@@ -2304,8 +2300,8 @@ The rate with which the animation will be played. Must be positive
 	export function play_flipbook(
 		node: node,
 		animation: string | hash,
-		complete_function?: (...args: unknown[]) => void,
-		play_properties?: { offset: number; playback_rate: number },
+		complete_function?: (this: unknown, node: unknown) => void,
+		play_properties?: { offset?: number; playback_rate?: number },
 	): void;
 
 	/**
@@ -2384,7 +2380,13 @@ the new state of the emitter:
 - `gui.ADJUST_STRETCH`
 
 	*/
-	export function set_adjust_mode(node: node, adjust_mode: unknown): void;
+	export function set_adjust_mode(
+		node: node,
+		adjust_mode:
+			| typeof gui.ADJUST_FIT
+			| typeof gui.ADJUST_ZOOM
+			| typeof gui.ADJUST_STRETCH,
+	): void;
 
 	/**
 	 * sets the node alpha
@@ -2405,7 +2407,14 @@ the new state of the emitter:
 - `gui.BLEND_MULT`
 
 	*/
-	export function set_blend_mode(node: node, blend_mode: unknown): void;
+	export function set_blend_mode(
+		node: node,
+		blend_mode:
+			| typeof gui.BLEND_ALPHA
+			| typeof gui.BLEND_ADD
+			| typeof gui.BLEND_ADD_ALPHA
+			| typeof gui.BLEND_MULT,
+	): void;
 
 	/**
 	 * If node is set as an inverted clipping node, it will clip anything inside as opposed to outside.
@@ -2423,7 +2432,12 @@ the new state of the emitter:
 - `gui.CLIPPING_MODE_STENCIL`
 
 	*/
-	export function set_clipping_mode(node: node, clipping_mode: unknown): void;
+	export function set_clipping_mode(
+		node: node,
+		clipping_mode:
+			| typeof gui.CLIPPING_MODE_NONE
+			| typeof gui.CLIPPING_MODE_STENCIL,
+	): void;
 
 	/**
 	 * If node is set as an visible clipping node, it will be shown as well as clipping. Otherwise, it will only clip but not show visually.
@@ -2577,7 +2591,10 @@ the new state of the emitter:
 - `gui.PIEBOUNDS_ELLIPSE`
 
 	*/
-	export function set_outer_bounds(node: node, bounds_mode: unknown): void;
+	export function set_outer_bounds(
+		node: node,
+		bounds_mode: typeof gui.PIEBOUNDS_RECTANGLE | typeof gui.PIEBOUNDS_ELLIPSE,
+	): void;
 
 	/**
 	 * Sets the outline color of the supplied node.
@@ -2632,7 +2649,19 @@ the new state of the emitter:
 - `gui.PIVOT_NW`
 
 	*/
-	export function set_pivot(node: node, pivot: unknown): void;
+	export function set_pivot(
+		node: node,
+		pivot:
+			| typeof gui.PIVOT_CENTER
+			| typeof gui.PIVOT_N
+			| typeof gui.PIVOT_NE
+			| typeof gui.PIVOT_E
+			| typeof gui.PIVOT_SE
+			| typeof gui.PIVOT_S
+			| typeof gui.PIVOT_SW
+			| typeof gui.PIVOT_W
+			| typeof gui.PIVOT_NW,
+	): void;
 
 	/**
 	 * Sets the position of the supplied node.
@@ -2721,7 +2750,10 @@ the new state of the emitter:
 - `gui.SIZE_MODE_AUTO`
 
 	*/
-	export function set_size_mode(node: node, size_mode: unknown): void;
+	export function set_size_mode(
+		node: node,
+		size_mode: typeof gui.SIZE_MODE_MANUAL | typeof gui.SIZE_MODE_AUTO,
+	): void;
 
 	/**
 	 * Set the slice9 configuration values for the node.
@@ -2768,7 +2800,7 @@ the new state of the emitter:
 		texture: string | hash,
 		width: number,
 		height: number,
-		type: unknown,
+		type: 'rgb' | 'rgba' | 'l',
 		buffer: string,
 		flip: boolean,
 	): boolean;
@@ -3907,7 +3939,14 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	export function enable_texture(
 		unit: number,
 		render_target: unknown,
-		buffer_type?: unknown,
+		buffer_type?:
+			| typeof render.BUFFER_COLOR_BIT
+			| typeof render.BUFFER_DEPTH_BIT
+			| typeof render.BUFFER_STENCIL_BIT
+			| typeof render.BUFFER_COLOR0_BIT
+			| typeof render.BUFFER_COLOR1_BIT
+			| typeof render.BUFFER_COLOR2_BIT
+			| typeof render.BUFFER_COLOR3_BIT,
 	): void;
 
 	/**
@@ -3931,7 +3970,10 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	*/
 	export function get_render_target_height(
 		render_target: unknown,
-		buffer_type: unknown,
+		buffer_type:
+			| typeof render.BUFFER_COLOR_BIT
+			| typeof render.BUFFER_DEPTH_BIT
+			| typeof render.BUFFER_STENCIL_BIT,
 	): number;
 
 	/**
@@ -3948,7 +3990,14 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	*/
 	export function get_render_target_width(
 		render_target: unknown,
-		buffer_type: unknown,
+		buffer_type:
+			| typeof render.BUFFER_COLOR_BIT
+			| typeof render.BUFFER_COLOR0_BIT
+			| typeof render.BUFFER_COLOR1_BIT
+			| typeof render.BUFFER_COLOR2_BIT
+			| typeof render.BUFFER_COLOR3_BIT
+			| typeof render.BUFFER_DEPTH_BIT
+			| typeof render.BUFFER_STENCIL_BIT,
 	): number;
 
 	/**
@@ -4323,7 +4372,15 @@ Transient frame buffer types are only valid while the render target is active, i
 	 * @param mask  mask that is ANDed with both the reference value and the stored stencil value when the test is done
 	 */
 	export function set_stencil_func(
-		func: unknown,
+		func:
+			| typeof render.COMPARE_FUNC_NEVER
+			| typeof render.COMPARE_FUNC_LESS
+			| typeof render.COMPARE_FUNC_LEQUAL
+			| typeof render.COMPARE_FUNC_GREATER
+			| typeof render.COMPARE_FUNC_GEQUAL
+			| typeof render.COMPARE_FUNC_EQUAL
+			| typeof render.COMPARE_FUNC_NOTEQUAL
+			| typeof render.COMPARE_FUNC_ALWAYS,
 		ref: number,
 		mask: number,
 	): void;
@@ -5923,7 +5980,7 @@ The response data. Contains the fields:
 				path?: unknown;
 				error?: unknown;
 			},
-		) => unknown,
+		) => void,
 		headers?: unknown,
 		post_data?: string,
 		options?: unknown,
@@ -6104,7 +6161,7 @@ The elapsed time - on first trigger it is time since timer.delay call, otherwise
 	export function delay(
 		delay: number,
 		repeat: boolean,
-		callback: (this: unknown, handle: unknown, time_elapsed: number) => unknown,
+		callback: (this: unknown, handle: unknown, time_elapsed: number) => void,
 	): hash;
 
 	/**
@@ -6853,7 +6910,7 @@ True if resource were loaded successfully
 	*/
 	export function load(
 		url?: string | hash | url,
-		complete_function?: (...args: unknown[]) => void,
+		complete_function?: (this: unknown, url: unknown, result: boolean) => void,
 	): void;
 
 	/**
@@ -7044,7 +7101,7 @@ True if resources were loaded successfully
 	*/
 	export function load(
 		url?: string | hash | url,
-		complete_function?: (...args: unknown[]) => void,
+		complete_function?: (this: unknown, url: unknown, result: boolean) => void,
 	): void;
 
 	/**
@@ -7248,11 +7305,16 @@ The invoker of the callback: the model component.
 		anim_id: string | hash,
 		playback: unknown,
 		play_properties?: {
-			blend_duration: number;
-			offset: number;
-			playback_rate: number;
+			blend_duration?: number;
+			offset?: number;
+			playback_rate?: number;
 		},
-		complete_function?: (...args: unknown[]) => void,
+		complete_function?: (
+			this: unknown,
+			message_id: unknown,
+			message: { animation_id: unknown; playback: unknown },
+			sender: unknown,
+		) => void,
 	): void;
 
 	/**
@@ -7575,12 +7637,17 @@ The invoker of the callback: the sound component.
 	export function play(
 		url: string | hash | url,
 		play_properties?: {
-			delay: number;
-			gain: number;
-			pan: number;
-			speed: number;
+			delay?: number;
+			gain?: number;
+			pan?: number;
+			speed?: number;
 		},
-		complete_function?: (...args: unknown[]) => void,
+		complete_function?: (
+			this: unknown,
+			message_id: unknown,
+			message: { play_id: unknown },
+			sender: unknown,
+		) => void,
 	): number;
 
 	/**
@@ -7743,8 +7810,13 @@ the rate with which the animation will be played. Must be positive.
 	export function play_flipbook(
 		url: string | hash | url,
 		id: string | hash,
-		complete_function?: (...args: unknown[]) => void,
-		play_properties?: { offset: number; playback_rate: number },
+		complete_function?: (
+			this: unknown,
+			message_id: unknown,
+			message: { current_tile: unknown; id: unknown },
+			sender: unknown,
+		) => void,
+		play_properties?: { offset?: number; playback_rate?: number },
 	): void;
 
 	/**

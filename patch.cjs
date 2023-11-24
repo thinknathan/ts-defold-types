@@ -75,7 +75,7 @@ const http = [
 	// function request
 	[
 		'callback: any,',
-		'callback: (this: unknown, id: unknown, response: { status: unknown, response?: unknown, headers: unknown, path?: unknown, error?: unknown }) => unknown,',
+		'callback: (this: unknown, id: unknown, response: { status: unknown, response?: unknown, headers: unknown, path?: unknown, error?: unknown }) => void,',
 	],
 ];
 
@@ -114,6 +114,10 @@ const go = [
 	[
 		'easing: any',
 		'easing: vmath.vector3|typeof go.EASING_INBACK|typeof go.EASING_INBOUNCE|typeof go.EASING_INCIRC|typeof go.EASING_INCUBIC|typeof go.EASING_INELASTIC|typeof go.EASING_INEXPO|typeof go.EASING_INOUTBACK|typeof go.EASING_INOUTBOUNCE|typeof go.EASING_INOUTCIRC|typeof go.EASING_INOUTCUBIC|typeof go.EASING_INOUTELASTIC|typeof go.EASING_INOUTEXPO|typeof go.EASING_INOUTQUAD|typeof go.EASING_INOUTQUART|typeof go.EASING_INOUTQUINT|typeof go.EASING_INOUTSINE|typeof go.EASING_INQUAD|typeof go.EASING_INQUART|typeof go.EASING_INQUINT|typeof go.EASING_INSINE|typeof go.EASING_LINEAR|typeof go.EASING_OUTBACK|typeof go.EASING_OUTBOUNCE|typeof go.EASING_OUTCIRC|typeof go.EASING_OUTCUBIC|typeof go.EASING_OUTELASTIC|typeof go.EASING_OUTEXPO|typeof go.EASING_OUTINBACK|typeof go.EASING_OUTINBOUNCE|typeof go.EASING_OUTINCIRC|typeof go.EASING_OUTINCUBIC|typeof go.EASING_OUTINELASTIC|typeof go.EASING_OUTINEXPO|typeof go.EASING_OUTINQUAD|typeof go.EASING_OUTINQUART|typeof go.EASING_OUTINQUINT|typeof go.EASING_OUTINSINE|typeof go.EASING_OUTQUAD|typeof go.EASING_OUTQUART|typeof go.EASING_OUTQUINT|typeof go.EASING_OUTSINE',
+	],
+	[
+		'complete_function?: any',
+		'complete_function?: (this: unknown, url: unknown, property: unknown) => void',
 	],
 	[
 		'function exists(url: string | hash | url): any',
@@ -288,7 +292,7 @@ const timer = [
 	// function delay
 	[
 		'callback: any',
-		'callback: (this: unknown, handle: unknown, time_elapsed: number) => unknown',
+		'callback: (this: unknown, handle: unknown, time_elapsed: number) => void',
 	],
 ];
 
@@ -370,6 +374,10 @@ const gui = [
 		'easing: vmath.vector3|typeof gui.EASING_INBACK|typeof gui.EASING_INBOUNCE|typeof gui.EASING_INCIRC|typeof gui.EASING_INCUBIC|typeof gui.EASING_INELASTIC|typeof gui.EASING_INEXPO|typeof gui.EASING_INOUTBACK|typeof gui.EASING_INOUTBOUNCE|typeof gui.EASING_INOUTCIRC|typeof gui.EASING_INOUTCUBIC|typeof gui.EASING_INOUTELASTIC|typeof gui.EASING_INOUTEXPO|typeof gui.EASING_INOUTQUAD|typeof gui.EASING_INOUTQUART|typeof gui.EASING_INOUTQUINT|typeof gui.EASING_INOUTSINE|typeof gui.EASING_INQUAD|typeof gui.EASING_INQUART|typeof gui.EASING_INQUINT|typeof gui.EASING_INSINE|typeof gui.EASING_LINEAR|typeof gui.EASING_OUTBACK|typeof gui.EASING_OUTBOUNCE|typeof gui.EASING_OUTCIRC|typeof gui.EASING_OUTCUBIC|typeof gui.EASING_OUTELASTIC|typeof gui.EASING_OUTEXPO|typeof gui.EASING_OUTINBACK|typeof gui.EASING_OUTINBOUNCE|typeof gui.EASING_OUTINCIRC|typeof gui.EASING_OUTINCUBIC|typeof gui.EASING_OUTINELASTIC|typeof gui.EASING_OUTINEXPO|typeof gui.EASING_OUTINQUAD|typeof gui.EASING_OUTINQUART|typeof gui.EASING_OUTINQUINT|typeof gui.EASING_OUTINSINE|typeof gui.EASING_OUTQUAD|typeof gui.EASING_OUTQUART|typeof gui.EASING_OUTQUINT|typeof gui.EASING_OUTSINE',
 	],
 	[
+		'complete_function?: any',
+		'complete_function?: (...args: unknown[]) => void',
+	],
+	[
 		'playback?: any',
 		'playback?: typeof gui.PLAYBACK_ONCE_FORWARD | typeof gui.PLAYBACK_ONCE_BACKWARD | typeof gui.PLAYBACK_ONCE_PINGPONG | typeof gui.PLAYBACK_LOOP_FORWARD | typeof gui.PLAYBACK_LOOP_BACKWARD | typeof gui.PLAYBACK_LOOP_PINGPONG',
 	],
@@ -427,6 +435,30 @@ const gui = [
 	],
 	['let materials: any', 'let materials: hash'],
 	['let textures: any', 'let textures: hash'],
+	[
+		'function set_adjust_mode(node: node, adjust_mode: any)',
+		'function set_adjust_mode(node: node, adjust_mode: typeof gui.ADJUST_FIT | typeof gui.ADJUST_ZOOM | typeof gui.ADJUST_STRETCH)',
+	],
+	[
+		'function set_blend_mode(node: node, blend_mode: any)',
+		'function set_blend_mode(node: node, blend_mode: typeof gui.BLEND_ALPHA | typeof gui.BLEND_ADD | typeof gui.BLEND_ADD_ALPHA | typeof gui.BLEND_MULT)',
+	],
+	[
+		'function set_clipping_mode(node: node, clipping_mode: any)',
+		'function set_clipping_mode(node: node, clipping_mode: typeof gui.CLIPPING_MODE_NONE | typeof gui.CLIPPING_MODE_STENCIL)',
+	],
+	[
+		'function set_outer_bounds(node: node, bounds_mode: any)',
+		'function set_outer_bounds(node: node, bounds_mode: typeof gui.PIEBOUNDS_RECTANGLE | typeof gui.PIEBOUNDS_ELLIPSE)',
+	],
+	[
+		'function set_pivot(node: node, pivot: any)',
+		'function set_pivot(node: node, pivot: typeof gui.PIVOT_CENTER | typeof gui.PIVOT_N | typeof gui.PIVOT_NE | typeof gui.PIVOT_E | typeof gui.PIVOT_SE | typeof gui.PIVOT_S | typeof gui.PIVOT_SW | typeof gui.PIVOT_W | typeof gui.PIVOT_NW)',
+	],
+	[
+		'function set_size_mode(node: node, size_mode: any)',
+		'function set_size_mode(node: node, size_mode: typeof gui.SIZE_MODE_MANUAL | typeof gui.SIZE_MODE_AUTO)',
+	],
 	// function play_particlefx
 	[
 		'emitter_state_function?: any',
@@ -435,8 +467,16 @@ const gui = [
 	// function play_flipbook
 	[
 		'play_properties?: any',
-		'play_properties?: { offset: number, playback_rate: number }',
+		'play_properties?: { offset?: number, playback_rate?: number }',
 	],
+	[
+		'complete_function?: any',
+		'complete_function?: (this: unknown, node: unknown) => void',
+	],
+	// function new_texture
+	['type: any,', 'type: "rgb" | "rgba" | "l",'],
+	// function set_texture_data
+	['type: any,', 'type: "rgb" | "rgba" | "l",'],
 ];
 
 /** render namespace */
@@ -550,6 +590,26 @@ const render = [
 		'function set_depth_func(func: any',
 		'function set_depth_func(func: typeof render.COMPARE_FUNC_NEVER | typeof render.COMPARE_FUNC_LESS | typeof render.COMPARE_FUNC_LEQUAL | typeof render.COMPARE_FUNC_GREATER | typeof render.COMPARE_FUNC_GEQUAL | typeof render.COMPARE_FUNC_EQUAL | typeof render.COMPARE_FUNC_NOTEQUAL | typeof render.COMPARE_FUNC_ALWAYS',
 	],
+	// function enable_texture
+	[
+		'buffer_type?: any',
+		'buffer_type?: typeof render.BUFFER_COLOR_BIT | typeof render.BUFFER_DEPTH_BIT | typeof render.BUFFER_STENCIL_BIT | typeof render.BUFFER_COLOR0_BIT | typeof render.BUFFER_COLOR1_BIT | typeof render.BUFFER_COLOR2_BIT | typeof render.BUFFER_COLOR3_BIT',
+	],
+	// function get_render_target_height
+	[
+		'buffer_type: any',
+		'buffer_type: typeof render.BUFFER_COLOR_BIT | typeof render.BUFFER_DEPTH_BIT | typeof render.BUFFER_STENCIL_BIT',
+	],
+	// function get_render_target_width
+	[
+		'buffer_type: any',
+		'buffer_type: typeof render.BUFFER_COLOR_BIT | typeof render.BUFFER_COLOR0_BIT | typeof render.BUFFER_COLOR1_BIT | typeof render.BUFFER_COLOR2_BIT | typeof render.BUFFER_COLOR3_BIT | typeof render.BUFFER_DEPTH_BIT | typeof render.BUFFER_STENCIL_BIT',
+	],
+	// function set_stencil_func
+	[
+		'func: any',
+		'func: typeof render.COMPARE_FUNC_NEVER | typeof render.COMPARE_FUNC_LESS | typeof render.COMPARE_FUNC_LEQUAL | typeof render.COMPARE_FUNC_GREATER | typeof render.COMPARE_FUNC_GEQUAL | typeof render.COMPARE_FUNC_EQUAL | typeof render.COMPARE_FUNC_NOTEQUAL | typeof render.COMPARE_FUNC_ALWAYS',
+	],
 ];
 
 /** socket namespace */
@@ -564,11 +624,6 @@ const socket = [
 		'protect(func: any): any',
 		'protect(func: (...args: unknown[]) => unknown): (...args: unknown[]) => unknown',
 	],
-	// Functions can also return `undefined`
-	['function tcp():', 'function tcp(): undefined |'],
-	['function tcp6():', 'function tcp6(): undefined |'],
-	['function udp():', 'function udp(): undefined |'],
-	['function udp6():', 'function udp6(): undefined |'],
 ];
 
 /** crash namespace */
@@ -617,7 +672,11 @@ const sound = [
 	// function play
 	[
 		'play_properties?: any',
-		'play_properties?: { delay: number, gain: number, pan: number, speed: number }',
+		'play_properties?: { delay?: number, gain?: number, pan?: number, speed?: number }',
+	],
+	[
+		'complete_function?: any',
+		'complete_function?: (this: unknown, message_id: unknown, message: { play_id: unknown }, sender: unknown) => void',
 	],
 ];
 
@@ -651,7 +710,11 @@ const sprite = [
 	// function play_flipbook
 	[
 		'play_properties?: any',
-		'play_properties?: { offset: number, playback_rate: number }',
+		'play_properties?: { offset?: number, playback_rate?: number }',
+	],
+	[
+		'complete_function?: any',
+		'complete_function?: (this: unknown, message_id: unknown, message: { current_tile: unknown, id: unknown }, sender: unknown) => void',
 	],
 ];
 
@@ -664,6 +727,11 @@ const collectionFactory = [
 		'function get_status(url?: string | hash | url): any',
 		'function get_status(url?: string | hash | url): typeof collectionfactory.STATUS_UNLOADED | typeof collectionfactory.STATUS_LOADING | typeof collectionfactory.STATUS_LOADED',
 	],
+	// function load
+	[
+		'complete_function?: any',
+		'complete_function?: (this: unknown, url: unknown, result: boolean) => void',
+	],
 ];
 
 /** factory namespace */
@@ -674,6 +742,11 @@ const factory = [
 	[
 		'function get_status(url?: string | hash | url): any',
 		'function get_status(url?: string | hash | url): typeof factory.STATUS_UNLOADED | typeof factory.STATUS_LOADING | typeof factory.STATUS_LOADED',
+	],
+	// function load
+	[
+		'complete_function?: any',
+		'complete_function?: (this: unknown, url: unknown, result: boolean) => void',
 	],
 ];
 
@@ -688,7 +761,11 @@ const model = [
 	// function play_anim
 	[
 		'play_properties?: any',
-		'play_properties?: { blend_duration: number, offset: number, playback_rate: number }',
+		'play_properties?: { blend_duration?: number, offset?: number, playback_rate?: number }',
+	],
+	[
+		'complete_function?: any',
+		'complete_function?: (this: unknown, message_id: unknown, message: { animation_id: unknown, playback: unknown }, sender: unknown) => void',
 	],
 ];
 
@@ -718,11 +795,6 @@ const finalChanges = [
 	// Greedy changes apply multiple times
 	// Prop exists in gui, label, model, sprite, tilemap namespaces
 	[/let material: any/g, 'let material: hash'],
-	// Generic functions could be improved by describing the args
-	[
-		/complete_function\?: any/g,
-		'complete_function?: (...args: unknown[]) => void',
-	],
 	// Generic tables as slightly stricter type
 	[/(table|tbl): any/g, `$1: ${genericTable}`],
 	// Replace `any` keyword with `unknown`

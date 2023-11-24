@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.3.14
+
+- More detailed types
+
 ## v1.3.13
 
 - Updated for Defold 1.6.2
