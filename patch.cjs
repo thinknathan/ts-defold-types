@@ -9,8 +9,8 @@ const filePath = 'index.d.ts';
 
 const genericTable = 'LuaTable | LuaSet | LuaMap | object | AnyNotNil[]';
 
-/** Defold's basic types */
-const defoldBasics = [
+/** Initial generic changes */
+const earlyChanges = [
 	// Describe `url`
 	[
 		'declare type url = {\n}',
@@ -55,10 +55,6 @@ const defoldBasics = [
 	],
 	// Pretty print
 	['function pprint(v: any)', 'function pprint(...args: unknown[])'],
-];
-
-/** Changes to smooth differences between Lua and TS */
-const languageQuirks = [
 	// Replace nil with undefined
 	[/nil/g, 'undefined'],
 	[/Nil/g, 'Undefined'],
@@ -66,32 +62,46 @@ const languageQuirks = [
 	[/~=/g, '!=='],
 	// Replace lua self with TS this
 	[/`self`/g, '`this`'],
-	// Change invalid JSON null type
-	['let null$: any', 'let null$: null'],
 ];
 
-/** http namespace */
-const http = [
-	// function request
+/** socket namespace */
+const socket = [
+	['_SETSIZE: any', '_SETSIZE: number'],
+	['_VERSION: any', '_VERSION: string'],
 	[
-		'callback: any,',
-		'callback: (this: unknown, id: unknown, response: { status: unknown, response?: unknown, headers: unknown, path?: unknown, error?: unknown }) => void,',
+		'newtry(finalizer: any): any',
+		'newtry(finalizer: (...args: unknown[]) => unknown): (...args: unknown[]) => unknown',
+	],
+	[
+		'protect(func: any): any',
+		'protect(func: (...args: unknown[]) => unknown): (...args: unknown[]) => unknown',
 	],
 ];
 
-/** image namespace */
-const image = [
-	['let TYPE_LUMINANCE: any', 'let TYPE_LUMINANCE: "l"'],
-	['let TYPE_LUMINANCE_ALPHA: any', 'let TYPE_LUMINANCE_ALPHA: "la"'],
-	['let TYPE_RGB: any', 'let TYPE_RGB: "rgb"'],
-	['let TYPE_RGBA: any', 'let TYPE_RGBA: "rgba"'],
-];
-
-/** buffer namespace */
-const bufferChanges = [
-	// Describe `buffer` types
-	// Greedy changes apply multiple times
-	[/(VALUE_TYPE_.+): any/g, '$1: number'],
+/** crash namespace */
+const crash = [
+	[
+		'SYSFIELD_ANDROID_BUILD_FINGERPRINT: any',
+		'SYSFIELD_ANDROID_BUILD_FINGERPRINT: number',
+	],
+	['SYSFIELD_DEVICE_LANGUAGE: any', 'SYSFIELD_DEVICE_LANGUAGE: number'],
+	['SYSFIELD_DEVICE_MODEL: any', 'SYSFIELD_DEVICE_MODEL: number'],
+	['SYSFIELD_ENGINE_HASH: any', 'SYSFIELD_ENGINE_HASH: number'],
+	['SYSFIELD_ENGINE_VERSION: any', 'SYSFIELD_ENGINE_VERSION: number'],
+	['SYSFIELD_LANGUAGE: any', 'SYSFIELD_LANGUAGE: number'],
+	['SYSFIELD_MANUFACTURER: any', 'SYSFIELD_MANUFACTURER: number'],
+	['SYSFIELD_MAX: any', 'SYSFIELD_MAX: number'],
+	['SYSFIELD_SYSTEM_NAME: any', 'SYSFIELD_SYSTEM_NAME: number'],
+	['SYSFIELD_SYSTEM_VERSION: any', 'SYSFIELD_SYSTEM_VERSION: number'],
+	['SYSFIELD_TERRITORY: any', 'SYSFIELD_TERRITORY: number'],
+	['USERFIELD_MAX: any', 'USERFIELD_MAX: number'],
+	['USERFIELD_SIZE: any', 'USERFIELD_SIZE: number'],
+	// Functions can also return `undefined`
+	[
+		'get_sys_field(handle: number, index: number):',
+		'get_sys_field(handle: number, index: number): undefined |',
+	],
+	['function load_previous():', 'function load_previous(): undefined |'],
 ];
 
 /** go namespace */
@@ -133,190 +143,15 @@ const go = [
 	],
 ];
 
-/** window namespace */
-const windowChanges = [
-	['let DIMMING_OFF: any', 'let DIMMING_OFF: number'],
-	['let DIMMING_ON: any', 'let DIMMING_ON: number'],
-	['let DIMMING_UNKNOWN: any', 'let DIMMING_UNKNOWN: number'],
-	['let WINDOW_EVENT_DEICONIFIED: any', 'let WINDOW_EVENT_DEICONIFIED: number'],
-	[
-		'let WINDOW_EVENT_FOCUS_GAINED: any',
-		'let WINDOW_EVENT_FOCUS_GAINED: number',
-	],
-	['let WINDOW_EVENT_FOCUS_LOST: any', 'let WINDOW_EVENT_FOCUS_LOST: number'],
-	// Iconfied is sometimes spelled Iconified. Probably a typo?
-	['let WINDOW_EVENT_ICONFIED: any', 'let WINDOW_EVENT_ICONFIED: number'],
-	['let WINDOW_EVENT_RESIZED: any', 'let WINDOW_EVENT_RESIZED: number'],
-	[
-		'function get_dim_mode(): any',
-		'function get_dim_mode(): typeof window.DIMMING_UNKNOWN | typeof window.DIMMING_ON | typeof window.DIMMING_OFF',
-	],
-	[
-		'function set_dim_mode(mode: any)',
-		'function set_dim_mode(mode: typeof window.DIMMING_ON | typeof window.DIMMING_OFF)',
-	],
-	[
-		'function set_listener(callback: any)',
-		'function set_listener(callback: (this: unknown, event: typeof window.WINDOW_EVENT_FOCUS_LOST | typeof window.WINDOW_EVENT_FOCUS_GAINED | typeof window.WINDOW_EVENT_RESIZED | typeof window.WINDOW_EVENT_ICONFIED | typeof window.WINDOW_EVENT_DEICONIFIED, data: { width: number | undefined, height: number | undefined	}) => void)',
-	],
-];
-
-/** resource namespace */
-const resource = [
-	[
-		'let COMPRESSION_TYPE_BASIS_UASTC: any',
-		'let COMPRESSION_TYPE_BASIS_UASTC: number',
-	],
-	['let COMPRESSION_TYPE_DEFAULT: any', 'let COMPRESSION_TYPE_DEFAULT: number'],
-	['let TEXTURE_FORMAT_LUMINANCE: any', 'let TEXTURE_FORMAT_LUMINANCE: number'],
-	['let TEXTURE_FORMAT_R16F: any', 'let TEXTURE_FORMAT_R16F: number'],
-	['let TEXTURE_FORMAT_R32F: any', 'let TEXTURE_FORMAT_R32F: number'],
-	['let TEXTURE_FORMAT_RG16F: any', 'let TEXTURE_FORMAT_RG16F: number'],
-	['let TEXTURE_FORMAT_RG32F: any', 'let TEXTURE_FORMAT_RG32F: number'],
-	['let TEXTURE_FORMAT_RGB: any', 'let TEXTURE_FORMAT_RGB: number'],
-	['let TEXTURE_FORMAT_RGB16F: any', 'let TEXTURE_FORMAT_RGB16F: number'],
-	['let TEXTURE_FORMAT_RGB32F: any', 'let TEXTURE_FORMAT_RGB32F: number'],
-	['let TEXTURE_FORMAT_RGBA: any', 'let TEXTURE_FORMAT_RGBA: number'],
-	['let TEXTURE_FORMAT_RGBA16F: any', 'let TEXTURE_FORMAT_RGBA16F: number'],
-	['let TEXTURE_FORMAT_RGBA32F: any', 'let TEXTURE_FORMAT_RGBA32F: number'],
-	[
-		'let TEXTURE_FORMAT_RGBA_ASTC_4x4: any',
-		'const TEXTURE_FORMAT_RGBA_ASTC_4x4: number',
-	],
-	['let TEXTURE_FORMAT_RGBA_BC3: any', 'let TEXTURE_FORMAT_RGBA_BC3: number'],
-	['let TEXTURE_FORMAT_RGBA_BC7: any', 'let TEXTURE_FORMAT_RGBA_BC7: number'],
-	['let TEXTURE_FORMAT_RGBA_ETC2: any', 'let TEXTURE_FORMAT_RGBA_ETC2: number'],
-	[
-		'let TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1: any',
-		'let TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1: number',
-	],
-	[
-		'let TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1: any',
-		'let TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1: number',
-	],
-	['let TEXTURE_FORMAT_RGB_BC1: any', 'let TEXTURE_FORMAT_RGB_BC1: number'],
-	['let TEXTURE_FORMAT_RGB_ETC1: any', 'let TEXTURE_FORMAT_RGB_ETC1: number'],
-	[
-		'let TEXTURE_FORMAT_RGB_PVRTC_2BPPV1: any',
-		'let TEXTURE_FORMAT_RGB_PVRTC_2BPPV1: number',
-	],
-	[
-		'let TEXTURE_FORMAT_RGB_PVRTC_4BPPV1: any',
-		'let TEXTURE_FORMAT_RGB_PVRTC_4BPPV1: number',
-	],
-	['let TEXTURE_FORMAT_RG_BC5: any', 'let TEXTURE_FORMAT_RG_BC5: number'],
-	['let TEXTURE_FORMAT_R_BC4: any', 'let TEXTURE_FORMAT_R_BC4: number'],
-	['let TEXTURE_TYPE_2D: any', 'let TEXTURE_TYPE_2D: number'],
-	['let TEXTURE_TYPE_2D_ARRAY: any', 'let TEXTURE_TYPE_2D_ARRAY: number'],
-	['let TEXTURE_TYPE_CUBE_MAP: any', 'let TEXTURE_TYPE_CUBE_MAP: number'],
-];
-
-/** profiler namespace */
-const profiler = [
-	['MODE_PAUSE: any', 'MODE_PAUSE: number'],
-	['MODE_RECORD: any', 'MODE_RECORD: number'],
-	['MODE_RUN: any', 'MODE_RUN: number'],
-	['MODE_SHOW_PEAK_FRAME: any', 'MODE_SHOW_PEAK_FRAME: number'],
-	['VIEW_MODE_FULL: any', 'VIEW_MODE_FULL: number'],
-	['VIEW_MODE_MINIMIZED: any', 'VIEW_MODE_MINIMIZED: number'],
-	[
-		'function set_ui_mode(mode: any',
-		'function set_ui_mode(mode: typeof profiler.MODE_RUN | typeof profiler.MODE_PAUSE | typeof profiler.MODE_SHOW_PEAK_FRAME | typeof profiler.MODE_RECORD',
-	],
-	[
-		'function set_ui_view_mode(mode: any',
-		'function set_ui_view_mode(mode: typeof profiler.VIEW_MODE_FULL | typeof profiler.VIEW_MODE_MINIMIZED',
-	],
-];
-
-/** physics namespace */
-const physics = [
-	['let angular_damping: any', 'let angular_damping: number'],
-	['let angular_velocity: any', 'let angular_velocity: vmath.vector3'],
-	['let linear_damping: any', 'let linear_damping: number'],
-	['let linear_velocity: any', 'let linear_velocity: vmath.vector3'],
-	['let mass: any', 'const mass: number'],
-	['JOINT_TYPE_FIXED: any', 'JOINT_TYPE_FIXED: number'],
-	['JOINT_TYPE_HINGE: any', 'JOINT_TYPE_HINGE: number'],
-	['JOINT_TYPE_SLIDER: any', 'JOINT_TYPE_SLIDER: number'],
-	['JOINT_TYPE_SPRING: any', 'JOINT_TYPE_SPRING: number'],
-	['JOINT_TYPE_WELD: any', 'JOINT_TYPE_WELD: number'],
-];
-
-/** sys namespace */
-const sys = [
-	['let NETWORK_CONNECTED: any', 'let NETWORK_CONNECTED: number'],
-	[
-		'let NETWORK_CONNECTED_CELLULAR: any',
-		'let NETWORK_CONNECTED_CELLULAR: number',
-	],
-	['let NETWORK_DISCONNECTED: any', 'let NETWORK_DISCONNECTED: number'],
-	[
-		'function exists(path: string): any',
-		'function exists(path: string): boolean',
-	],
-	[
-		'function get_config_int(key: string, default_value?: any): any',
-		'function get_config_int(key: string, default_value?: number): number',
-	],
-	[
-		'function get_connectivity(): any',
-		'function get_connectivity(): typeof sys.NETWORK_DISCONNECTED | typeof sys.NETWORK_CONNECTED_CELLULAR | typeof sys.NETWORK_CONNECTED',
-	],
-	[
-		'function get_engine_info(): any',
-		'function get_engine_info(): { version: string, version_sha1: string, is_debug: boolean }',
-	],
-	[
-		'function load(filename: string): any',
-		'function load(filename: string): LuaMap<AnyNotNil, unknown>',
-	],
-	[
-		'function set_error_handler(error_handler: any',
-		'function set_error_handler(error_handler: (source: string, message: unknown, traceback: unknown) => void',
-	],
-];
-
-/** msg namespace */
-const msg = [
-	// function post
-	[
-		'message?: any',
-		'message?: LuaMap<AnyNotNil, AnyNotNil> | { [key: string | number | symbol]: AnyNotNil }',
-	],
-];
-
-/** timer namespace */
-const timer = [
-	['let INVALID_TIMER_HANDLE: any', 'let INVALID_TIMER_HANDLE: number'],
-	// function delay
-	[
-		'callback: any',
-		'callback: (this: unknown, handle: unknown, time_elapsed: number) => void',
-	],
-];
-
-/** html5 namespace */
-const html5 = [
-	[
-		'function set_interaction_listener(callback: any',
-		'function set_interaction_listener(callback: undefined | ((this: unknown) => void)',
-	],
-];
-
-/** tilemap namespace */
-const tilemap = [
-	['let tile_source: any', 'let tile_source: hash'],
-	['H_FLIP: any', 'H_FLIP: number'],
-	['ROTATE_180: any', 'ROTATE_180: number'],
-	['ROTATE_270: any', 'ROTATE_270: number'],
-	['ROTATE_90: any', 'ROTATE_90: number'],
-	['V_FLIP: any', 'V_FLIP: number'],
-];
-
 /** gui namespace */
 const gui = [
 	['let fonts: any', 'let fonts: hash'],
+	// Describe easing types
+	// Greedy changes apply multiple times
+	[/(EASING_.+): any/g, '$1: number'],
+	// Describe playback types
+	// Greedy changes apply multiple times
+	[/(PLAYBACK_.+): any/g, '$1: number'],
 	['let ADJUST_FIT: any', 'let ADJUST_FIT: number'],
 	['let ADJUST_STRETCH: any', 'let ADJUST_STRETCH: number'],
 	['let ADJUST_ZOOM: any', 'let ADJUST_ZOOM: number'],
@@ -477,6 +312,42 @@ const gui = [
 	['type: any,', 'type: "rgb" | "rgba" | "l",'],
 	// function set_texture_data
 	['type: any,', 'type: "rgb" | "rgba" | "l",'],
+	[
+		'function cancel_animation(node: node, property: any)',
+		'function cancel_animation(node: node, property: "position" | "rotation" | "scale" | "color" | "outline" | "shadow" | "size" | "fill_angle" | "inner_radius" | "slice9")',
+	],
+];
+
+/** physics namespace */
+const physics = [
+	['let angular_damping: any', 'let angular_damping: number'],
+	['let angular_velocity: any', 'let angular_velocity: vmath.vector3'],
+	['let linear_damping: any', 'let linear_damping: number'],
+	['let linear_velocity: any', 'let linear_velocity: vmath.vector3'],
+	['let mass: any', 'const mass: number'],
+	['JOINT_TYPE_FIXED: any', 'JOINT_TYPE_FIXED: number'],
+	['JOINT_TYPE_HINGE: any', 'JOINT_TYPE_HINGE: number'],
+	['JOINT_TYPE_SLIDER: any', 'JOINT_TYPE_SLIDER: number'],
+	['JOINT_TYPE_SPRING: any', 'JOINT_TYPE_SPRING: number'],
+	['JOINT_TYPE_WELD: any', 'JOINT_TYPE_WELD: number'],
+];
+
+/** profiler namespace */
+const profiler = [
+	['MODE_PAUSE: any', 'MODE_PAUSE: number'],
+	['MODE_RECORD: any', 'MODE_RECORD: number'],
+	['MODE_RUN: any', 'MODE_RUN: number'],
+	['MODE_SHOW_PEAK_FRAME: any', 'MODE_SHOW_PEAK_FRAME: number'],
+	['VIEW_MODE_FULL: any', 'VIEW_MODE_FULL: number'],
+	['VIEW_MODE_MINIMIZED: any', 'VIEW_MODE_MINIMIZED: number'],
+	[
+		'function set_ui_mode(mode: any',
+		'function set_ui_mode(mode: typeof profiler.MODE_RUN | typeof profiler.MODE_PAUSE | typeof profiler.MODE_SHOW_PEAK_FRAME | typeof profiler.MODE_RECORD',
+	],
+	[
+		'function set_ui_view_mode(mode: any',
+		'function set_ui_view_mode(mode: typeof profiler.VIEW_MODE_FULL | typeof profiler.VIEW_MODE_MINIMIZED',
+	],
 ];
 
 /** render namespace */
@@ -612,45 +483,185 @@ const render = [
 	],
 ];
 
-/** socket namespace */
-const socket = [
-	['_SETSIZE: any', '_SETSIZE: number'],
-	['_VERSION: any', '_VERSION: string'],
+/** resource namespace */
+const resource = [
 	[
-		'newtry(finalizer: any): any',
-		'newtry(finalizer: (...args: unknown[]) => unknown): (...args: unknown[]) => unknown',
+		'let COMPRESSION_TYPE_BASIS_UASTC: any',
+		'let COMPRESSION_TYPE_BASIS_UASTC: number',
+	],
+	['let COMPRESSION_TYPE_DEFAULT: any', 'let COMPRESSION_TYPE_DEFAULT: number'],
+	['let TEXTURE_FORMAT_LUMINANCE: any', 'let TEXTURE_FORMAT_LUMINANCE: number'],
+	['let TEXTURE_FORMAT_R16F: any', 'let TEXTURE_FORMAT_R16F: number'],
+	['let TEXTURE_FORMAT_R32F: any', 'let TEXTURE_FORMAT_R32F: number'],
+	['let TEXTURE_FORMAT_RG16F: any', 'let TEXTURE_FORMAT_RG16F: number'],
+	['let TEXTURE_FORMAT_RG32F: any', 'let TEXTURE_FORMAT_RG32F: number'],
+	['let TEXTURE_FORMAT_RGB: any', 'let TEXTURE_FORMAT_RGB: number'],
+	['let TEXTURE_FORMAT_RGB16F: any', 'let TEXTURE_FORMAT_RGB16F: number'],
+	['let TEXTURE_FORMAT_RGB32F: any', 'let TEXTURE_FORMAT_RGB32F: number'],
+	['let TEXTURE_FORMAT_RGBA: any', 'let TEXTURE_FORMAT_RGBA: number'],
+	['let TEXTURE_FORMAT_RGBA16F: any', 'let TEXTURE_FORMAT_RGBA16F: number'],
+	['let TEXTURE_FORMAT_RGBA32F: any', 'let TEXTURE_FORMAT_RGBA32F: number'],
+	[
+		'let TEXTURE_FORMAT_RGBA_ASTC_4x4: any',
+		'const TEXTURE_FORMAT_RGBA_ASTC_4x4: number',
+	],
+	['let TEXTURE_FORMAT_RGBA_BC3: any', 'let TEXTURE_FORMAT_RGBA_BC3: number'],
+	['let TEXTURE_FORMAT_RGBA_BC7: any', 'let TEXTURE_FORMAT_RGBA_BC7: number'],
+	['let TEXTURE_FORMAT_RGBA_ETC2: any', 'let TEXTURE_FORMAT_RGBA_ETC2: number'],
+	[
+		'let TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1: any',
+		'let TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1: number',
 	],
 	[
-		'protect(func: any): any',
-		'protect(func: (...args: unknown[]) => unknown): (...args: unknown[]) => unknown',
+		'let TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1: any',
+		'let TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1: number',
+	],
+	['let TEXTURE_FORMAT_RGB_BC1: any', 'let TEXTURE_FORMAT_RGB_BC1: number'],
+	['let TEXTURE_FORMAT_RGB_ETC1: any', 'let TEXTURE_FORMAT_RGB_ETC1: number'],
+	[
+		'let TEXTURE_FORMAT_RGB_PVRTC_2BPPV1: any',
+		'let TEXTURE_FORMAT_RGB_PVRTC_2BPPV1: number',
+	],
+	[
+		'let TEXTURE_FORMAT_RGB_PVRTC_4BPPV1: any',
+		'let TEXTURE_FORMAT_RGB_PVRTC_4BPPV1: number',
+	],
+	['let TEXTURE_FORMAT_RG_BC5: any', 'let TEXTURE_FORMAT_RG_BC5: number'],
+	['let TEXTURE_FORMAT_R_BC4: any', 'let TEXTURE_FORMAT_R_BC4: number'],
+	['let TEXTURE_TYPE_2D: any', 'let TEXTURE_TYPE_2D: number'],
+	['let TEXTURE_TYPE_2D_ARRAY: any', 'let TEXTURE_TYPE_2D_ARRAY: number'],
+	['let TEXTURE_TYPE_CUBE_MAP: any', 'let TEXTURE_TYPE_CUBE_MAP: number'],
+];
+
+/** sys namespace */
+const sys = [
+	['let NETWORK_CONNECTED: any', 'let NETWORK_CONNECTED: number'],
+	[
+		'let NETWORK_CONNECTED_CELLULAR: any',
+		'let NETWORK_CONNECTED_CELLULAR: number',
+	],
+	['let NETWORK_DISCONNECTED: any', 'let NETWORK_DISCONNECTED: number'],
+	[
+		'function exists(path: string): any',
+		'function exists(path: string): boolean',
+	],
+	[
+		'function get_config_int(key: string, default_value?: any): any',
+		'function get_config_int(key: string, default_value?: number): number',
+	],
+	[
+		'function get_connectivity(): any',
+		'function get_connectivity(): typeof sys.NETWORK_DISCONNECTED | typeof sys.NETWORK_CONNECTED_CELLULAR | typeof sys.NETWORK_CONNECTED',
+	],
+	[
+		'function get_engine_info(): any',
+		'function get_engine_info(): { version: string, version_sha1: string, is_debug: boolean }',
+	],
+	[
+		'function load(filename: string): any',
+		'function load(filename: string): LuaMap<AnyNotNil, unknown>',
+	],
+	[
+		'function set_error_handler(error_handler: any',
+		'function set_error_handler(error_handler: (source: string, message: unknown, traceback: unknown) => void',
 	],
 ];
 
-/** crash namespace */
-const crash = [
+/** window namespace */
+const windowChanges = [
+	['let DIMMING_OFF: any', 'let DIMMING_OFF: number'],
+	['let DIMMING_ON: any', 'let DIMMING_ON: number'],
+	['let DIMMING_UNKNOWN: any', 'let DIMMING_UNKNOWN: number'],
+	['let WINDOW_EVENT_DEICONIFIED: any', 'let WINDOW_EVENT_DEICONIFIED: number'],
 	[
-		'SYSFIELD_ANDROID_BUILD_FINGERPRINT: any',
-		'SYSFIELD_ANDROID_BUILD_FINGERPRINT: number',
+		'let WINDOW_EVENT_FOCUS_GAINED: any',
+		'let WINDOW_EVENT_FOCUS_GAINED: number',
 	],
-	['SYSFIELD_DEVICE_LANGUAGE: any', 'SYSFIELD_DEVICE_LANGUAGE: number'],
-	['SYSFIELD_DEVICE_MODEL: any', 'SYSFIELD_DEVICE_MODEL: number'],
-	['SYSFIELD_ENGINE_HASH: any', 'SYSFIELD_ENGINE_HASH: number'],
-	['SYSFIELD_ENGINE_VERSION: any', 'SYSFIELD_ENGINE_VERSION: number'],
-	['SYSFIELD_LANGUAGE: any', 'SYSFIELD_LANGUAGE: number'],
-	['SYSFIELD_MANUFACTURER: any', 'SYSFIELD_MANUFACTURER: number'],
-	['SYSFIELD_MAX: any', 'SYSFIELD_MAX: number'],
-	['SYSFIELD_SYSTEM_NAME: any', 'SYSFIELD_SYSTEM_NAME: number'],
-	['SYSFIELD_SYSTEM_VERSION: any', 'SYSFIELD_SYSTEM_VERSION: number'],
-	['SYSFIELD_TERRITORY: any', 'SYSFIELD_TERRITORY: number'],
-	['USERFIELD_MAX: any', 'USERFIELD_MAX: number'],
-	['USERFIELD_SIZE: any', 'USERFIELD_SIZE: number'],
-	// Functions can also return `undefined`
+	['let WINDOW_EVENT_FOCUS_LOST: any', 'let WINDOW_EVENT_FOCUS_LOST: number'],
+	// Iconfied is sometimes spelled Iconified. Probably a typo?
+	['let WINDOW_EVENT_ICONFIED: any', 'let WINDOW_EVENT_ICONFIED: number'],
+	['let WINDOW_EVENT_RESIZED: any', 'let WINDOW_EVENT_RESIZED: number'],
 	[
-		'get_sys_field(handle: number, index: number):',
-		'get_sys_field(handle: number, index: number): undefined |',
+		'function get_dim_mode(): any',
+		'function get_dim_mode(): typeof window.DIMMING_UNKNOWN | typeof window.DIMMING_ON | typeof window.DIMMING_OFF',
 	],
-	['function load_previous():', 'function load_previous(): undefined |'],
+	[
+		'function set_dim_mode(mode: any)',
+		'function set_dim_mode(mode: typeof window.DIMMING_ON | typeof window.DIMMING_OFF)',
+	],
+	[
+		'function set_listener(callback: any)',
+		'function set_listener(callback: (this: unknown, event: typeof window.WINDOW_EVENT_FOCUS_LOST | typeof window.WINDOW_EVENT_FOCUS_GAINED | typeof window.WINDOW_EVENT_RESIZED | typeof window.WINDOW_EVENT_ICONFIED | typeof window.WINDOW_EVENT_DEICONIFIED, data: { width: number | undefined, height: number | undefined	}) => void)',
+	],
 ];
+
+/** buffer namespace */
+const bufferChanges = [
+	// Describe `buffer` types
+	// Greedy changes apply multiple times
+	[/(VALUE_TYPE_.+): any/g, '$1: number'],
+];
+
+/** html5 namespace */
+const html5 = [
+	[
+		'function set_interaction_listener(callback: any',
+		'function set_interaction_listener(callback: undefined | ((this: unknown) => void)',
+	],
+];
+
+/** http namespace */
+const http = [
+	// function request
+	[
+		'callback: any,',
+		'callback: (this: unknown, id: unknown, response: { status: unknown, response?: unknown, headers: unknown, path?: unknown, error?: unknown }) => void,',
+	],
+];
+
+/** image namespace */
+const image = [
+	['let TYPE_LUMINANCE: any', 'let TYPE_LUMINANCE: "l"'],
+	['let TYPE_LUMINANCE_ALPHA: any', 'let TYPE_LUMINANCE_ALPHA: "la"'],
+	['let TYPE_RGB: any', 'let TYPE_RGB: "rgb"'],
+	['let TYPE_RGBA: any', 'let TYPE_RGBA: "rgba"'],
+];
+
+/** json namespace */
+const jsonChanges = [
+	// Change invalid JSON null type
+	['let null$: any', 'let null$: null'],
+];
+
+/** msg namespace */
+const msg = [
+	// function post
+	[
+		'message?: any',
+		'message?: LuaMap<AnyNotNil, AnyNotNil> | { [key: string | number | symbol]: AnyNotNil }',
+	],
+];
+
+/** timer namespace */
+const timer = [
+	['let INVALID_TIMER_HANDLE: any', 'let INVALID_TIMER_HANDLE: number'],
+	// function delay
+	[
+		'callback: any',
+		'callback: (this: unknown, handle: unknown, time_elapsed: number) => void',
+	],
+];
+
+/** vmath namespace */
+const vmathChanges = [
+	[
+		'function vector(t: any): any',
+		'function vector(t: number[] | LuaSet<number>): vmath.vector3 | vmath.vector4',
+	],
+];
+
+/** zlib namespace */
+const zlib = [['', '']];
 
 /** camera namespace */
 const camera = [
@@ -661,61 +672,6 @@ const camera = [
 	['let orthographic_zoom: any', 'let orthographic_zoom: number'],
 	['let projection: any', 'const projection: Readonly<vmath.matrix4>'],
 	['let view: any', 'const view: Readonly<vmath.matrix4>'],
-];
-
-/** sound namespace */
-const sound = [
-	['let sound: any', 'let sound: hash'],
-	['let gain: any', 'let gain: number'],
-	['let pan: any', 'let pan: number'],
-	['let speed: any', 'let speed: number'],
-	// function play
-	[
-		'play_properties?: any',
-		'play_properties?: { delay?: number, gain?: number, pan?: number, speed?: number }',
-	],
-	[
-		'complete_function?: any',
-		'complete_function?: (this: unknown, message_id: unknown, message: { play_id: unknown }, sender: unknown) => void',
-	],
-];
-
-/** label namespace */
-const label = [
-	['let color: any', 'let color: vmath.vector4'],
-	['let font: any', 'let font: hash'],
-	['let leading: any', 'let leading: number'],
-	['let line_break: any', 'let line_break: boolean'],
-	['let outline: any', 'let outline: vmath.vector4'],
-	['let scale: any', 'let scale: number | vmath.vector3'],
-	['let shadow: any', 'let shadow: vmath.vector4'],
-	['let tracking: any', 'let tracking: number'],
-	// Prop also exists in sprite namespace
-	['let size: any', 'let size: vmath.vector3'],
-];
-
-/** sprite namespace */
-const sprite = [
-	['let frame_count: any', 'const frame_count: number'],
-	['let image: any', 'let image: hash'],
-	// Prop also exists in model namespace
-	['let playback_rate: any', 'let playback_rate: number'],
-	['let scale: any', 'let scale: vmath.vector3'],
-	// Prop also exists in label namespace
-	['let size: any', 'let size: vmath.vector3'],
-	// Prop also exists in model namespace
-	['let animation: any', 'let animation: hash'],
-	// Prop also exists in model namespace
-	['let cursor: any', 'let cursor: number'],
-	// function play_flipbook
-	[
-		'play_properties?: any',
-		'play_properties?: { offset?: number, playback_rate?: number }',
-	],
-	[
-		'complete_function?: any',
-		'complete_function?: (this: unknown, message_id: unknown, message: { current_tile: unknown, id: unknown }, sender: unknown) => void',
-	],
 ];
 
 /** collectionFactory namespace */
@@ -734,6 +690,9 @@ const collectionFactory = [
 	],
 ];
 
+/** collectionproxy namespace */
+const collectionProxy = [['', '']];
+
 /** factory namespace */
 const factory = [
 	['let STATUS_LOADED: any', 'const STATUS_LOADED: number'],
@@ -748,6 +707,20 @@ const factory = [
 		'complete_function?: any',
 		'complete_function?: (this: unknown, url: unknown, result: boolean) => void',
 	],
+];
+
+/** label namespace */
+const label = [
+	['let color: any', 'let color: vmath.vector4'],
+	['let font: any', 'let font: hash'],
+	['let leading: any', 'let leading: number'],
+	['let line_break: any', 'let line_break: boolean'],
+	['let outline: any', 'let outline: vmath.vector4'],
+	['let scale: any', 'let scale: number | vmath.vector3'],
+	['let shadow: any', 'let shadow: vmath.vector4'],
+	['let tracking: any', 'let tracking: number'],
+	// Prop also exists in sprite namespace
+	['let size: any', 'let size: vmath.vector3'],
 ];
 
 /** model namespace */
@@ -782,12 +755,55 @@ const particleFx = [
 	],
 ];
 
-/** vmath namespace */
-const vmathChanges = [
+/** sound namespace */
+const sound = [
+	['let sound: any', 'let sound: hash'],
+	['let gain: any', 'let gain: number'],
+	['let pan: any', 'let pan: number'],
+	['let speed: any', 'let speed: number'],
+	// function play
 	[
-		'function vector(t: any): any',
-		'function vector(t: number[] | LuaSet<number>): vmath.vector3 | vmath.vector4',
+		'play_properties?: any',
+		'play_properties?: { delay?: number, gain?: number, pan?: number, speed?: number }',
 	],
+	[
+		'complete_function?: any',
+		'complete_function?: (this: unknown, message_id: unknown, message: { play_id: unknown }, sender: unknown) => void',
+	],
+];
+
+/** sprite namespace */
+const sprite = [
+	['let frame_count: any', 'const frame_count: number'],
+	['let image: any', 'let image: hash'],
+	// Prop also exists in model namespace
+	['let playback_rate: any', 'let playback_rate: number'],
+	['let scale: any', 'let scale: vmath.vector3'],
+	// Prop also exists in label namespace
+	['let size: any', 'let size: vmath.vector3'],
+	// Prop also exists in model namespace
+	['let animation: any', 'let animation: hash'],
+	// Prop also exists in model namespace
+	['let cursor: any', 'let cursor: number'],
+	// function play_flipbook
+	[
+		'play_properties?: any',
+		'play_properties?: { offset?: number, playback_rate?: number }',
+	],
+	[
+		'complete_function?: any',
+		'complete_function?: (this: unknown, message_id: unknown, message: { current_tile: unknown, id: unknown }, sender: unknown) => void',
+	],
+];
+
+/** tilemap namespace */
+const tilemap = [
+	['let tile_source: any', 'let tile_source: hash'],
+	['H_FLIP: any', 'H_FLIP: number'],
+	['ROTATE_180: any', 'ROTATE_180: number'],
+	['ROTATE_270: any', 'ROTATE_270: number'],
+	['ROTATE_90: any', 'ROTATE_90: number'],
+	['V_FLIP: any', 'V_FLIP: number'],
 ];
 
 /** Late changes that don't fit anywhere else */
@@ -807,37 +823,134 @@ const finalChanges = [
 ];
 
 const patches = [
-	...defoldBasics,
-	...languageQuirks,
 	// The following are in order of appearance in the final definitions file
-	...vmathChanges,
-	...socket,
-	...crash,
-	...go,
-	...gui,
-	...physics,
-	...profiler,
-	...render,
-	...resource,
-	...sys,
-	...windowChanges,
-	...bufferChanges,
-	...html5,
-	...http,
-	...image,
-	...msg,
-	...timer,
-	...camera,
-	...collectionFactory,
-	...factory,
-	...label,
-	...model,
-	...particleFx,
-	...sound,
-	...sprite,
-	...tilemap,
-	// The following should always be last
-	...finalChanges,
+	{
+		regex: /(declare namespace socket {)([\s\S]*?)(declare namespace crash {)/s,
+		replacements: socket,
+	},
+	{
+		regex: /(declare namespace crash {)([\s\S]*?)(declare namespace go {)/s,
+		replacements: crash,
+	},
+	{
+		regex: /(declare namespace go {)([\s\S]*?)(declare namespace gui {)/s,
+		replacements: go,
+	},
+	{
+		regex: /(declare namespace gui {)([\s\S]*?)(declare namespace physics {)/s,
+		replacements: gui,
+	},
+	{
+		regex:
+			/(declare namespace physics {)([\s\S]*?)(declare namespace profiler {)/s,
+		replacements: physics,
+	},
+	{
+		regex:
+			/(declare namespace profiler {)([\s\S]*?)(declare namespace render {)/s,
+		replacements: profiler,
+	},
+	{
+		regex:
+			/(declare namespace render {)([\s\S]*?)(declare namespace resource {)/s,
+		replacements: render,
+	},
+	{
+		regex: /(declare namespace resource {)([\s\S]*?)(declare namespace sys {)/s,
+		replacements: resource,
+	},
+	{
+		regex: /(declare namespace sys {)([\s\S]*?)(declare namespace window {)/s,
+		replacements: sys,
+	},
+	{
+		regex:
+			/(declare namespace window {)([\s\S]*?)(declare namespace buffer {)/s,
+		replacements: windowChanges,
+	},
+	{
+		regex: /(declare namespace buffer {)([\s\S]*?)(declare namespace html5 {)/s,
+		replacements: bufferChanges,
+	},
+	{
+		regex: /(declare namespace html5 {)([\s\S]*?)(declare namespace http {)/s,
+		replacements: html5,
+	},
+	{
+		regex: /(declare namespace http {)([\s\S]*?)(declare namespace image {)/s,
+		replacements: http,
+	},
+	{
+		regex: /(declare namespace image {)([\s\S]*?)(declare namespace json {)/s,
+		replacements: image,
+	},
+	{
+		regex: /(declare namespace json {)([\s\S]*?)(declare namespace msg {)/s,
+		replacements: jsonChanges,
+	},
+	{
+		regex: /(declare namespace msg {)([\s\S]*?)(declare namespace timer {)/s,
+		replacements: msg,
+	},
+	{
+		regex: /(declare namespace timer {)([\s\S]*?)(declare namespace vmath {)/s,
+		replacements: timer,
+	},
+	{
+		regex: /(declare namespace vmath {)([\s\S]*?)(declare namespace zlib {)/s,
+		replacements: vmathChanges,
+	},
+	{
+		regex: /(declare namespace zlib {)([\s\S]*?)(declare namespace camera {)/s,
+		replacements: zlib,
+	},
+	{
+		regex:
+			/(declare namespace camera {)([\s\S]*?)(declare namespace collectionfactory {)/s,
+		replacements: camera,
+	},
+	{
+		regex:
+			/(declare namespace collectionfactory {)([\s\S]*?)(declare namespace collectionproxy {)/s,
+		replacements: collectionFactory,
+	},
+	{
+		regex:
+			/(declare namespace collectionproxy {)([\s\S]*?)(declare namespace factory {)/s,
+		replacements: collectionProxy,
+	},
+	{
+		regex:
+			/(declare namespace factory {)([\s\S]*?)(declare namespace label {)/s,
+		replacements: factory,
+	},
+	{
+		regex: /(declare namespace label {)([\s\S]*?)(declare namespace model {)/s,
+		replacements: label,
+	},
+	{
+		regex:
+			/(declare namespace model {)([\s\S]*?)(declare namespace particlefx {)/s,
+		replacements: model,
+	},
+	{
+		regex:
+			/(declare namespace particlefx {)([\s\S]*?)(declare namespace sound {)/s,
+		replacements: particleFx,
+	},
+	{
+		regex: /(declare namespace sound {)([\s\S]*?)(declare namespace sprite {)/s,
+		replacements: sound,
+	},
+	{
+		regex:
+			/(declare namespace sprite {)([\s\S]*?)(declare namespace tilemap {)/s,
+		replacements: sprite,
+	},
+	{
+		regex: /(declare namespace tilemap {)([\s\S]*?)(})/s,
+		replacements: tilemap,
+	},
 ];
 
 /**
@@ -849,15 +962,34 @@ fs.readFile(filePath, 'utf8', (err, data) => {
 		return;
 	}
 	console.time('Patching definitions');
-	// Make find and replace changes
-	patches.forEach((pair) => (data = data.replace(pair[0], pair[1])));
+
+	// Make early find and replace changes
+	earlyChanges.forEach((pair) => (data = data.replace(pair[0], pair[1])));
+
+	// Loop through namespace changes
+	for (const patch of patches) {
+		const { regex, replacements } = patch;
+
+		data = data.replace(regex, (match, namespace, group, namespace2) => {
+			// Apply replacements using string.replace dynamically
+			replacements.forEach(([search, replace]) => {
+				group = group.replace(search, replace);
+			});
+			return `${namespace}${group}${namespace2}`;
+		});
+	}
+
+	// Make final find an replace changes
+	finalChanges.forEach((pair) => (data = data.replace(pair[0], pair[1])));
+	console.timeEnd('Patching definitions');
+
 	// Save the modified contents back to the file
+	console.time('Saving file');
 	fs.writeFile(filePath, data, 'utf8', (err) => {
 		if (err) {
 			console.error('Error writing file:', err);
 			return;
 		}
-		console.log('File saved successfully.');
+		console.timeEnd('Saving file');
 	});
-	console.timeEnd('Patching definitions');
 });
