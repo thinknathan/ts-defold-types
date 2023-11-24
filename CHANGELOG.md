@@ -3,6 +3,7 @@
 ## v1.3.15
 
 - More detailed constant types
+- More accurate return values for certain functions
 
 ## v1.3.14
 

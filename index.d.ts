@@ -6130,7 +6130,23 @@ declare namespace buffer {
 	export function get_metadata(
 		buf: buffer,
 		metadata_name: hash | string,
-	): LuaMultiReturn<[unknown, unknown, unknown, unknown]>;
+	): LuaMultiReturn<
+		[
+			undefined | unknown[],
+			(
+				| undefined
+				| typeof buffer.VALUE_TYPE_UINT8
+				| typeof buffer.VALUE_TYPE_UINT16
+				| typeof buffer.VALUE_TYPE_UINT32
+				| typeof buffer.VALUE_TYPE_UINT64
+				| typeof buffer.VALUE_TYPE_INT8
+				| typeof buffer.VALUE_TYPE_INT16
+				| typeof buffer.VALUE_TYPE_INT32
+				| typeof buffer.VALUE_TYPE_INT64
+				| typeof buffer.VALUE_TYPE_FLOAT32
+			),
+		]
+	>;
 
 	/**
 	 * Get a specified stream from a buffer.
@@ -6442,7 +6458,9 @@ Time interval.
 true = repeat timer until cancel, false = one-shot timer.
 
 	*/
-	export function get_info(handle: hash): LuaMultiReturn<[unknown, unknown]>;
+	export function get_info(
+		handle: hash,
+	): undefined | { time_remaining: number; delay: number; repeating: boolean };
 
 	/**
 	 * Manual triggering a callback for a timer.
