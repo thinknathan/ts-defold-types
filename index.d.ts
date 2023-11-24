@@ -6282,7 +6282,18 @@ declare namespace image {
 	export function load(
 		buffer: string,
 		premult?: boolean,
-	): LuaMultiReturn<[unknown, unknown]>;
+	):
+		| undefined
+		| {
+				width: number;
+				height: number;
+				type:
+					| typeof image.TYPE_RGB
+					| typeof image.TYPE_RGBA
+					| typeof image.TYPE_LUMINANCE
+					| typeof image.TYPE_LUMINANCE_ALPHA;
+				buffer: unknown;
+		  };
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 

@@ -607,6 +607,11 @@ const image = [
 	['let TYPE_LUMINANCE_ALPHA: any', 'const TYPE_LUMINANCE_ALPHA: "la"'],
 	['let TYPE_RGB: any', 'const TYPE_RGB: "rgb"'],
 	['let TYPE_RGBA: any', 'const TYPE_RGBA: "rgba"'],
+	// TO-DO: confirm the return type
+	[
+		'function load(buffer: string, premult?: boolean): LuaMultiReturn<[any, any]>',
+		'function load(buffer: string, premult?: boolean): undefined | { width: number, height: number, type: typeof image.TYPE_RGB | typeof image.TYPE_RGBA | typeof image.TYPE_LUMINANCE | typeof image.TYPE_LUMINANCE_ALPHA , buffer: unknown }',
+	],
 ];
 
 /** json namespace */
