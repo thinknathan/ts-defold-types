@@ -392,6 +392,10 @@ const physics = [
 	['groups: any', 'groups: hash[]'],
 	// function raycast_async
 	['groups: any', 'groups: hash[]'],
+	[
+		'function get_joint_reaction_torque(collisionobject: string | hash | url, joint_id: string | hash): any',
+		'function get_joint_reaction_torque(collisionobject: string | hash | url, joint_id: string | hash): number',
+	],
 ];
 
 /** profiler namespace */
@@ -567,6 +571,18 @@ const render = [
 		'function render_target(name: string, parameters: any): any',
 		'function render_target(name: string, parameters: { [key: typeof render.BUFFER_COLOR_BIT | typeof render.BUFFER_COLOR0_BIT | typeof render.BUFFER_COLOR1_BIT | typeof render.BUFFER_COLOR2_BIT | typeof render.BUFFER_COLOR3_BIT | typeof render.BUFFER_DEPTH_BIT | typeof render.BUFFER_STENCIL_BIT ]: {	format: typeof render.FORMAT_LUMINANCE | typeof render.FORMAT_RGB | typeof render.FORMAT_RGBA | typeof render.FORMAT_DEPTH | typeof render.FORMAT_STENCIL | typeof render.FORMAT_RGBA32F | typeof render.FORMAT_RGBA16F; width: number; height: number; min_filter?: typeof render.FILTER_LINEAR | typeof render.FILTER_NEAREST; mag_filter?: typeof render.FILTER_LINEAR | typeof render.FILTER_NEAREST; u_wrap?: typeof render.WRAP_CLAMP_TO_BORDER | typeof render.WRAP_CLAMP_TO_EDGE | typeof render.WRAP_MIRRORED_REPEAT | typeof render.WRAP_REPEAT; v_wrap?: typeof render.WRAP_CLAMP_TO_BORDER | typeof render.WRAP_CLAMP_TO_EDGE | typeof render.WRAP_MIRRORED_REPEAT | typeof render.WRAP_REPEAT; flags?: unknown } }): renderTarget',
 	],
+	[
+		'function set_stencil_op(sfail: any, dpfail: any, dppass: any)',
+		'function set_stencil_op(sfail: typeof render.STENCIL_OP_KEEP | typeof render.STENCIL_OP_ZERO | typeof render.STENCIL_OP_REPLACE | typeof render.STENCIL_OP_INCR | typeof render.STENCIL_OP_INCR_WRAP | typeof render.STENCIL_OP_DECR | typeof render.STENCIL_OP_DECR_WRAP | typeof render.STENCIL_OP_INVERT, dpfail: typeof render.STENCIL_OP_KEEP | typeof render.STENCIL_OP_ZERO | typeof render.STENCIL_OP_REPLACE | typeof render.STENCIL_OP_INCR | typeof render.STENCIL_OP_INCR_WRAP | typeof render.STENCIL_OP_DECR | typeof render.STENCIL_OP_DECR_WRAP | typeof render.STENCIL_OP_INVERT, dppass: typeof render.STENCIL_OP_KEEP | typeof render.STENCIL_OP_ZERO | typeof render.STENCIL_OP_REPLACE | typeof render.STENCIL_OP_INCR | typeof render.STENCIL_OP_INCR_WRAP | typeof render.STENCIL_OP_DECR | typeof render.STENCIL_OP_DECR_WRAP | typeof render.STENCIL_OP_INVERT)',
+	],
+	[
+		'function set_render_target(render_target: renderTarget, options?: any)',
+		'function set_render_target(render_target: renderTarget, options?: Array<typeof render.BUFFER_COLOR_BIT | typeof  render.BUFFER_DEPTH_BIT | typeof render.BUFFER_STENCIL_BIT>)',
+	],
+	[
+		'function set_blend_func(source_factor: any, destination_factor: any)',
+		'function set_blend_func(source_factor: typeof render.BLEND_ZERO | typeof render.BLEND_ONE | typeof render.BLEND_SRC_COLOR | typeof render.BLEND_ONE_MINUS_SRC_COLOR | typeof render.BLEND_DST_COLOR | typeof render.BLEND_ONE_MINUS_DST_COLOR | typeof render.BLEND_SRC_ALPHA | typeof render.BLEND_ONE_MINUS_SRC_ALPHA | typeof render.BLEND_DST_ALPHA | typeof render.BLEND_ONE_MINUS_DST_ALPHA | typeof render.BLEND_CONSTANT_COLOR | typeof render.BLEND_ONE_MINUS_CONSTANT_COLOR | typeof render.BLEND_CONSTANT_ALPHA | typeof render.BLEND_ONE_MINUS_CONSTANT_ALPHA | typeof render.BLEND_SRC_ALPHA_SATURATE	, destination_factor: typeof render.BLEND_ZERO | typeof render.BLEND_ONE | typeof render.BLEND_SRC_COLOR | typeof render.BLEND_ONE_MINUS_SRC_COLOR | typeof render.BLEND_DST_COLOR | typeof render.BLEND_ONE_MINUS_DST_COLOR | typeof render.BLEND_SRC_ALPHA | typeof render.BLEND_ONE_MINUS_SRC_ALPHA | typeof render.BLEND_DST_ALPHA | typeof render.BLEND_ONE_MINUS_DST_ALPHA | typeof render.BLEND_CONSTANT_COLOR | typeof render.BLEND_ONE_MINUS_CONSTANT_COLOR | typeof render.BLEND_CONSTANT_ALPHA | typeof render.BLEND_ONE_MINUS_CONSTANT_ALPHA | typeof render.BLEND_SRC_ALPHA_SATURATE	)',
+	],
 ];
 
 /** resource namespace */
@@ -637,6 +653,20 @@ const sys = [
 	[
 		'function open_url(url: string, attributes?: any)',
 		'function open_url(url: string, attributes?: { target?: "_self" | "_blank" | "_parent" | "_top" | string })',
+	],
+	// Remove overloaded function
+	['export function load_resource(filename: string): any', ''],
+	[
+		'function load_resource(filename: string): string',
+		'function load_resource(filename: string): LuaMultiReturn<[string| undefined, string | undefined]>',
+	],
+	[
+		'function get_sys_info(options?: any): any',
+		'function get_sys_info(options?: { ignore_secure: boolean }): { device_model?: string, manufacturer?: string, system_name: string, system_version: string, api_version: string, language: string, device_language: string, territory: string, gmt_offset: number, device_ident?: string, user_agent: string }',
+	],
+	[
+		'function get_ifaddrs(): any',
+		'function get_ifaddrs(): { name: string, address: string | undefined, mac: string | undefined, up: boolean, running: boolean }[]',
 	],
 ];
 

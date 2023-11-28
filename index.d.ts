@@ -3194,7 +3194,7 @@ end
 	export function get_joint_reaction_torque(
 		collisionobject: string | hash | url,
 		joint_id: string | hash,
-	): unknown;
+	): number;
 
 	/**
 	* Returns true if the specified group is set in the mask of a collision
@@ -4440,8 +4440,38 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	 * @param destination_factor  destination factor
 	 */
 	export function set_blend_func(
-		source_factor: unknown,
-		destination_factor: unknown,
+		source_factor:
+			| typeof render.BLEND_ZERO
+			| typeof render.BLEND_ONE
+			| typeof render.BLEND_SRC_COLOR
+			| typeof render.BLEND_ONE_MINUS_SRC_COLOR
+			| typeof render.BLEND_DST_COLOR
+			| typeof render.BLEND_ONE_MINUS_DST_COLOR
+			| typeof render.BLEND_SRC_ALPHA
+			| typeof render.BLEND_ONE_MINUS_SRC_ALPHA
+			| typeof render.BLEND_DST_ALPHA
+			| typeof render.BLEND_ONE_MINUS_DST_ALPHA
+			| typeof render.BLEND_CONSTANT_COLOR
+			| typeof render.BLEND_ONE_MINUS_CONSTANT_COLOR
+			| typeof render.BLEND_CONSTANT_ALPHA
+			| typeof render.BLEND_ONE_MINUS_CONSTANT_ALPHA
+			| typeof render.BLEND_SRC_ALPHA_SATURATE,
+		destination_factor:
+			| typeof render.BLEND_ZERO
+			| typeof render.BLEND_ONE
+			| typeof render.BLEND_SRC_COLOR
+			| typeof render.BLEND_ONE_MINUS_SRC_COLOR
+			| typeof render.BLEND_DST_COLOR
+			| typeof render.BLEND_ONE_MINUS_DST_COLOR
+			| typeof render.BLEND_SRC_ALPHA
+			| typeof render.BLEND_ONE_MINUS_SRC_ALPHA
+			| typeof render.BLEND_DST_ALPHA
+			| typeof render.BLEND_ONE_MINUS_DST_ALPHA
+			| typeof render.BLEND_CONSTANT_COLOR
+			| typeof render.BLEND_ONE_MINUS_CONSTANT_COLOR
+			| typeof render.BLEND_CONSTANT_ALPHA
+			| typeof render.BLEND_ONE_MINUS_CONSTANT_ALPHA
+			| typeof render.BLEND_SRC_ALPHA_SATURATE,
 	): void;
 
 	/**
@@ -4566,7 +4596,11 @@ Transient frame buffer types are only valid while the render target is active, i
 	*/
 	export function set_render_target(
 		render_target: renderTarget,
-		options?: unknown,
+		options?: Array<
+			| typeof render.BUFFER_COLOR_BIT
+			| typeof render.BUFFER_DEPTH_BIT
+			| typeof render.BUFFER_STENCIL_BIT
+		>,
 	): void;
 
 	/**
@@ -4663,9 +4697,33 @@ Transient frame buffer types are only valid while the render target is active, i
 	 * @param dppass  the stencil action when both the stencil test and the depth test pass, or when the stencil test passes and either there is no depth buffer or depth testing is not enabled
 	 */
 	export function set_stencil_op(
-		sfail: unknown,
-		dpfail: unknown,
-		dppass: unknown,
+		sfail:
+			| typeof render.STENCIL_OP_KEEP
+			| typeof render.STENCIL_OP_ZERO
+			| typeof render.STENCIL_OP_REPLACE
+			| typeof render.STENCIL_OP_INCR
+			| typeof render.STENCIL_OP_INCR_WRAP
+			| typeof render.STENCIL_OP_DECR
+			| typeof render.STENCIL_OP_DECR_WRAP
+			| typeof render.STENCIL_OP_INVERT,
+		dpfail:
+			| typeof render.STENCIL_OP_KEEP
+			| typeof render.STENCIL_OP_ZERO
+			| typeof render.STENCIL_OP_REPLACE
+			| typeof render.STENCIL_OP_INCR
+			| typeof render.STENCIL_OP_INCR_WRAP
+			| typeof render.STENCIL_OP_DECR
+			| typeof render.STENCIL_OP_DECR_WRAP
+			| typeof render.STENCIL_OP_INVERT,
+		dppass:
+			| typeof render.STENCIL_OP_KEEP
+			| typeof render.STENCIL_OP_ZERO
+			| typeof render.STENCIL_OP_REPLACE
+			| typeof render.STENCIL_OP_INCR
+			| typeof render.STENCIL_OP_INCR_WRAP
+			| typeof render.STENCIL_OP_DECR
+			| typeof render.STENCIL_OP_DECR_WRAP
+			| typeof render.STENCIL_OP_INVERT,
 	): void;
 
 	/**
@@ -5779,7 +5837,13 @@ might be undefined if not available.
 `true` if the interface is running, `false` otherwise.
 
 	*/
-	export function get_ifaddrs(): unknown;
+	export function get_ifaddrs(): {
+		name: string;
+		address: string | undefined;
+		mac: string | undefined;
+		up: boolean;
+		running: boolean;
+	}[];
 
 	/**
 	 * The save-file path is operating system specific and is typically located under the user's home directory.
@@ -5822,7 +5886,19 @@ The current offset from GMT (Greenwich Mean Time), in minutes.
 The HTTP user agent, i.e. "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/602.4.8 (KHTML, like Gecko) Version/10.0.3 Safari/602.4.8"
 
 	*/
-	export function get_sys_info(options?: unknown): unknown;
+	export function get_sys_info(options?: { ignore_secure: boolean }): {
+		device_model?: string;
+		manufacturer?: string;
+		system_name: string;
+		system_version: string;
+		api_version: string;
+		language: string;
+		device_language: string;
+		territory: string;
+		gmt_offset: number;
+		device_ident?: string;
+		user_agent: string;
+	};
 
 	/**
 	 * If the file exists, it must have been created by `sys.save` to be loaded.
@@ -5845,8 +5921,9 @@ The HTTP user agent, i.e. "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) Apple
 	 * @return data  loaded data, or `undefined` if the resource could not be loaded
 	 * @return error  the error message, or `undefined` if no error occurred
 	 */
-	export function load_resource(filename: string): string;
-	export function load_resource(filename: string): unknown;
+	export function load_resource(
+		filename: string,
+	): LuaMultiReturn<[string | undefined, string | undefined]>;
 
 	/**
 	* Open URL in default application, typically a browser
