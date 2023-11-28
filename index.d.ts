@@ -52,6 +52,15 @@ declare type renderTarget = Readonly<
 	}
 >;
 
+/**
+ * Socket objects.
+ */
+declare type socketClient = {};
+declare type socketServer = {};
+declare type socketMaster = {};
+declare type socketUnconnected = {};
+declare type socketConnected = {};
+
 declare type bufferstream = Array<number> & LuaUserdata & {};
 
 declare namespace vmath {
@@ -157,8 +166,8 @@ declare namespace socket {
 		port: number,
 		locaddr?: string,
 		locport?: number,
-		family?: string,
-	): LuaMultiReturn<[unknown, unknown, string, unknown]>;
+		family?: 'inet' | 'inet6',
+	): LuaMultiReturn<[socketClient | undefined, string | undefined]>;
 
 	/**
 	 * Returns the time in seconds, relative to the system epoch (Unix epoch time since January 1, 1970 (UTC) or Windows file time since January 1, 1601 (UTC)).
@@ -204,10 +213,10 @@ declare namespace socket {
 	 * @return error  an error message. "timeout" if a timeout condition was met, otherwise `undefined`.
 	 */
 	export function select(
-		recvt: unknown,
-		sendt: unknown,
+		recvt: unknown[],
+		sendt: unknown[],
 		timeout?: number,
-	): LuaMultiReturn<[unknown, unknown, string, unknown]>;
+	): LuaMultiReturn<[unknown[], unknown[], string | undefined]>;
 
 	/**
 	 * This function drops a number of arguments and returns the remaining.
@@ -228,7 +237,9 @@ declare namespace socket {
 		ret1?: unknown,
 		ret2?: unknown,
 		retN?: unknown,
-	): unknown;
+	): LuaMultiReturn<
+		[unknown | undefined, unknown | undefined, unknown | undefined]
+	>;
 
 	/**
 	 * Freezes the program execution during a given amount of time.
@@ -241,7 +252,9 @@ declare namespace socket {
 	 * @return tcp_master  a new IPv4 TCP master object, or `undefined` in case of error.
 	 * @return error  the error message, or `undefined` if no error occurred.
 	 */
-	export function tcp(): LuaMultiReturn<[unknown, unknown, string, unknown]>;
+	export function tcp(): LuaMultiReturn<
+		[socketMaster | undefined, string | undefined]
+	>;
 
 	/**
 	 * Creates and returns an IPv6 TCP master object. A master object can be transformed into a server object with the method `listen` (after a call to `bind`) or into a client object with the method connect. The only other method supported by a master object is the close method.
@@ -249,14 +262,18 @@ declare namespace socket {
 	 * @return tcp_master  a new IPv6 TCP master object, or `undefined` in case of error.
 	 * @return error  the error message, or `undefined` if no error occurred.
 	 */
-	export function tcp6(): LuaMultiReturn<[unknown, unknown, string, unknown]>;
+	export function tcp6(): LuaMultiReturn<
+		[socketMaster | undefined, string | undefined]
+	>;
 
 	/**
 	 * Creates and returns an unconnected IPv4 UDP object. Unconnected objects support the `sendto`, `receive`, `receivefrom`, `getoption`, `getsockname`, `setoption`, `settimeout`, `setpeername`, `setsockname`, and `close` methods. The `setpeername` method is used to connect the object.
 	 * @return udp_unconnected  a new unconnected IPv4 UDP object, or `undefined` in case of error.
 	 * @return error  the error message, or `undefined` if no error occurred.
 	 */
-	export function udp(): LuaMultiReturn<[unknown, unknown, string, unknown]>;
+	export function udp(): LuaMultiReturn<
+		[socketUnconnected | undefined, string | unknown]
+	>;
 
 	/**
 	 * Creates and returns an unconnected IPv6 UDP object. Unconnected objects support the `sendto`, `receive`, `receivefrom`, `getoption`, `getsockname`, `setoption`, `settimeout`, `setpeername`, `setsockname`, and `close` methods. The `setpeername` method is used to connect the object.
@@ -264,7 +281,9 @@ declare namespace socket {
 	 * @return udp_unconnected  a new unconnected IPv6 UDP object, or `undefined` in case of error.
 	 * @return error  the error message, or `undefined` if no error occurred.
 	 */
-	export function udp6(): LuaMultiReturn<[unknown, unknown, string, unknown]>;
+	export function udp6(): LuaMultiReturn<
+		[socketUnconnected | undefined, string | unknown]
+	>;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
@@ -2348,7 +2367,17 @@ with a custom curve. See the animation guide for more information.
 		type: 'rgb' | 'rgba' | 'l',
 		buffer: string,
 		flip: boolean,
-	): LuaMultiReturn<[boolean, number]>;
+	): LuaMultiReturn<
+		[
+			boolean,
+			(
+				| undefined
+				| typeof gui.RESULT_TEXTURE_ALREADY_EXISTS
+				| typeof gui.RESULT_DATA_ERROR
+				| typeof gui.RESULT_OUT_OF_RESOURCES
+			),
+		]
+	>;
 
 	/**
 	 * Tests whether a coordinate is within the bounding box of a
@@ -2888,7 +2917,7 @@ the new state of the emitter:
 		texture: string | hash,
 		width: number,
 		height: number,
-		type: 'rgb' | 'rgba' | 'l',
+		type: unknown,
 		buffer: string,
 		flip: boolean,
 	): boolean;
@@ -3024,6 +3053,10 @@ declare namespace physics {
 	 * The collision object must be dynamic.
 	 */
 	export type apply_force = 'apply_force';
+	export type apply_force_message = {
+		force: vmath.vector3;
+		position: vmath.vector3;
+	};
 
 	/**
 	 * This message is broadcasted to every component of an instance that has a collision object,
@@ -3035,6 +3068,12 @@ declare namespace physics {
 	 * To retrieve more detailed information, check for the `contact_point_response` instead.
 	 */
 	export type collision_response = 'collision_response';
+	export type collision_response_message = {
+		other_id: hash;
+		other_position: vmath.vector3;
+		other_group: hash;
+		own_group: hash;
+	};
 
 	/**
 	 * This message is broadcasted to every component of an instance that has a collision object,
@@ -3046,6 +3085,20 @@ declare namespace physics {
 	 * when the collision occurs, check for the `collision_response` message instead.
 	 */
 	export type contact_point_response = 'contact_point_response';
+	export type contact_point_response_message = {
+		position: vmath.vector3;
+		normal: vmath.vector3;
+		relative_velocity: vmath.vector3;
+		distance: number;
+		applied_impulse: number;
+		life_time: number;
+		mass: number;
+		other_mass: number;
+		other_id: hash;
+		other_position: vmath.vector3;
+		other_group: hash;
+		own_group: hash;
+	};
 
 	/**
 	 * The linear damping value for the collision object. Setting this value alters the damping of
@@ -3232,7 +3285,7 @@ Set to `true` to return all ray cast hits. If `false`, it will only return the c
 		to: vmath.vector3,
 		groups: hash[],
 		options?: { all: boolean },
-	): LuaMultiReturn<[unknown, unknown]>;
+	): undefined | physics.ray_cast_response_message[];
 
 	/**
 	 * Ray casts are used to test for intersections against collision objects in the physics world.
@@ -3342,12 +3395,21 @@ end
 	 * collision object. See `physics.raycast_async` for examples of how to use it.
 	 */
 	export type ray_cast_missed = 'ray_cast_missed';
+	export type ray_cast_missed_message = { request_id: number };
 
 	/**
 	 * This message is sent back to the sender of a `ray_cast_request`, if the ray hit a
 	 * collision object. See `physics.raycast_async` for examples of how to use it.
 	 */
 	export type ray_cast_response = 'ray_cast_response';
+	export type ray_cast_response_message = {
+		fraction: number;
+		position: vmath.vector3;
+		normal: vmath.vector3;
+		id: hash;
+		group: hash;
+		request_id: number;
+	};
 
 	/**
 	 * This message is broadcasted to every component of an instance that has a collision object,
@@ -3359,6 +3421,12 @@ end
 	 * `contact_point_response` instead.
 	 */
 	export type trigger_response = 'trigger_response';
+	export type trigger_response_message = {
+		other_id: hash;
+		enter: boolean;
+		other_group: hash;
+		own_group: hash;
+	};
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 

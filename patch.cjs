@@ -66,6 +66,15 @@ const earlyChanges = [
 			{
 				readonly __renderTarget__: unique symbol;
 			}>;
+
+			/**
+			 * Socket objects.
+			 */
+			declare type socketClient = {};
+			declare type socketServer = {};
+			declare type socketMaster = {};
+			declare type socketUnconnected = {};
+			declare type socketConnected = {};
 			`,
 	],
 	// Pretty print
@@ -95,6 +104,34 @@ const socket = [
 	[
 		'export function skip(d: number, ret1?: any, ret2?: any, retN?: any): any',
 		'',
+	],
+	[
+		'function skip(d: number, ret1?: any, ret2?: any, retN?: any): any',
+		'function skip(d: number, ret1?: unknown, ret2?: unknown, retN?: unknown): LuaMultiReturn<[unknown | undefined, unknown | undefined, unknown | undefined]>',
+	],
+	[
+		'function connect(address: string, port: number, locaddr?: string, locport?: number, family?: string): LuaMultiReturn<[any, any, string, any]>',
+		'function connect(address: string, port: number, locaddr?: string, locport?: number, family?: "inet" | "inet6"): LuaMultiReturn<[socketClient | undefined, string | undefined]>',
+	],
+	[
+		'function select(recvt: any, sendt: any, timeout?: number): LuaMultiReturn<[any, any, string, any]>',
+		'function select(recvt: unknown[], sendt: unknown[], timeout?: number): LuaMultiReturn<[unknown[], unknown[], string | undefined]>',
+	],
+	[
+		'function tcp(): LuaMultiReturn<[any, any, string, any]>',
+		'function tcp(): LuaMultiReturn<[socketMaster | undefined, string | undefined]>',
+	],
+	[
+		'function tcp6(): LuaMultiReturn<[any, any, string, any]>',
+		'function tcp6(): LuaMultiReturn<[socketMaster | undefined, string | undefined]>',
+	],
+	[
+		'function udp(): LuaMultiReturn<[any, any, string, any]>',
+		'function udp(): LuaMultiReturn<[socketUnconnected | undefined, string | unknown]>',
+	],
+	[
+		'function udp6(): LuaMultiReturn<[any, any, string, any]>',
+		'function udp6(): LuaMultiReturn<[socketUnconnected | undefined, string | unknown]>',
 	],
 ];
 
@@ -353,10 +390,10 @@ const gui = [
 		'complete_function?: any',
 		'complete_function?: (this: unknown, node: node) => void',
 	],
-	// function new_texture
-	['type: any,', 'type: "rgb" | "rgba" | "l",'],
-	// function set_texture_data
-	['type: any,', 'type: "rgb" | "rgba" | "l",'],
+	[
+		'function new_texture(texture: string | hash, width: number, height: number, type: any, buffer: string, flip: boolean): LuaMultiReturn<[boolean, number]>',
+		'function new_texture(texture: string | hash, width: number, height: number, type: "rgb" | "rgba" | "l", buffer: string, flip: boolean): LuaMultiReturn<[boolean, undefined | typeof gui.RESULT_TEXTURE_ALREADY_EXISTS | typeof gui.RESULT_DATA_ERROR | typeof gui.RESULT_OUT_OF_RESOURCES]>',
+	],
 	[
 		'function cancel_animation(node: node, property: any)',
 		'function cancel_animation(node: node, property: "position" | "rotation" | "scale" | "color" | "outline" | "shadow" | "size" | "fill_angle" | "inner_radius" | "slice9")',
@@ -386,15 +423,41 @@ const physics = [
 	],
 	// function create_joint
 	['properties?: any', 'properties?: { [key: string]: boolean | number }'],
-	// function raycast
-	['options: any', 'options?: { all: boolean }'],
-	// function raycast
-	['groups: any', 'groups: hash[]'],
-	// function raycast_async
-	['groups: any', 'groups: hash[]'],
+	[
+		'function raycast(from: vmath.vector3, to: vmath.vector3, groups: any, options: any): LuaMultiReturn<[any, any]>',
+		'function raycast(from: vmath.vector3, to: vmath.vector3, groups: hash[], options?: { all: boolean }): undefined | physics.ray_cast_response_message[]',
+	],
+	[
+		'function raycast_async(from: vmath.vector3, to: vmath.vector3, groups: any, request_id?: number)',
+		'function raycast_async(from: vmath.vector3, to: vmath.vector3, groups: hash[], request_id?: number)',
+	],
 	[
 		'function get_joint_reaction_torque(collisionobject: string | hash | url, joint_id: string | hash): any',
 		'function get_joint_reaction_torque(collisionobject: string | hash | url, joint_id: string | hash): number',
+	],
+	[
+		'export type ray_cast_response = "ray_cast_response"',
+		'export type ray_cast_response = "ray_cast_response";export type ray_cast_response_message = { fraction: number, position: vmath.vector3, normal: vmath.vector3, id: hash, group: hash, request_id: number }',
+	],
+	[
+		'export type ray_cast_missed = "ray_cast_missed"',
+		'export type ray_cast_missed = "ray_cast_missed";export type ray_cast_missed_message = { request_id: number }',
+	],
+	[
+		'export type trigger_response = "trigger_response"',
+		'export type trigger_response = "trigger_response";export type trigger_response_message = { other_id: hash, enter: boolean, other_group: hash, own_group: hash }',
+	],
+	[
+		'export type contact_point_response = "contact_point_response"',
+		'export type contact_point_response = "contact_point_response";export type contact_point_response_message = { position: vmath.vector3, normal: vmath.vector3, relative_velocity: vmath.vector3, distance: number, applied_impulse: number, life_time: number, mass: number, other_mass: number, other_id: hash, other_position: vmath.vector3, other_group: hash, own_group: hash }',
+	],
+	[
+		'export type collision_response = "collision_response"',
+		'export type collision_response = "collision_response";export type collision_response_message = { other_id: hash, other_position: vmath.vector3, other_group: hash, own_group: hash }',
+	],
+	[
+		'export type apply_force = "apply_force"',
+		'export type apply_force = "apply_force";export type apply_force_message = { force: vmath.vector3, position: vmath.vector3 }',
 	],
 ];
 
