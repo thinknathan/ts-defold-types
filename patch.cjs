@@ -207,10 +207,6 @@ const go = [
 		'function exists(url: string | hash | url): any',
 		'function exists(url: string | hash | url): boolean',
 	],
-	// function get
-	['options?: any', `options?: ${genericTable}`],
-	// function set
-	['options?: any', `options?: ${genericTable}`],
 	[
 		'function cancel_animation(node: node, property: any)',
 		'function cancel_animation(node: node, property: "position" | "rotation" | "scale" | "color" | "outline" | "shadow" | "size" | "fill_angle" | "inner_radius" | "slice9")',
@@ -678,6 +674,14 @@ const resource = [
 	[
 		'function get_texture_info(path: any): any',
 		'function get_texture_info(path: hash | string): { handle: hash, width: number, height: number, depth: number, mipmaps: number, type: typeof resource.TEXTURE_TYPE_2D | typeof resource.TEXTURE_TYPE_CUBE_MAP | typeof resource.TEXTURE_TYPE_2D_ARRAY }',
+	],
+	[
+		'function create_buffer(path: string, table: any)',
+		'function create_buffer(path: string, table: { buffer: buffer, transfer_ownership?: boolean })',
+	],
+	[
+		'function create_texture(path: string, table: any, buffer?: buffer): hash',
+		'function create_texture(path: string, table: { type: typeof resource.TEXTURE_TYPE_2D | typeof resource.TEXTURE_TYPE_CUBE_MAP, width: number, height: number, format: typeof resource.TEXTURE_FORMAT_LUMINANCE | typeof resource.TEXTURE_FORMAT_RGB | typeof resource.TEXTURE_FORMAT_RGBA | typeof resource.TEXTURE_FORMAT_RGB_PVRTC_2BPPV1 | typeof resource.TEXTURE_FORMAT_RGB_PVRTC_4BPPV1 | typeof resource.TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1 | typeof resource.TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1 | typeof resource.TEXTURE_FORMAT_RGB_ETC1 | typeof resource.TEXTURE_FORMAT_RGBA_ETC2 | typeof resource.TEXTURE_FORMAT_RGBA_ASTC_4x4 | typeof resource.TEXTURE_FORMAT_RGB_BC1 | typeof resource.TEXTURE_FORMAT_RGBA_BC3 | typeof resource.TEXTURE_FORMAT_R_BC4 | typeof resource.TEXTURE_FORMAT_RG_BC5 | typeof resource.TEXTURE_FORMAT_RGBA_BC7 | typeof resource.TEXTURE_FORMAT_RGB16F | typeof resource.TEXTURE_FORMAT_RGB32F | typeof resource.TEXTURE_FORMAT_RGBA16F | typeof resource.TEXTURE_FORMAT_RGBA32F | typeof resource.TEXTURE_FORMAT_R16F | typeof resource.TEXTURE_FORMAT_RG16F | typeof resource.TEXTURE_FORMAT_R32F | typeof resource.TEXTURE_FORMAT_RG32F, max_mipmaps?: number, compression_type?: typeof resource.COMPRESSION_TYPE_DEFAULT | typeof resource.COMPRESSION_TYPE_BASIS_UASTC }, buffer?: buffer): hash',
 	],
 ];
 

@@ -927,7 +927,7 @@ name of internal property
 	export function get(
 		url: hash | url | string,
 		property: hash | string,
-		options?: AnyNotNil[] | LuaMap | LuaSet | LuaTable | object,
+		options?: unknown,
 	): unknown;
 
 	/**
@@ -1042,7 +1042,7 @@ name of internal property
 		url: hash | url | string,
 		property: hash | string,
 		value: unknown,
-		options?: AnyNotNil[] | LuaMap | LuaSet | LuaTable | object,
+		options?: unknown,
 	): void;
 
 	/**
@@ -5209,7 +5209,7 @@ optional flag to determine wether or not the resource should take over ownership
 	*/
 	export function create_buffer(
 		path: string,
-		table: AnyNotNil[] | LuaMap | LuaSet | LuaTable | object,
+		table: { buffer: buffer; transfer_ownership?: boolean },
 	): hash;
 
 	/**
@@ -5284,7 +5284,41 @@ Creating an empty texture with no buffer data is not supported as a core feature
 	*/
 	export function create_texture(
 		path: string,
-		table: AnyNotNil[] | LuaMap | LuaSet | LuaTable | object,
+		table: {
+			type:
+				| typeof resource.TEXTURE_TYPE_2D
+				| typeof resource.TEXTURE_TYPE_CUBE_MAP;
+			width: number;
+			height: number;
+			format:
+				| typeof resource.TEXTURE_FORMAT_LUMINANCE
+				| typeof resource.TEXTURE_FORMAT_R_BC4
+				| typeof resource.TEXTURE_FORMAT_R16F
+				| typeof resource.TEXTURE_FORMAT_R32F
+				| typeof resource.TEXTURE_FORMAT_RG_BC5
+				| typeof resource.TEXTURE_FORMAT_RG16F
+				| typeof resource.TEXTURE_FORMAT_RG32F
+				| typeof resource.TEXTURE_FORMAT_RGB
+				| typeof resource.TEXTURE_FORMAT_RGB_BC1
+				| typeof resource.TEXTURE_FORMAT_RGB_ETC1
+				| typeof resource.TEXTURE_FORMAT_RGB_PVRTC_2BPPV1
+				| typeof resource.TEXTURE_FORMAT_RGB_PVRTC_4BPPV1
+				| typeof resource.TEXTURE_FORMAT_RGB16F
+				| typeof resource.TEXTURE_FORMAT_RGB32F
+				| typeof resource.TEXTURE_FORMAT_RGBA
+				| typeof resource.TEXTURE_FORMAT_RGBA_ASTC_4x4
+				| typeof resource.TEXTURE_FORMAT_RGBA_BC3
+				| typeof resource.TEXTURE_FORMAT_RGBA_BC7
+				| typeof resource.TEXTURE_FORMAT_RGBA_ETC2
+				| typeof resource.TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1
+				| typeof resource.TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1
+				| typeof resource.TEXTURE_FORMAT_RGBA16F
+				| typeof resource.TEXTURE_FORMAT_RGBA32F;
+			max_mipmaps?: number;
+			compression_type?:
+				| typeof resource.COMPRESSION_TYPE_BASIS_UASTC
+				| typeof resource.COMPRESSION_TYPE_DEFAULT;
+		},
 		buffer?: buffer,
 	): hash;
 
