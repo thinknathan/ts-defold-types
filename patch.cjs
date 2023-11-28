@@ -210,7 +210,6 @@ const go = [
 		'function cancel_animation(node: node, property: any)',
 		'function cancel_animation(node: node, property: "position" | "rotation" | "scale" | "color" | "outline" | "shadow" | "size" | "fill_angle" | "inner_radius" | "slice9")',
 	],
-	// TO-DO: confirm this type
 	[
 		'function get_parent(id?: string | hash | url): LuaMultiReturn<[hash, any]>',
 		'function get_parent(id?: string | hash | url): hash | undefined',
@@ -398,7 +397,6 @@ const gui = [
 		'function cancel_animation(node: node, property: any)',
 		'function cancel_animation(node: node, property: "position" | "rotation" | "scale" | "color" | "outline" | "shadow" | "size" | "fill_angle" | "inner_radius" | "slice9")',
 	],
-	// TO-DO: confirm this type
 	[
 		'function get_parent(node: node): LuaMultiReturn<[node, any]>',
 		'function get_parent(node: node): node | undefined',
@@ -803,7 +801,6 @@ const image = [
 	['let TYPE_LUMINANCE_ALPHA: any', 'const TYPE_LUMINANCE_ALPHA: "la"'],
 	['let TYPE_RGB: any', 'const TYPE_RGB: "rgb"'],
 	['let TYPE_RGBA: any', 'const TYPE_RGBA: "rgba"'],
-	// TO-DO: confirm the return type
 	[
 		'function load(buffer: string, premult?: boolean): LuaMultiReturn<[any, any]>',
 		'function load(buffer: string, premult?: boolean): undefined | { width: number, height: number, type: typeof image.TYPE_RGB | typeof image.TYPE_RGBA | typeof image.TYPE_LUMINANCE | typeof image.TYPE_LUMINANCE_ALPHA, buffer: string }',
@@ -836,7 +833,6 @@ const timer = [
 		'function delay(delay: number, repeat: boolean, callback: any): hash',
 		'function delay(delay: number, repeat: boolean, callback: (this: unknown, handle: number, time_elapsed: number) => void): hash | typeof timer.INVALID_TIMER_HANDLE',
 	],
-	// TO-DO: confirm return type
 	[
 		'function get_info(handle: hash): LuaMultiReturn<[any, any]>',
 		'function get_info(handle: hash): undefined | { time_remaining: number, delay: number, repeating: boolean }',
