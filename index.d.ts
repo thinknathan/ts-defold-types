@@ -5861,7 +5861,10 @@ The HTTP user agent, i.e. "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) Apple
 - `name` - The name of the window (Note: the name does not specify the title of the new window).
 	* @return success  a boolean indicating if the url could be opened or not
 	*/
-	export function open_url(url: string, attributes?: unknown): boolean;
+	export function open_url(
+		url: string,
+		attributes?: { target?: '_self' | '_blank' | '_parent' | '_top' | string },
+	): boolean;
 
 	/**
 	 * Reboots the game engine with a specified set of arguments.
@@ -6242,7 +6245,23 @@ declare namespace buffer {
 
 	* @return buffer  the new buffer
 	*/
-	export function create(element_count: number, declaration: unknown): buffer;
+	export function create(
+		element_count: number,
+		declaration: {
+			hash: hash | string;
+			type:
+				| typeof buffer.VALUE_TYPE_UINT8
+				| typeof buffer.VALUE_TYPE_UINT16
+				| typeof buffer.VALUE_TYPE_UINT32
+				| typeof buffer.VALUE_TYPE_UINT64
+				| typeof buffer.VALUE_TYPE_INT8
+				| typeof buffer.VALUE_TYPE_INT16
+				| typeof buffer.VALUE_TYPE_INT32
+				| typeof buffer.VALUE_TYPE_INT64
+				| typeof buffer.VALUE_TYPE_FLOAT32;
+			count: number;
+		},
+	): buffer;
 
 	/**
 	 * Get a copy of all the bytes from a specified stream as a Lua string.
@@ -6302,8 +6321,17 @@ declare namespace buffer {
 	export function set_metadata(
 		buf: buffer,
 		metadata_name: hash | string,
-		values: unknown,
-		value_type: unknown,
+		values: number[],
+		value_type:
+			| typeof buffer.VALUE_TYPE_UINT8
+			| typeof buffer.VALUE_TYPE_UINT16
+			| typeof buffer.VALUE_TYPE_UINT32
+			| typeof buffer.VALUE_TYPE_UINT64
+			| typeof buffer.VALUE_TYPE_INT8
+			| typeof buffer.VALUE_TYPE_INT16
+			| typeof buffer.VALUE_TYPE_INT32
+			| typeof buffer.VALUE_TYPE_INT64
+			| typeof buffer.VALUE_TYPE_FLOAT32,
 	): void;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
