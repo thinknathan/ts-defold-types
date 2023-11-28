@@ -15,24 +15,24 @@ const earlyChanges = [
 	[
 		'declare type url = {\n}',
 		`/**
-	* A reference to game resources, such as game objects, components, and assets.
-	*/
-	declare type url = {
-		socket: hash;
-		path: hash;
-		fragment: hash | undefined;
-	};`,
+			* A reference to game resources, such as game objects, components, and assets.
+			*/
+			declare type url = {
+				socket: hash;
+				path: hash;
+				fragment: hash | undefined;
+			};`,
 	],
 	// Describe `hash`
 	[
 		'declare type hash = {\n}',
 		`/**
-	* A unique identifier used to reference resources, messages, properties, and other entities within the game.
-	*/
-	declare type hash = Readonly<LuaUserdata &
-	{
-		readonly __hash__: unique symbol;
-	}>;`,
+			* A unique identifier used to reference resources, messages, properties, and other entities within the game.
+			*/
+			declare type hash = Readonly<LuaUserdata &
+			{
+				readonly __hash__: unique symbol;
+			}>;`,
 	],
 	// Describe `node`
 	[
@@ -43,15 +43,30 @@ const earlyChanges = [
 	}>;`,
 	],
 	// Describe `buffer`
+	// Also add some new types!
 	[
 		'declare type buffer = {\n}',
 		`/**
-	* A block of memory that can store binary data.
-	*/
-	declare type buffer = Readonly<LuaUserdata &
-	{
-		readonly __buffer__: unique symbol;
-	}>;`,
+			* A block of memory that can store binary data.
+			*/
+			declare type buffer = {};
+
+			/**
+			 * Render pipeline predicate.
+			 */
+			declare type predicate = Readonly<LuaUserdata &
+			{
+				readonly __predicate__: unique symbol;
+			}>;
+
+			/**
+			 * Render pipeline target.
+			 */
+			declare type renderTarget = Readonly<LuaUserdata &
+			{
+				readonly __renderTarget__: unique symbol;
+			}>;
+			`,
 	],
 	// Pretty print
 	['function pprint(v: any)', 'function pprint(...args: unknown[])'],
@@ -76,6 +91,11 @@ const socket = [
 		'protect(func: any): any',
 		'protect(func: (...args: unknown[]) => unknown): (...args: unknown[]) => unknown',
 	],
+	// Remove duplicate function definition
+	[
+		'export function skip(d: number, ret1?: any, ret2?: any, retN?: any): any',
+		'',
+	],
 ];
 
 /** crash namespace */
@@ -98,6 +118,14 @@ const crash = [
 		'function load_previous(): LuaMultiReturn<[number, any]>',
 		'function load_previous(): undefined | number',
 	],
+	[
+		'function get_backtrace(handle: number): any',
+		'function get_backtrace(handle: number): object',
+	],
+	[
+		'function get_modules(handle: number): any',
+		'function get_modules(handle: number): { name: unknown; address: unknown }[]',
+	],
 ];
 
 /** go namespace */
@@ -116,6 +144,10 @@ const go = [
 		/let (PLAYBACK_.+): any/g,
 		'const $1: number & { readonly _PLAYBACK_: unique symbol }',
 	],
+	[
+		'function delete$(id?: any, recursive?: boolean)',
+		'function delete$(id?: string | hash | url | Array<string | hash | url>, recursive?: boolean)',
+	],
 	// function animate
 	[
 		'playback: any,',
@@ -127,7 +159,7 @@ const go = [
 	],
 	[
 		'complete_function?: any',
-		'complete_function?: (this: unknown, url: unknown, property: unknown) => void',
+		'complete_function?: (this: unknown, url: url, property: hash) => void',
 	],
 	[
 		'function exists(url: string | hash | url): any',
@@ -223,7 +255,7 @@ const gui = [
 	],
 	[
 		'complete_function?: any',
-		'complete_function?: (...args: unknown[]) => void',
+		'complete_function?: (this: unknown, node: node) => void',
 	],
 	[
 		'playback?: any',
@@ -310,7 +342,7 @@ const gui = [
 	// function play_particlefx
 	[
 		'emitter_state_function?: any',
-		'emitter_state_function?: (this: unknown, node: node | undefined, emitter: unknown, state: typeof particlefx.EMITTER_STATE_SLEEPING | typeof particlefx.EMITTER_STATE_PRESPAWN | typeof particlefx.EMITTER_STATE_SPAWNING | typeof particlefx.EMITTER_STATE_POSTSPAWN) => void',
+		'emitter_state_function?: (this: unknown, node: node | undefined, emitter: hash, state: typeof particlefx.EMITTER_STATE_SLEEPING | typeof particlefx.EMITTER_STATE_PRESPAWN | typeof particlefx.EMITTER_STATE_SPAWNING | typeof particlefx.EMITTER_STATE_POSTSPAWN) => void',
 	],
 	// function play_flipbook
 	[
@@ -319,7 +351,7 @@ const gui = [
 	],
 	[
 		'complete_function?: any',
-		'complete_function?: (this: unknown, node: unknown) => void',
+		'complete_function?: (this: unknown, node: node) => void',
 	],
 	// function new_texture
 	['type: any,', 'type: "rgb" | "rgba" | "l",'],
@@ -333,6 +365,10 @@ const gui = [
 	[
 		'function get_parent(node: node): LuaMultiReturn<[node, any]>',
 		'function get_parent(node: node): node | undefined',
+	],
+	[
+		'function stop_particlefx(node: node, options: any)',
+		'function stop_particlefx(node: node, options?: { clear: boolean })',
 	],
 ];
 
@@ -348,6 +384,14 @@ const physics = [
 		/let (JOINT_TYPE.+): any/g,
 		'const $1: number & { readonly _JOINT_TYPE_: unique symbol }',
 	],
+	// function create_joint
+	['properties?: any', 'properties?: { [key: string]: boolean | number }'],
+	// function raycast
+	['options: any', 'options?: { all: boolean }'],
+	// function raycast
+	['groups: any', 'groups: hash[]'],
+	// function raycast_async
+	['groups: any', 'groups: hash[]'],
 ];
 
 /** profiler namespace */
@@ -369,6 +413,10 @@ const profiler = [
 	[
 		'function set_ui_view_mode(mode: any',
 		'function set_ui_view_mode(mode: typeof profiler.VIEW_MODE_FULL | typeof profiler.VIEW_MODE_MINIMIZED',
+	],
+	[
+		'function view_recorded_frame(frame_index: any)',
+		'function view_recorded_frame(frame_index: { distance?: number, frame?: number })',
 	],
 ];
 
@@ -399,6 +447,8 @@ const render = [
 		/let (FILTER_.+): any/g,
 		'const $1: number & { readonly _FILTER_: unique symbol }',
 	],
+	// (greedy)
+	[/(render_target): any/g, '$1: renderTarget'],
 	[
 		'let FORMAT_R16F: any',
 		'const FORMAT_R16F: number & { readonly _FORMAT_: unique symbol } | undefined',
@@ -469,8 +519,8 @@ const render = [
 		'function enable_state(state: typeof render.STATE_DEPTH_TEST | typeof render.STATE_STENCIL_TEST | typeof render.STATE_BLEND | typeof render.STATE_CULL_FACE | typeof render.STATE_POLYGON_OFFSET_FILL',
 	],
 	[
-		'function predicate(tags: any',
-		'function predicate(tags: Array<string|hash> | LuaSet<string|hash>',
+		'function predicate(tags: any): any',
+		'function predicate(tags: Array<string|hash> | LuaSet<string|hash>): predicate',
 	],
 	[
 		'function set_cull_face(face_type: any',
@@ -500,6 +550,23 @@ const render = [
 		'func: any',
 		'func: typeof render.COMPARE_FUNC_NEVER | typeof render.COMPARE_FUNC_LESS | typeof render.COMPARE_FUNC_LEQUAL | typeof render.COMPARE_FUNC_GREATER | typeof render.COMPARE_FUNC_GEQUAL | typeof render.COMPARE_FUNC_EQUAL | typeof render.COMPARE_FUNC_NOTEQUAL | typeof render.COMPARE_FUNC_ALWAYS',
 	],
+	['function constant_buffer(): any', 'function constant_buffer(): buffer'],
+	[
+		'function clear(buffers: any)',
+		'function clear(buffers: { [key: typeof render.BUFFER_COLOR_BIT | typeof render.BUFFER_DEPTH_BIT | typeof render.BUFFER_STENCIL_BIT]: number | vmath.vector4 })',
+	],
+	[
+		'function draw(predicate: any, options?: any)',
+		'function draw(predicate: predicate, options?: { frustum?: vmath.matrix4, frustum_planes?: typeof render.FRUSTUM_PLANES_SIDES | typeof render.FRUSTUM_PLANES_ALL, constants?: buffer })',
+	],
+	[
+		'function draw_debug3d(options?: any)',
+		'function draw_debug3d(options?: { frustum?: vmath.matrix4, frustum_planes?: typeof render.FRUSTUM_PLANES_SIDES | typeof render.FRUSTUM_PLANES_ALL })',
+	],
+	[
+		'function render_target(name: string, parameters: any): any',
+		'function render_target(name: string, parameters: { [key: typeof render.BUFFER_COLOR_BIT | typeof render.BUFFER_COLOR0_BIT | typeof render.BUFFER_COLOR1_BIT | typeof render.BUFFER_COLOR2_BIT | typeof render.BUFFER_COLOR3_BIT | typeof render.BUFFER_DEPTH_BIT | typeof render.BUFFER_STENCIL_BIT ]: {	format: typeof render.FORMAT_LUMINANCE | typeof render.FORMAT_RGB | typeof render.FORMAT_RGBA | typeof render.FORMAT_DEPTH | typeof render.FORMAT_STENCIL | typeof render.FORMAT_RGBA32F | typeof render.FORMAT_RGBA16F; width: number; height: number; min_filter?: typeof render.FILTER_LINEAR | typeof render.FILTER_NEAREST; mag_filter?: typeof render.FILTER_LINEAR | typeof render.FILTER_NEAREST; u_wrap?: typeof render.WRAP_CLAMP_TO_BORDER | typeof render.WRAP_CLAMP_TO_EDGE | typeof render.WRAP_MIRRORED_REPEAT | typeof render.WRAP_REPEAT; v_wrap?: typeof render.WRAP_CLAMP_TO_BORDER | typeof render.WRAP_CLAMP_TO_EDGE | typeof render.WRAP_MIRRORED_REPEAT | typeof render.WRAP_REPEAT; flags?: unknown } }): renderTarget',
+	],
 ];
 
 /** resource namespace */
@@ -513,6 +580,22 @@ const resource = [
 	[
 		/let (TEXTURE_.+): any/g,
 		'const $1: number & { readonly _TEXTURE_: unique symbol }',
+	],
+	[
+		'function create_atlas(path: string, table: any)',
+		'function create_atlas(path: string, table: {	texture: string | hash,	animations: [{ id: string, width: number, height: number, frame_start: number, frame_end: number, playback?: typeof go.PLAYBACK_ONCE_FORWARD | typeof go.PLAYBACK_ONCE_BACKWARD | typeof go.PLAYBACK_ONCE_PINGPONG | typeof go.PLAYBACK_LOOP_FORWARD | typeof go.PLAYBACK_LOOP_BACKWARD | typeof go.PLAYBACK_LOOP_PINGPONG, fps?: number, flip_vertical?: boolean, flip_horizontal?: boolean }], geometries: [{ vertices: number[], uvs: number[], indices: number[] }] } )',
+	],
+	[
+		'function get_atlas(path: hash | string): any',
+		'function get_atlas(path: hash | string): {	texture: string | hash,	animations: [{ id: string, width: number, height: number, frame_start: number, frame_end: number, playback?: typeof go.PLAYBACK_ONCE_FORWARD | typeof go.PLAYBACK_ONCE_BACKWARD | typeof go.PLAYBACK_ONCE_PINGPONG | typeof go.PLAYBACK_LOOP_FORWARD | typeof go.PLAYBACK_LOOP_BACKWARD | typeof go.PLAYBACK_LOOP_PINGPONG, fps?: number, flip_vertical?: boolean, flip_horizontal?: boolean }], geometries: [{ vertices: number[], uvs: number[], indices: number[] }] }',
+	],
+	[
+		'function get_text_metrics(url: hash, text: string, options?: any): any',
+		'function get_text_metrics(url: hash, text: string, options?: { width?: number, leading?: number, tracking?: number, line_break?: boolean }): { width: number, height: number, max_ascent: number, max_descent: number }',
+	],
+	[
+		'function get_texture_info(path: any): any',
+		'function get_texture_info(path: hash | string): { handle: hash, width: number, height: number, depth: number, mipmaps: number, type: typeof resource.TEXTURE_TYPE_2D | typeof resource.TEXTURE_TYPE_CUBE_MAP | typeof resource.TEXTURE_TYPE_2D_ARRAY }',
 	],
 ];
 
@@ -545,7 +628,11 @@ const sys = [
 	],
 	[
 		'function set_error_handler(error_handler: any',
-		'function set_error_handler(error_handler: (source: string, message: unknown, traceback: unknown) => void',
+		'function set_error_handler(error_handler: (source: string, message: string, traceback: string) => void',
+	],
+	[
+		'function get_application_info(app_string: string): any',
+		'function get_application_info(app_string: string): { installed: boolean }',
 	],
 ];
 
@@ -600,8 +687,8 @@ const html5 = [
 const http = [
 	// function request
 	[
-		'callback: any,',
-		'callback: (this: unknown, id: unknown, response: { status: unknown, response?: unknown, headers: unknown, path?: unknown, error?: unknown }) => void,',
+		'function request(url: string, method: string, callback: any, headers?: any, post_data?: string, options?: any)',
+		'function request(url: string, method: string, callback: ( this: unknown, id: hash, response: { status: number; response?: string, headers: { [key:string]: string }; path?: string; error?: string; } ) => void, headers?: { [key:string]: string }, post_data?: string, options?: { timeout?: number, path?: string, ignore_cache?: boolean, chunked_transfer?: boolean })',
 	],
 ];
 
@@ -614,7 +701,7 @@ const image = [
 	// TO-DO: confirm the return type
 	[
 		'function load(buffer: string, premult?: boolean): LuaMultiReturn<[any, any]>',
-		'function load(buffer: string, premult?: boolean): undefined | { width: number, height: number, type: typeof image.TYPE_RGB | typeof image.TYPE_RGBA | typeof image.TYPE_LUMINANCE | typeof image.TYPE_LUMINANCE_ALPHA , buffer: unknown }',
+		'function load(buffer: string, premult?: boolean): undefined | { width: number, height: number, type: typeof image.TYPE_RGB | typeof image.TYPE_RGBA | typeof image.TYPE_LUMINANCE | typeof image.TYPE_LUMINANCE_ALPHA, buffer: string }',
 	],
 ];
 
@@ -641,8 +728,8 @@ const timer = [
 	],
 	// function delay
 	[
-		'callback: any',
-		'callback: (this: unknown, handle: unknown, time_elapsed: number) => void',
+		'function delay(delay: number, repeat: boolean, callback: any): hash',
+		'function delay(delay: number, repeat: boolean, callback: (this: unknown, handle: number, time_elapsed: number) => void): hash | typeof timer.INVALID_TIMER_HANDLE',
 	],
 	// TO-DO: confirm return type
 	[
@@ -655,7 +742,7 @@ const timer = [
 const vmathChanges = [
 	[
 		'function vector(t: any): any',
-		'function vector(t: number[]): vmath.vector3 | vmath.vector4',
+		'function vector(t: number[]): number & { [key: number]: number }',
 	],
 ];
 
@@ -687,12 +774,25 @@ const collectionFactory = [
 	// function load
 	[
 		'complete_function?: any',
-		'complete_function?: (this: unknown, url: unknown, result: boolean) => void',
+		'complete_function?: (this: unknown, url: url, result: boolean) => void',
+	],
+	[
+		'function create(url: string | hash | url, position?: vmath.vector3, rotation?: vmath.quaternion, properties?: any, scale?: number): any',
+		'function create(url: string | hash | url, position?: vmath.vector3, rotation?: vmath.quaternion, properties?: any, scale?: number): LuaMap<hash, hash>',
 	],
 ];
 
 /** collectionproxy namespace */
-const collectionProxy = [['', '']];
+const collectionProxy = [
+	[
+		'function missing_resources(collectionproxy: url): any',
+		'function missing_resources(collectionproxy: url): string[]',
+	],
+	[
+		'function get_resources(collectionproxy: url): any',
+		'function get_resources(collectionproxy: url): string[]',
+	],
+];
 
 /** factory namespace */
 const factory = [
@@ -708,7 +808,11 @@ const factory = [
 	// function load
 	[
 		'complete_function?: any',
-		'complete_function?: (this: unknown, url: unknown, result: boolean) => void',
+		'complete_function?: (this: unknown, url: url, result: boolean) => void',
+	],
+	[
+		'function set_prototype(url?: string | hash | url, prototype?: any)',
+		'function set_prototype(url?: string | hash | url, prototype?: string)',
 	],
 ];
 
@@ -738,9 +842,14 @@ const model = [
 		'play_properties?: { blend_duration?: number, offset?: number, playback_rate?: number }',
 	],
 	[
-		'complete_function?: any',
-		'complete_function?: (this: unknown, message_id: unknown, message: { animation_id: unknown, playback: unknown }, sender: unknown) => void',
+		'playback: any',
+		'playback: typeof go.PLAYBACK_ONCE_FORWARD | typeof go.PLAYBACK_ONCE_BACKWARD | typeof go.PLAYBACK_ONCE_PINGPONG | typeof go.PLAYBACK_LOOP_FORWARD | typeof go.PLAYBACK_LOOP_BACKWARD | typeof go.PLAYBACK_LOOP_PINGPONG',
 	],
+	[
+		'complete_function?: any',
+		'complete_function?: (this: unknown, message_id: hash, message: { animation_id: hash, playback: typeof go.PLAYBACK_ONCE_FORWARD | typeof go.PLAYBACK_ONCE_BACKWARD | typeof go.PLAYBACK_ONCE_PINGPONG | typeof go.PLAYBACK_LOOP_FORWARD | typeof go.PLAYBACK_LOOP_BACKWARD | typeof go.PLAYBACK_LOOP_PINGPONG }, sender: url) => void',
+	],
+	['let textureN: any', 'let textureN: hash'],
 ];
 
 /** particlefx namespace */
@@ -753,7 +862,11 @@ const particleFx = [
 	// function play
 	[
 		'emitter_state_function?: any',
-		'emitter_state_function?: (this: unknown, id: unknown, emitter: unknown, state: typeof particlefx.EMITTER_STATE_SLEEPING | typeof particlefx.EMITTER_STATE_PRESPAWN | typeof particlefx.EMITTER_STATE_SPAWNING | typeof particlefx.EMITTER_STATE_POSTSPAWN) => void',
+		'emitter_state_function?: (this: unknown, id: hash, emitter: hash, state: typeof particlefx.EMITTER_STATE_SLEEPING | typeof particlefx.EMITTER_STATE_PRESPAWN | typeof particlefx.EMITTER_STATE_SPAWNING | typeof particlefx.EMITTER_STATE_POSTSPAWN) => void',
+	],
+	[
+		'function stop(url: string | hash | url, options: any)',
+		'function stop(url: string | hash | url, options?: { clear: boolean })',
 	],
 ];
 
@@ -770,8 +883,13 @@ const sound = [
 	],
 	[
 		'complete_function?: any',
-		'complete_function?: (this: unknown, message_id: unknown, message: { play_id: unknown }, sender: unknown) => void',
+		'complete_function?: (this: unknown, message_id: hash, message: { play_id: number }, sender: url) => void',
 	],
+	[
+		'function pause(url: string | hash | url, pause: any)',
+		'function pause(url: string | hash | url, pause?: boolean)',
+	],
+	['function get_groups(): any', 'function get_groups(): hash[]'],
 ];
 
 /** sprite namespace */
@@ -791,7 +909,7 @@ const sprite = [
 	],
 	[
 		'complete_function?: any',
-		'complete_function?: (this: unknown, message_id: unknown, message: { current_tile: unknown, id: unknown }, sender: unknown) => void',
+		'complete_function?: (this: unknown, message_id: hash, message: { current_tile: number, id: hash }, sender: url) => void',
 	],
 ];
 

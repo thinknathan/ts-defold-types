@@ -4,6 +4,8 @@
 
 - More detailed constant types
 - More accurate return values for certain functions
+- More detailed table types
+- New types for render scripts
 
 ## v1.3.14
 

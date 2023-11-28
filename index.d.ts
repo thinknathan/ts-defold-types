@@ -32,9 +32,23 @@ declare type node = Readonly<
 /**
  * A block of memory that can store binary data.
  */
-declare type buffer = Readonly<
+declare type buffer = {};
+
+/**
+ * Render pipeline predicate.
+ */
+declare type predicate = Readonly<
 	LuaUserdata & {
-		readonly __buffer__: unique symbol;
+		readonly __predicate__: unique symbol;
+	}
+>;
+
+/**
+ * Render pipeline target.
+ */
+declare type renderTarget = Readonly<
+	LuaUserdata & {
+		readonly __renderTarget__: unique symbol;
 	}
 >;
 
@@ -208,12 +222,7 @@ declare namespace socket {
 	 * @return retD_2  argument D+2.
 	 * @return retN  argument N.
 	 */
-	export function skip(
-		d: number,
-		ret1?: unknown,
-		ret2?: unknown,
-		retN?: unknown,
-	): unknown;
+
 	export function skip(
 		d: number,
 		ret1?: unknown,
@@ -350,7 +359,7 @@ declare namespace crash {
 	 * @param handle  crash dump handle
 	 * @return backtrace  table containing the backtrace
 	 */
-	export function get_backtrace(handle: number): unknown;
+	export function get_backtrace(handle: number): object;
 
 	/**
 	 * The format of read text blob is platform specific
@@ -367,7 +376,9 @@ declare namespace crash {
 	 * @param handle  crash dump handle
 	 * @return modules  module table
 	 */
-	export function get_modules(handle: number): unknown;
+	export function get_modules(
+		handle: number,
+	): { name: unknown; address: unknown }[];
 
 	/**
 	 * read signal number from a crash report
@@ -848,11 +859,7 @@ The id of the animated property.
 			| typeof go.EASING_OUTSINE,
 		duration: number,
 		delay?: number,
-		complete_function?: (
-			this: unknown,
-			url: unknown,
-			property: unknown,
-		) => void,
+		complete_function?: (this: unknown, url: url, property: hash) => void,
 	): void;
 
 	/**
@@ -876,7 +883,10 @@ The id of the animated property.
 	 * @param id  optional id or table of id's of the instance(s) to delete, the instance of the calling script is deleted by default
 	 * @param recursive  optional boolean, set to true to recursively delete child hiearchy in child to parent order
 	 */
-	function delete$(id?: unknown, recursive?: boolean): void;
+	function delete$(
+		id?: string | hash | url | Array<string | hash | url>,
+		recursive?: boolean,
+	): void;
 	export { delete$ as delete };
 
 	/**
@@ -1722,7 +1732,7 @@ with a custom curve. See the animation guide for more information.
 			| typeof gui.EASING_OUTSINE,
 		duration: number,
 		delay?: number,
-		complete_function?: (...args: unknown[]) => void,
+		complete_function?: (this: unknown, node: node) => void,
 		playback?:
 			| typeof gui.PLAYBACK_ONCE_FORWARD
 			| typeof gui.PLAYBACK_ONCE_BACKWARD
@@ -2378,7 +2388,7 @@ The rate with which the animation will be played. Must be positive
 	export function play_flipbook(
 		node: node,
 		animation: string | hash,
-		complete_function?: (this: unknown, node: unknown) => void,
+		complete_function?: (this: unknown, node: node) => void,
 		play_properties?: { offset?: number; playback_rate?: number },
 	): void;
 
@@ -2408,7 +2418,7 @@ the new state of the emitter:
 		emitter_state_function?: (
 			this: unknown,
 			node: node | undefined,
-			emitter: unknown,
+			emitter: hash,
 			state:
 				| typeof particlefx.EMITTER_STATE_SLEEPING
 				| typeof particlefx.EMITTER_STATE_PRESPAWN
@@ -2965,7 +2975,10 @@ the new state of the emitter:
 `clear`: instantly clear spawned particles
 
 	*/
-	export function stop_particlefx(node: node, options: unknown): void;
+	export function stop_particlefx(
+		node: node,
+		options?: { clear: boolean },
+	): void;
 
 	/**
 	 * This message is broadcast to every GUI component when a layout change has been initiated
@@ -3106,7 +3119,7 @@ See each joint type for possible properties field. The one field that is accepte
 		position_a: vmath.vector3,
 		collisionobject_b: string | hash | url,
 		position_b: vmath.vector3,
-		properties?: unknown,
+		properties?: { [key: string]: boolean | number },
 	): void;
 
 	/**
@@ -3217,8 +3230,8 @@ Set to `true` to return all ray cast hits. If `false`, it will only return the c
 	export function raycast(
 		from: vmath.vector3,
 		to: vmath.vector3,
-		groups: unknown,
-		options: unknown,
+		groups: hash[],
+		options?: { all: boolean },
 	): LuaMultiReturn<[unknown, unknown]>;
 
 	/**
@@ -3240,7 +3253,7 @@ Set to `true` to return all ray cast hits. If `false`, it will only return the c
 	export function raycast_async(
 		from: vmath.vector3,
 		to: vmath.vector3,
-		groups: unknown,
+		groups: hash[],
 		request_id?: number,
 	): void;
 
@@ -3515,7 +3528,10 @@ The recording buffer is also cleared when setting the `MODE_SHOW_PEAK_FRAME` mod
 - `frame` The frame index in the recording buffer (1 is first recorded frame)
 
 	*/
-	export function view_recorded_frame(frame_index: unknown): void;
+	export function view_recorded_frame(frame_index: {
+		distance?: number;
+		frame?: number;
+	}): void;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
@@ -3957,20 +3973,27 @@ declare namespace render {
 - `render.BUFFER_STENCIL_BIT`
 
 	*/
-	export function clear(buffers: unknown): void;
+	export function clear(buffers: {
+		[
+			key:
+				| typeof render.BUFFER_COLOR_BIT
+				| typeof render.BUFFER_DEPTH_BIT
+				| typeof render.BUFFER_STENCIL_BIT
+		]: number | vmath.vector4;
+	}): void;
 
 	/**
 	 * Constant buffers are used to set shader program variables and are optionally passed to the `render.draw()` function.
 	 * The buffer's constant elements can be indexed like an ordinary Lua table, but you can't iterate over them with pairs() or ipairs().
 	 * @return buffer  new constant buffer
 	 */
-	export function constant_buffer(): unknown;
+	export function constant_buffer(): buffer;
 
 	/**
 	 * Deletes a previously created render target.
 	 * @param render_target  render target to delete
 	 */
-	export function delete_render_target(render_target: unknown): void;
+	export function delete_render_target(render_target: renderTarget): void;
 
 	/**
 	 * If a material is currently enabled, disable it.
@@ -4028,7 +4051,16 @@ Determines which sides of the frustum will be used. Default is render.FRUSTUM_PL
 optional constants to use while rendering
 
 	*/
-	export function draw(predicate: unknown, options?: unknown): void;
+	export function draw(
+		predicate: predicate,
+		options?: {
+			frustum?: vmath.matrix4;
+			frustum_planes?:
+				| typeof render.FRUSTUM_PLANES_SIDES
+				| typeof render.FRUSTUM_PLANES_ALL;
+			constants?: buffer;
+		},
+	): void;
 
 	/**
 	* Draws all 3d debug graphics such as lines drawn with "draw_line" messages and physics visualization.
@@ -4044,7 +4076,12 @@ Determines which sides of the frustum will be used. Default is render.FRUSTUM_PL
 - render.FRUSTUM_PLANES_ALL : All sides of the frustum.
 
 	*/
-	export function draw_debug3d(options?: unknown): void;
+	export function draw_debug3d(options?: {
+		frustum?: vmath.matrix4;
+		frustum_planes?:
+			| typeof render.FRUSTUM_PLANES_SIDES
+			| typeof render.FRUSTUM_PLANES_ALL;
+	}): void;
 
 	/**
 	 * If another material was already enabled, it will be automatically disabled
@@ -4102,7 +4139,7 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	*/
 	export function enable_texture(
 		unit: number,
-		render_target: unknown,
+		render_target: renderTarget,
 		buffer_type?:
 			| typeof render.BUFFER_COLOR_BIT
 			| typeof render.BUFFER_DEPTH_BIT
@@ -4133,7 +4170,7 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	* @return height  the height of the render target buffer texture
 	*/
 	export function get_render_target_height(
-		render_target: unknown,
+		render_target: renderTarget,
 		buffer_type:
 			| typeof render.BUFFER_COLOR_BIT
 			| typeof render.BUFFER_DEPTH_BIT
@@ -4153,7 +4190,7 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	* @return width  the width of the render target buffer texture
 	*/
 	export function get_render_target_width(
-		render_target: unknown,
+		render_target: renderTarget,
 		buffer_type:
 			| typeof render.BUFFER_COLOR_BIT
 			| typeof render.BUFFER_COLOR0_BIT
@@ -4199,7 +4236,7 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	 */
 	export function predicate(
 		tags: Array<string | hash> | LuaSet<string | hash>,
-	): unknown;
+	): predicate;
 
 	/**
 	 * Creates a new render target according to the supplied
@@ -4264,7 +4301,45 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	 * @param parameters  table of buffer parameters, see the description for available keys and values
 	 * @return render_target  new render target
 	 */
-	export function render_target(name: string, parameters: unknown): unknown;
+	export function render_target(
+		name: string,
+		parameters: {
+			[
+				key:
+					| typeof render.BUFFER_COLOR_BIT
+					| typeof render.BUFFER_COLOR0_BIT
+					| typeof render.BUFFER_COLOR1_BIT
+					| typeof render.BUFFER_COLOR2_BIT
+					| typeof render.BUFFER_COLOR3_BIT
+					| typeof render.BUFFER_DEPTH_BIT
+					| typeof render.BUFFER_STENCIL_BIT
+			]: {
+				format:
+					| typeof render.FORMAT_LUMINANCE
+					| typeof render.FORMAT_RGB
+					| typeof render.FORMAT_RGBA
+					| typeof render.FORMAT_DEPTH
+					| typeof render.FORMAT_STENCIL
+					| typeof render.FORMAT_RGBA32F
+					| typeof render.FORMAT_RGBA16F;
+				width: number;
+				height: number;
+				min_filter?: typeof render.FILTER_LINEAR | typeof render.FILTER_NEAREST;
+				mag_filter?: typeof render.FILTER_LINEAR | typeof render.FILTER_NEAREST;
+				u_wrap?:
+					| typeof render.WRAP_CLAMP_TO_BORDER
+					| typeof render.WRAP_CLAMP_TO_EDGE
+					| typeof render.WRAP_MIRRORED_REPEAT
+					| typeof render.WRAP_REPEAT;
+				v_wrap?:
+					| typeof render.WRAP_CLAMP_TO_BORDER
+					| typeof render.WRAP_CLAMP_TO_EDGE
+					| typeof render.WRAP_MIRRORED_REPEAT
+					| typeof render.WRAP_REPEAT;
+				flags?: unknown;
+			};
+		},
+	): renderTarget;
 
 	/**
 	 * Specifies the arithmetic used when computing pixel values that are written to the frame
@@ -4490,7 +4565,7 @@ Transient frame buffer types are only valid while the render target is active, i
 
 	*/
 	export function set_render_target(
-		render_target: unknown,
+		render_target: renderTarget,
 		options?: unknown,
 	): void;
 
@@ -4501,7 +4576,7 @@ Transient frame buffer types are only valid while the render target is active, i
 	 * @param height  new render target height
 	 */
 	export function set_render_target_size(
-		render_target: unknown,
+		render_target: renderTarget,
 		width: number,
 		height: number,
 	): void;
@@ -4954,7 +5029,29 @@ a list of the indices of the geometry in the form {i0, i1, i2, ..., in}. Each tr
 	*/
 	export function create_atlas(
 		path: string,
-		table: LuaTable | LuaSet | LuaMap | object | AnyNotNil[],
+		table: {
+			texture: string | hash;
+			animations: [
+				{
+					id: string;
+					width: number;
+					height: number;
+					frame_start: number;
+					frame_end: number;
+					playback?:
+						| typeof go.PLAYBACK_ONCE_FORWARD
+						| typeof go.PLAYBACK_ONCE_BACKWARD
+						| typeof go.PLAYBACK_ONCE_PINGPONG
+						| typeof go.PLAYBACK_LOOP_FORWARD
+						| typeof go.PLAYBACK_LOOP_BACKWARD
+						| typeof go.PLAYBACK_LOOP_PINGPONG;
+					fps?: number;
+					flip_vertical?: boolean;
+					flip_horizontal?: boolean;
+				},
+			];
+			geometries: [{ vertices: number[]; uvs: number[]; indices: number[] }];
+		},
 	): hash;
 
 	/**
@@ -5088,7 +5185,29 @@ Creating an empty texture with no buffer data is not supported as a core feature
 
 See resource.set_atlas for a detailed description of each field
 	*/
-	export function get_atlas(path: hash | string): unknown;
+	export function get_atlas(path: hash | string): {
+		texture: string | hash;
+		animations: [
+			{
+				id: string;
+				width: number;
+				height: number;
+				frame_start: number;
+				frame_end: number;
+				playback?:
+					| typeof go.PLAYBACK_ONCE_FORWARD
+					| typeof go.PLAYBACK_ONCE_BACKWARD
+					| typeof go.PLAYBACK_ONCE_PINGPONG
+					| typeof go.PLAYBACK_LOOP_FORWARD
+					| typeof go.PLAYBACK_LOOP_BACKWARD
+					| typeof go.PLAYBACK_LOOP_PINGPONG;
+				fps?: number;
+				flip_vertical?: boolean;
+				flip_horizontal?: boolean;
+			},
+		];
+		geometries: [{ vertices: number[]; uvs: number[]; indices: number[] }];
+	};
 
 	/**
 	 * gets the buffer from a resource
@@ -5123,8 +5242,13 @@ If the calculation should consider line breaks (default false)
 	export function get_text_metrics(
 		url: hash,
 		text: string,
-		options?: unknown,
-	): unknown;
+		options?: {
+			width?: number;
+			leading?: number;
+			tracking?: number;
+			line_break?: boolean;
+		},
+	): { width: number; height: number; max_ascent: number; max_descent: number };
 
 	/**
 	* Gets texture info from a texture resource path or a texture handle
@@ -5150,7 +5274,17 @@ The texture type. Supported values:
 - `resource.TEXTURE_TYPE_2D_ARRAY`
 
 	*/
-	export function get_texture_info(path: unknown): unknown;
+	export function get_texture_info(path: hash | string): {
+		handle: hash;
+		width: number;
+		height: number;
+		depth: number;
+		mipmaps: number;
+		type:
+			| typeof resource.TEXTURE_TYPE_2D
+			| typeof resource.TEXTURE_TYPE_CUBE_MAP
+			| typeof resource.TEXTURE_TYPE_2D_ARRAY;
+	};
 
 	/**
 	 * Loads the resource data for a specific resource.
@@ -5547,7 +5681,9 @@ declare namespace sys {
 `true` if the application is installed, `false` otherwise.
 
 	*/
-	export function get_application_info(app_string: string): unknown;
+	export function get_application_info(app_string: string): {
+		installed: boolean;
+	};
 
 	/**
 	 * The path from which the application is run.
@@ -5797,11 +5933,7 @@ The stack traceback.
 
 	*/
 	export function set_error_handler(
-		error_handler: (
-			source: string,
-			message: unknown,
-			traceback: unknown,
-		) => void,
+		error_handler: (source: string, message: string, traceback: string) => void,
 	): void;
 
 	/**
@@ -6240,18 +6372,23 @@ The response data. Contains the fields:
 		method: string,
 		callback: (
 			this: unknown,
-			id: unknown,
+			id: hash,
 			response: {
-				status: unknown;
-				response?: unknown;
-				headers: unknown;
-				path?: unknown;
-				error?: unknown;
+				status: number;
+				response?: string;
+				headers: { [key: string]: string };
+				path?: string;
+				error?: string;
 			},
 		) => void,
-		headers?: unknown,
+		headers?: { [key: string]: string },
 		post_data?: string,
-		options?: unknown,
+		options?: {
+			timeout?: number;
+			path?: string;
+			ignore_cache?: boolean;
+			chunked_transfer?: boolean;
+		},
 	): void;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
@@ -6308,7 +6445,7 @@ declare namespace image {
 					| typeof image.TYPE_RGBA
 					| typeof image.TYPE_LUMINANCE
 					| typeof image.TYPE_LUMINANCE_ALPHA;
-				buffer: unknown;
+				buffer: string;
 		  };
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
@@ -6442,8 +6579,8 @@ The elapsed time - on first trigger it is time since timer.delay call, otherwise
 	export function delay(
 		delay: number,
 		repeat: boolean,
-		callback: (this: unknown, handle: unknown, time_elapsed: number) => void,
-	): hash;
+		callback: (this: unknown, handle: number, time_elapsed: number) => void,
+	): hash | typeof timer.INVALID_TIMER_HANDLE;
 
 	/**
 	* Get information about timer.
@@ -6949,7 +7086,7 @@ declare namespace vmath {
 	 * @param t  table of numbers
 	 * @return v  new vector
 	 */
-	export function vector(t: number[]): vmath.vector3 | vmath.vector4;
+	export function vector(t: number[]): number & { [key: number]: number };
 
 	/**
 	 * Creates a new zero vector with all components set to 0.
@@ -7155,7 +7292,7 @@ declare namespace collectionfactory {
 		rotation?: vmath.quaternion,
 		properties?: unknown,
 		scale?: number,
-	): unknown;
+	): LuaMap<hash, hash>;
 
 	/**
 	* This returns status of the collection factory.
@@ -7191,7 +7328,7 @@ True if resource were loaded successfully
 	*/
 	export function load(
 		url?: string | hash | url,
-		complete_function?: (this: unknown, url: unknown, result: boolean) => void,
+		complete_function?: (this: unknown, url: url, result: boolean) => void,
 	): void;
 
 	/**
@@ -7231,7 +7368,7 @@ declare namespace collectionproxy {
 	 * @param collectionproxy  the collectionproxy to check for resources.
 	 * @return resources  the resources
 	 */
-	export function get_resources(collectionproxy: url): unknown;
+	export function get_resources(collectionproxy: url): string[];
 
 	/**
 	* return an array of missing resources for a collection proxy. Each
@@ -7245,7 +7382,7 @@ declare namespace collectionproxy {
 resources.
 	* @return resources  the missing resources
 	*/
-	export function missing_resources(collectionproxy: url): unknown;
+	export function missing_resources(collectionproxy: url): string[];
 
 	/**
 	 * Post this message to a collection-proxy-component to disable the referenced collection, which in turn disables the contained game objects and components.
@@ -7382,7 +7519,7 @@ True if resources were loaded successfully
 	*/
 	export function load(
 		url?: string | hash | url,
-		complete_function?: (this: unknown, url: unknown, result: boolean) => void,
+		complete_function?: (this: unknown, url: url, result: boolean) => void,
 	): void;
 
 	/**
@@ -7392,7 +7529,7 @@ True if resources were loaded successfully
 	 */
 	export function set_prototype(
 		url?: string | hash | url,
-		prototype?: unknown,
+		prototype?: string,
 	): void;
 
 	/**
@@ -7584,7 +7721,13 @@ The invoker of the callback: the model component.
 	export function play_anim(
 		url: string | hash | url,
 		anim_id: string | hash,
-		playback: unknown,
+		playback:
+			| typeof go.PLAYBACK_ONCE_FORWARD
+			| typeof go.PLAYBACK_ONCE_BACKWARD
+			| typeof go.PLAYBACK_ONCE_PINGPONG
+			| typeof go.PLAYBACK_LOOP_FORWARD
+			| typeof go.PLAYBACK_LOOP_BACKWARD
+			| typeof go.PLAYBACK_LOOP_PINGPONG,
 		play_properties?: {
 			blend_duration?: number;
 			offset?: number;
@@ -7592,9 +7735,18 @@ The invoker of the callback: the model component.
 		},
 		complete_function?: (
 			this: unknown,
-			message_id: unknown,
-			message: { animation_id: unknown; playback: unknown },
-			sender: unknown,
+			message_id: hash,
+			message: {
+				animation_id: hash;
+				playback:
+					| typeof go.PLAYBACK_ONCE_FORWARD
+					| typeof go.PLAYBACK_ONCE_BACKWARD
+					| typeof go.PLAYBACK_ONCE_PINGPONG
+					| typeof go.PLAYBACK_LOOP_FORWARD
+					| typeof go.PLAYBACK_LOOP_BACKWARD
+					| typeof go.PLAYBACK_LOOP_PINGPONG;
+			},
+			sender: url,
 		) => void,
 	): void;
 
@@ -7633,7 +7785,7 @@ The invoker of the callback: the model component.
 	/**
 	 * The texture hash id of the model. Used for getting/setting model texture for unit 0-7
 	 */
-	export let textureN: unknown;
+	export let textureN: hash;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
@@ -7694,8 +7846,8 @@ the new state of the emitter:
 		url: string | hash | url,
 		emitter_state_function?: (
 			this: unknown,
-			id: unknown,
-			emitter: unknown,
+			id: hash,
+			emitter: hash,
 			state:
 				| typeof particlefx.EMITTER_STATE_SLEEPING
 				| typeof particlefx.EMITTER_STATE_PRESPAWN
@@ -7747,7 +7899,10 @@ the new state of the emitter:
 `clear`: instantly clear spawned particles
 
 	*/
-	export function stop(url: string | hash | url, options: unknown): void;
+	export function stop(
+		url: string | hash | url,
+		options?: { clear: boolean },
+	): void;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
@@ -7813,7 +7968,7 @@ declare namespace sound {
 	 * Get a table of all mixer group names (hashes).
 	 * @return groups  table of mixer group names
 	 */
-	export function get_groups(): unknown;
+	export function get_groups(): hash[];
 
 	/**
 	 * Get peak value from mixer group.
@@ -7884,7 +8039,7 @@ declare namespace sound {
 	 * @param url  the sound that should pause
 	 * @param pause  true if the sound should pause
 	 */
-	export function pause(url: string | hash | url, pause: unknown): void;
+	export function pause(url: string | hash | url, pause?: boolean): void;
 
 	/**
 	* Make the sound component play its sound. Multiple voices are supported. The limit is set to 32 voices per sound component.
@@ -7933,9 +8088,9 @@ The invoker of the callback: the sound component.
 		},
 		complete_function?: (
 			this: unknown,
-			message_id: unknown,
-			message: { play_id: unknown },
-			sender: unknown,
+			message_id: hash,
+			message: { play_id: number },
+			sender: url,
 		) => void,
 	): number;
 
@@ -8101,9 +8256,9 @@ the rate with which the animation will be played. Must be positive.
 		id: string | hash,
 		complete_function?: (
 			this: unknown,
-			message_id: unknown,
-			message: { current_tile: unknown; id: unknown },
-			sender: unknown,
+			message_id: hash,
+			message: { current_tile: number; id: hash },
+			sender: url,
 		) => void,
 		play_properties?: { offset?: number; playback_rate?: number },
 	): void;
