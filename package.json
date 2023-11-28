@@ -15,8 +15,9 @@
 		"**/*.d.ts"
 	],
 	"scripts": {
-		"build": "type-gen && yarn run patch && yarn run prettier",
+		"build": "type-gen && yarn run patch && yarn lint && yarn run prettier",
 		"check": "tsc --noEmit",
+		"lint": "eslint index.d.ts --fix",
 		"patch": "node patch.cjs",
 		"prepublishOnly": "yarn run build && yarn run check",
 		"prettier": "prettier \"./**\" --write"
@@ -30,6 +31,10 @@
 	},
 	"devDependencies": {
 		"@ts-defold/type-gen": "^0.5.2",
+		"@typescript-eslint/eslint-plugin": "~6.8.0",
+		"@typescript-eslint/parser": "~6.8.0",
+		"eslint": "~8.51.0",
+		"eslint-config-prettier": "~9.0.0",
 		"prettier": "^3.0.0",
 		"typescript": "~5.1.0",
 		"typescript-to-lua": "~1.16.0"
