@@ -15,7 +15,7 @@
 		"**/*.d.ts"
 	],
 	"scripts": {
-		"build": "type-gen && yarn run patch && yarn lint && yarn run prettier",
+		"build": "type-gen && yarn run patch && yarn run lint && yarn run prettier",
 		"check": "tsc --noEmit",
 		"lint": "eslint index.d.ts --fix",
 		"patch": "node patch.cjs",

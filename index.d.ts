@@ -32,7 +32,7 @@ declare type node = Readonly<
 /**
  * A block of memory that can store binary data.
  */
-declare type buffer = {};
+declare type buffer = object;
 
 /**
  * Render pipeline predicate.
@@ -55,13 +55,13 @@ declare type renderTarget = Readonly<
 /**
  * Socket objects.
  */
-declare type socketClient = {};
-declare type socketServer = {};
-declare type socketMaster = {};
-declare type socketUnconnected = {};
-declare type socketConnected = {};
+declare type socketClient = object;
+declare type socketServer = object;
+declare type socketMaster = object;
+declare type socketUnconnected = object;
+declare type socketConnected = object;
 
-declare type bufferstream = Array<number> & LuaUserdata & {};
+declare type bufferstream = LuaUserdata & number[] & object;
 
 declare namespace vmath {
 	export type vector3 = number & {
@@ -823,16 +823,16 @@ The id of the animated property.
 
 	*/
 	export function animate(
-		url: string | hash | url,
-		property: string | hash,
+		url: hash | url | string,
+		property: hash | string,
 		playback:
-			| typeof go.PLAYBACK_ONCE_FORWARD
-			| typeof go.PLAYBACK_ONCE_BACKWARD
-			| typeof go.PLAYBACK_ONCE_PINGPONG
-			| typeof go.PLAYBACK_LOOP_FORWARD
 			| typeof go.PLAYBACK_LOOP_BACKWARD
-			| typeof go.PLAYBACK_LOOP_PINGPONG,
-		to: number | vmath.vector3 | vmath.vector4 | vmath.quaternion,
+			| typeof go.PLAYBACK_LOOP_FORWARD
+			| typeof go.PLAYBACK_LOOP_PINGPONG
+			| typeof go.PLAYBACK_ONCE_BACKWARD
+			| typeof go.PLAYBACK_ONCE_FORWARD
+			| typeof go.PLAYBACK_ONCE_PINGPONG,
+		to: vmath.quaternion | vmath.vector3 | vmath.vector4 | number,
 		easing:
 			| vmath.vector3
 			| typeof go.EASING_INBACK
@@ -888,8 +888,8 @@ The id of the animated property.
 	 * @param property  optional id of the property to cancel
 	 */
 	export function cancel_animations(
-		url: string | hash | url,
-		property?: string | hash,
+		url: hash | url | string,
+		property?: hash | string,
 	): void;
 
 	/**
@@ -903,7 +903,7 @@ The id of the animated property.
 	 * @param recursive  optional boolean, set to true to recursively delete child hiearchy in child to parent order
 	 */
 	function delete$(
-		id?: string | hash | url | Array<string | hash | url>,
+		id?: Array<hash | url | string> | hash | url | string,
 		recursive?: boolean,
 	): void;
 	export { delete$ as delete };
@@ -913,7 +913,7 @@ The id of the animated property.
 	 * @param url  url of the game object to check
 	 * @return exists  true if the game object exists
 	 */
-	export function exists(url: string | hash | url): boolean;
+	export function exists(url: hash | url | string): boolean;
 
 	/**
 	* gets a named property of the specified game object or component
@@ -925,9 +925,9 @@ name of internal property
 	* @return value  the value of the specified property
 	*/
 	export function get(
-		url: string | hash | url,
-		property: string | hash,
-		options?: LuaTable | LuaSet | LuaMap | object | AnyNotNil[],
+		url: hash | url | string,
+		property: hash | string,
+		options?: AnyNotNil[] | LuaMap | LuaSet | LuaTable | object,
 	): unknown;
 
 	/**
@@ -947,35 +947,35 @@ name of internal property
 	 * @param id  optional id of the game object instance to get parent for, defaults to the instance containing the calling script
 	 * @return parent_id  parent instance or `undefined`
 	 */
-	export function get_parent(id?: string | hash | url): hash | undefined;
+	export function get_parent(id?: hash | url | string): hash | undefined;
 
 	/**
 	 * The position is relative the parent (if any). Use go.get_world_position to retrieve the global world position.
 	 * @param id  optional id of the game object instance to get the position for, by default the instance of the calling script
 	 * @return position  instance position
 	 */
-	export function get_position(id?: string | hash | url): vmath.vector3;
+	export function get_position(id?: hash | url | string): vmath.vector3;
 
 	/**
 	 * The rotation is relative to the parent (if any). Use go.get_world_rotation to retrieve the global world rotation.
 	 * @param id  optional id of the game object instance to get the rotation for, by default the instance of the calling script
 	 * @return rotation  instance rotation
 	 */
-	export function get_rotation(id?: string | hash | url): vmath.quaternion;
+	export function get_rotation(id?: hash | url | string): vmath.quaternion;
 
 	/**
 	 * The scale is relative the parent (if any). Use go.get_world_scale to retrieve the global world 3D scale factor.
 	 * @param id  optional id of the game object instance to get the scale for, by default the instance of the calling script
 	 * @return scale  instance scale factor
 	 */
-	export function get_scale(id?: string | hash | url): vmath.vector3;
+	export function get_scale(id?: hash | url | string): vmath.vector3;
 
 	/**
 	 * The uniform scale is relative the parent (if any). If the underlying scale vector is non-uniform the min element of the vector is returned as the uniform scale factor.
 	 * @param id  optional id of the game object instance to get the uniform scale for, by default the instance of the calling script
 	 * @return scale  uniform instance scale factor
 	 */
-	export function get_scale_uniform(id?: string | hash | url): number;
+	export function get_scale_uniform(id?: hash | url | string): number;
 
 	/**
 	 * The function will return the world position calculated at the end of the previous frame.
@@ -983,7 +983,7 @@ name of internal property
 	 * @param id  optional id of the game object instance to get the world position for, by default the instance of the calling script
 	 * @return position  instance world position
 	 */
-	export function get_world_position(id?: string | hash | url): vmath.vector3;
+	export function get_world_position(id?: hash | url | string): vmath.vector3;
 
 	/**
 	 * The function will return the world rotation calculated at the end of the previous frame.
@@ -992,7 +992,7 @@ name of internal property
 	 * @return rotation  instance world rotation
 	 */
 	export function get_world_rotation(
-		id?: string | hash | url,
+		id?: hash | url | string,
 	): vmath.quaternion;
 
 	/**
@@ -1003,7 +1003,7 @@ name of internal property
 	 * @param id  optional id of the game object instance to get the world scale for, by default the instance of the calling script
 	 * @return scale  instance world 3D scale factor
 	 */
-	export function get_world_scale(id?: string | hash | url): vmath.vector3;
+	export function get_world_scale(id?: hash | url | string): vmath.vector3;
 
 	/**
 	 * The function will return the world scale factor calculated at the end of the previous frame.
@@ -1011,14 +1011,14 @@ name of internal property
 	 * @param id  optional id of the game object instance to get the world scale for, by default the instance of the calling script
 	 * @return scale  instance world scale factor
 	 */
-	export function get_world_scale_uniform(id?: string | hash | url): number;
+	export function get_world_scale_uniform(id?: hash | url | string): number;
 
 	/**
 	 * The function will return the world transform matrix calculated at the end of the previous frame.
 	 * @param id  optional id of the game object instance to get the world transform for, by default the instance of the calling script
 	 * @return transform  instance world transform
 	 */
-	export function get_world_transform(id?: string | hash | url): vmath.matrix4;
+	export function get_world_transform(id?: hash | url | string): vmath.matrix4;
 
 	/**
 	 * This function defines a property which can then be used in the script through the self-reference.
@@ -1039,10 +1039,10 @@ index into array property (1 based)
 name of internal property
 	*/
 	export function set(
-		url: string | hash | url,
-		property: string | hash,
+		url: hash | url | string,
+		property: hash | string,
 		value: unknown,
-		options?: LuaTable | LuaSet | LuaMap | object | AnyNotNil[],
+		options?: AnyNotNil[] | LuaMap | LuaSet | LuaTable | object,
 	): void;
 
 	/**
@@ -1057,8 +1057,8 @@ name of internal property
 	 * @param keep_world_transform  optional boolean, set to true to maintain the world transform when changing spaces. Defaults to false.
 	 */
 	export function set_parent(
-		id?: string | hash | url,
-		parent_id?: string | hash | url,
+		id?: hash | url | string,
+		parent_id?: hash | url | string,
 		keep_world_transform?: boolean,
 	): void;
 
@@ -1069,7 +1069,7 @@ name of internal property
 	 */
 	export function set_position(
 		position: vmath.vector3,
-		id?: string | hash | url,
+		id?: hash | url | string,
 	): void;
 
 	/**
@@ -1079,7 +1079,7 @@ name of internal property
 	 */
 	export function set_rotation(
 		rotation: vmath.quaternion,
-		id?: string | hash | url,
+		id?: hash | url | string,
 	): void;
 
 	/**
@@ -1089,8 +1089,8 @@ name of internal property
 	 * @param id  optional id of the game object instance to get the scale for, by default the instance of the calling script
 	 */
 	export function set_scale(
-		scale: number | vmath.vector3,
-		id?: string | hash | url,
+		scale: vmath.vector3 | number,
+		id?: hash | url | string,
 	): void;
 
 	/**
@@ -1695,17 +1695,17 @@ with a custom curve. See the animation guide for more information.
 	export function animate(
 		node: node,
 		property:
+			| typeof gui.PROP_COLOR
+			| typeof gui.PROP_FILL_ANGLE
+			| typeof gui.PROP_INNER_RADIUS
+			| typeof gui.PROP_OUTLINE
 			| typeof gui.PROP_POSITION
 			| typeof gui.PROP_ROTATION
 			| typeof gui.PROP_SCALE
-			| typeof gui.PROP_COLOR
-			| typeof gui.PROP_OUTLINE
 			| typeof gui.PROP_SHADOW
 			| typeof gui.PROP_SIZE
-			| typeof gui.PROP_FILL_ANGLE
-			| typeof gui.PROP_INNER_RADIUS
 			| typeof gui.PROP_SLICE9,
-		to: number | vmath.vector3 | vmath.vector4 | vmath.quaternion,
+		to: vmath.quaternion | vmath.vector3 | vmath.vector4 | number,
 		easing:
 			| vmath.vector3
 			| typeof gui.EASING_INBACK
@@ -1753,12 +1753,12 @@ with a custom curve. See the animation guide for more information.
 		delay?: number,
 		complete_function?: (this: unknown, node: node) => void,
 		playback?:
-			| typeof gui.PLAYBACK_ONCE_FORWARD
-			| typeof gui.PLAYBACK_ONCE_BACKWARD
-			| typeof gui.PLAYBACK_ONCE_PINGPONG
-			| typeof gui.PLAYBACK_LOOP_FORWARD
 			| typeof gui.PLAYBACK_LOOP_BACKWARD
-			| typeof gui.PLAYBACK_LOOP_PINGPONG,
+			| typeof gui.PLAYBACK_LOOP_FORWARD
+			| typeof gui.PLAYBACK_LOOP_PINGPONG
+			| typeof gui.PLAYBACK_ONCE_BACKWARD
+			| typeof gui.PLAYBACK_ONCE_FORWARD
+			| typeof gui.PLAYBACK_ONCE_PINGPONG,
 	): void;
 
 	/**
@@ -1781,15 +1781,15 @@ with a custom curve. See the animation guide for more information.
 	export function cancel_animation(
 		node: node,
 		property:
+			| 'color'
+			| 'fill_angle'
+			| 'inner_radius'
+			| 'outline'
 			| 'position'
 			| 'rotation'
 			| 'scale'
-			| 'color'
-			| 'outline'
 			| 'shadow'
 			| 'size'
-			| 'fill_angle'
-			| 'inner_radius'
 			| 'slice9',
 	): void;
 
@@ -1827,7 +1827,7 @@ with a custom curve. See the animation guide for more information.
 	 * Delete a dynamically created texture.
 	 * @param texture  texture id
 	 */
-	export function delete_texture(texture: string | hash): void;
+	export function delete_texture(texture: hash | string): void;
 
 	/**
 	* Returns the adjust mode of a node.
@@ -2050,7 +2050,7 @@ with a custom curve. See the animation guide for more information.
 	 * @param id  id of the node to retrieve
 	 * @return instance  a new node instance
 	 */
-	export function get_node(id: string | hash): node;
+	export function get_node(id: hash | string): node;
 
 	/**
 	* Returns the outer bounds mode for a pie node.
@@ -2361,20 +2361,20 @@ with a custom curve. See the animation guide for more information.
 	* @return code  one of the gui.RESULT_* codes if unsuccessful
 	*/
 	export function new_texture(
-		texture: string | hash,
+		texture: hash | string,
 		width: number,
 		height: number,
-		type: 'rgb' | 'rgba' | 'l',
+		type: 'l' | 'rgb' | 'rgba',
 		buffer: string,
 		flip: boolean,
 	): LuaMultiReturn<
 		[
 			boolean,
 			(
-				| undefined
-				| typeof gui.RESULT_TEXTURE_ALREADY_EXISTS
 				| typeof gui.RESULT_DATA_ERROR
 				| typeof gui.RESULT_OUT_OF_RESOURCES
+				| typeof gui.RESULT_TEXTURE_ALREADY_EXISTS
+				| undefined
 			),
 		]
 	>;
@@ -2416,7 +2416,7 @@ The rate with which the animation will be played. Must be positive
 	*/
 	export function play_flipbook(
 		node: node,
-		animation: string | hash,
+		animation: hash | string,
 		complete_function?: (this: unknown, node: node) => void,
 		play_properties?: { offset?: number; playback_rate?: number },
 	): void;
@@ -2449,10 +2449,10 @@ the new state of the emitter:
 			node: node | undefined,
 			emitter: hash,
 			state:
-				| typeof particlefx.EMITTER_STATE_SLEEPING
+				| typeof particlefx.EMITTER_STATE_POSTSPAWN
 				| typeof particlefx.EMITTER_STATE_PRESPAWN
-				| typeof particlefx.EMITTER_STATE_SPAWNING
-				| typeof particlefx.EMITTER_STATE_POSTSPAWN,
+				| typeof particlefx.EMITTER_STATE_SLEEPING
+				| typeof particlefx.EMITTER_STATE_SPAWNING,
 		) => void,
 	): void;
 
@@ -2501,8 +2501,8 @@ the new state of the emitter:
 		node: node,
 		adjust_mode:
 			| typeof gui.ADJUST_FIT
-			| typeof gui.ADJUST_ZOOM
-			| typeof gui.ADJUST_STRETCH,
+			| typeof gui.ADJUST_STRETCH
+			| typeof gui.ADJUST_ZOOM,
 	): void;
 
 	/**
@@ -2527,9 +2527,9 @@ the new state of the emitter:
 	export function set_blend_mode(
 		node: node,
 		blend_mode:
-			| typeof gui.BLEND_ALPHA
 			| typeof gui.BLEND_ADD
 			| typeof gui.BLEND_ADD_ALPHA
+			| typeof gui.BLEND_ALPHA
 			| typeof gui.BLEND_MULT,
 	): void;
 
@@ -2638,7 +2638,7 @@ the new state of the emitter:
 	 * @param node  node for which to set the font
 	 * @param font  font id
 	 */
-	export function set_font(node: node, font: string | hash): void;
+	export function set_font(node: node, font: hash | string): void;
 
 	/**
 	 * Set the id of the specicied node to a new value.
@@ -2650,7 +2650,7 @@ the new state of the emitter:
 	 * @param node  node to set the id for
 	 * @param id  id to set
 	 */
-	export function set_id(node: node, id: string | hash): void;
+	export function set_id(node: node, id: hash | string): void;
 
 	/**
 	 * sets the node inherit alpha state
@@ -2672,7 +2672,7 @@ the new state of the emitter:
 	 * @param node  node for which to set the layer
 	 * @param layer  layer id
 	 */
-	export function set_layer(node: node, layer: string | hash): void;
+	export function set_layer(node: node, layer: hash | string): void;
 
 	/**
 	 * Sets the leading value for a text node. This value is used to
@@ -2697,7 +2697,7 @@ the new state of the emitter:
 	 * @param node  node to set material for
 	 * @param material  material id
 	 */
-	export function set_material(node: node, material: string | hash): void;
+	export function set_material(node: node, material: hash | string): void;
 
 	/**
 	* Sets the outer bounds mode for a pie node.
@@ -2710,7 +2710,7 @@ the new state of the emitter:
 	*/
 	export function set_outer_bounds(
 		node: node,
-		bounds_mode: typeof gui.PIEBOUNDS_RECTANGLE | typeof gui.PIEBOUNDS_ELLIPSE,
+		bounds_mode: typeof gui.PIEBOUNDS_ELLIPSE | typeof gui.PIEBOUNDS_RECTANGLE,
 	): void;
 
 	/**
@@ -2770,14 +2770,14 @@ the new state of the emitter:
 		node: node,
 		pivot:
 			| typeof gui.PIVOT_CENTER
+			| typeof gui.PIVOT_E
 			| typeof gui.PIVOT_N
 			| typeof gui.PIVOT_NE
-			| typeof gui.PIVOT_E
-			| typeof gui.PIVOT_SE
+			| typeof gui.PIVOT_NW
 			| typeof gui.PIVOT_S
+			| typeof gui.PIVOT_SE
 			| typeof gui.PIVOT_SW
-			| typeof gui.PIVOT_W
-			| typeof gui.PIVOT_NW,
+			| typeof gui.PIVOT_W,
 	): void;
 
 	/**
@@ -2869,7 +2869,7 @@ the new state of the emitter:
 	*/
 	export function set_size_mode(
 		node: node,
-		size_mode: typeof gui.SIZE_MODE_MANUAL | typeof gui.SIZE_MODE_AUTO,
+		size_mode: typeof gui.SIZE_MODE_AUTO | typeof gui.SIZE_MODE_MANUAL,
 	): void;
 
 	/**
@@ -2896,7 +2896,7 @@ the new state of the emitter:
 	 * @param node  node to set texture for
 	 * @param texture  texture id
 	 */
-	export function set_texture(node: node, texture: string | hash): void;
+	export function set_texture(node: node, texture: hash | string): void;
 
 	/**
 	* Set the texture buffer data for a dynamically created texture.
@@ -2914,7 +2914,7 @@ the new state of the emitter:
 	* @return success  setting the data was successful
 	*/
 	export function set_texture_data(
-		texture: string | hash,
+		texture: hash | string,
 		width: number,
 		height: number,
 		type: unknown,
@@ -2950,8 +2950,8 @@ the new state of the emitter:
 	export function set_xanchor(
 		node: node,
 		anchor:
-			| typeof gui.ANCHOR_NONE
 			| typeof gui.ANCHOR_LEFT
+			| typeof gui.ANCHOR_NONE
 			| typeof gui.ANCHOR_RIGHT,
 	): void;
 
@@ -2968,8 +2968,8 @@ the new state of the emitter:
 	export function set_yanchor(
 		node: node,
 		anchor:
-			| typeof gui.ANCHOR_NONE
 			| typeof gui.ANCHOR_LEFT
+			| typeof gui.ANCHOR_NONE
 			| typeof gui.ANCHOR_RIGHT,
 	): void;
 
@@ -3167,10 +3167,10 @@ See each joint type for possible properties field. The one field that is accepte
 	*/
 	export function create_joint(
 		joint_type: number,
-		collisionobject_a: string | hash | url,
-		joint_id: string | hash,
+		collisionobject_a: hash | url | string,
+		joint_id: hash | string,
 		position_a: vmath.vector3,
-		collisionobject_b: string | hash | url,
+		collisionobject_b: hash | url | string,
 		position_b: vmath.vector3,
 		properties?: { [key: string]: boolean | number },
 	): void;
@@ -3183,8 +3183,8 @@ See each joint type for possible properties field. The one field that is accepte
 	 * @param joint_id  id of the joint
 	 */
 	export function destroy_joint(
-		collisionobject: string | hash | url,
-		joint_id: string | hash,
+		collisionobject: hash | url | string,
+		joint_id: hash | string,
 	): void;
 
 	/**
@@ -3205,7 +3205,7 @@ See each joint type for possible properties field. The one field that is accepte
 end
 `
 	*/
-	export function get_group(url: string | hash | url): hash;
+	export function get_group(url: hash | url | string): hash;
 
 	/**
 	* Get a table for properties for a connected joint. The joint has to be created before
@@ -3219,8 +3219,8 @@ end
 
 	*/
 	export function get_joint_properties(
-		collisionobject: string | hash | url,
-		joint_id: string | hash,
+		collisionobject: hash | url | string,
+		joint_id: hash | string,
 	): unknown;
 
 	/**
@@ -3232,8 +3232,8 @@ end
 	 * @return force  reaction force for the joint
 	 */
 	export function get_joint_reaction_force(
-		collisionobject: string | hash | url,
-		joint_id: string | hash,
+		collisionobject: hash | url | string,
+		joint_id: hash | string,
 	): vmath.vector3;
 
 	/**
@@ -3245,8 +3245,8 @@ end
 	 * @return torque  the reaction torque on bodyB in N*m.
 	 */
 	export function get_joint_reaction_torque(
-		collisionobject: string | hash | url,
-		joint_id: string | hash,
+		collisionobject: hash | url | string,
+		joint_id: hash | string,
 	): number;
 
 	/**
@@ -3262,7 +3262,7 @@ end
 end
 `
 	*/
-	export function get_maskbit(url: string | hash | url, group: string): boolean;
+	export function get_maskbit(url: hash | url | string, group: string): boolean;
 
 	/**
 	* Ray casts are used to test for intersections against collision objects in the physics world.
@@ -3329,14 +3329,14 @@ Set to `true` to return all ray cast hits. If `false`, it will only return the c
 end
 `
 	*/
-	export function set_group(url: string | hash | url, group: string): void;
+	export function set_group(url: hash | url | string, group: string): void;
 
 	/**
 	 * Flips the collision shapes horizontally for a collision object
 	 * @param url  the collision object that should flip its shapes
 	 * @param flip  `true` if the collision object should flip its shapes, `false` if not
 	 */
-	export function set_hflip(url: string | hash | url, flip: boolean): void;
+	export function set_hflip(url: hash | url | string, flip: boolean): void;
 
 	/**
 	* Updates the properties for an already connected joint. The joint has to be created before
@@ -3348,8 +3348,8 @@ end
 Note: The `collide_connected` field cannot be updated/changed after a connection has been made.
 	*/
 	export function set_joint_properties(
-		collisionobject: string | hash | url,
-		joint_id: string | hash,
+		collisionobject: hash | url | string,
+		joint_id: hash | string,
 		properties: unknown,
 	): void;
 
@@ -3365,7 +3365,7 @@ end
 `
 	*/
 	export function set_maskbit(
-		url: string | hash | url,
+		url: hash | url | string,
 		group: string,
 		maskbit: boolean,
 	): void;
@@ -3375,7 +3375,7 @@ end
 	 * @param url  the collision object that should flip its shapes
 	 * @param flip  `true` if the collision object should flip its shapes, `false` if not
 	 */
-	export function set_vflip(url: string | hash | url, flip: boolean): void;
+	export function set_vflip(url: hash | url | string, flip: boolean): void;
 
 	/**
 	* Collision objects tend to fall asleep when inactive for a small period of time for
@@ -3388,7 +3388,7 @@ end
 end
 `
 	*/
-	export function wakeup(url: string | hash | url): void;
+	export function wakeup(url: hash | url | string): void;
 
 	/**
 	 * This message is sent back to the sender of a `ray_cast_request`, if the ray didn't hit any
@@ -3554,10 +3554,10 @@ The recording buffer is also cleared when setting the `MODE_SHOW_PEAK_FRAME` mod
 	*/
 	export function set_ui_mode(
 		mode:
-			| typeof profiler.MODE_RUN
 			| typeof profiler.MODE_PAUSE
-			| typeof profiler.MODE_SHOW_PEAK_FRAME
-			| typeof profiler.MODE_RECORD,
+			| typeof profiler.MODE_RECORD
+			| typeof profiler.MODE_RUN
+			| typeof profiler.MODE_SHOW_PEAK_FRAME,
 	): void;
 
 	/**
@@ -4047,7 +4047,7 @@ declare namespace render {
 				| typeof render.BUFFER_COLOR_BIT
 				| typeof render.BUFFER_DEPTH_BIT
 				| typeof render.BUFFER_STENCIL_BIT
-		]: number | vmath.vector4;
+		]: vmath.vector4 | number;
 	}): void;
 
 	/**
@@ -4084,11 +4084,11 @@ declare namespace render {
 	*/
 	export function disable_state(
 		state:
-			| typeof render.STATE_DEPTH_TEST
-			| typeof render.STATE_STENCIL_TEST
 			| typeof render.STATE_BLEND
 			| typeof render.STATE_CULL_FACE
-			| typeof render.STATE_POLYGON_OFFSET_FILL,
+			| typeof render.STATE_DEPTH_TEST
+			| typeof render.STATE_POLYGON_OFFSET_FILL
+			| typeof render.STATE_STENCIL_TEST,
 	): void;
 
 	/**
@@ -4124,8 +4124,8 @@ optional constants to use while rendering
 		options?: {
 			frustum?: vmath.matrix4;
 			frustum_planes?:
-				| typeof render.FRUSTUM_PLANES_SIDES
-				| typeof render.FRUSTUM_PLANES_ALL;
+				| typeof render.FRUSTUM_PLANES_ALL
+				| typeof render.FRUSTUM_PLANES_SIDES;
 			constants?: buffer;
 		},
 	): void;
@@ -4147,8 +4147,8 @@ Determines which sides of the frustum will be used. Default is render.FRUSTUM_PL
 	export function draw_debug3d(options?: {
 		frustum?: vmath.matrix4;
 		frustum_planes?:
-			| typeof render.FRUSTUM_PLANES_SIDES
-			| typeof render.FRUSTUM_PLANES_ALL;
+			| typeof render.FRUSTUM_PLANES_ALL
+			| typeof render.FRUSTUM_PLANES_SIDES;
 	}): void;
 
 	/**
@@ -4158,7 +4158,7 @@ Determines which sides of the frustum will be used. Default is render.FRUSTUM_PL
 	 * in the "game.project" setting.
 	 * @param material_id  material id to enable
 	 */
-	export function enable_material(material_id: string | hash): void;
+	export function enable_material(material_id: hash | string): void;
 
 	/**
 	* Enables a particular render state. The state will be enabled until disabled.
@@ -4174,11 +4174,11 @@ Determines which sides of the frustum will be used. Default is render.FRUSTUM_PL
 	*/
 	export function enable_state(
 		state:
-			| typeof render.STATE_DEPTH_TEST
-			| typeof render.STATE_STENCIL_TEST
 			| typeof render.STATE_BLEND
 			| typeof render.STATE_CULL_FACE
-			| typeof render.STATE_POLYGON_OFFSET_FILL,
+			| typeof render.STATE_DEPTH_TEST
+			| typeof render.STATE_POLYGON_OFFSET_FILL
+			| typeof render.STATE_STENCIL_TEST,
 	): void;
 
 	/**
@@ -4210,12 +4210,12 @@ to enable those textures as well. Currently 4 color attachments are supported:
 		render_target: renderTarget,
 		buffer_type?:
 			| typeof render.BUFFER_COLOR_BIT
-			| typeof render.BUFFER_DEPTH_BIT
-			| typeof render.BUFFER_STENCIL_BIT
 			| typeof render.BUFFER_COLOR0_BIT
 			| typeof render.BUFFER_COLOR1_BIT
 			| typeof render.BUFFER_COLOR2_BIT
-			| typeof render.BUFFER_COLOR3_BIT,
+			| typeof render.BUFFER_COLOR3_BIT
+			| typeof render.BUFFER_DEPTH_BIT
+			| typeof render.BUFFER_STENCIL_BIT,
 	): void;
 
 	/**
@@ -4303,7 +4303,7 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	 * @return predicate  new predicate
 	 */
 	export function predicate(
-		tags: Array<string | hash> | LuaSet<string | hash>,
+		tags: Array<hash | string> | LuaSet<hash | string>,
 	): predicate;
 
 	/**
@@ -4383,13 +4383,13 @@ to enable those textures as well. Currently 4 color attachments are supported:
 					| typeof render.BUFFER_STENCIL_BIT
 			]: {
 				format:
+					| typeof render.FORMAT_DEPTH
 					| typeof render.FORMAT_LUMINANCE
 					| typeof render.FORMAT_RGB
 					| typeof render.FORMAT_RGBA
-					| typeof render.FORMAT_DEPTH
-					| typeof render.FORMAT_STENCIL
+					| typeof render.FORMAT_RGBA16F
 					| typeof render.FORMAT_RGBA32F
-					| typeof render.FORMAT_RGBA16F;
+					| typeof render.FORMAT_STENCIL;
 				width: number;
 				height: number;
 				min_filter?: typeof render.FILTER_LINEAR | typeof render.FILTER_NEAREST;
@@ -4509,37 +4509,37 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	 */
 	export function set_blend_func(
 		source_factor:
-			| typeof render.BLEND_ZERO
-			| typeof render.BLEND_ONE
-			| typeof render.BLEND_SRC_COLOR
-			| typeof render.BLEND_ONE_MINUS_SRC_COLOR
-			| typeof render.BLEND_DST_COLOR
-			| typeof render.BLEND_ONE_MINUS_DST_COLOR
-			| typeof render.BLEND_SRC_ALPHA
-			| typeof render.BLEND_ONE_MINUS_SRC_ALPHA
-			| typeof render.BLEND_DST_ALPHA
-			| typeof render.BLEND_ONE_MINUS_DST_ALPHA
-			| typeof render.BLEND_CONSTANT_COLOR
-			| typeof render.BLEND_ONE_MINUS_CONSTANT_COLOR
 			| typeof render.BLEND_CONSTANT_ALPHA
+			| typeof render.BLEND_CONSTANT_COLOR
+			| typeof render.BLEND_DST_ALPHA
+			| typeof render.BLEND_DST_COLOR
+			| typeof render.BLEND_ONE
 			| typeof render.BLEND_ONE_MINUS_CONSTANT_ALPHA
-			| typeof render.BLEND_SRC_ALPHA_SATURATE,
+			| typeof render.BLEND_ONE_MINUS_CONSTANT_COLOR
+			| typeof render.BLEND_ONE_MINUS_DST_ALPHA
+			| typeof render.BLEND_ONE_MINUS_DST_COLOR
+			| typeof render.BLEND_ONE_MINUS_SRC_ALPHA
+			| typeof render.BLEND_ONE_MINUS_SRC_COLOR
+			| typeof render.BLEND_SRC_ALPHA
+			| typeof render.BLEND_SRC_ALPHA_SATURATE
+			| typeof render.BLEND_SRC_COLOR
+			| typeof render.BLEND_ZERO,
 		destination_factor:
-			| typeof render.BLEND_ZERO
-			| typeof render.BLEND_ONE
-			| typeof render.BLEND_SRC_COLOR
-			| typeof render.BLEND_ONE_MINUS_SRC_COLOR
-			| typeof render.BLEND_DST_COLOR
-			| typeof render.BLEND_ONE_MINUS_DST_COLOR
-			| typeof render.BLEND_SRC_ALPHA
-			| typeof render.BLEND_ONE_MINUS_SRC_ALPHA
-			| typeof render.BLEND_DST_ALPHA
-			| typeof render.BLEND_ONE_MINUS_DST_ALPHA
-			| typeof render.BLEND_CONSTANT_COLOR
-			| typeof render.BLEND_ONE_MINUS_CONSTANT_COLOR
 			| typeof render.BLEND_CONSTANT_ALPHA
+			| typeof render.BLEND_CONSTANT_COLOR
+			| typeof render.BLEND_DST_ALPHA
+			| typeof render.BLEND_DST_COLOR
+			| typeof render.BLEND_ONE
 			| typeof render.BLEND_ONE_MINUS_CONSTANT_ALPHA
-			| typeof render.BLEND_SRC_ALPHA_SATURATE,
+			| typeof render.BLEND_ONE_MINUS_CONSTANT_COLOR
+			| typeof render.BLEND_ONE_MINUS_DST_ALPHA
+			| typeof render.BLEND_ONE_MINUS_DST_COLOR
+			| typeof render.BLEND_ONE_MINUS_SRC_ALPHA
+			| typeof render.BLEND_ONE_MINUS_SRC_COLOR
+			| typeof render.BLEND_SRC_ALPHA
+			| typeof render.BLEND_SRC_ALPHA_SATURATE
+			| typeof render.BLEND_SRC_COLOR
+			| typeof render.BLEND_ZERO,
 	): void;
 
 	/**
@@ -4572,8 +4572,8 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	*/
 	export function set_cull_face(
 		face_type:
-			| typeof render.FACE_FRONT
 			| typeof render.FACE_BACK
+			| typeof render.FACE_FRONT
 			| typeof render.FACE_FRONT_AND_BACK,
 	): void;
 
@@ -4598,14 +4598,14 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	 */
 	export function set_depth_func(
 		func:
-			| typeof render.COMPARE_FUNC_NEVER
-			| typeof render.COMPARE_FUNC_LESS
-			| typeof render.COMPARE_FUNC_LEQUAL
-			| typeof render.COMPARE_FUNC_GREATER
-			| typeof render.COMPARE_FUNC_GEQUAL
+			| typeof render.COMPARE_FUNC_ALWAYS
 			| typeof render.COMPARE_FUNC_EQUAL
-			| typeof render.COMPARE_FUNC_NOTEQUAL
-			| typeof render.COMPARE_FUNC_ALWAYS,
+			| typeof render.COMPARE_FUNC_GEQUAL
+			| typeof render.COMPARE_FUNC_GREATER
+			| typeof render.COMPARE_FUNC_LEQUAL
+			| typeof render.COMPARE_FUNC_LESS
+			| typeof render.COMPARE_FUNC_NEVER
+			| typeof render.COMPARE_FUNC_NOTEQUAL,
 	): void;
 
 	/**
@@ -4665,8 +4665,8 @@ Transient frame buffer types are only valid while the render target is active, i
 	export function set_render_target(
 		render_target: renderTarget,
 		options?: Array<
-			| typeof render.BUFFER_COLOR_BIT
 			| typeof render.BUFFER_DEPTH_BIT
+			| typeof render.BUFFER_COLOR_BIT
 			| typeof render.BUFFER_STENCIL_BIT
 		>,
 	): void;
@@ -4714,14 +4714,14 @@ Transient frame buffer types are only valid while the render target is active, i
 	 */
 	export function set_stencil_func(
 		func:
-			| typeof render.COMPARE_FUNC_NEVER
-			| typeof render.COMPARE_FUNC_LESS
-			| typeof render.COMPARE_FUNC_LEQUAL
-			| typeof render.COMPARE_FUNC_GREATER
-			| typeof render.COMPARE_FUNC_GEQUAL
+			| typeof render.COMPARE_FUNC_ALWAYS
 			| typeof render.COMPARE_FUNC_EQUAL
-			| typeof render.COMPARE_FUNC_NOTEQUAL
-			| typeof render.COMPARE_FUNC_ALWAYS,
+			| typeof render.COMPARE_FUNC_GEQUAL
+			| typeof render.COMPARE_FUNC_GREATER
+			| typeof render.COMPARE_FUNC_LEQUAL
+			| typeof render.COMPARE_FUNC_LESS
+			| typeof render.COMPARE_FUNC_NEVER
+			| typeof render.COMPARE_FUNC_NOTEQUAL,
 		ref: number,
 		mask: number,
 	): void;
@@ -4766,32 +4766,32 @@ Transient frame buffer types are only valid while the render target is active, i
 	 */
 	export function set_stencil_op(
 		sfail:
-			| typeof render.STENCIL_OP_KEEP
-			| typeof render.STENCIL_OP_ZERO
-			| typeof render.STENCIL_OP_REPLACE
-			| typeof render.STENCIL_OP_INCR
-			| typeof render.STENCIL_OP_INCR_WRAP
 			| typeof render.STENCIL_OP_DECR
 			| typeof render.STENCIL_OP_DECR_WRAP
-			| typeof render.STENCIL_OP_INVERT,
+			| typeof render.STENCIL_OP_INCR
+			| typeof render.STENCIL_OP_INCR_WRAP
+			| typeof render.STENCIL_OP_INVERT
+			| typeof render.STENCIL_OP_KEEP
+			| typeof render.STENCIL_OP_REPLACE
+			| typeof render.STENCIL_OP_ZERO,
 		dpfail:
-			| typeof render.STENCIL_OP_KEEP
-			| typeof render.STENCIL_OP_ZERO
-			| typeof render.STENCIL_OP_REPLACE
-			| typeof render.STENCIL_OP_INCR
-			| typeof render.STENCIL_OP_INCR_WRAP
 			| typeof render.STENCIL_OP_DECR
 			| typeof render.STENCIL_OP_DECR_WRAP
-			| typeof render.STENCIL_OP_INVERT,
+			| typeof render.STENCIL_OP_INCR
+			| typeof render.STENCIL_OP_INCR_WRAP
+			| typeof render.STENCIL_OP_INVERT
+			| typeof render.STENCIL_OP_KEEP
+			| typeof render.STENCIL_OP_REPLACE
+			| typeof render.STENCIL_OP_ZERO,
 		dppass:
-			| typeof render.STENCIL_OP_KEEP
-			| typeof render.STENCIL_OP_ZERO
-			| typeof render.STENCIL_OP_REPLACE
-			| typeof render.STENCIL_OP_INCR
-			| typeof render.STENCIL_OP_INCR_WRAP
 			| typeof render.STENCIL_OP_DECR
 			| typeof render.STENCIL_OP_DECR_WRAP
-			| typeof render.STENCIL_OP_INVERT,
+			| typeof render.STENCIL_OP_INCR
+			| typeof render.STENCIL_OP_INCR_WRAP
+			| typeof render.STENCIL_OP_INVERT
+			| typeof render.STENCIL_OP_KEEP
+			| typeof render.STENCIL_OP_REPLACE
+			| typeof render.STENCIL_OP_ZERO,
 	): void;
 
 	/**
@@ -5156,7 +5156,7 @@ a list of the indices of the geometry in the form {i0, i1, i2, ..., in}. Each tr
 	export function create_atlas(
 		path: string,
 		table: {
-			texture: string | hash;
+			texture: hash | string;
 			animations: [
 				{
 					id: string;
@@ -5165,12 +5165,12 @@ a list of the indices of the geometry in the form {i0, i1, i2, ..., in}. Each tr
 					frame_start: number;
 					frame_end: number;
 					playback?:
-						| typeof go.PLAYBACK_ONCE_FORWARD
-						| typeof go.PLAYBACK_ONCE_BACKWARD
-						| typeof go.PLAYBACK_ONCE_PINGPONG
-						| typeof go.PLAYBACK_LOOP_FORWARD
 						| typeof go.PLAYBACK_LOOP_BACKWARD
-						| typeof go.PLAYBACK_LOOP_PINGPONG;
+						| typeof go.PLAYBACK_LOOP_FORWARD
+						| typeof go.PLAYBACK_LOOP_PINGPONG
+						| typeof go.PLAYBACK_ONCE_BACKWARD
+						| typeof go.PLAYBACK_ONCE_FORWARD
+						| typeof go.PLAYBACK_ONCE_PINGPONG;
 					fps?: number;
 					flip_vertical?: boolean;
 					flip_horizontal?: boolean;
@@ -5209,7 +5209,7 @@ optional flag to determine wether or not the resource should take over ownership
 	*/
 	export function create_buffer(
 		path: string,
-		table: LuaTable | LuaSet | LuaMap | object | AnyNotNil[],
+		table: AnyNotNil[] | LuaMap | LuaSet | LuaTable | object,
 	): hash;
 
 	/**
@@ -5284,7 +5284,7 @@ Creating an empty texture with no buffer data is not supported as a core feature
 	*/
 	export function create_texture(
 		path: string,
-		table: LuaTable | LuaSet | LuaMap | object | AnyNotNil[],
+		table: AnyNotNil[] | LuaMap | LuaSet | LuaTable | object,
 		buffer?: buffer,
 	): hash;
 
@@ -5312,7 +5312,7 @@ Creating an empty texture with no buffer data is not supported as a core feature
 See resource.set_atlas for a detailed description of each field
 	*/
 	export function get_atlas(path: hash | string): {
-		texture: string | hash;
+		texture: hash | string;
 		animations: [
 			{
 				id: string;
@@ -5321,12 +5321,12 @@ See resource.set_atlas for a detailed description of each field
 				frame_start: number;
 				frame_end: number;
 				playback?:
-					| typeof go.PLAYBACK_ONCE_FORWARD
-					| typeof go.PLAYBACK_ONCE_BACKWARD
-					| typeof go.PLAYBACK_ONCE_PINGPONG
-					| typeof go.PLAYBACK_LOOP_FORWARD
 					| typeof go.PLAYBACK_LOOP_BACKWARD
-					| typeof go.PLAYBACK_LOOP_PINGPONG;
+					| typeof go.PLAYBACK_LOOP_FORWARD
+					| typeof go.PLAYBACK_LOOP_PINGPONG
+					| typeof go.PLAYBACK_ONCE_BACKWARD
+					| typeof go.PLAYBACK_ONCE_FORWARD
+					| typeof go.PLAYBACK_ONCE_PINGPONG;
 				fps?: number;
 				flip_vertical?: boolean;
 				flip_horizontal?: boolean;
@@ -5408,8 +5408,8 @@ The texture type. Supported values:
 		mipmaps: number;
 		type:
 			| typeof resource.TEXTURE_TYPE_2D
-			| typeof resource.TEXTURE_TYPE_CUBE_MAP
-			| typeof resource.TEXTURE_TYPE_2D_ARRAY;
+			| typeof resource.TEXTURE_TYPE_2D_ARRAY
+			| typeof resource.TEXTURE_TYPE_CUBE_MAP;
 	};
 
 	/**
@@ -5443,7 +5443,7 @@ The texture type. Supported values:
 	 * @param path  The path to the resource
 	 * @param buffer  The buffer of precreated data, suitable for the intended resource type
 	 */
-	export function set(path: string | hash, buffer: buffer): void;
+	export function set(path: hash | string, buffer: buffer): void;
 
 	/**
 	* Sets the data for a specific atlas resource. Setting new atlas data is specified by passing in
@@ -5554,7 +5554,7 @@ a list of the indices of the geometry in the form {i0, i1, i2, ..., in}. Each tr
 	*/
 	export function set_atlas(
 		path: hash | string,
-		table: LuaTable | LuaSet | LuaMap | object | AnyNotNil[],
+		table: AnyNotNil[] | LuaMap | LuaSet | LuaTable | object,
 	): void;
 
 	/**
@@ -5580,7 +5580,7 @@ optional flag to determine wether or not the resource should take over ownership
 	export function set_buffer(
 		path: hash | string,
 		buffer: buffer,
-		table: LuaTable | LuaSet | LuaMap | object | AnyNotNil[],
+		table: AnyNotNil[] | LuaMap | LuaSet | LuaTable | object,
 	): void;
 
 	/**
@@ -5661,7 +5661,7 @@ optional specify the compression type for the data in the buffer object that hol
 	*/
 	export function set_texture(
 		path: hash | string,
-		table: LuaTable | LuaSet | LuaMap | object | AnyNotNil[],
+		table: AnyNotNil[] | LuaMap | LuaSet | LuaTable | object,
 		buffer: buffer,
 	): void;
 
@@ -6008,7 +6008,7 @@ The HTTP user agent, i.e. "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) Apple
 	*/
 	export function open_url(
 		url: string,
-		attributes?: { target?: '_self' | '_blank' | '_parent' | '_top' | string },
+		attributes?: { target?: string | '_blank' | '_parent' | '_self' | '_top' },
 	): boolean;
 
 	/**
@@ -6048,7 +6048,7 @@ The HTTP user agent, i.e. "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) Apple
 	 */
 	export function save(
 		filename: string,
-		table: LuaTable | LuaSet | LuaMap | object | AnyNotNil[],
+		table: AnyNotNil[] | LuaMap | LuaSet | LuaTable | object,
 	): boolean;
 
 	/**
@@ -6058,7 +6058,7 @@ The HTTP user agent, i.e. "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) Apple
 	 * @return buffer  serialized data buffer
 	 */
 	export function serialize(
-		table: LuaTable | LuaSet | LuaMap | object | AnyNotNil[],
+		table: AnyNotNil[] | LuaMap | LuaSet | LuaTable | object,
 	): string;
 
 	/**
@@ -6224,7 +6224,7 @@ declare namespace window {
 
 	*/
 	export function set_dim_mode(
-		mode: typeof window.DIMMING_ON | typeof window.DIMMING_OFF,
+		mode: typeof window.DIMMING_OFF | typeof window.DIMMING_ON,
 	): void;
 
 	/**
@@ -6256,11 +6256,11 @@ The callback value `data` is a table which currently holds these values
 		callback: (
 			this: unknown,
 			event:
-				| typeof window.WINDOW_EVENT_FOCUS_LOST
+				| typeof window.WINDOW_EVENT_DEICONIFIED
 				| typeof window.WINDOW_EVENT_FOCUS_GAINED
-				| typeof window.WINDOW_EVENT_RESIZED
+				| typeof window.WINDOW_EVENT_FOCUS_LOST
 				| typeof window.WINDOW_EVENT_ICONFIED
-				| typeof window.WINDOW_EVENT_DEICONIFIED,
+				| typeof window.WINDOW_EVENT_RESIZED,
 			data: { width: number | undefined; height: number | undefined },
 		) => void,
 	): void;
@@ -6395,15 +6395,15 @@ declare namespace buffer {
 		declaration: {
 			hash: hash | string;
 			type:
-				| typeof buffer.VALUE_TYPE_UINT8
-				| typeof buffer.VALUE_TYPE_UINT16
-				| typeof buffer.VALUE_TYPE_UINT32
-				| typeof buffer.VALUE_TYPE_UINT64
+				| typeof buffer.VALUE_TYPE_FLOAT32
 				| typeof buffer.VALUE_TYPE_INT8
 				| typeof buffer.VALUE_TYPE_INT16
 				| typeof buffer.VALUE_TYPE_INT32
 				| typeof buffer.VALUE_TYPE_INT64
-				| typeof buffer.VALUE_TYPE_FLOAT32;
+				| typeof buffer.VALUE_TYPE_UINT8
+				| typeof buffer.VALUE_TYPE_UINT16
+				| typeof buffer.VALUE_TYPE_UINT32
+				| typeof buffer.VALUE_TYPE_UINT64;
 			count: number;
 		},
 	): buffer;
@@ -6428,18 +6428,18 @@ declare namespace buffer {
 		metadata_name: hash | string,
 	): LuaMultiReturn<
 		[
-			undefined | unknown[],
+			unknown[] | undefined,
 			(
-				| undefined
-				| typeof buffer.VALUE_TYPE_UINT8
-				| typeof buffer.VALUE_TYPE_UINT16
-				| typeof buffer.VALUE_TYPE_UINT32
-				| typeof buffer.VALUE_TYPE_UINT64
+				| typeof buffer.VALUE_TYPE_FLOAT32
 				| typeof buffer.VALUE_TYPE_INT8
 				| typeof buffer.VALUE_TYPE_INT16
 				| typeof buffer.VALUE_TYPE_INT32
 				| typeof buffer.VALUE_TYPE_INT64
-				| typeof buffer.VALUE_TYPE_FLOAT32
+				| typeof buffer.VALUE_TYPE_UINT8
+				| typeof buffer.VALUE_TYPE_UINT16
+				| typeof buffer.VALUE_TYPE_UINT32
+				| typeof buffer.VALUE_TYPE_UINT64
+				| undefined
 			),
 		]
 	>;
@@ -6468,15 +6468,15 @@ declare namespace buffer {
 		metadata_name: hash | string,
 		values: number[],
 		value_type:
-			| typeof buffer.VALUE_TYPE_UINT8
-			| typeof buffer.VALUE_TYPE_UINT16
-			| typeof buffer.VALUE_TYPE_UINT32
-			| typeof buffer.VALUE_TYPE_UINT64
+			| typeof buffer.VALUE_TYPE_FLOAT32
 			| typeof buffer.VALUE_TYPE_INT8
 			| typeof buffer.VALUE_TYPE_INT16
 			| typeof buffer.VALUE_TYPE_INT32
 			| typeof buffer.VALUE_TYPE_INT64
-			| typeof buffer.VALUE_TYPE_FLOAT32,
+			| typeof buffer.VALUE_TYPE_UINT8
+			| typeof buffer.VALUE_TYPE_UINT16
+			| typeof buffer.VALUE_TYPE_UINT32
+			| typeof buffer.VALUE_TYPE_UINT64,
 	): void;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
@@ -6503,7 +6503,7 @@ The calling script
 
 	*/
 	export function set_interaction_listener(
-		callback: undefined | ((this: unknown) => void),
+		callback: ((this: unknown) => void) | undefined,
 	): void;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
@@ -6609,17 +6609,17 @@ declare namespace image {
 		buffer: string,
 		premult?: boolean,
 	):
-		| undefined
 		| {
 				width: number;
 				height: number;
 				type:
-					| typeof image.TYPE_RGB
-					| typeof image.TYPE_RGBA
 					| typeof image.TYPE_LUMINANCE
-					| typeof image.TYPE_LUMINANCE_ALPHA;
+					| typeof image.TYPE_LUMINANCE_ALPHA
+					| typeof image.TYPE_RGB
+					| typeof image.TYPE_RGBA;
 				buffer: string;
-		  };
+		  }
+		| undefined;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
@@ -6639,7 +6639,7 @@ declare namespace json {
 	 * @return json  encoded json
 	 */
 	export function encode(
-		tbl: LuaTable | LuaSet | LuaMap | object | AnyNotNil[],
+		tbl: AnyNotNil[] | LuaMap | LuaSet | LuaTable | object,
 	): string;
 
 	/**
@@ -6666,11 +6666,11 @@ declare namespace msg {
 	 * @param message  a lua table with message parameters to send.
 	 */
 	export function post(
-		receiver: string | url | hash,
-		message_id: string | hash,
+		receiver: hash | url | string,
+		message_id: hash | string,
 		message?:
 			| LuaMap<AnyNotNil, AnyNotNil>
-			| { [key: string | number | symbol]: AnyNotNil },
+			| { [key: number | string | symbol]: AnyNotNil },
 	): void;
 
 	/**
@@ -6706,9 +6706,9 @@ declare namespace msg {
 	 * @return url  a new URL
 	 */
 	export function url(
-		socket?: string | hash,
-		path?: string | hash,
-		fragment?: string | hash,
+		socket?: hash | string,
+		path?: hash | string,
+		fragment?: hash | string,
 	): url;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
@@ -6843,7 +6843,7 @@ declare namespace vmath {
 	 * @return n  length
 	 */
 	export function length(
-		v: vmath.vector3 | vmath.vector4 | vmath.quaternion,
+		v: vmath.quaternion | vmath.vector3 | vmath.vector4,
 	): number;
 
 	/**
@@ -6852,7 +6852,7 @@ declare namespace vmath {
 	 * @return n  squared length
 	 */
 	export function length_sqr(
-		v: vmath.vector3 | vmath.vector4 | vmath.quaternion,
+		v: vmath.quaternion | vmath.vector3 | vmath.vector4,
 	): number;
 
 	/**
@@ -7460,7 +7460,7 @@ declare namespace collectionfactory {
 	 * @return ids  a table mapping the id:s from the collection to the new instance id:s
 	 */
 	export function create(
-		url: string | hash | url,
+		url: hash | url | string,
 		position?: vmath.vector3,
 		rotation?: vmath.quaternion,
 		properties?: unknown,
@@ -7479,7 +7479,7 @@ declare namespace collectionfactory {
 
 	*/
 	export function get_status(
-		url?: string | hash | url,
+		url?: hash | url | string,
 	):
 		| typeof collectionfactory.STATUS_UNLOADED
 		| typeof collectionfactory.STATUS_LOADING
@@ -7500,7 +7500,7 @@ True if resource were loaded successfully
 
 	*/
 	export function load(
-		url?: string | hash | url,
+		url?: hash | url | string,
 		complete_function?: (this: unknown, url: url, result: boolean) => void,
 	): void;
 
@@ -7511,7 +7511,7 @@ True if resource were loaded successfully
 	 * @param prototype  the path to the new prototype, or `undefined`
 	 */
 	export function set_prototype(
-		url?: string | hash | url,
+		url?: hash | url | string,
 		prototype?: unknown,
 	): void;
 
@@ -7520,7 +7520,7 @@ True if resource were loaded successfully
 	 * Calling this function when the factory is not marked as dynamic loading does nothing.
 	 * @param url  the collection factory component to unload
 	 */
-	export function unload(url?: string | hash | url): void;
+	export function unload(url?: hash | url | string): void;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
@@ -7650,11 +7650,11 @@ declare namespace factory {
 	 * @return id  the global id of the spawned game object
 	 */
 	export function create(
-		url: string | hash | url,
+		url: hash | url | string,
 		position?: vmath.vector3,
 		rotation?: vmath.quaternion,
 		properties?: unknown,
-		scale?: number | vmath.vector3,
+		scale?: vmath.vector3 | number,
 	): hash;
 
 	/**
@@ -7670,7 +7670,7 @@ declare namespace factory {
 
 	*/
 	export function get_status(
-		url?: string | hash | url,
+		url?: hash | url | string,
 	):
 		| typeof factory.STATUS_UNLOADED
 		| typeof factory.STATUS_LOADING
@@ -7691,7 +7691,7 @@ True if resources were loaded successfully
 
 	*/
 	export function load(
-		url?: string | hash | url,
+		url?: hash | url | string,
 		complete_function?: (this: unknown, url: url, result: boolean) => void,
 	): void;
 
@@ -7701,7 +7701,7 @@ True if resources were loaded successfully
 	 * @param prototype  the path to the new prototype, or `undefined`
 	 */
 	export function set_prototype(
-		url?: string | hash | url,
+		url?: hash | url | string,
 		prototype?: string,
 	): void;
 
@@ -7710,7 +7710,7 @@ True if resources were loaded successfully
 	 * Calling this function when the factory is not marked as dynamic loading does nothing.
 	 * @param url  the factory component to unload
 	 */
-	export function unload(url?: string | hash | url): void;
+	export function unload(url?: hash | url | string): void;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
@@ -7730,7 +7730,7 @@ declare namespace label {
 	 * @param url  the label to get the text from
 	 * @return metrics  the label text
 	 */
-	export function get_text(url: string | hash | url): string;
+	export function get_text(url: hash | url | string): string;
 
 	/**
 	 * Sets the text of a label component
@@ -7739,7 +7739,7 @@ declare namespace label {
 	 * @param url  the label that should have a constant set
 	 * @param text  the text
 	 */
-	export function set_text(url: string | hash | url, text: string): void;
+	export function set_text(url: hash | url | string, text: string): void;
 
 	/**
 	 * The leading of the label. This value is used to scale the line spacing of text.
@@ -7811,7 +7811,7 @@ declare namespace model {
 	 * Cancels all animation on a model component.
 	 * @param url  the model for which to cancel the animation
 	 */
-	export function cancel(url: string | hash | url): void;
+	export function cancel(url: hash | url | string): void;
 
 	/**
 	 * Gets the id of the game object that corresponds to a model skeleton bone.
@@ -7823,8 +7823,8 @@ declare namespace model {
 	 * @return id  id of the game object
 	 */
 	export function get_go(
-		url: string | hash | url,
-		bone_id: string | hash,
+		url: hash | url | string,
+		bone_id: hash | string,
 	): hash;
 
 	/**
@@ -7834,8 +7834,8 @@ declare namespace model {
 	 * @return enabled  true if the mesh is visible, false otherwise
 	 */
 	export function get_mesh_enabled(
-		url: string | hash | url,
-		mesh_id: string | hash | url,
+		url: hash | url | string,
+		mesh_id: hash | url | string,
 	): boolean;
 
 	/**
@@ -7892,15 +7892,15 @@ The invoker of the callback: the model component.
 
 	*/
 	export function play_anim(
-		url: string | hash | url,
-		anim_id: string | hash,
+		url: hash | url | string,
+		anim_id: hash | string,
 		playback:
-			| typeof go.PLAYBACK_ONCE_FORWARD
-			| typeof go.PLAYBACK_ONCE_BACKWARD
-			| typeof go.PLAYBACK_ONCE_PINGPONG
-			| typeof go.PLAYBACK_LOOP_FORWARD
 			| typeof go.PLAYBACK_LOOP_BACKWARD
-			| typeof go.PLAYBACK_LOOP_PINGPONG,
+			| typeof go.PLAYBACK_LOOP_FORWARD
+			| typeof go.PLAYBACK_LOOP_PINGPONG
+			| typeof go.PLAYBACK_ONCE_BACKWARD
+			| typeof go.PLAYBACK_ONCE_FORWARD
+			| typeof go.PLAYBACK_ONCE_PINGPONG,
 		play_properties?: {
 			blend_duration?: number;
 			offset?: number;
@@ -7912,12 +7912,12 @@ The invoker of the callback: the model component.
 			message: {
 				animation_id: hash;
 				playback:
-					| typeof go.PLAYBACK_ONCE_FORWARD
-					| typeof go.PLAYBACK_ONCE_BACKWARD
-					| typeof go.PLAYBACK_ONCE_PINGPONG
-					| typeof go.PLAYBACK_LOOP_FORWARD
 					| typeof go.PLAYBACK_LOOP_BACKWARD
-					| typeof go.PLAYBACK_LOOP_PINGPONG;
+					| typeof go.PLAYBACK_LOOP_FORWARD
+					| typeof go.PLAYBACK_LOOP_PINGPONG
+					| typeof go.PLAYBACK_ONCE_BACKWARD
+					| typeof go.PLAYBACK_ONCE_FORWARD
+					| typeof go.PLAYBACK_ONCE_PINGPONG;
 			},
 			sender: url,
 		) => void,
@@ -7930,8 +7930,8 @@ The invoker of the callback: the model component.
 	 * @param enabled  true if the mesh should be visible, false if it should be hideen
 	 */
 	export function set_mesh_enabled(
-		url: string | hash | url,
-		mesh_id: string | hash | url,
+		url: hash | url | string,
+		mesh_id: hash | url | string,
 		enabled: boolean,
 	): void;
 
@@ -8016,16 +8016,16 @@ the new state of the emitter:
 
 	*/
 	export function play(
-		url: string | hash | url,
+		url: hash | url | string,
 		emitter_state_function?: (
 			this: unknown,
 			id: hash,
 			emitter: hash,
 			state:
-				| typeof particlefx.EMITTER_STATE_SLEEPING
+				| typeof particlefx.EMITTER_STATE_POSTSPAWN
 				| typeof particlefx.EMITTER_STATE_PRESPAWN
-				| typeof particlefx.EMITTER_STATE_SPAWNING
-				| typeof particlefx.EMITTER_STATE_POSTSPAWN,
+				| typeof particlefx.EMITTER_STATE_SLEEPING
+				| typeof particlefx.EMITTER_STATE_SPAWNING,
 		) => void,
 	): void;
 
@@ -8039,9 +8039,9 @@ the new state of the emitter:
 	 * @param constant  the name of the constant
 	 */
 	export function reset_constant(
-		url: string | hash | url,
-		emitter: string | hash,
-		constant: string | hash,
+		url: hash | url | string,
+		emitter: hash | string,
+		constant: hash | string,
 	): void;
 
 	/**
@@ -8056,9 +8056,9 @@ the new state of the emitter:
 	 * @param value  the value of the constant
 	 */
 	export function set_constant(
-		url: string | hash | url,
-		emitter: string | hash,
-		constant: string | hash,
+		url: hash | url | string,
+		emitter: hash | string,
+		constant: hash | string,
 		value: vmath.vector4,
 	): void;
 
@@ -8073,7 +8073,7 @@ the new state of the emitter:
 
 	*/
 	export function stop(
-		url: string | hash | url,
+		url: hash | url | string,
 		options?: { clear: boolean },
 	): void;
 }
@@ -8125,7 +8125,7 @@ declare namespace sound {
 	 * @param group  group name
 	 * @return gain  gain in linear scale
 	 */
-	export function get_group_gain(group: string | hash): number;
+	export function get_group_gain(group: hash | string): number;
 
 	/**
 	 * Get a mixer group name as a string.
@@ -8135,7 +8135,7 @@ declare namespace sound {
 	 * @param group  group name
 	 * @return name  group name
 	 */
-	export function get_group_name(group: string | hash): string;
+	export function get_group_name(group: hash | string): string;
 
 	/**
 	 * Get a table of all mixer group names (hashes).
@@ -8157,7 +8157,7 @@ declare namespace sound {
 	 * @return peak_r  peak value for right channel
 	 */
 	export function get_peak(
-		group: string | hash,
+		group: hash | string,
 		window: number,
 	): LuaMultiReturn<[number, number]>;
 
@@ -8175,7 +8175,7 @@ declare namespace sound {
 	 * @return rms_r  RMS value for right channel
 	 */
 	export function get_rms(
-		group: string | hash,
+		group: hash | string,
 		window: number,
 	): LuaMultiReturn<[number, number]>;
 
@@ -8212,7 +8212,7 @@ declare namespace sound {
 	 * @param url  the sound that should pause
 	 * @param pause  true if the sound should pause
 	 */
-	export function pause(url: string | hash | url, pause?: boolean): void;
+	export function pause(url: hash | url | string, pause?: boolean): void;
 
 	/**
 	* Make the sound component play its sound. Multiple voices are supported. The limit is set to 32 voices per sound component.
@@ -8252,7 +8252,7 @@ The invoker of the callback: the sound component.
 	* @return id  The identifier for the sound voice
 	*/
 	export function play(
-		url: string | hash | url,
+		url: hash | url | string,
 		play_properties?: {
 			delay?: number;
 			gain?: number;
@@ -8276,7 +8276,7 @@ The invoker of the callback: the sound component.
 	 * @param url  the sound to set the gain of
 	 * @param gain  sound gain between 0 and 1. The final gain of the sound will be a combination of this gain, the group gain and the master gain.
 	 */
-	export function set_gain(url: string | hash | url, gain?: number): void;
+	export function set_gain(url: hash | url | string, gain?: number): void;
 
 	/**
 	 * Set mixer group gain
@@ -8287,7 +8287,7 @@ The invoker of the callback: the sound component.
 	 * @param group  group name
 	 * @param gain  gain in linear scale
 	 */
-	export function set_group_gain(group: string | hash, gain: number): void;
+	export function set_group_gain(group: hash | string, gain: number): void;
 
 	/**
 	 * Set panning on all active playing voices of a sound.
@@ -8295,13 +8295,13 @@ The invoker of the callback: the sound component.
 	 * @param url  the sound to set the panning value to
 	 * @param pan  sound panning between -1.0 and 1.0
 	 */
-	export function set_pan(url: string | hash | url, pan?: number): void;
+	export function set_pan(url: hash | url | string, pan?: number): void;
 
 	/**
 	 * Stop playing all active voices
 	 * @param url  the sound that should stop
 	 */
-	export function stop(url: string | hash | url): void;
+	export function stop(url: hash | url | string): void;
 
 	/**
 	 * This message is sent back to the sender of a `play_sound` message, if the sound
@@ -8425,8 +8425,8 @@ the rate with which the animation will be played. Must be positive.
 
 	*/
 	export function play_flipbook(
-		url: string | hash | url,
-		id: string | hash,
+		url: hash | url | string,
+		id: hash | string,
 		complete_function?: (
 			this: unknown,
 			message_id: hash,
@@ -8443,7 +8443,7 @@ the rate with which the animation will be played. Must be positive.
 	 * @param url  the sprite that should flip its animations
 	 * @param flip  `true` if the sprite should flip its animations, `false` if not
 	 */
-	export function set_hflip(url: string | hash | url, flip: boolean): void;
+	export function set_hflip(url: hash | url | string, flip: boolean): void;
 
 	/**
 	 * Sets vertical flipping of the provided sprite's animations.
@@ -8452,7 +8452,7 @@ the rate with which the animation will be played. Must be positive.
 	 * @param url  the sprite that should flip its animations
 	 * @param flip  `true` if the sprite should flip its animations, `false` if not
 	 */
-	export function set_vflip(url: string | hash | url, flip: boolean): void;
+	export function set_vflip(url: hash | url | string, flip: boolean): void;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
@@ -8505,7 +8505,7 @@ declare namespace tilemap {
 	 * @return h  number of rows (height) in the tile map
 	 */
 	export function get_bounds(
-		url: string | hash | url,
+		url: hash | url | string,
 	): LuaMultiReturn<[number, number, number, number]>;
 
 	/**
@@ -8521,8 +8521,8 @@ declare namespace tilemap {
 	 * @return tile  index of the tile
 	 */
 	export function get_tile(
-		url: string | hash | url,
-		layer: string | hash,
+		url: hash | url | string,
+		layer: hash | string,
 		x: number,
 		y: number,
 	): number;
@@ -8558,8 +8558,8 @@ declare namespace tilemap {
 	 * @param transform_bitmask  optional flip and/or rotation should be applied to the tile
 	 */
 	export function set_tile(
-		url: string | hash | url,
-		layer: string | hash,
+		url: hash | url | string,
+		layer: hash | string,
 		x: number,
 		y: number,
 		tile: number,
@@ -8573,8 +8573,8 @@ declare namespace tilemap {
 	 * @param visible  should the layer be visible
 	 */
 	export function set_visible(
-		url: string | hash | url,
-		layer: string | hash,
+		url: hash | url | string,
+		layer: hash | string,
 		visible: boolean,
 	): void;
 }

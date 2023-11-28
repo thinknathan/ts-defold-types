@@ -49,7 +49,7 @@ const earlyChanges = [
 		`/**
 			* A block of memory that can store binary data.
 			*/
-			declare type buffer = {};
+			declare type buffer = object;
 
 			/**
 			 * Render pipeline predicate.
@@ -70,12 +70,17 @@ const earlyChanges = [
 			/**
 			 * Socket objects.
 			 */
-			declare type socketClient = {};
-			declare type socketServer = {};
-			declare type socketMaster = {};
-			declare type socketUnconnected = {};
-			declare type socketConnected = {};
+			declare type socketClient = object;
+			declare type socketServer = object;
+			declare type socketMaster = object;
+			declare type socketUnconnected = object;
+			declare type socketConnected = object;
 			`,
+	],
+	// Remove {}
+	[
+		'declare type bufferstream = Array<number> & LuaUserdata & {\n}',
+		'declare type bufferstream = number[] & LuaUserdata & object',
 	],
 	// Pretty print
 	['function pprint(v: any)', 'function pprint(...args: unknown[])'],

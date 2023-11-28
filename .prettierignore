@@ -2,6 +2,8 @@
 .gitattributes
 .gitignore
 .prettierignore
+.eslintignore
+.eslintrc
 LICENSE
 node_modules
 yarn.lock
