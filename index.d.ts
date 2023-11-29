@@ -46,20 +46,18 @@ declare type predicate = Readonly<
 /**
  * Render pipeline target.
  */
-declare type renderTarget = Readonly<
+declare type rendertarget = Readonly<
 	LuaUserdata & {
-		readonly __renderTarget__: unique symbol;
+		readonly __rendertarget__: unique symbol;
 	}
 >;
 
 /**
  * Socket objects.
  */
-declare type socketClient = object;
-declare type socketServer = object;
-declare type socketMaster = object;
-declare type socketUnconnected = object;
-declare type socketConnected = object;
+declare type socketclient = object;
+declare type socketmaster = object;
+declare type socketunconnected = object;
 
 declare type bufferstream = LuaUserdata & number[] & object;
 
@@ -167,7 +165,7 @@ declare namespace socket {
 		locaddr?: string,
 		locport?: number,
 		family?: 'inet' | 'inet6',
-	): LuaMultiReturn<[socketClient | undefined, string | undefined]>;
+	): LuaMultiReturn<[socketclient | undefined, string | undefined]>;
 
 	/**
 	 * Returns the time in seconds, relative to the system epoch (Unix epoch time since January 1, 1970 (UTC) or Windows file time since January 1, 1601 (UTC)).
@@ -253,7 +251,7 @@ declare namespace socket {
 	 * @return error  the error message, or `undefined` if no error occurred.
 	 */
 	export function tcp(): LuaMultiReturn<
-		[socketMaster | undefined, string | undefined]
+		[socketmaster | undefined, string | undefined]
 	>;
 
 	/**
@@ -263,7 +261,7 @@ declare namespace socket {
 	 * @return error  the error message, or `undefined` if no error occurred.
 	 */
 	export function tcp6(): LuaMultiReturn<
-		[socketMaster | undefined, string | undefined]
+		[socketmaster | undefined, string | undefined]
 	>;
 
 	/**
@@ -272,7 +270,7 @@ declare namespace socket {
 	 * @return error  the error message, or `undefined` if no error occurred.
 	 */
 	export function udp(): LuaMultiReturn<
-		[socketUnconnected | undefined, string | unknown]
+		[socketunconnected | undefined, string | unknown]
 	>;
 
 	/**
@@ -282,7 +280,7 @@ declare namespace socket {
 	 * @return error  the error message, or `undefined` if no error occurred.
 	 */
 	export function udp6(): LuaMultiReturn<
-		[socketUnconnected | undefined, string | unknown]
+		[socketunconnected | undefined, string | unknown]
 	>;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
@@ -378,7 +376,7 @@ declare namespace crash {
 	 * @param handle  crash dump handle
 	 * @return backtrace  table containing the backtrace
 	 */
-	export function get_backtrace(handle: number): object;
+	export function get_backtrace(handle: number): unknown;
 
 	/**
 	 * The format of read text blob is platform specific
@@ -415,7 +413,7 @@ declare namespace crash {
 	export function get_sys_field(
 		handle: number,
 		index: number,
-	): undefined | string;
+	): string | undefined;
 
 	/**
 	 * reads user field from a loaded crash dump
@@ -430,7 +428,7 @@ declare namespace crash {
 	 * load, so loading is one-shot.
 	 * @return handle  handle to the loaded dump, or `undefined` if no dump was found
 	 */
-	export function load_previous(): undefined | number;
+	export function load_previous(): number | undefined;
 
 	/**
 	 * releases a previously loaded crash dump
@@ -478,6 +476,35 @@ declare namespace go {
 	 * handled.
 	 */
 	export type acquire_input_focus = 'acquire_input_focus';
+	export type touch_input = {
+		id: number;
+		pressed: boolean;
+		released: boolean;
+		tap_count: number;
+		x: number;
+		y: number;
+		dx: number;
+		dy: number;
+		acc_x?: number;
+		acc_y?: number;
+		acc_z?: number;
+	};
+	export type input_message = {
+		value?: number;
+		pressed?: boolean;
+		released?: boolean;
+		repeated?: boolean;
+		x?: number;
+		y?: number;
+		screen_x?: number;
+		screen_y?: number;
+		dx?: number;
+		dy?: number;
+		screen_dx?: number;
+		screen_dy?: number;
+		gamepad?: number;
+		touch?: touch_input[];
+	};
 
 	/**
 	 * This message disables the receiving component. All components are enabled by default, which means they will receive input, updates
@@ -826,12 +853,7 @@ The id of the animated property.
 		url: hash | url | string,
 		property: hash | string,
 		playback:
-			| typeof go.PLAYBACK_LOOP_BACKWARD
-			| typeof go.PLAYBACK_LOOP_FORWARD
-			| typeof go.PLAYBACK_LOOP_PINGPONG
-			| typeof go.PLAYBACK_ONCE_BACKWARD
-			| typeof go.PLAYBACK_ONCE_FORWARD
-			| typeof go.PLAYBACK_ONCE_PINGPONG,
+			typeof go.PLAYBACK_LOOP_BACKWARD | typeof go.PLAYBACK_LOOP_FORWARD | typeof go.PLAYBACK_LOOP_PINGPONG | typeof go.PLAYBACK_ONCE_BACKWARD | typeof go.PLAYBACK_ONCE_FORWARD | typeof go.PLAYBACK_ONCE_PINGPONG,
 		to: vmath.quaternion | vmath.vector3 | vmath.vector4 | number,
 		easing:
 			| vmath.vector3
@@ -1124,6 +1146,10 @@ name of internal property
 	 * the parent of its instance.
 	 */
 	export type set_parent = 'set_parent';
+	export type set_parent_message = {
+		parent_id: hash;
+		keep_world_transform?: number;
+	};
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
@@ -1695,16 +1721,7 @@ with a custom curve. See the animation guide for more information.
 	export function animate(
 		node: node,
 		property:
-			| typeof gui.PROP_COLOR
-			| typeof gui.PROP_FILL_ANGLE
-			| typeof gui.PROP_INNER_RADIUS
-			| typeof gui.PROP_OUTLINE
-			| typeof gui.PROP_POSITION
-			| typeof gui.PROP_ROTATION
-			| typeof gui.PROP_SCALE
-			| typeof gui.PROP_SHADOW
-			| typeof gui.PROP_SIZE
-			| typeof gui.PROP_SLICE9,
+			typeof gui.PROP_COLOR | typeof gui.PROP_FILL_ANGLE | typeof gui.PROP_INNER_RADIUS | typeof gui.PROP_OUTLINE | typeof gui.PROP_POSITION | typeof gui.PROP_ROTATION | typeof gui.PROP_SCALE | typeof gui.PROP_SHADOW | typeof gui.PROP_SIZE | typeof gui.PROP_SLICE9,
 		to: vmath.quaternion | vmath.vector3 | vmath.vector4 | number,
 		easing:
 			| vmath.vector3
@@ -1753,12 +1770,7 @@ with a custom curve. See the animation guide for more information.
 		delay?: number,
 		complete_function?: (this: unknown, node: node) => void,
 		playback?:
-			| typeof gui.PLAYBACK_LOOP_BACKWARD
-			| typeof gui.PLAYBACK_LOOP_FORWARD
-			| typeof gui.PLAYBACK_LOOP_PINGPONG
-			| typeof gui.PLAYBACK_ONCE_BACKWARD
-			| typeof gui.PLAYBACK_ONCE_FORWARD
-			| typeof gui.PLAYBACK_ONCE_PINGPONG,
+			typeof gui.PLAYBACK_LOOP_BACKWARD | typeof gui.PLAYBACK_LOOP_FORWARD | typeof gui.PLAYBACK_LOOP_PINGPONG | typeof gui.PLAYBACK_ONCE_BACKWARD | typeof gui.PLAYBACK_ONCE_FORWARD | typeof gui.PLAYBACK_ONCE_PINGPONG,
 	): void;
 
 	/**
@@ -1781,16 +1793,7 @@ with a custom curve. See the animation guide for more information.
 	export function cancel_animation(
 		node: node,
 		property:
-			| 'color'
-			| 'fill_angle'
-			| 'inner_radius'
-			| 'outline'
-			| 'position'
-			| 'rotation'
-			| 'scale'
-			| 'shadow'
-			| 'size'
-			| 'slice9',
+			'color' | 'fill_angle' | 'inner_radius' | 'outline' | 'position' | 'rotation' | 'scale' | 'shadow' | 'size' | 'slice9',
 	): void;
 
 	/**
@@ -1843,7 +1846,7 @@ with a custom curve. See the animation guide for more information.
 	*/
 	export function get_adjust_mode(
 		node: node,
-	): typeof gui.ADJUST_FIT | typeof gui.ADJUST_ZOOM | typeof gui.ADJUST_STRETCH;
+	): typeof gui.ADJUST_FIT | typeof gui.ADJUST_STRETCH | typeof gui.ADJUST_ZOOM;
 
 	/**
 	 * gets the node alpha
@@ -1866,10 +1869,7 @@ with a custom curve. See the animation guide for more information.
 	export function get_blend_mode(
 		node: node,
 	):
-		| typeof gui.BLEND_ALPHA
-		| typeof gui.BLEND_ADD
-		| typeof gui.BLEND_ADD_ALPHA
-		| typeof gui.BLEND_MULT;
+		typeof gui.BLEND_ADD | typeof gui.BLEND_ADD_ALPHA | typeof gui.BLEND_ALPHA | typeof gui.BLEND_MULT;
 
 	/**
 	 * If node is set as an inverted clipping node, it will clip anything inside as opposed to outside.
@@ -2063,7 +2063,7 @@ with a custom curve. See the animation guide for more information.
 	*/
 	export function get_outer_bounds(
 		node: node,
-	): typeof gui.PIEBOUNDS_RECTANGLE | typeof gui.PIEBOUNDS_ELLIPSE;
+	): typeof gui.PIEBOUNDS_ELLIPSE | typeof gui.PIEBOUNDS_RECTANGLE;
 
 	/**
 	 * Returns the outline color of the supplied node.
@@ -2115,15 +2115,7 @@ with a custom curve. See the animation guide for more information.
 	export function get_pivot(
 		node: node,
 	):
-		| typeof gui.PIVOT_CENTER
-		| typeof gui.PIVOT_N
-		| typeof gui.PIVOT_NE
-		| typeof gui.PIVOT_E
-		| typeof gui.PIVOT_SE
-		| typeof gui.PIVOT_S
-		| typeof gui.PIVOT_SW
-		| typeof gui.PIVOT_W
-		| typeof gui.PIVOT_NW;
+		typeof gui.PIVOT_CENTER | typeof gui.PIVOT_E | typeof gui.PIVOT_N | typeof gui.PIVOT_NE | typeof gui.PIVOT_NW | typeof gui.PIVOT_S | typeof gui.PIVOT_SE | typeof gui.PIVOT_SW | typeof gui.PIVOT_W;
 
 	/**
 	 * Returns the position of the supplied node.
@@ -2187,7 +2179,7 @@ with a custom curve. See the animation guide for more information.
 	*/
 	export function get_size_mode(
 		node: node,
-	): typeof gui.SIZE_MODE_MANUAL | typeof gui.SIZE_MODE_AUTO;
+	): typeof gui.SIZE_MODE_AUTO | typeof gui.SIZE_MODE_MANUAL;
 
 	/**
 	 * Returns the slice9 configuration values for the node.
@@ -2252,7 +2244,7 @@ with a custom curve. See the animation guide for more information.
 	*/
 	export function get_xanchor(
 		node: node,
-	): typeof gui.ANCHOR_NONE | typeof gui.ANCHOR_LEFT | typeof gui.ANCHOR_RIGHT;
+	): typeof gui.ANCHOR_LEFT | typeof gui.ANCHOR_NONE | typeof gui.ANCHOR_RIGHT;
 
 	/**
 	* The y-anchor specifies how the node is moved when the game is run in a different resolution.
@@ -2266,7 +2258,7 @@ with a custom curve. See the animation guide for more information.
 	*/
 	export function get_yanchor(
 		node: node,
-	): typeof gui.ANCHOR_NONE | typeof gui.ANCHOR_LEFT | typeof gui.ANCHOR_RIGHT;
+	): typeof gui.ANCHOR_LEFT | typeof gui.ANCHOR_NONE | typeof gui.ANCHOR_RIGHT;
 
 	/**
 	 * Hides the on-display touch keyboard on the device.
@@ -2371,10 +2363,7 @@ with a custom curve. See the animation guide for more information.
 		[
 			boolean,
 			(
-				| typeof gui.RESULT_DATA_ERROR
-				| typeof gui.RESULT_OUT_OF_RESOURCES
-				| typeof gui.RESULT_TEXTURE_ALREADY_EXISTS
-				| undefined
+				typeof gui.RESULT_DATA_ERROR | typeof gui.RESULT_OUT_OF_RESOURCES | typeof gui.RESULT_TEXTURE_ALREADY_EXISTS | undefined
 			),
 		]
 	>;
@@ -2449,10 +2438,7 @@ the new state of the emitter:
 			node: node | undefined,
 			emitter: hash,
 			state:
-				| typeof particlefx.EMITTER_STATE_POSTSPAWN
-				| typeof particlefx.EMITTER_STATE_PRESPAWN
-				| typeof particlefx.EMITTER_STATE_SLEEPING
-				| typeof particlefx.EMITTER_STATE_SPAWNING,
+				typeof particlefx.EMITTER_STATE_POSTSPAWN | typeof particlefx.EMITTER_STATE_PRESPAWN | typeof particlefx.EMITTER_STATE_SLEEPING | typeof particlefx.EMITTER_STATE_SPAWNING,
 		) => void,
 	): void;
 
@@ -2500,9 +2486,7 @@ the new state of the emitter:
 	export function set_adjust_mode(
 		node: node,
 		adjust_mode:
-			| typeof gui.ADJUST_FIT
-			| typeof gui.ADJUST_STRETCH
-			| typeof gui.ADJUST_ZOOM,
+			typeof gui.ADJUST_FIT | typeof gui.ADJUST_STRETCH | typeof gui.ADJUST_ZOOM,
 	): void;
 
 	/**
@@ -2527,10 +2511,7 @@ the new state of the emitter:
 	export function set_blend_mode(
 		node: node,
 		blend_mode:
-			| typeof gui.BLEND_ADD
-			| typeof gui.BLEND_ADD_ALPHA
-			| typeof gui.BLEND_ALPHA
-			| typeof gui.BLEND_MULT,
+			typeof gui.BLEND_ADD | typeof gui.BLEND_ADD_ALPHA | typeof gui.BLEND_ALPHA | typeof gui.BLEND_MULT,
 	): void;
 
 	/**
@@ -2769,15 +2750,7 @@ the new state of the emitter:
 	export function set_pivot(
 		node: node,
 		pivot:
-			| typeof gui.PIVOT_CENTER
-			| typeof gui.PIVOT_E
-			| typeof gui.PIVOT_N
-			| typeof gui.PIVOT_NE
-			| typeof gui.PIVOT_NW
-			| typeof gui.PIVOT_S
-			| typeof gui.PIVOT_SE
-			| typeof gui.PIVOT_SW
-			| typeof gui.PIVOT_W,
+			typeof gui.PIVOT_CENTER | typeof gui.PIVOT_E | typeof gui.PIVOT_N | typeof gui.PIVOT_NE | typeof gui.PIVOT_NW | typeof gui.PIVOT_S | typeof gui.PIVOT_SE | typeof gui.PIVOT_SW | typeof gui.PIVOT_W,
 	): void;
 
 	/**
@@ -2917,7 +2890,7 @@ the new state of the emitter:
 		texture: hash | string,
 		width: number,
 		height: number,
-		type: unknown,
+		type: 'l' | 'rgb' | 'rgba',
 		buffer: string,
 		flip: boolean,
 	): boolean;
@@ -2950,9 +2923,7 @@ the new state of the emitter:
 	export function set_xanchor(
 		node: node,
 		anchor:
-			| typeof gui.ANCHOR_LEFT
-			| typeof gui.ANCHOR_NONE
-			| typeof gui.ANCHOR_RIGHT,
+			typeof gui.ANCHOR_LEFT | typeof gui.ANCHOR_NONE | typeof gui.ANCHOR_RIGHT,
 	): void;
 
 	/**
@@ -2968,9 +2939,7 @@ the new state of the emitter:
 	export function set_yanchor(
 		node: node,
 		anchor:
-			| typeof gui.ANCHOR_LEFT
-			| typeof gui.ANCHOR_NONE
-			| typeof gui.ANCHOR_RIGHT,
+			typeof gui.ANCHOR_LEFT | typeof gui.ANCHOR_NONE | typeof gui.ANCHOR_RIGHT,
 	): void;
 
 	/**
@@ -3014,6 +2983,7 @@ the new state of the emitter:
 	 * on device.
 	 */
 	export type layout_changed = 'layout_changed';
+	export type layout_changed_message = { id: hash; previous_id: hash };
 
 	/**
 	 * The main material (the default material assigned to a GUI) used when rendering the gui. The type of the property is hash.
@@ -3285,7 +3255,7 @@ Set to `true` to return all ray cast hits. If `false`, it will only return the c
 		to: vmath.vector3,
 		groups: hash[],
 		options?: { all: boolean },
-	): undefined | physics.ray_cast_response_message[];
+	): physics.ray_cast_response_message[] | undefined;
 
 	/**
 	 * Ray casts are used to test for intersections against collision objects in the physics world.
@@ -3554,10 +3524,7 @@ The recording buffer is also cleared when setting the `MODE_SHOW_PEAK_FRAME` mod
 	*/
 	export function set_ui_mode(
 		mode:
-			| typeof profiler.MODE_PAUSE
-			| typeof profiler.MODE_RECORD
-			| typeof profiler.MODE_RUN
-			| typeof profiler.MODE_SHOW_PEAK_FRAME,
+			typeof profiler.MODE_PAUSE | typeof profiler.MODE_RECORD | typeof profiler.MODE_RUN | typeof profiler.MODE_SHOW_PEAK_FRAME,
 	): void;
 
 	/**
@@ -3608,16 +3575,27 @@ declare namespace render {
 	 * Set render clear color. This is the color that appears on the screen where nothing is rendered, i.e. background.
 	 */
 	export type clear_color = 'clear_color';
+	export type clear_color_message = { color: vmath.vector4 };
 
 	/**
 	 * Draw a text on the screen. This should be used for debugging purposes only.
 	 */
 	export type draw_debug_text = 'draw_debug_text';
+	export type draw_debug_text_message = {
+		position: vmath.vector3;
+		text: string;
+		color: vmath.vector4;
+	};
 
 	/**
 	 * Draw a line on the screen. This should mostly be used for debugging purposes.
 	 */
 	export type draw_line = 'draw_line';
+	export type draw_line_message = {
+		start_point: vmath.vector3;
+		end_point: vmath.vector3;
+		color: vmath.vector4;
+	};
 
 	/**
 	 *
@@ -4061,7 +4039,7 @@ declare namespace render {
 	 * Deletes a previously created render target.
 	 * @param render_target  render target to delete
 	 */
-	export function delete_render_target(render_target: renderTarget): void;
+	export function delete_render_target(render_target: rendertarget): void;
 
 	/**
 	 * If a material is currently enabled, disable it.
@@ -4084,11 +4062,7 @@ declare namespace render {
 	*/
 	export function disable_state(
 		state:
-			| typeof render.STATE_BLEND
-			| typeof render.STATE_CULL_FACE
-			| typeof render.STATE_DEPTH_TEST
-			| typeof render.STATE_POLYGON_OFFSET_FILL
-			| typeof render.STATE_STENCIL_TEST,
+			typeof render.STATE_BLEND | typeof render.STATE_CULL_FACE | typeof render.STATE_DEPTH_TEST | typeof render.STATE_POLYGON_OFFSET_FILL | typeof render.STATE_STENCIL_TEST,
 	): void;
 
 	/**
@@ -4124,8 +4098,7 @@ optional constants to use while rendering
 		options?: {
 			frustum?: vmath.matrix4;
 			frustum_planes?:
-				| typeof render.FRUSTUM_PLANES_ALL
-				| typeof render.FRUSTUM_PLANES_SIDES;
+				typeof render.FRUSTUM_PLANES_ALL | typeof render.FRUSTUM_PLANES_SIDES;
 			constants?: buffer;
 		},
 	): void;
@@ -4147,8 +4120,7 @@ Determines which sides of the frustum will be used. Default is render.FRUSTUM_PL
 	export function draw_debug3d(options?: {
 		frustum?: vmath.matrix4;
 		frustum_planes?:
-			| typeof render.FRUSTUM_PLANES_ALL
-			| typeof render.FRUSTUM_PLANES_SIDES;
+			typeof render.FRUSTUM_PLANES_ALL | typeof render.FRUSTUM_PLANES_SIDES;
 	}): void;
 
 	/**
@@ -4174,11 +4146,7 @@ Determines which sides of the frustum will be used. Default is render.FRUSTUM_PL
 	*/
 	export function enable_state(
 		state:
-			| typeof render.STATE_BLEND
-			| typeof render.STATE_CULL_FACE
-			| typeof render.STATE_DEPTH_TEST
-			| typeof render.STATE_POLYGON_OFFSET_FILL
-			| typeof render.STATE_STENCIL_TEST,
+			typeof render.STATE_BLEND | typeof render.STATE_CULL_FACE | typeof render.STATE_DEPTH_TEST | typeof render.STATE_POLYGON_OFFSET_FILL | typeof render.STATE_STENCIL_TEST,
 	): void;
 
 	/**
@@ -4207,15 +4175,9 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	*/
 	export function enable_texture(
 		unit: number,
-		render_target: renderTarget,
+		render_target: rendertarget,
 		buffer_type?:
-			| typeof render.BUFFER_COLOR_BIT
-			| typeof render.BUFFER_COLOR0_BIT
-			| typeof render.BUFFER_COLOR1_BIT
-			| typeof render.BUFFER_COLOR2_BIT
-			| typeof render.BUFFER_COLOR3_BIT
-			| typeof render.BUFFER_DEPTH_BIT
-			| typeof render.BUFFER_STENCIL_BIT,
+			typeof render.BUFFER_COLOR_BIT | typeof render.BUFFER_COLOR0_BIT | typeof render.BUFFER_COLOR1_BIT | typeof render.BUFFER_COLOR2_BIT | typeof render.BUFFER_COLOR3_BIT | typeof render.BUFFER_DEPTH_BIT | typeof render.BUFFER_STENCIL_BIT,
 	): void;
 
 	/**
@@ -4238,7 +4200,7 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	* @return height  the height of the render target buffer texture
 	*/
 	export function get_render_target_height(
-		render_target: renderTarget,
+		render_target: rendertarget,
 		buffer_type:
 			| typeof render.BUFFER_COLOR_BIT
 			| typeof render.BUFFER_DEPTH_BIT
@@ -4258,7 +4220,7 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	* @return width  the width of the render target buffer texture
 	*/
 	export function get_render_target_width(
-		render_target: renderTarget,
+		render_target: rendertarget,
 		buffer_type:
 			| typeof render.BUFFER_COLOR_BIT
 			| typeof render.BUFFER_COLOR0_BIT
@@ -4383,13 +4345,7 @@ to enable those textures as well. Currently 4 color attachments are supported:
 					| typeof render.BUFFER_STENCIL_BIT
 			]: {
 				format:
-					| typeof render.FORMAT_DEPTH
-					| typeof render.FORMAT_LUMINANCE
-					| typeof render.FORMAT_RGB
-					| typeof render.FORMAT_RGBA
-					| typeof render.FORMAT_RGBA16F
-					| typeof render.FORMAT_RGBA32F
-					| typeof render.FORMAT_STENCIL;
+					typeof render.FORMAT_DEPTH | typeof render.FORMAT_LUMINANCE | typeof render.FORMAT_RGB | typeof render.FORMAT_RGBA | typeof render.FORMAT_RGBA16F | typeof render.FORMAT_RGBA32F | typeof render.FORMAT_STENCIL;
 				width: number;
 				height: number;
 				min_filter?: typeof render.FILTER_LINEAR | typeof render.FILTER_NEAREST;
@@ -4407,7 +4363,7 @@ to enable those textures as well. Currently 4 color attachments are supported:
 				flags?: unknown;
 			};
 		},
-	): renderTarget;
+	): rendertarget;
 
 	/**
 	 * Specifies the arithmetic used when computing pixel values that are written to the frame
@@ -4509,37 +4465,9 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	 */
 	export function set_blend_func(
 		source_factor:
-			| typeof render.BLEND_CONSTANT_ALPHA
-			| typeof render.BLEND_CONSTANT_COLOR
-			| typeof render.BLEND_DST_ALPHA
-			| typeof render.BLEND_DST_COLOR
-			| typeof render.BLEND_ONE
-			| typeof render.BLEND_ONE_MINUS_CONSTANT_ALPHA
-			| typeof render.BLEND_ONE_MINUS_CONSTANT_COLOR
-			| typeof render.BLEND_ONE_MINUS_DST_ALPHA
-			| typeof render.BLEND_ONE_MINUS_DST_COLOR
-			| typeof render.BLEND_ONE_MINUS_SRC_ALPHA
-			| typeof render.BLEND_ONE_MINUS_SRC_COLOR
-			| typeof render.BLEND_SRC_ALPHA
-			| typeof render.BLEND_SRC_ALPHA_SATURATE
-			| typeof render.BLEND_SRC_COLOR
-			| typeof render.BLEND_ZERO,
+			typeof render.BLEND_CONSTANT_ALPHA | typeof render.BLEND_CONSTANT_COLOR | typeof render.BLEND_DST_ALPHA | typeof render.BLEND_DST_COLOR | typeof render.BLEND_ONE | typeof render.BLEND_ONE_MINUS_CONSTANT_ALPHA | typeof render.BLEND_ONE_MINUS_CONSTANT_COLOR | typeof render.BLEND_ONE_MINUS_DST_ALPHA | typeof render.BLEND_ONE_MINUS_DST_COLOR | typeof render.BLEND_ONE_MINUS_SRC_ALPHA | typeof render.BLEND_ONE_MINUS_SRC_COLOR | typeof render.BLEND_SRC_ALPHA | typeof render.BLEND_SRC_ALPHA_SATURATE | typeof render.BLEND_SRC_COLOR | typeof render.BLEND_ZERO,
 		destination_factor:
-			| typeof render.BLEND_CONSTANT_ALPHA
-			| typeof render.BLEND_CONSTANT_COLOR
-			| typeof render.BLEND_DST_ALPHA
-			| typeof render.BLEND_DST_COLOR
-			| typeof render.BLEND_ONE
-			| typeof render.BLEND_ONE_MINUS_CONSTANT_ALPHA
-			| typeof render.BLEND_ONE_MINUS_CONSTANT_COLOR
-			| typeof render.BLEND_ONE_MINUS_DST_ALPHA
-			| typeof render.BLEND_ONE_MINUS_DST_COLOR
-			| typeof render.BLEND_ONE_MINUS_SRC_ALPHA
-			| typeof render.BLEND_ONE_MINUS_SRC_COLOR
-			| typeof render.BLEND_SRC_ALPHA
-			| typeof render.BLEND_SRC_ALPHA_SATURATE
-			| typeof render.BLEND_SRC_COLOR
-			| typeof render.BLEND_ZERO,
+			typeof render.BLEND_CONSTANT_ALPHA | typeof render.BLEND_CONSTANT_COLOR | typeof render.BLEND_DST_ALPHA | typeof render.BLEND_DST_COLOR | typeof render.BLEND_ONE | typeof render.BLEND_ONE_MINUS_CONSTANT_ALPHA | typeof render.BLEND_ONE_MINUS_CONSTANT_COLOR | typeof render.BLEND_ONE_MINUS_DST_ALPHA | typeof render.BLEND_ONE_MINUS_DST_COLOR | typeof render.BLEND_ONE_MINUS_SRC_ALPHA | typeof render.BLEND_ONE_MINUS_SRC_COLOR | typeof render.BLEND_SRC_ALPHA | typeof render.BLEND_SRC_ALPHA_SATURATE | typeof render.BLEND_SRC_COLOR | typeof render.BLEND_ZERO,
 	): void;
 
 	/**
@@ -4572,9 +4500,7 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	*/
 	export function set_cull_face(
 		face_type:
-			| typeof render.FACE_BACK
-			| typeof render.FACE_FRONT
-			| typeof render.FACE_FRONT_AND_BACK,
+			typeof render.FACE_BACK | typeof render.FACE_FRONT | typeof render.FACE_FRONT_AND_BACK,
 	): void;
 
 	/**
@@ -4598,14 +4524,7 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	 */
 	export function set_depth_func(
 		func:
-			| typeof render.COMPARE_FUNC_ALWAYS
-			| typeof render.COMPARE_FUNC_EQUAL
-			| typeof render.COMPARE_FUNC_GEQUAL
-			| typeof render.COMPARE_FUNC_GREATER
-			| typeof render.COMPARE_FUNC_LEQUAL
-			| typeof render.COMPARE_FUNC_LESS
-			| typeof render.COMPARE_FUNC_NEVER
-			| typeof render.COMPARE_FUNC_NOTEQUAL,
+			typeof render.COMPARE_FUNC_ALWAYS | typeof render.COMPARE_FUNC_EQUAL | typeof render.COMPARE_FUNC_GEQUAL | typeof render.COMPARE_FUNC_GREATER | typeof render.COMPARE_FUNC_LEQUAL | typeof render.COMPARE_FUNC_LESS | typeof render.COMPARE_FUNC_NEVER | typeof render.COMPARE_FUNC_NOTEQUAL,
 	): void;
 
 	/**
@@ -4663,10 +4582,10 @@ Transient frame buffer types are only valid while the render target is active, i
 
 	*/
 	export function set_render_target(
-		render_target: renderTarget,
+		render_target: rendertarget,
 		options?: Array<
-			| typeof render.BUFFER_DEPTH_BIT
 			| typeof render.BUFFER_COLOR_BIT
+			| typeof render.BUFFER_DEPTH_BIT
 			| typeof render.BUFFER_STENCIL_BIT
 		>,
 	): void;
@@ -4678,7 +4597,7 @@ Transient frame buffer types are only valid while the render target is active, i
 	 * @param height  new render target height
 	 */
 	export function set_render_target_size(
-		render_target: renderTarget,
+		render_target: rendertarget,
 		width: number,
 		height: number,
 	): void;
@@ -4714,14 +4633,7 @@ Transient frame buffer types are only valid while the render target is active, i
 	 */
 	export function set_stencil_func(
 		func:
-			| typeof render.COMPARE_FUNC_ALWAYS
-			| typeof render.COMPARE_FUNC_EQUAL
-			| typeof render.COMPARE_FUNC_GEQUAL
-			| typeof render.COMPARE_FUNC_GREATER
-			| typeof render.COMPARE_FUNC_LEQUAL
-			| typeof render.COMPARE_FUNC_LESS
-			| typeof render.COMPARE_FUNC_NEVER
-			| typeof render.COMPARE_FUNC_NOTEQUAL,
+			typeof render.COMPARE_FUNC_ALWAYS | typeof render.COMPARE_FUNC_EQUAL | typeof render.COMPARE_FUNC_GEQUAL | typeof render.COMPARE_FUNC_GREATER | typeof render.COMPARE_FUNC_LEQUAL | typeof render.COMPARE_FUNC_LESS | typeof render.COMPARE_FUNC_NEVER | typeof render.COMPARE_FUNC_NOTEQUAL,
 		ref: number,
 		mask: number,
 	): void;
@@ -4766,32 +4678,11 @@ Transient frame buffer types are only valid while the render target is active, i
 	 */
 	export function set_stencil_op(
 		sfail:
-			| typeof render.STENCIL_OP_DECR
-			| typeof render.STENCIL_OP_DECR_WRAP
-			| typeof render.STENCIL_OP_INCR
-			| typeof render.STENCIL_OP_INCR_WRAP
-			| typeof render.STENCIL_OP_INVERT
-			| typeof render.STENCIL_OP_KEEP
-			| typeof render.STENCIL_OP_REPLACE
-			| typeof render.STENCIL_OP_ZERO,
+			typeof render.STENCIL_OP_DECR | typeof render.STENCIL_OP_DECR_WRAP | typeof render.STENCIL_OP_INCR | typeof render.STENCIL_OP_INCR_WRAP | typeof render.STENCIL_OP_INVERT | typeof render.STENCIL_OP_KEEP | typeof render.STENCIL_OP_REPLACE | typeof render.STENCIL_OP_ZERO,
 		dpfail:
-			| typeof render.STENCIL_OP_DECR
-			| typeof render.STENCIL_OP_DECR_WRAP
-			| typeof render.STENCIL_OP_INCR
-			| typeof render.STENCIL_OP_INCR_WRAP
-			| typeof render.STENCIL_OP_INVERT
-			| typeof render.STENCIL_OP_KEEP
-			| typeof render.STENCIL_OP_REPLACE
-			| typeof render.STENCIL_OP_ZERO,
+			typeof render.STENCIL_OP_DECR | typeof render.STENCIL_OP_DECR_WRAP | typeof render.STENCIL_OP_INCR | typeof render.STENCIL_OP_INCR_WRAP | typeof render.STENCIL_OP_INVERT | typeof render.STENCIL_OP_KEEP | typeof render.STENCIL_OP_REPLACE | typeof render.STENCIL_OP_ZERO,
 		dppass:
-			| typeof render.STENCIL_OP_DECR
-			| typeof render.STENCIL_OP_DECR_WRAP
-			| typeof render.STENCIL_OP_INCR
-			| typeof render.STENCIL_OP_INCR_WRAP
-			| typeof render.STENCIL_OP_INVERT
-			| typeof render.STENCIL_OP_KEEP
-			| typeof render.STENCIL_OP_REPLACE
-			| typeof render.STENCIL_OP_ZERO,
+			typeof render.STENCIL_OP_DECR | typeof render.STENCIL_OP_DECR_WRAP | typeof render.STENCIL_OP_INCR | typeof render.STENCIL_OP_INCR_WRAP | typeof render.STENCIL_OP_INVERT | typeof render.STENCIL_OP_KEEP | typeof render.STENCIL_OP_REPLACE | typeof render.STENCIL_OP_ZERO,
 	): void;
 
 	/**
@@ -4818,12 +4709,14 @@ Transient frame buffer types are only valid while the render target is active, i
 	 * Set the size of the game window. Only works on desktop platforms.
 	 */
 	export type resize = 'resize';
+	export type resize_message = { height: number; width: number };
 
 	/**
 	 * Reports a change in window size. This is initiated on window resize on desktop or by orientation changes
 	 * on mobile devices.
 	 */
 	export type window_resized = 'window_resized';
+	export type window_resized_message = { height: number; width: number };
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
@@ -5165,12 +5058,7 @@ a list of the indices of the geometry in the form {i0, i1, i2, ..., in}. Each tr
 					frame_start: number;
 					frame_end: number;
 					playback?:
-						| typeof go.PLAYBACK_LOOP_BACKWARD
-						| typeof go.PLAYBACK_LOOP_FORWARD
-						| typeof go.PLAYBACK_LOOP_PINGPONG
-						| typeof go.PLAYBACK_ONCE_BACKWARD
-						| typeof go.PLAYBACK_ONCE_FORWARD
-						| typeof go.PLAYBACK_ONCE_PINGPONG;
+						typeof go.PLAYBACK_LOOP_BACKWARD | typeof go.PLAYBACK_LOOP_FORWARD | typeof go.PLAYBACK_LOOP_PINGPONG | typeof go.PLAYBACK_ONCE_BACKWARD | typeof go.PLAYBACK_ONCE_FORWARD | typeof go.PLAYBACK_ONCE_PINGPONG;
 					fps?: number;
 					flip_vertical?: boolean;
 					flip_horizontal?: boolean;
@@ -5291,33 +5179,10 @@ Creating an empty texture with no buffer data is not supported as a core feature
 			width: number;
 			height: number;
 			format:
-				| typeof resource.TEXTURE_FORMAT_LUMINANCE
-				| typeof resource.TEXTURE_FORMAT_R_BC4
-				| typeof resource.TEXTURE_FORMAT_R16F
-				| typeof resource.TEXTURE_FORMAT_R32F
-				| typeof resource.TEXTURE_FORMAT_RG_BC5
-				| typeof resource.TEXTURE_FORMAT_RG16F
-				| typeof resource.TEXTURE_FORMAT_RG32F
-				| typeof resource.TEXTURE_FORMAT_RGB
-				| typeof resource.TEXTURE_FORMAT_RGB_BC1
-				| typeof resource.TEXTURE_FORMAT_RGB_ETC1
-				| typeof resource.TEXTURE_FORMAT_RGB_PVRTC_2BPPV1
-				| typeof resource.TEXTURE_FORMAT_RGB_PVRTC_4BPPV1
-				| typeof resource.TEXTURE_FORMAT_RGB16F
-				| typeof resource.TEXTURE_FORMAT_RGB32F
-				| typeof resource.TEXTURE_FORMAT_RGBA
-				| typeof resource.TEXTURE_FORMAT_RGBA_ASTC_4x4
-				| typeof resource.TEXTURE_FORMAT_RGBA_BC3
-				| typeof resource.TEXTURE_FORMAT_RGBA_BC7
-				| typeof resource.TEXTURE_FORMAT_RGBA_ETC2
-				| typeof resource.TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1
-				| typeof resource.TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1
-				| typeof resource.TEXTURE_FORMAT_RGBA16F
-				| typeof resource.TEXTURE_FORMAT_RGBA32F;
+				typeof resource.TEXTURE_FORMAT_LUMINANCE | typeof resource.TEXTURE_FORMAT_R_BC4 | typeof resource.TEXTURE_FORMAT_R16F | typeof resource.TEXTURE_FORMAT_R32F | typeof resource.TEXTURE_FORMAT_RG_BC5 | typeof resource.TEXTURE_FORMAT_RG16F | typeof resource.TEXTURE_FORMAT_RG32F | typeof resource.TEXTURE_FORMAT_RGB | typeof resource.TEXTURE_FORMAT_RGB_BC1 | typeof resource.TEXTURE_FORMAT_RGB_ETC1 | typeof resource.TEXTURE_FORMAT_RGB_PVRTC_2BPPV1 | typeof resource.TEXTURE_FORMAT_RGB_PVRTC_4BPPV1 | typeof resource.TEXTURE_FORMAT_RGB16F | typeof resource.TEXTURE_FORMAT_RGB32F | typeof resource.TEXTURE_FORMAT_RGBA | typeof resource.TEXTURE_FORMAT_RGBA_ASTC_4x4 | typeof resource.TEXTURE_FORMAT_RGBA_BC3 | typeof resource.TEXTURE_FORMAT_RGBA_BC7 | typeof resource.TEXTURE_FORMAT_RGBA_ETC2 | typeof resource.TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1 | typeof resource.TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1 | typeof resource.TEXTURE_FORMAT_RGBA16F | typeof resource.TEXTURE_FORMAT_RGBA32F;
 			max_mipmaps?: number;
 			compression_type?:
-				| typeof resource.COMPRESSION_TYPE_BASIS_UASTC
-				| typeof resource.COMPRESSION_TYPE_DEFAULT;
+				typeof resource.COMPRESSION_TYPE_BASIS_UASTC | typeof resource.COMPRESSION_TYPE_DEFAULT;
 		},
 		buffer?: buffer,
 	): hash;
@@ -5355,12 +5220,7 @@ See resource.set_atlas for a detailed description of each field
 				frame_start: number;
 				frame_end: number;
 				playback?:
-					| typeof go.PLAYBACK_LOOP_BACKWARD
-					| typeof go.PLAYBACK_LOOP_FORWARD
-					| typeof go.PLAYBACK_LOOP_PINGPONG
-					| typeof go.PLAYBACK_ONCE_BACKWARD
-					| typeof go.PLAYBACK_ONCE_FORWARD
-					| typeof go.PLAYBACK_ONCE_PINGPONG;
+					typeof go.PLAYBACK_LOOP_BACKWARD | typeof go.PLAYBACK_LOOP_FORWARD | typeof go.PLAYBACK_LOOP_PINGPONG | typeof go.PLAYBACK_ONCE_BACKWARD | typeof go.PLAYBACK_ONCE_FORWARD | typeof go.PLAYBACK_ONCE_PINGPONG;
 				fps?: number;
 				flip_vertical?: boolean;
 				flip_horizontal?: boolean;
@@ -5441,9 +5301,7 @@ The texture type. Supported values:
 		depth: number;
 		mipmaps: number;
 		type:
-			| typeof resource.TEXTURE_TYPE_2D
-			| typeof resource.TEXTURE_TYPE_2D_ARRAY
-			| typeof resource.TEXTURE_TYPE_CUBE_MAP;
+			typeof resource.TEXTURE_TYPE_2D | typeof resource.TEXTURE_TYPE_2D_ARRAY | typeof resource.TEXTURE_TYPE_CUBE_MAP;
 	};
 
 	/**
@@ -5588,7 +5446,24 @@ a list of the indices of the geometry in the form {i0, i1, i2, ..., in}. Each tr
 	*/
 	export function set_atlas(
 		path: hash | string,
-		table: AnyNotNil[] | LuaMap | LuaSet | LuaTable | object,
+		table: {
+			texture: hash | string;
+			animations: [
+				{
+					id: string;
+					width: number;
+					height: number;
+					frame_start: number;
+					frame_end: number;
+					playback?:
+						typeof go.PLAYBACK_LOOP_BACKWARD | typeof go.PLAYBACK_LOOP_FORWARD | typeof go.PLAYBACK_LOOP_PINGPONG | typeof go.PLAYBACK_ONCE_BACKWARD | typeof go.PLAYBACK_ONCE_FORWARD | typeof go.PLAYBACK_ONCE_PINGPONG;
+					fps?: number;
+					flip_vertical?: boolean;
+					flip_horizontal?: boolean;
+				},
+			];
+			geometries: [{ vertices: number[]; uvs: number[]; indices: number[] }];
+		},
 	): void;
 
 	/**
@@ -5614,7 +5489,7 @@ optional flag to determine wether or not the resource should take over ownership
 	export function set_buffer(
 		path: hash | string,
 		buffer: buffer,
-		table: AnyNotNil[] | LuaMap | LuaSet | LuaTable | object,
+		table?: { transfer_ownership: boolean },
 	): void;
 
 	/**
@@ -5695,7 +5570,20 @@ optional specify the compression type for the data in the buffer object that hol
 	*/
 	export function set_texture(
 		path: hash | string,
-		table: AnyNotNil[] | LuaMap | LuaSet | LuaTable | object,
+		table: {
+			type:
+				| typeof resource.TEXTURE_TYPE_2D
+				| typeof resource.TEXTURE_TYPE_CUBE_MAP;
+			width: number;
+			height: number;
+			format:
+				typeof resource.TEXTURE_FORMAT_LUMINANCE | typeof resource.TEXTURE_FORMAT_R_BC4 | typeof resource.TEXTURE_FORMAT_R16F | typeof resource.TEXTURE_FORMAT_R32F | typeof resource.TEXTURE_FORMAT_RG_BC5 | typeof resource.TEXTURE_FORMAT_RG16F | typeof resource.TEXTURE_FORMAT_RG32F | typeof resource.TEXTURE_FORMAT_RGB | typeof resource.TEXTURE_FORMAT_RGB_BC1 | typeof resource.TEXTURE_FORMAT_RGB_ETC1 | typeof resource.TEXTURE_FORMAT_RGB_PVRTC_2BPPV1 | typeof resource.TEXTURE_FORMAT_RGB_PVRTC_4BPPV1 | typeof resource.TEXTURE_FORMAT_RGB16F | typeof resource.TEXTURE_FORMAT_RGB32F | typeof resource.TEXTURE_FORMAT_RGBA | typeof resource.TEXTURE_FORMAT_RGBA_ASTC_4x4 | typeof resource.TEXTURE_FORMAT_RGBA_BC3 | typeof resource.TEXTURE_FORMAT_RGBA_BC7 | typeof resource.TEXTURE_FORMAT_RGBA_ETC2 | typeof resource.TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1 | typeof resource.TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1 | typeof resource.TEXTURE_FORMAT_RGBA16F | typeof resource.TEXTURE_FORMAT_RGBA32F;
+			x?: number;
+			y?: number;
+			mipmap?: number;
+			compression_type?:
+				typeof resource.COMPRESSION_TYPE_BASIS_UASTC | typeof resource.COMPRESSION_TYPE_DEFAULT;
+		},
 		buffer: buffer,
 	): void;
 
@@ -5731,6 +5619,7 @@ declare namespace sys {
 	 * This message can only be sent to the designated `@system` socket.
 	 */
 	export type exit = 'exit';
+	export type exit_message = { code: number };
 
 	/**
 	 * Reboots the game engine with a specified set of arguments.
@@ -5741,6 +5630,14 @@ declare namespace sys {
 	 * This message can only be sent to the designated `@system` socket.
 	 */
 	export type reboot = 'reboot';
+	export type reboot_message = {
+		arg1?: string;
+		arg2?: string;
+		arg3?: string;
+		arg4?: string;
+		arg5?: string;
+		arg6?: string;
+	};
 
 	/**
 	 * Set game update-frequency (frame cap). This option is equivalent to `display.update_frequency` in
@@ -5751,6 +5648,7 @@ declare namespace sys {
 	 * This message can only be sent to the designated `@system` socket.
 	 */
 	export type set_update_frequency = 'set_update_frequency';
+	export type set_update_frequency_message = { frequency: number };
 
 	/**
 	 * Set the vsync swap interval. The interval with which to swap the front and back buffers
@@ -5765,6 +5663,7 @@ declare namespace sys {
 	 * This message can only be sent to the designated `@system` socket.
 	 */
 	export type set_vsync = 'set_vsync';
+	export type set_vsync_message = { swap_interval: number };
 
 	/**
 	 * Starts video recording of the game frame-buffer to file. Current video format is the
@@ -5778,6 +5677,11 @@ declare namespace sys {
 	 * This message can only be sent to the designated `@system` socket.
 	 */
 	export type start_record = 'start_record';
+	export type start_record_message = {
+		file_name: string;
+		frame_period?: number;
+		fps?: number;
+	};
 
 	/**
 	 * Stops the currently active video recording.
@@ -5893,9 +5797,7 @@ declare namespace sys {
 
 	*/
 	export function get_connectivity():
-		| typeof sys.NETWORK_DISCONNECTED
-		| typeof sys.NETWORK_CONNECTED_CELLULAR
-		| typeof sys.NETWORK_CONNECTED;
+		typeof sys.NETWORK_CONNECTED | typeof sys.NETWORK_CONNECTED_CELLULAR | typeof sys.NETWORK_DISCONNECTED;
 
 	/**
 	* Returns a table with engine information.
@@ -6080,10 +5982,7 @@ The HTTP user agent, i.e. "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) Apple
 	 * @param table  lua table to save
 	 * @return success  a boolean indicating if the table could be saved or not
 	 */
-	export function save(
-		filename: string,
-		table: AnyNotNil[] | LuaMap | LuaSet | LuaTable | object,
-	): boolean;
+	export function save(filename: string, table: unknown): boolean;
 
 	/**
 	 * The buffer can later deserialized by `sys.deserialize`.
@@ -6091,9 +5990,7 @@ The HTTP user agent, i.e. "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) Apple
 	 * @param table  lua table to serialize
 	 * @return buffer  serialized data buffer
 	 */
-	export function serialize(
-		table: AnyNotNil[] | LuaMap | LuaSet | LuaTable | object,
-	): string;
+	export function serialize(table: unknown): string;
 
 	/**
 	 * Sets the host that is used to check for network connectivity against.
@@ -6230,9 +6127,7 @@ declare namespace window {
 
 	*/
 	export function get_dim_mode():
-		| typeof window.DIMMING_UNKNOWN
-		| typeof window.DIMMING_ON
-		| typeof window.DIMMING_OFF;
+		typeof window.DIMMING_OFF | typeof window.DIMMING_ON | typeof window.DIMMING_UNKNOWN;
 
 	/**
 	 * This returns the current lock state of the mouse cursor
@@ -6290,11 +6185,7 @@ The callback value `data` is a table which currently holds these values
 		callback: (
 			this: unknown,
 			event:
-				| typeof window.WINDOW_EVENT_DEICONIFIED
-				| typeof window.WINDOW_EVENT_FOCUS_GAINED
-				| typeof window.WINDOW_EVENT_FOCUS_LOST
-				| typeof window.WINDOW_EVENT_ICONFIED
-				| typeof window.WINDOW_EVENT_RESIZED,
+				typeof window.WINDOW_EVENT_DEICONIFIED | typeof window.WINDOW_EVENT_FOCUS_GAINED | typeof window.WINDOW_EVENT_FOCUS_LOST | typeof window.WINDOW_EVENT_ICONFIED | typeof window.WINDOW_EVENT_RESIZED,
 			data: { width: number | undefined; height: number | undefined },
 		) => void,
 	): void;
@@ -6429,15 +6320,7 @@ declare namespace buffer {
 		declaration: {
 			hash: hash | string;
 			type:
-				| typeof buffer.VALUE_TYPE_FLOAT32
-				| typeof buffer.VALUE_TYPE_INT8
-				| typeof buffer.VALUE_TYPE_INT16
-				| typeof buffer.VALUE_TYPE_INT32
-				| typeof buffer.VALUE_TYPE_INT64
-				| typeof buffer.VALUE_TYPE_UINT8
-				| typeof buffer.VALUE_TYPE_UINT16
-				| typeof buffer.VALUE_TYPE_UINT32
-				| typeof buffer.VALUE_TYPE_UINT64;
+				typeof buffer.VALUE_TYPE_FLOAT32 | typeof buffer.VALUE_TYPE_INT8 | typeof buffer.VALUE_TYPE_INT16 | typeof buffer.VALUE_TYPE_INT32 | typeof buffer.VALUE_TYPE_INT64 | typeof buffer.VALUE_TYPE_UINT8 | typeof buffer.VALUE_TYPE_UINT16 | typeof buffer.VALUE_TYPE_UINT32 | typeof buffer.VALUE_TYPE_UINT64;
 			count: number;
 		},
 	): buffer;
@@ -6464,16 +6347,7 @@ declare namespace buffer {
 		[
 			unknown[] | undefined,
 			(
-				| typeof buffer.VALUE_TYPE_FLOAT32
-				| typeof buffer.VALUE_TYPE_INT8
-				| typeof buffer.VALUE_TYPE_INT16
-				| typeof buffer.VALUE_TYPE_INT32
-				| typeof buffer.VALUE_TYPE_INT64
-				| typeof buffer.VALUE_TYPE_UINT8
-				| typeof buffer.VALUE_TYPE_UINT16
-				| typeof buffer.VALUE_TYPE_UINT32
-				| typeof buffer.VALUE_TYPE_UINT64
-				| undefined
+				typeof buffer.VALUE_TYPE_FLOAT32 | typeof buffer.VALUE_TYPE_INT8 | typeof buffer.VALUE_TYPE_INT16 | typeof buffer.VALUE_TYPE_INT32 | typeof buffer.VALUE_TYPE_INT64 | typeof buffer.VALUE_TYPE_UINT8 | typeof buffer.VALUE_TYPE_UINT16 | typeof buffer.VALUE_TYPE_UINT32 | typeof buffer.VALUE_TYPE_UINT64 | undefined
 			),
 		]
 	>;
@@ -6502,15 +6376,7 @@ declare namespace buffer {
 		metadata_name: hash | string,
 		values: number[],
 		value_type:
-			| typeof buffer.VALUE_TYPE_FLOAT32
-			| typeof buffer.VALUE_TYPE_INT8
-			| typeof buffer.VALUE_TYPE_INT16
-			| typeof buffer.VALUE_TYPE_INT32
-			| typeof buffer.VALUE_TYPE_INT64
-			| typeof buffer.VALUE_TYPE_UINT8
-			| typeof buffer.VALUE_TYPE_UINT16
-			| typeof buffer.VALUE_TYPE_UINT32
-			| typeof buffer.VALUE_TYPE_UINT64,
+			typeof buffer.VALUE_TYPE_FLOAT32 | typeof buffer.VALUE_TYPE_INT8 | typeof buffer.VALUE_TYPE_INT16 | typeof buffer.VALUE_TYPE_INT32 | typeof buffer.VALUE_TYPE_INT64 | typeof buffer.VALUE_TYPE_UINT8 | typeof buffer.VALUE_TYPE_UINT16 | typeof buffer.VALUE_TYPE_UINT32 | typeof buffer.VALUE_TYPE_UINT64,
 	): void;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
@@ -6643,17 +6509,13 @@ declare namespace image {
 		buffer: string,
 		premult?: boolean,
 	):
-		| {
+		{
 				width: number;
 				height: number;
 				type:
-					| typeof image.TYPE_LUMINANCE
-					| typeof image.TYPE_LUMINANCE_ALPHA
-					| typeof image.TYPE_RGB
-					| typeof image.TYPE_RGBA;
+					typeof image.TYPE_LUMINANCE | typeof image.TYPE_LUMINANCE_ALPHA | typeof image.TYPE_RGB | typeof image.TYPE_RGBA;
 				buffer: string;
-		  }
-		| undefined;
+		  } | undefined;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
@@ -6672,9 +6534,7 @@ declare namespace json {
 	 * @param tbl  lua table to encode
 	 * @return json  encoded json
 	 */
-	export function encode(
-		tbl: AnyNotNil[] | LuaMap | LuaSet | LuaTable | object,
-	): string;
+	export function encode(tbl: unknown): string;
 
 	/**
 	 * null
@@ -6804,7 +6664,7 @@ true = repeat timer until cancel, false = one-shot timer.
 	*/
 	export function get_info(
 		handle: hash,
-	): undefined | { time_remaining: number; delay: number; repeating: boolean };
+	): { time_remaining: number; delay: number; repeating: boolean } | undefined;
 
 	/**
 	 * Manual triggering a callback for a timer.
@@ -7446,6 +7306,14 @@ declare namespace camera {
 	 *
 	 */
 	export type set_camera = 'set_camera';
+	export type set_camera_message = {
+		aspect_ratio?: number;
+		fov?: number;
+		near_z?: number;
+		far_z?: number;
+		orthographic_projection?: boolean;
+		orthographic_zoom?: number;
+	};
 
 	/**
 	 * READ ONLY The calculated view matrix of the camera.
@@ -7515,9 +7383,7 @@ declare namespace collectionfactory {
 	export function get_status(
 		url?: hash | url | string,
 	):
-		| typeof collectionfactory.STATUS_UNLOADED
-		| typeof collectionfactory.STATUS_LOADING
-		| typeof collectionfactory.STATUS_LOADED;
+		typeof collectionfactory.STATUS_LOADED | typeof collectionfactory.STATUS_LOADING | typeof collectionfactory.STATUS_UNLOADED;
 
 	/**
 	* Resources loaded are referenced by the collection factory component until the existing (parent) collection is destroyed or collectionfactory.unload is called.
@@ -7644,6 +7510,7 @@ resources.
 	 * which can be useful for debugging when each frame needs to be inspected.
 	 */
 	export type set_time_step = 'set_time_step';
+	export type set_time_step_message = { factor: number; mode: 0 | 1 };
 
 	/**
 	 * Post this message to a collection-proxy-component to start the unloading of the referenced collection.
@@ -7706,9 +7573,7 @@ declare namespace factory {
 	export function get_status(
 		url?: hash | url | string,
 	):
-		| typeof factory.STATUS_UNLOADED
-		| typeof factory.STATUS_LOADING
-		| typeof factory.STATUS_LOADED;
+		typeof factory.STATUS_LOADED | typeof factory.STATUS_LOADING | typeof factory.STATUS_UNLOADED;
 
 	/**
 	* Resources are referenced by the factory component until the existing (parent) collection is destroyed or factory.unload is called.
@@ -7802,7 +7667,7 @@ declare namespace label {
 	 * The scale of the label. The type of the property is number (uniform)
 	 * or vector3 (non uniform).
 	 */
-	export let scale: number | vmath.vector3;
+	export let scale: vmath.vector3 | number;
 
 	/**
 	 * The shadow color of the label. The type of the property is vector4.
@@ -7929,12 +7794,7 @@ The invoker of the callback: the model component.
 		url: hash | url | string,
 		anim_id: hash | string,
 		playback:
-			| typeof go.PLAYBACK_LOOP_BACKWARD
-			| typeof go.PLAYBACK_LOOP_FORWARD
-			| typeof go.PLAYBACK_LOOP_PINGPONG
-			| typeof go.PLAYBACK_ONCE_BACKWARD
-			| typeof go.PLAYBACK_ONCE_FORWARD
-			| typeof go.PLAYBACK_ONCE_PINGPONG,
+			typeof go.PLAYBACK_LOOP_BACKWARD | typeof go.PLAYBACK_LOOP_FORWARD | typeof go.PLAYBACK_LOOP_PINGPONG | typeof go.PLAYBACK_ONCE_BACKWARD | typeof go.PLAYBACK_ONCE_FORWARD | typeof go.PLAYBACK_ONCE_PINGPONG,
 		play_properties?: {
 			blend_duration?: number;
 			offset?: number;
@@ -7946,12 +7806,7 @@ The invoker of the callback: the model component.
 			message: {
 				animation_id: hash;
 				playback:
-					| typeof go.PLAYBACK_LOOP_BACKWARD
-					| typeof go.PLAYBACK_LOOP_FORWARD
-					| typeof go.PLAYBACK_LOOP_PINGPONG
-					| typeof go.PLAYBACK_ONCE_BACKWARD
-					| typeof go.PLAYBACK_ONCE_FORWARD
-					| typeof go.PLAYBACK_ONCE_PINGPONG;
+					typeof go.PLAYBACK_LOOP_BACKWARD | typeof go.PLAYBACK_LOOP_FORWARD | typeof go.PLAYBACK_LOOP_PINGPONG | typeof go.PLAYBACK_ONCE_BACKWARD | typeof go.PLAYBACK_ONCE_FORWARD | typeof go.PLAYBACK_ONCE_PINGPONG;
 			},
 			sender: url,
 		) => void,
@@ -7983,6 +7838,11 @@ The invoker of the callback: the model component.
 	 *
 	 */
 	export type model_animation_done = 'model_animation_done';
+	export type model_animation_done_message = {
+		animation_id: hash;
+		playback:
+			typeof go.PLAYBACK_ONCE_BACKWARD | typeof go.PLAYBACK_ONCE_FORWARD | typeof go.PLAYBACK_ONCE_PINGPONG;
+	};
 
 	/**
 	 * The animation playback rate. A multiplier to the animation playback rate. The type of the property is number.
@@ -8056,10 +7916,7 @@ the new state of the emitter:
 			id: hash,
 			emitter: hash,
 			state:
-				| typeof particlefx.EMITTER_STATE_POSTSPAWN
-				| typeof particlefx.EMITTER_STATE_PRESPAWN
-				| typeof particlefx.EMITTER_STATE_SLEEPING
-				| typeof particlefx.EMITTER_STATE_SPAWNING,
+				typeof particlefx.EMITTER_STATE_POSTSPAWN | typeof particlefx.EMITTER_STATE_PRESPAWN | typeof particlefx.EMITTER_STATE_SLEEPING | typeof particlefx.EMITTER_STATE_SPAWNING,
 		) => void,
 	): void;
 
@@ -8135,6 +7992,11 @@ declare namespace sound {
 	 * ⚠ A sound will continue to play even if the game object the sound component belonged to is deleted. You can send a `stop_sound` to stop the sound.
 	 */
 	export type play_sound = 'play_sound';
+	export type play_sound_message = {
+		delay?: number;
+		gain?: number;
+		play_id?: number;
+	};
 
 	/**
 	 * Post this message to a sound-component to set gain on all active playing voices.
@@ -8144,6 +8006,7 @@ declare namespace sound {
 	 * `10db/20`.
 	 */
 	export type set_gain = 'set_gain';
+	export type set_gain_message = { gain: number };
 
 	/**
 	 * The sound data used when playing the sound. The type of the property is hash.
@@ -8342,12 +8205,14 @@ The invoker of the callback: the sound component.
 	 * could be played to completion.
 	 */
 	export type sound_done = 'sound_done';
+	export type sound_done_message = { play_id: number };
 
 	/**
 	 * This message is sent back to the sender of a `play_sound` message, if the sound
 	 * has been manually stopped.
 	 */
 	export type sound_stopped = 'sound_stopped';
+	export type sound_stopped_message = { play_id: number };
 
 	/**
 	 * The speed on the sound-component where 1.0 is normal speed, 0.5 is half
@@ -8382,6 +8247,7 @@ declare namespace sprite {
 	 * this message.
 	 */
 	export type animation_done = 'animation_done';
+	export type animation_done_message = { current_tile: number; id: hash };
 
 	/**
 	 * The normalized animation cursor. The type of the property is number.
@@ -8407,6 +8273,7 @@ declare namespace sprite {
 	 * Post this message to a sprite component to make it play an animation from its tile set.
 	 */
 	export type play_animation = 'play_animation';
+	export type play_animation_message = { id: hash };
 
 	/**
 	 * number.

@@ -7,8 +7,6 @@
 const fs = require('fs');
 const filePath = 'index.d.ts';
 
-const genericTable = 'LuaTable | LuaSet | LuaMap | object | AnyNotNil[]';
-
 /** Initial generic changes */
 const earlyChanges = [
 	// Describe `url`
@@ -62,19 +60,17 @@ const earlyChanges = [
 			/**
 			 * Render pipeline target.
 			 */
-			declare type renderTarget = Readonly<LuaUserdata &
+			declare type rendertarget = Readonly<LuaUserdata &
 			{
-				readonly __renderTarget__: unique symbol;
+				readonly __rendertarget__: unique symbol;
 			}>;
 
 			/**
 			 * Socket objects.
 			 */
-			declare type socketClient = object;
-			declare type socketServer = object;
-			declare type socketMaster = object;
-			declare type socketUnconnected = object;
-			declare type socketConnected = object;
+			declare type socketclient = object;
+			declare type socketmaster = object;
+			declare type socketunconnected = object;
 			`,
 	],
 	// Remove {}
@@ -116,7 +112,7 @@ const socket = [
 	],
 	[
 		'function connect(address: string, port: number, locaddr?: string, locport?: number, family?: string): LuaMultiReturn<[any, any, string, any]>',
-		'function connect(address: string, port: number, locaddr?: string, locport?: number, family?: "inet" | "inet6"): LuaMultiReturn<[socketClient | undefined, string | undefined]>',
+		'function connect(address: string, port: number, locaddr?: string, locport?: number, family?: "inet" | "inet6"): LuaMultiReturn<[socketclient | undefined, string | undefined]>',
 	],
 	[
 		'function select(recvt: any, sendt: any, timeout?: number): LuaMultiReturn<[any, any, string, any]>',
@@ -124,19 +120,19 @@ const socket = [
 	],
 	[
 		'function tcp(): LuaMultiReturn<[any, any, string, any]>',
-		'function tcp(): LuaMultiReturn<[socketMaster | undefined, string | undefined]>',
+		'function tcp(): LuaMultiReturn<[socketmaster | undefined, string | undefined]>',
 	],
 	[
 		'function tcp6(): LuaMultiReturn<[any, any, string, any]>',
-		'function tcp6(): LuaMultiReturn<[socketMaster | undefined, string | undefined]>',
+		'function tcp6(): LuaMultiReturn<[socketmaster | undefined, string | undefined]>',
 	],
 	[
 		'function udp(): LuaMultiReturn<[any, any, string, any]>',
-		'function udp(): LuaMultiReturn<[socketUnconnected | undefined, string | unknown]>',
+		'function udp(): LuaMultiReturn<[socketunconnected | undefined, string | unknown]>',
 	],
 	[
 		'function udp6(): LuaMultiReturn<[any, any, string, any]>',
-		'function udp6(): LuaMultiReturn<[socketUnconnected | undefined, string | unknown]>',
+		'function udp6(): LuaMultiReturn<[socketunconnected | undefined, string | unknown]>',
 	],
 ];
 
@@ -159,10 +155,6 @@ const crash = [
 	[
 		'function load_previous(): LuaMultiReturn<[number, any]>',
 		'function load_previous(): undefined | number',
-	],
-	[
-		'function get_backtrace(handle: number): any',
-		'function get_backtrace(handle: number): object',
 	],
 	[
 		'function get_modules(handle: number): any',
@@ -214,6 +206,16 @@ const go = [
 	[
 		'function get_parent(id?: string | hash | url): LuaMultiReturn<[hash, any]>',
 		'function get_parent(id?: string | hash | url): hash | undefined',
+	],
+	// Describe input message
+	[
+		'export type acquire_input_focus = "acquire_input_focus"',
+		'export type acquire_input_focus = "acquire_input_focus"; export type touch_input = { id: number, pressed: boolean, released: boolean, tap_count: number, x: number, y: number, dx: number, dy: number, acc_x?: number, acc_y?: number, acc_z?: number };export type input_message = { value?: number, pressed?: boolean, released?: boolean, repeated?: boolean, x?: number, y?: number, screen_x?: number, screen_y?: number, dx?: number, dy?: number, screen_dx?: number, screen_dy?: number, gamepad?: number, touch?: touch_input[] }',
+	],
+	// Describe set parent message
+	[
+		'export type set_parent = "set_parent"',
+		'export type set_parent = "set_parent"; export type set_parent_message = { parent_id: hash, keep_world_transform?: number }',
 	],
 ];
 
@@ -406,6 +408,13 @@ const gui = [
 		'function stop_particlefx(node: node, options: any)',
 		'function stop_particlefx(node: node, options?: { clear: boolean })',
 	],
+	// function set_texture_data
+	['type: any', 'type: "rgb" | "rgba" | "l"'],
+	// Describe layout changed message
+	[
+		'export type layout_changed = "layout_changed"',
+		'export type layout_changed = "layout_changed"; export type layout_changed_message = { id: hash, previous_id: hash }',
+	],
 ];
 
 /** physics namespace */
@@ -434,26 +443,32 @@ const physics = [
 		'function get_joint_reaction_torque(collisionobject: string | hash | url, joint_id: string | hash): any',
 		'function get_joint_reaction_torque(collisionobject: string | hash | url, joint_id: string | hash): number',
 	],
+	// Describe ray cast message
 	[
 		'export type ray_cast_response = "ray_cast_response"',
 		'export type ray_cast_response = "ray_cast_response";export type ray_cast_response_message = { fraction: number, position: vmath.vector3, normal: vmath.vector3, id: hash, group: hash, request_id: number }',
 	],
+	// Describe ray cast missed message
 	[
 		'export type ray_cast_missed = "ray_cast_missed"',
 		'export type ray_cast_missed = "ray_cast_missed";export type ray_cast_missed_message = { request_id: number }',
 	],
+	// Describe trigger response message
 	[
 		'export type trigger_response = "trigger_response"',
 		'export type trigger_response = "trigger_response";export type trigger_response_message = { other_id: hash, enter: boolean, other_group: hash, own_group: hash }',
 	],
+	// Describe contact point reponse message
 	[
 		'export type contact_point_response = "contact_point_response"',
 		'export type contact_point_response = "contact_point_response";export type contact_point_response_message = { position: vmath.vector3, normal: vmath.vector3, relative_velocity: vmath.vector3, distance: number, applied_impulse: number, life_time: number, mass: number, other_mass: number, other_id: hash, other_position: vmath.vector3, other_group: hash, own_group: hash }',
 	],
+	// Describe collision response message
 	[
 		'export type collision_response = "collision_response"',
 		'export type collision_response = "collision_response";export type collision_response_message = { other_id: hash, other_position: vmath.vector3, other_group: hash, own_group: hash }',
 	],
+	// Describe apply force message
 	[
 		'export type apply_force = "apply_force"',
 		'export type apply_force = "apply_force";export type apply_force_message = { force: vmath.vector3, position: vmath.vector3 }',
@@ -514,7 +529,7 @@ const render = [
 		'const $1: number & { readonly _FILTER_: unique symbol }',
 	],
 	// (greedy)
-	[/(render_target): any/g, '$1: renderTarget'],
+	[/(render_target): any/g, '$1: rendertarget'],
 	[
 		'let FORMAT_R16F: any',
 		'const FORMAT_R16F: number & { readonly _FORMAT_: unique symbol } | undefined',
@@ -631,19 +646,40 @@ const render = [
 	],
 	[
 		'function render_target(name: string, parameters: any): any',
-		'function render_target(name: string, parameters: { [key: typeof render.BUFFER_COLOR_BIT | typeof render.BUFFER_COLOR0_BIT | typeof render.BUFFER_COLOR1_BIT | typeof render.BUFFER_COLOR2_BIT | typeof render.BUFFER_COLOR3_BIT | typeof render.BUFFER_DEPTH_BIT | typeof render.BUFFER_STENCIL_BIT ]: {	format: typeof render.FORMAT_LUMINANCE | typeof render.FORMAT_RGB | typeof render.FORMAT_RGBA | typeof render.FORMAT_DEPTH | typeof render.FORMAT_STENCIL | typeof render.FORMAT_RGBA32F | typeof render.FORMAT_RGBA16F; width: number; height: number; min_filter?: typeof render.FILTER_LINEAR | typeof render.FILTER_NEAREST; mag_filter?: typeof render.FILTER_LINEAR | typeof render.FILTER_NEAREST; u_wrap?: typeof render.WRAP_CLAMP_TO_BORDER | typeof render.WRAP_CLAMP_TO_EDGE | typeof render.WRAP_MIRRORED_REPEAT | typeof render.WRAP_REPEAT; v_wrap?: typeof render.WRAP_CLAMP_TO_BORDER | typeof render.WRAP_CLAMP_TO_EDGE | typeof render.WRAP_MIRRORED_REPEAT | typeof render.WRAP_REPEAT; flags?: unknown } }): renderTarget',
+		'function render_target(name: string, parameters: { [key: typeof render.BUFFER_COLOR_BIT | typeof render.BUFFER_COLOR0_BIT | typeof render.BUFFER_COLOR1_BIT | typeof render.BUFFER_COLOR2_BIT | typeof render.BUFFER_COLOR3_BIT | typeof render.BUFFER_DEPTH_BIT | typeof render.BUFFER_STENCIL_BIT ]: {	format: typeof render.FORMAT_LUMINANCE | typeof render.FORMAT_RGB | typeof render.FORMAT_RGBA | typeof render.FORMAT_DEPTH | typeof render.FORMAT_STENCIL | typeof render.FORMAT_RGBA32F | typeof render.FORMAT_RGBA16F; width: number; height: number; min_filter?: typeof render.FILTER_LINEAR | typeof render.FILTER_NEAREST; mag_filter?: typeof render.FILTER_LINEAR | typeof render.FILTER_NEAREST; u_wrap?: typeof render.WRAP_CLAMP_TO_BORDER | typeof render.WRAP_CLAMP_TO_EDGE | typeof render.WRAP_MIRRORED_REPEAT | typeof render.WRAP_REPEAT; v_wrap?: typeof render.WRAP_CLAMP_TO_BORDER | typeof render.WRAP_CLAMP_TO_EDGE | typeof render.WRAP_MIRRORED_REPEAT | typeof render.WRAP_REPEAT; flags?: unknown } }): rendertarget',
 	],
 	[
 		'function set_stencil_op(sfail: any, dpfail: any, dppass: any)',
 		'function set_stencil_op(sfail: typeof render.STENCIL_OP_KEEP | typeof render.STENCIL_OP_ZERO | typeof render.STENCIL_OP_REPLACE | typeof render.STENCIL_OP_INCR | typeof render.STENCIL_OP_INCR_WRAP | typeof render.STENCIL_OP_DECR | typeof render.STENCIL_OP_DECR_WRAP | typeof render.STENCIL_OP_INVERT, dpfail: typeof render.STENCIL_OP_KEEP | typeof render.STENCIL_OP_ZERO | typeof render.STENCIL_OP_REPLACE | typeof render.STENCIL_OP_INCR | typeof render.STENCIL_OP_INCR_WRAP | typeof render.STENCIL_OP_DECR | typeof render.STENCIL_OP_DECR_WRAP | typeof render.STENCIL_OP_INVERT, dppass: typeof render.STENCIL_OP_KEEP | typeof render.STENCIL_OP_ZERO | typeof render.STENCIL_OP_REPLACE | typeof render.STENCIL_OP_INCR | typeof render.STENCIL_OP_INCR_WRAP | typeof render.STENCIL_OP_DECR | typeof render.STENCIL_OP_DECR_WRAP | typeof render.STENCIL_OP_INVERT)',
 	],
 	[
-		'function set_render_target(render_target: renderTarget, options?: any)',
-		'function set_render_target(render_target: renderTarget, options?: Array<typeof render.BUFFER_COLOR_BIT | typeof  render.BUFFER_DEPTH_BIT | typeof render.BUFFER_STENCIL_BIT>)',
+		'function set_render_target(render_target: rendertarget, options?: any)',
+		'function set_render_target(render_target: rendertarget, options?: Array<typeof render.BUFFER_COLOR_BIT | typeof  render.BUFFER_DEPTH_BIT | typeof render.BUFFER_STENCIL_BIT>)',
 	],
 	[
 		'function set_blend_func(source_factor: any, destination_factor: any)',
 		'function set_blend_func(source_factor: typeof render.BLEND_ZERO | typeof render.BLEND_ONE | typeof render.BLEND_SRC_COLOR | typeof render.BLEND_ONE_MINUS_SRC_COLOR | typeof render.BLEND_DST_COLOR | typeof render.BLEND_ONE_MINUS_DST_COLOR | typeof render.BLEND_SRC_ALPHA | typeof render.BLEND_ONE_MINUS_SRC_ALPHA | typeof render.BLEND_DST_ALPHA | typeof render.BLEND_ONE_MINUS_DST_ALPHA | typeof render.BLEND_CONSTANT_COLOR | typeof render.BLEND_ONE_MINUS_CONSTANT_COLOR | typeof render.BLEND_CONSTANT_ALPHA | typeof render.BLEND_ONE_MINUS_CONSTANT_ALPHA | typeof render.BLEND_SRC_ALPHA_SATURATE	, destination_factor: typeof render.BLEND_ZERO | typeof render.BLEND_ONE | typeof render.BLEND_SRC_COLOR | typeof render.BLEND_ONE_MINUS_SRC_COLOR | typeof render.BLEND_DST_COLOR | typeof render.BLEND_ONE_MINUS_DST_COLOR | typeof render.BLEND_SRC_ALPHA | typeof render.BLEND_ONE_MINUS_SRC_ALPHA | typeof render.BLEND_DST_ALPHA | typeof render.BLEND_ONE_MINUS_DST_ALPHA | typeof render.BLEND_CONSTANT_COLOR | typeof render.BLEND_ONE_MINUS_CONSTANT_COLOR | typeof render.BLEND_CONSTANT_ALPHA | typeof render.BLEND_ONE_MINUS_CONSTANT_ALPHA | typeof render.BLEND_SRC_ALPHA_SATURATE	)',
+	],
+	// Describe clear color message
+	[
+		'export type clear_color = "clear_color"',
+		'export type clear_color = "clear_color"; export type clear_color_message = { color: vmath.vector4 }',
+	],
+	[
+		'export type draw_debug_text = "draw_debug_text"',
+		'export type draw_debug_text = "draw_debug_text"; export type draw_debug_text_message = { position: vmath.vector3, text: string, color: vmath.vector4 }',
+	],
+	[
+		'export type draw_line = "draw_line"',
+		'export type draw_line = "draw_line";export type draw_line_message = { start_point: vmath.vector3, end_point: vmath.vector3, color: vmath.vector4 }',
+	],
+	[
+		'export type resize = "resize"',
+		'export type resize = "resize"; export type resize_message = { height: number, width: number }',
+	],
+	[
+		'export type window_resized = "window_resized"',
+		'export type window_resized = "window_resized"; export type window_resized_message = { height: number, width: number }',
 	],
 ];
 
@@ -682,6 +718,18 @@ const resource = [
 	[
 		'function create_texture(path: string, table: any, buffer?: buffer): hash',
 		'function create_texture(path: string, table: { type: typeof resource.TEXTURE_TYPE_2D | typeof resource.TEXTURE_TYPE_CUBE_MAP, width: number, height: number, format: typeof resource.TEXTURE_FORMAT_LUMINANCE | typeof resource.TEXTURE_FORMAT_RGB | typeof resource.TEXTURE_FORMAT_RGBA | typeof resource.TEXTURE_FORMAT_RGB_PVRTC_2BPPV1 | typeof resource.TEXTURE_FORMAT_RGB_PVRTC_4BPPV1 | typeof resource.TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1 | typeof resource.TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1 | typeof resource.TEXTURE_FORMAT_RGB_ETC1 | typeof resource.TEXTURE_FORMAT_RGBA_ETC2 | typeof resource.TEXTURE_FORMAT_RGBA_ASTC_4x4 | typeof resource.TEXTURE_FORMAT_RGB_BC1 | typeof resource.TEXTURE_FORMAT_RGBA_BC3 | typeof resource.TEXTURE_FORMAT_R_BC4 | typeof resource.TEXTURE_FORMAT_RG_BC5 | typeof resource.TEXTURE_FORMAT_RGBA_BC7 | typeof resource.TEXTURE_FORMAT_RGB16F | typeof resource.TEXTURE_FORMAT_RGB32F | typeof resource.TEXTURE_FORMAT_RGBA16F | typeof resource.TEXTURE_FORMAT_RGBA32F | typeof resource.TEXTURE_FORMAT_R16F | typeof resource.TEXTURE_FORMAT_RG16F | typeof resource.TEXTURE_FORMAT_R32F | typeof resource.TEXTURE_FORMAT_RG32F, max_mipmaps?: number, compression_type?: typeof resource.COMPRESSION_TYPE_DEFAULT | typeof resource.COMPRESSION_TYPE_BASIS_UASTC }, buffer?: buffer): hash',
+	],
+	[
+		'function set_atlas(path: hash | string, table: any)',
+		'function set_atlas(path: hash | string, table: { texture: string | hash,	animations: [{ id: string, width: number, height: number, frame_start: number, frame_end: number, playback?: typeof go.PLAYBACK_ONCE_FORWARD | typeof go.PLAYBACK_ONCE_BACKWARD | typeof go.PLAYBACK_ONCE_PINGPONG | typeof go.PLAYBACK_LOOP_FORWARD | typeof go.PLAYBACK_LOOP_BACKWARD | typeof go.PLAYBACK_LOOP_PINGPONG, fps?: number, flip_vertical?: boolean, flip_horizontal?: boolean }], geometries: [{ vertices: number[], uvs: number[], indices: number[] }] })',
+	],
+	[
+		'function set_buffer(path: hash | string, buffer: buffer, table: any)',
+		'function set_buffer(path: hash | string, buffer: buffer, table?: { transfer_ownership: boolean })',
+	],
+	[
+		'function set_texture(path: hash | string, table: any, buffer: buffer)',
+		'function set_texture(path: hash | string, table: { type: typeof resource.TEXTURE_TYPE_2D | typeof resource.TEXTURE_TYPE_CUBE_MAP, width: number, height: number, format: typeof resource.TEXTURE_FORMAT_LUMINANCE | typeof resource.TEXTURE_FORMAT_RGB | typeof resource.TEXTURE_FORMAT_RGBA | typeof resource.TEXTURE_FORMAT_RGB_PVRTC_2BPPV1 | typeof resource.TEXTURE_FORMAT_RGB_PVRTC_4BPPV1 | typeof resource.TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1 | typeof resource.TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1 | typeof resource.TEXTURE_FORMAT_RGB_ETC1 | typeof resource.TEXTURE_FORMAT_RGBA_ETC2 | typeof resource.TEXTURE_FORMAT_RGBA_ASTC_4x4 | typeof resource.TEXTURE_FORMAT_RGB_BC1 | typeof resource.TEXTURE_FORMAT_RGBA_BC3 | typeof resource.TEXTURE_FORMAT_R_BC4 | typeof resource.TEXTURE_FORMAT_RG_BC5 | typeof resource.TEXTURE_FORMAT_RGBA_BC7 | typeof resource.TEXTURE_FORMAT_RGB16F | typeof resource.TEXTURE_FORMAT_RGB32F | typeof resource.TEXTURE_FORMAT_RGBA16F | typeof resource.TEXTURE_FORMAT_RGBA32F | typeof resource.TEXTURE_FORMAT_R16F | typeof resource.TEXTURE_FORMAT_RG16F | typeof resource.TEXTURE_FORMAT_R32F | typeof resource.TEXTURE_FORMAT_RG32F, x?: number, y?: number, mipmap?: number, compression_type?: typeof resource.COMPRESSION_TYPE_DEFAULT | typeof resource.COMPRESSION_TYPE_BASIS_UASTC }, buffer: buffer)',
 	],
 ];
 
@@ -737,6 +785,27 @@ const sys = [
 	[
 		'function get_ifaddrs(): any',
 		'function get_ifaddrs(): { name: string, address: string | undefined, mac: string | undefined, up: boolean, running: boolean }[]',
+	],
+	// Describe messages
+	[
+		'export type exit = "exit"',
+		'export type exit = "exit"; export type exit_message = { code: number }',
+	],
+	[
+		'export type reboot = "reboot"',
+		'export type reboot = "reboot"; export type reboot_message = { arg1?: string, arg2?: string, arg3?: string, arg4?: string, arg5?: string, arg6?: string }',
+	],
+	[
+		'export type set_update_frequency = "set_update_frequency"',
+		'export type set_update_frequency = "set_update_frequency"; export type set_update_frequency_message = { frequency: number }',
+	],
+	[
+		'export type set_vsync = "set_vsync"',
+		'export type set_vsync = "set_vsync"; export type set_vsync_message = { swap_interval: number }',
+	],
+	[
+		'export type start_record = "start_record"',
+		'export type start_record = "start_record"; export type start_record_message = { file_name: string, frame_period?: number, fps?: number }',
 	],
 ];
 
@@ -868,6 +937,11 @@ const camera = [
 	['let orthographic_zoom: any', 'let orthographic_zoom: number'],
 	['let projection: any', 'const projection: Readonly<vmath.matrix4>'],
 	['let view: any', 'const view: Readonly<vmath.matrix4>'],
+	// Describe message
+	[
+		'export type set_camera = "set_camera"',
+		'export type set_camera = "set_camera"; export type set_camera_message = { aspect_ratio?: number, fov?: number, near_z?: number, far_z?: number, orthographic_projection?: boolean, orthographic_zoom?: number }',
+	],
 ];
 
 /** collectionFactory namespace */
@@ -901,6 +975,11 @@ const collectionProxy = [
 	[
 		'function get_resources(collectionproxy: url): any',
 		'function get_resources(collectionproxy: url): string[]',
+	],
+	// Describe message
+	[
+		'export type set_time_step = "set_time_step"',
+		'export type set_time_step = "set_time_step"; export type set_time_step_message = { factor: number, mode: 1 | 0 }',
 	],
 ];
 
@@ -960,6 +1039,11 @@ const model = [
 		'complete_function?: (this: unknown, message_id: hash, message: { animation_id: hash, playback: typeof go.PLAYBACK_ONCE_FORWARD | typeof go.PLAYBACK_ONCE_BACKWARD | typeof go.PLAYBACK_ONCE_PINGPONG | typeof go.PLAYBACK_LOOP_FORWARD | typeof go.PLAYBACK_LOOP_BACKWARD | typeof go.PLAYBACK_LOOP_PINGPONG }, sender: url) => void',
 	],
 	['let textureN: any', 'let textureN: hash'],
+	// Describe message
+	[
+		'export type model_animation_done = "model_animation_done"',
+		'export type model_animation_done = "model_animation_done"; export type model_animation_done_message = { animation_id: hash, playback: typeof go.PLAYBACK_ONCE_FORWARD | typeof go.PLAYBACK_ONCE_BACKWARD | typeof go.PLAYBACK_ONCE_PINGPONG }',
+	],
 ];
 
 /** particlefx namespace */
@@ -1000,6 +1084,23 @@ const sound = [
 		'function pause(url: string | hash | url, pause?: boolean)',
 	],
 	['function get_groups(): any', 'function get_groups(): hash[]'],
+	// Describe messages
+	[
+		'export type play_sound = "play_sound"',
+		'export type play_sound = "play_sound"; export type play_sound_message = { delay?: number, gain?: number, play_id?: number }',
+	],
+	[
+		'export type set_gain = "set_gain"',
+		'export type set_gain = "set_gain"; export type set_gain_message = { gain: number }',
+	],
+	[
+		'export type sound_done = "sound_done"',
+		'export type sound_done = "sound_done"; export type sound_done_message = { play_id: number }',
+	],
+	[
+		'export type sound_stopped = "sound_stopped"',
+		'export type sound_stopped = "sound_stopped"; export type sound_stopped_message = { play_id: number }',
+	],
 ];
 
 /** sprite namespace */
@@ -1020,6 +1121,15 @@ const sprite = [
 	[
 		'complete_function?: any',
 		'complete_function?: (this: unknown, message_id: hash, message: { current_tile: number, id: hash }, sender: url) => void',
+	],
+	// Describe messages
+	[
+		'export type animation_done = "animation_done"',
+		'export type animation_done = "animation_done"; export type animation_done_message = { current_tile: number, id: hash }',
+	],
+	[
+		'export type play_animation = "play_animation"',
+		'export type play_animation = "play_animation"; export type play_animation_message = { id: hash }',
 	],
 ];
 
@@ -1044,8 +1154,6 @@ const tilemap = [
 
 /** Late changes that don't fit anywhere else */
 const finalChanges = [
-	// Generic tables as slightly stricter type (greedy)
-	[/(table|tbl): any/g, `$1: ${genericTable}`],
 	// Replace `any` keyword with `unknown` (greedy)
 	[/\: any/g, ': unknown'],
 	[/\[any/g, '[unknown'],
