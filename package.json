@@ -15,12 +15,12 @@
 		"**/*.d.ts"
 	],
 	"scripts": {
-		"build": "type-gen && yarn run patch && yarn run lint && yarn run prettier",
+		"build": "type-gen && yarn run patch && yarn run prettier && yarn run lint",
 		"check": "tsc --noEmit",
-		"lint": "eslint index.d.ts --fix",
+		"lint": "eslint ./index.d.ts --fix",
 		"patch": "node patch.cjs",
 		"prepublishOnly": "yarn run build && yarn run check",
-		"prettier": "prettier \"./**\" --write"
+		"prettier": "prettier \"./index.d.ts\" --write"
 	},
 	"ts-defold": {
 		"channel": "stable",
