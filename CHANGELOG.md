@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.3.16
+
+- Add generic message type
+- Fix sys.reboot
+
 ## v1.3.15
 
 - More detailed constant types

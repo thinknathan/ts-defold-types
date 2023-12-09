@@ -5961,12 +5961,12 @@ The HTTP user agent, i.e. "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) Apple
 	 * @param arg6  argument 6
 	 */
 	export function reboot(
-		arg1: string,
-		arg2: string,
-		arg3: string,
-		arg4: string,
-		arg5: string,
-		arg6: string,
+		arg1?: string,
+		arg2?: string,
+		arg3?: string,
+		arg4?: string,
+		arg5?: string,
+		arg6?: string,
 	): void;
 
 	/**
@@ -6562,10 +6562,11 @@ declare namespace msg {
 	export function post(
 		receiver: hash | url | string,
 		message_id: hash | string,
-		message?:
-			| LuaMap<AnyNotNil, AnyNotNil>
-			| { [key: number | string | symbol]: AnyNotNil },
+		message?: generic_message,
 	): void;
+	export type generic_message =
+		| LuaMap<AnyNotNil, AnyNotNil>
+		| { [key: number | string | symbol]: AnyNotNil };
 
 	/**
 	 * This is equivalent to `msg.url(undefined)` or `msg.url("#")`, which creates an url to the current
