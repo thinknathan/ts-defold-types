@@ -3299,7 +3299,10 @@ Set to `true` to return all ray cast hits. If `false`, it will only return the c
 end
 `
 	*/
-	export function set_group(url: hash | url | string, group: string): void;
+	export function set_group(
+		url: hash | url | string,
+		group: hash | string,
+	): void;
 
 	/**
 	 * Flips the collision shapes horizontally for a collision object
@@ -3336,7 +3339,7 @@ end
 	*/
 	export function set_maskbit(
 		url: hash | url | string,
-		group: string,
+		group: hash | string,
 		maskbit: boolean,
 	): void;
 

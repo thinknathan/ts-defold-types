@@ -429,8 +429,19 @@ const physics = [
 		/let (JOINT_TYPE.+): any/g,
 		'const $1: number & { readonly _JOINT_TYPE_: unique symbol }',
 	],
-	// function create_joint
-	['properties?: any', 'properties?: { [key: string]: boolean | number }'],
+	[
+		// function create_joint
+		'properties?: any',
+		'properties?: { [key: string]: boolean | number }',
+	],
+	[
+		'function set_group(url: string | hash | url, group: string): void',
+		'function set_group(url: hash | url | string, group: hash | string): void',
+	],
+	[
+		'function set_maskbit(url: string | hash | url, group: string, maskbit: boolean): void',
+		'function set_maskbit(url: hash | url | string, group: hash | string, maskbit: boolean): void',
+	],
 	[
 		'function raycast(from: vmath.vector3, to: vmath.vector3, groups: any, options: any): LuaMultiReturn<[any, any]>',
 		'function raycast(from: vmath.vector3, to: vmath.vector3, groups: hash[], options?: { all: boolean }): undefined | physics.ray_cast_response_message[]',

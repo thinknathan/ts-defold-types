@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.3.17
+
+- Fix `physics.set_group` and `physics.set_maskbit` not accepting hash values
+
 ## v1.3.16
 
 - Add generic message type
