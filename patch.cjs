@@ -1173,6 +1173,8 @@ const finalChanges = [
 	[/\[any/g, '[unknown'],
 	[/any,/g, 'unknown,'],
 	[/any\]/g, 'unknown]'],
+	// Change `this` back to any
+	[/this\: unknown/g, 'this: any'],
 	// Change uppercase variables to const (greedy)
 	[/let (?:\b|\W)([A-Z0-9_]+)(?:\b|\W)/g, 'const $1'],
 ];

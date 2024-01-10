@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.3.18
+
+- Supports Defold 1.6.3 (no change)
+- Allow `this` value to be `any`
+
 ## v1.3.17
 
 - Fix `physics.set_group` and `physics.set_maskbit` not accepting hash values

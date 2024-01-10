@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="@typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.6.2 (4e156b7cf37a380122aada30dacbf2b590ead76b)
+// DEFOLD. stable version 1.6.3 (0d35fc89aabab0456ef2ee7572f0571314b97121)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 /**
@@ -900,7 +900,7 @@ The id of the animated property.
 			| typeof go.EASING_OUTSINE,
 		duration: number,
 		delay?: number,
-		complete_function?: (this: unknown, url: url, property: hash) => void,
+		complete_function?: (this: any, url: url, property: hash) => void,
 	): void;
 
 	/**
@@ -1768,7 +1768,7 @@ with a custom curve. See the animation guide for more information.
 			| typeof gui.EASING_OUTSINE,
 		duration: number,
 		delay?: number,
-		complete_function?: (this: unknown, node: node) => void,
+		complete_function?: (this: any, node: node) => void,
 		playback?:
 			typeof gui.PLAYBACK_LOOP_BACKWARD | typeof gui.PLAYBACK_LOOP_FORWARD | typeof gui.PLAYBACK_LOOP_PINGPONG | typeof gui.PLAYBACK_ONCE_BACKWARD | typeof gui.PLAYBACK_ONCE_FORWARD | typeof gui.PLAYBACK_ONCE_PINGPONG,
 	): void;
@@ -2406,7 +2406,7 @@ The rate with which the animation will be played. Must be positive
 	export function play_flipbook(
 		node: node,
 		animation: hash | string,
-		complete_function?: (this: unknown, node: node) => void,
+		complete_function?: (this: any, node: node) => void,
 		play_properties?: { offset?: number; playback_rate?: number },
 	): void;
 
@@ -2434,7 +2434,7 @@ the new state of the emitter:
 	export function play_particlefx(
 		node: node,
 		emitter_state_function?: (
-			this: unknown,
+			this: any,
 			node: node | undefined,
 			emitter: hash,
 			state:
@@ -6186,7 +6186,7 @@ The callback value `data` is a table which currently holds these values
 	*/
 	export function set_listener(
 		callback: (
-			this: unknown,
+			this: any,
 			event:
 				typeof window.WINDOW_EVENT_DEICONIFIED | typeof window.WINDOW_EVENT_FOCUS_GAINED | typeof window.WINDOW_EVENT_FOCUS_LOST | typeof window.WINDOW_EVENT_ICONFIED | typeof window.WINDOW_EVENT_RESIZED,
 			data: { width: number | undefined; height: number | undefined },
@@ -6406,7 +6406,7 @@ The calling script
 
 	*/
 	export function set_interaction_listener(
-		callback: ((this: unknown) => void) | undefined,
+		callback: ((this: any) => void) | undefined,
 	): void;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
@@ -6447,7 +6447,7 @@ The response data. Contains the fields:
 		url: string,
 		method: string,
 		callback: (
-			this: unknown,
+			this: any,
 			id: hash,
 			response: {
 				status: number;
@@ -6650,7 +6650,7 @@ The elapsed time - on first trigger it is time since timer.delay call, otherwise
 	export function delay(
 		delay: number,
 		repeat: boolean,
-		callback: (this: unknown, handle: number, time_elapsed: number) => void,
+		callback: (this: any, handle: number, time_elapsed: number) => void,
 	): hash | typeof timer.INVALID_TIMER_HANDLE;
 
 	/**
@@ -7405,7 +7405,7 @@ True if resource were loaded successfully
 	*/
 	export function load(
 		url?: hash | url | string,
-		complete_function?: (this: unknown, url: url, result: boolean) => void,
+		complete_function?: (this: any, url: url, result: boolean) => void,
 	): void;
 
 	/**
@@ -7595,7 +7595,7 @@ True if resources were loaded successfully
 	*/
 	export function load(
 		url?: hash | url | string,
-		complete_function?: (this: unknown, url: url, result: boolean) => void,
+		complete_function?: (this: any, url: url, result: boolean) => void,
 	): void;
 
 	/**
@@ -7805,7 +7805,7 @@ The invoker of the callback: the model component.
 			playback_rate?: number;
 		},
 		complete_function?: (
-			this: unknown,
+			this: any,
 			message_id: hash,
 			message: {
 				animation_id: hash;
@@ -7916,7 +7916,7 @@ the new state of the emitter:
 	export function play(
 		url: hash | url | string,
 		emitter_state_function?: (
-			this: unknown,
+			this: any,
 			id: hash,
 			emitter: hash,
 			state:
@@ -8161,7 +8161,7 @@ The invoker of the callback: the sound component.
 			speed?: number;
 		},
 		complete_function?: (
-			this: unknown,
+			this: any,
 			message_id: hash,
 			message: { play_id: number },
 			sender: url,
@@ -8333,7 +8333,7 @@ the rate with which the animation will be played. Must be positive.
 		url: hash | url | string,
 		id: hash | string,
 		complete_function?: (
-			this: unknown,
+			this: any,
 			message_id: hash,
 			message: { current_tile: number; id: hash },
 			sender: url,
