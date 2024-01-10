@@ -4,10 +4,10 @@
 	"parserOptions": {
 		"project": "tsconfig.json"
 	},
-	"plugins": ["@typescript-eslint"],
-	"extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+	"plugins": ["@typescript-eslint", "prettier"],
+	"extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "prettier"],
 	"rules": {
-		"no-mixed-spaces-and-tabs": "off",
+		"@typescript-eslint/no-explicit-any": "off",
 		"@typescript-eslint/sort-type-constituents": "warn"
 	}
 }
