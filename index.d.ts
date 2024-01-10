@@ -6185,12 +6185,13 @@ The callback value `data` is a table which currently holds these values
 
 	*/
 	export function set_listener(
-		callback: (
-			this: any,
-			event:
-				typeof window.WINDOW_EVENT_DEICONIFIED | typeof window.WINDOW_EVENT_FOCUS_GAINED | typeof window.WINDOW_EVENT_FOCUS_LOST | typeof window.WINDOW_EVENT_ICONFIED | typeof window.WINDOW_EVENT_RESIZED,
-			data: { width: number | undefined; height: number | undefined },
-		) => void,
+		callback:
+			((
+					this: any,
+					event:
+						typeof window.WINDOW_EVENT_DEICONIFIED | typeof window.WINDOW_EVENT_FOCUS_GAINED | typeof window.WINDOW_EVENT_FOCUS_LOST | typeof window.WINDOW_EVENT_ICONFIED | typeof window.WINDOW_EVENT_RESIZED,
+					data: { width: number | undefined; height: number | undefined },
+			  ) => void) | undefined,
 	): void;
 
 	/**

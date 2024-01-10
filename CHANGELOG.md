@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.3.19
+
+- Allow `window.set_listener` to accept `undefined`
+
 ## v1.3.18
 
 - Supports Defold 1.6.3 (no change)
