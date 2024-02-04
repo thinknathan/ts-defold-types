@@ -71,6 +71,37 @@ const earlyChanges = [
 			declare type socketclient = object;
 			declare type socketmaster = object;
 			declare type socketunconnected = object;
+
+			/**
+			 * Not available in HTML5, iOS, Switch builds 
+			 */
+			declare namespace jit {
+				/** Turns the JIT engine on.  */
+				export function on(): void;
+				/** Turns the JIT engine off. */
+				export function off(): void;
+				/** Enable JIT compilation for a Lua function. */
+				export function on(fn: (...args: unknown[]) => any, recursive?: boolean): void;
+				/** Disable JIT compilation for a Lua function. */
+				export function off(fn: (...args: unknown[]) => any, recursive?: boolean): void;
+				/** Enable JIT compilation for a module. */
+				export function on(arg1: true, recursive?: boolean): void;
+				/** Disable JIT compilation for a module. */
+				export function off(arg1: true, recursive?: boolean): void;
+				/** 
+				 * Attach a handler to the compiler pipeline with the given priority.
+				 * The handler is detached if no priority is given.
+				 */
+				export function attach(handler: (...args: unknown[]) => any, priority?: number): void;
+				export function security(): void;
+				export function flush(): void;
+				export const arch: string;
+				/** Contains the version number of the LuaJIT core.  */
+				export const version_num: number;
+				/** Contains the LuaJIT version string. */
+				export const version: string;
+				export const os: string;
+			};
 			`,
 	],
 	// Remove {}

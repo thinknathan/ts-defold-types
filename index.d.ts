@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="@typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.6.3 (0d35fc89aabab0456ef2ee7572f0571314b97121)
+// DEFOLD. stable version 1.6.3 (37a4a8548850a7243055bb820e45580cfdae5f32)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 /**
@@ -58,6 +58,46 @@ declare type rendertarget = Readonly<
 declare type socketclient = object;
 declare type socketmaster = object;
 declare type socketunconnected = object;
+
+/**
+ * Not available in HTML5, iOS, Switch builds
+ */
+declare namespace jit {
+	/** Turns the JIT engine on.  */
+	export function on(): void;
+	/** Turns the JIT engine off. */
+	export function off(): void;
+	/** Enable JIT compilation for a Lua function. */
+	export function on(
+		fn: (...args: unknown[]) => unknown,
+		recursive?: boolean,
+	): void;
+	/** Disable JIT compilation for a Lua function. */
+	export function off(
+		fn: (...args: unknown[]) => unknown,
+		recursive?: boolean,
+	): void;
+	/** Enable JIT compilation for a module. */
+	export function on(arg1: true, recursive?: boolean): void;
+	/** Disable JIT compilation for a module. */
+	export function off(arg1: true, recursive?: boolean): void;
+	/**
+	 * Attach a handler to the compiler pipeline with the given priority.
+	 * The handler is detached if no priority is given.
+	 */
+	export function attach(
+		handler: (...args: unknown[]) => unknown,
+		priority?: number,
+	): void;
+	export function security(): void;
+	export function flush(): void;
+	export const arch: string;
+	/** Contains the version number of the LuaJIT core.  */
+	export const version_num: number;
+	/** Contains the LuaJIT version string. */
+	export const version: string;
+	export const os: string;
+}
 
 declare type bufferstream = LuaUserdata & number[] & object;
 

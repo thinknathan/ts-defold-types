@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.3.20
+
+- Add `jit` namespace
+
 ## v1.3.19
 
 - Allow `window.set_listener` to accept `undefined`
