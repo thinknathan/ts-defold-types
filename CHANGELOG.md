@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.3.21
+
+- Update for Defold 1.6.4
+
 ## v1.3.20
 
 - Add `jit` namespace

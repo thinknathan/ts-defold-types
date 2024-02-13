@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="@typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.6.3 (37a4a8548850a7243055bb820e45580cfdae5f32)
+// DEFOLD. stable version 1.6.4 (4689e4033ebfc982176b92545900302d0fcb03b3)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 /**
@@ -588,6 +588,16 @@ declare namespace go {
 	 * The type of the property is vector3.
 	 */
 	export let euler: vmath.vector3;
+
+	/**
+	 * This is a callback-function, which is called by the engine at fixed intervals to update the state of a script
+	 * component. The function will be called if 'Fixed Update Frequency' is enabled in the Engine section of game.project.
+	 * It can for instance be used to update game logic with the physics simulation if using a fixed timestep for the
+	 * physics (enabled by ticking 'Use Fixed Timestep' in the Physics section of game.project).
+	 * @param self  reference to the script state to be used for storing data
+	 * @param dt  the time-step of the frame update
+	 */
+	// export function fixed_update(self: object, dt: number): void
 
 	/**
 	 * in-back
@@ -1843,7 +1853,9 @@ with a custom curve. See the animation guide for more information.
 	export function cancel_flipbook(node: node): void;
 
 	/**
-	 * Make a clone instance of a node.
+	 * Make a clone instance of a node. The cloned node will be identical to the
+	 * original node, except the id which is generated as the string "node" plus
+	 * a sequential unsigned integer value.
 	 * This function does not clone the supplied node's children nodes.
 	 * Use gui.clone_tree for that purpose.
 	 * @param node  node to clone
@@ -3069,6 +3081,15 @@ declare namespace physics {
 	};
 
 	/**
+	 * See physics.set_listener.
+	 * This message is sent to a function specified in physics.set_listener
+	 * when two collision objects collide.
+	 * This message only reports that a collision has occurred and will be sent once per frame and per colliding pair.
+	 * For more detailed information, check for the contact_point_event.
+	 */
+	export type collision_event = 'collision_event';
+
+	/**
 	 * This message is broadcasted to every component of an instance that has a collision object,
 	 * when the collision object collides with another collision object. For a script to take action
 	 * when such a collision happens, it should check for this message in its `on_message` callback
@@ -3084,6 +3105,16 @@ declare namespace physics {
 		other_group: hash;
 		own_group: hash;
 	};
+
+	/**
+	 * See physics.set_listener.
+	 * This message is sent to a function specified in physics.set_listener when
+	 * a collision object has contact points with another collision object.
+	 * Since multiple contact points can occur for two colliding objects, this event can be sent
+	 * multiple times in the same frame for the same two colliding objects. To only be notified once
+	 * when the collision occurs, check for the collision_event event instead.
+	 */
+	export type contact_point_event = 'contact_point_event';
 
 	/**
 	 * This message is broadcasted to every component of an instance that has a collision object,
@@ -3159,6 +3190,13 @@ declare namespace physics {
 	 * weld joint type
 	 */
 	export const JOINT_TYPE_WELD: number & {
+		readonly _JOINT_TYPE_: unique symbol;
+	};
+
+	/**
+	 * wheel joint type
+	 */
+	export const JOINT_TYPE_WHEEL: number & {
 		readonly _JOINT_TYPE_: unique symbol;
 	};
 
@@ -3275,6 +3313,62 @@ end
 	export function get_maskbit(url: hash | url | string, group: string): boolean;
 
 	/**
+	* Gets collision shape data from a collision object
+	* @param url  the collision object.
+	* @param shape  the name of the shape to get data for.
+	* @return table  A table containing meta data about the physics shape
+
+`type`
+The shape type. Supported values:
+
+
+- `physics.SHAPE_TYPE_SPHERE`
+- `physics.SHAPE_TYPE_BOX`
+- `physics.SHAPE_TYPE_CAPSULE` *Only supported for 3D physics*
+- `physics.SHAPE_TYPE_HULL`
+
+The returned table contains different fields depending on which type the shape is.
+If the shape is a sphere:
+
+`diameter`
+the diameter of the sphere shape
+
+If the shape is a box:
+
+`dimensions`
+a `vmath.vector3` of the box dimensions
+
+If the shape is a capsule:
+
+`diameter`
+the diameter of the capsule poles
+`height`
+the height of the capsule
+
+`local function get_shape_meta()
+    local sphere = physics.get_shape(&quot;#collisionobject&quot;, &quot;my_sphere_shape&quot;)
+    -- returns a table with sphere.diameter
+    return sphere
+end
+`
+	*/
+	export function get_shape(
+		url: hash | url | string,
+		shape: hash | string,
+	): {
+		type:
+			SHAPE_TYPE_BOX | SHAPE_TYPE_CAPSULE | SHAPE_TYPE_HULL | SHAPE_TYPE_SPHERE;
+		diameter?: number;
+		dimensions?: vmath.vector3;
+		height?: number;
+	};
+	export type SHAPE_TYPE_SPHERE = { readonly _shape_: unique symbol };
+	export type SHAPE_TYPE_BOX = { readonly _shape_: unique symbol };
+	/** 3D Physics Only */
+	export type SHAPE_TYPE_CAPSULE = { readonly _shape_: unique symbol };
+	export type SHAPE_TYPE_HULL = { readonly _shape_: unique symbol };
+
+	/**
 	* Ray casts are used to test for intersections against collision objects in the physics world.
 	* Collision objects of types kinematic, dynamic and static are tested against. Trigger objects
 	* do not intersect with ray casts.
@@ -3288,7 +3382,7 @@ end
 `all`
 Set to `true` to return all ray cast hits. If `false`, it will only return the closest hit.
 
-	* @return result  It returns a list. If missed it returns `undefined`. See `ray_cast_response` for details on the returned values.
+	* @return result  It returns a list. If missed it returns `undefined`. See ray_cast_response for details on the returned values.
 	*/
 	export function raycast(
 		from: vmath.vector3,
@@ -3305,8 +3399,8 @@ Set to `true` to return all ray cast hits. If `false`, it will only return the c
 	 * through `groups`.
 	 * The actual ray cast will be performed during the physics-update.
 	 *
-	 * - If an object is hit, the result will be reported via a `ray_cast_response` message.
-	 * - If there is no object hit, the result will be reported via a `ray_cast_missed` message.
+	 * - If an object is hit, the result will be reported via a ray_cast_response message.
+	 * - If there is no object hit, the result will be reported via a ray_cast_missed message.
 	 *
 	 * @param from  the world position of the start of the ray
 	 * @param to  the world position of the end of the ray
@@ -3367,6 +3461,36 @@ Note: The `collide_connected` field cannot be updated/changed after a connection
 	): void;
 
 	/**
+	* sets a physics world event listener. If a function is set, physics messages will no longer be sent.
+	* @param callback  A callback that receives information about all the physics interactions in this physics world.
+
+`this`
+The calling script
+`event`
+The type of event. Can be one of these messages:
+
+
+- contact_point_event
+- collision_event
+- trigger_event
+- ray_cast_response
+- ray_cast_missed
+
+
+`data`
+The callback value data is a table that contains event-related data. See the documentation for details on the messages.
+
+	*/
+	export function set_listener(
+		callback: (
+			this: any,
+			event:
+				collision_event | contact_point_event | ray_cast_missed | ray_cast_response | trigger_event,
+			data: object,
+		) => void,
+	): void;
+
+	/**
 	* Sets or clears the masking of a group (maskbit) in a collision object.
 	* @param url  the collision object to change the mask of.
 	* @param group  the name of the group (maskbit) to modify in the mask.
@@ -3384,11 +3508,55 @@ end
 	): void;
 
 	/**
+	* Sets collision shape data for a collision object. Please note that updating data in 3D
+	* can be quite costly for box and capsules. Because of the physics engine, the cost
+	* comes from having to recreate the shape objects when certain shapes needs to be updated.
+	* @param url  the collision object.
+	* @param shape  the name of the shape to get data for.
+	* @param table  the shape data to update the shape with.
+See physics.get_shape for a detailed description of each field in the data table.
+`local function set_shape_data()
+    -- set capsule shape data
+    local data = {}
+    data.diameter = 10
+    data.height = 20
+    physics.set_shape(&quot;#collisionobject&quot;, &quot;my_capsule_shape&quot;, data)
+
+    -- set sphere shape data
+    data = {}
+    data.diameter = 10
+    physics.set_shape(&quot;#collisionobject&quot;, &quot;my_sphere_shape&quot;, data)
+
+    -- set box shape data
+    data = {}
+    data.dimensions = vmath.vector3(10, 10, 5)
+    physics.set_shape(&quot;#collisionobject&quot;, &quot;my_box_shape&quot;, data)
+end
+`
+	*/
+	export function set_shape(
+		url: hash | url | string,
+		shape: hash | string,
+		table: unknown,
+	): void;
+
+	/**
 	 * Flips the collision shapes vertically for a collision object
 	 * @param url  the collision object that should flip its shapes
 	 * @param flip  `true` if the collision object should flip its shapes, `false` if not
 	 */
 	export function set_vflip(url: hash | url | string, flip: boolean): void;
+
+	/**
+	 * The function recalculates the density of each shape based on the total area of all shapes and the specified mass, then updates the mass of the body accordingly.
+	 * Note: Currently only supported in 2D physics.
+	 * @param collisionobject  the collision object whose mass needs to be updated.
+	 * @param mass  the new mass value to set for the collision object.
+	 */
+	export function update_mass(
+		collisionobject: hash | url | string,
+		mass: number,
+	): void;
 
 	/**
 	* Collision objects tend to fall asleep when inactive for a small period of time for
@@ -3404,15 +3572,17 @@ end
 	export function wakeup(url: hash | url | string): void;
 
 	/**
-	 * This message is sent back to the sender of a `ray_cast_request`, if the ray didn't hit any
-	 * collision object. See `physics.raycast_async` for examples of how to use it.
+	 * This message is sent back to the sender of a ray_cast_request, or to the physics world listener
+	 * if it is set (see physics.set_listener), if the ray didn't hit any collision object.
+	 * See physics.raycast_async for examples of how to use it.
 	 */
 	export type ray_cast_missed = 'ray_cast_missed';
 	export type ray_cast_missed_message = { request_id: number };
 
 	/**
-	 * This message is sent back to the sender of a `ray_cast_request`, if the ray hit a
-	 * collision object. See `physics.raycast_async` for examples of how to use it.
+	 * This message is sent back to the sender of a ray_cast_request, or to the physics world listener
+	 * if it is set (see physics.set_listener), if the ray hits a collision object.
+	 * See physics.raycast_async for examples of how to use it.
 	 */
 	export type ray_cast_response = 'ray_cast_response';
 	export type ray_cast_response_message = {
@@ -3423,6 +3593,15 @@ end
 		group: hash;
 		request_id: number;
 	};
+
+	/**
+	 * See physics.set_listener.
+	 * This message is sent to a function specified in physics.set_listener
+	 * when a collision object interacts with another collision object and one of them is a trigger.
+	 * This message only reports that an interaction actually happened and will be sent once per colliding pair and frame.
+	 * For more detailed information, check for the contact_point_event.
+	 */
+	export type trigger_event = 'trigger_event';
 
 	/**
 	 * This message is broadcasted to every component of an instance that has a collision object,
@@ -5755,6 +5934,27 @@ declare namespace sys {
 	};
 
 	/**
+	 * an asyncronous request is unable to read the resource
+	 */
+	export const REQUEST_STATUS_ERROR_IO_ERROR: number & {
+		readonly _REQUEST_: unique symbol;
+	};
+
+	/**
+	 * an asyncronous request is unable to locate the resource
+	 */
+	export const REQUEST_STATUS_ERROR_NOT_FOUND: number & {
+		readonly _REQUEST_: unique symbol;
+	};
+
+	/**
+	 * an asyncronous request has finished successfully
+	 */
+	export const REQUEST_STATUS_FINISHED: number & {
+		readonly _REQUEST_: unique symbol;
+	};
+
+	/**
 	 * deserializes buffer into a lua table
 	 * @param buffer  buffer to deserialize from
 	 * @return table  lua table with deserialized data
@@ -5953,6 +6153,66 @@ The HTTP user agent, i.e. "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) Apple
 	 * @return loaded  lua table, which is empty if the file could not be found
 	 */
 	export function load(filename: string): LuaMap<AnyNotNil, unknown>;
+
+	/**
+	 * The sys.load_buffer function will first try to load the resource
+	 * from any of the mounted resource locations and return the data if
+	 * any matching entries found. If not, the path will be tried
+	 * as is from the primary disk on the device.
+	 * In order for the engine to include custom resources in the build process, you need
+	 * to specify them in the "custom_resources" key in your "game.project" settings file.
+	 * You can specify single resource files or directories. If a directory is included
+	 * in the resource list, all files and directories in that directory is recursively
+	 * included:
+	 * For example "main/data/,assets/level_data.json".
+	 * @param path  the path to load the buffer from
+	 * @return buffer  the buffer with data
+	 */
+	export function load_buffer(path: string): buffer;
+
+	/**
+	* The sys.load_buffer function will first try to load the resource
+	* from any of the mounted resource locations and return the data if
+	* any matching entries found. If not, the path will be tried
+	* as is from the primary disk on the device.
+	* In order for the engine to include custom resources in the build process, you need
+	* to specify them in the "custom_resources" key in your "game.project" settings file.
+	* You can specify single resource files or directories. If a directory is included
+	* in the resource list, all files and directories in that directory is recursively
+	* included:
+	* For example "main/data/,assets/level_data.json".
+	* Note that issuing multiple requests of the same resource will yield
+	* individual buffers per request. There is no implic caching of the buffers
+	* based on request path.
+	* @param path  the path to load the buffer from
+	* @param status_callback  A status callback that will be invoked when a request has been handled, or an error occured. The result is a table containing:
+
+`status`
+The status of the request, supported values are:
+
+
+- `resource.REQUEST_STATUS_FINISHED`
+- `resource.REQUEST_STATUS_ERROR_IO_ERROR`
+- `resource.REQUEST_STATUS_ERROR_NOT_FOUND`
+
+
+`buffer`
+If the request was successfull, this will contain the request payload in a buffer object, and undefined otherwise. Make sure to check the status before doing anything with the buffer value!
+
+	* @return handle  a handle to the request
+	*/
+	export function load_buffer_async(
+		path: string,
+		status_callback: (
+			this: any,
+			request_id: unknown,
+			result: {
+				status:
+					typeof REQUEST_STATUS_ERROR_IO_ERROR | typeof REQUEST_STATUS_ERROR_NOT_FOUND | typeof REQUEST_STATUS_FINISHED;
+				buffer: buffer | undefined;
+			},
+		) => void,
+	): unknown;
 
 	/**
 	 * Loads a custom resource. Specify the full filename of the resource that you want
@@ -6560,25 +6820,69 @@ declare namespace image {
 					typeof image.TYPE_LUMINANCE | typeof image.TYPE_LUMINANCE_ALPHA | typeof image.TYPE_RGB | typeof image.TYPE_RGBA;
 				buffer: string;
 		  } | undefined;
+
+	/**
+	* Load image (PNG or JPEG) from a string buffer.
+	* @param buffer  image data buffer
+	* @param premult  optional flag if alpha should be premultiplied. Defaults to `false`
+	* @return image  object or `undefined` if loading fails. The object is a table with the following fields:
+
+`width`: image width
+`height`: image height
+`type`: image type
+- `image.TYPE_RGB`
+- `image.TYPE_RGBA`
+- `image.TYPE_LUMINANCE`
+- `image.TYPE_LUMINANCE_ALPHA`
+
+
+`buffer`: the script buffer that holds the decompressed image data. See buffer.create how to use the buffer.
+
+	*/
+	export function load_buffer(
+		buffer: string,
+		premult?: boolean,
+	):
+		{
+				width: number;
+				height: number;
+				type:
+					typeof TYPE_LUMINANCE | typeof TYPE_LUMINANCE_ALPHA | typeof TYPE_RGB | typeof TYPE_RGBA;
+				buffer: buffer;
+		  } | undefined;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 declare namespace json {
 	/**
-	 * Decode a string of JSON data into a Lua table.
-	 * A Lua error is raised for syntax errors.
-	 * @param json  json data
-	 * @return data  decoded json
-	 */
-	export function decode(json: string): unknown;
+	* Decode a string of JSON data into a Lua table.
+	* A Lua error is raised for syntax errors.
+	* @param json  json data
+	* @param options  table with decode options
+
+`decode_null_as_userdata`: wether to decode a JSON null value as json.null or undefined (default is undefined)
+
+	* @return data  decoded json
+	*/
+	export function decode(
+		json: string,
+		options?: { decode_null_as_userdata: boolean },
+	): unknown;
 
 	/**
-	 * Encode a lua table to a JSON string.
-	 * A Lua error is raised for syntax errors.
-	 * @param tbl  lua table to encode
-	 * @return json  encoded json
-	 */
-	export function encode(tbl: unknown): string;
+	* Encode a lua table to a JSON string.
+	* A Lua error is raised for syntax errors.
+	* @param tbl  lua table to encode
+	* @param options  table with encode options
+
+`encode_empty_table_as_object`: wether to encode an empty table as an JSON object or array (default is object)
+
+	* @return json  encoded json
+	*/
+	export function encode(
+		tbl: unknown,
+		options?: { encode_empty_table_as_object: boolean },
+	): string;
 
 	/**
 	 * null
@@ -8240,10 +8544,18 @@ The invoker of the callback: the sound component.
 	export function set_pan(url: hash | url | string, pan?: number): void;
 
 	/**
-	 * Stop playing all active voices
-	 * @param url  the sound that should stop
-	 */
-	export function stop(url: hash | url | string): void;
+	* Stop playing all active voices or just one voice if `play_id` provided
+	* @param url  the sound component that should stop
+	* @param stop_properties  
+optional table with properties:
+`play_id`
+the sequential play identifier that should be stopped (was given by the sound.play() function)
+
+	*/
+	export function stop(
+		url: hash | url | string,
+		stop_properties?: { play_id: ReturnType<typeof play> },
+	): void;
 
 	/**
 	 * This message is sent back to the sender of a `play_sound` message, if the sound

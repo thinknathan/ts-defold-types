@@ -199,6 +199,8 @@ const go = [
 	['let position: any', 'let position: vmath.vector3'],
 	['let rotation: any', 'let rotation: vmath.quaternion'],
 	['let scale: any', 'let scale: number'],
+	// Don't see a reason for this definition to be public
+	['export function fixed_update', '// export function fixed_update'],
 	// (greedy)
 	[
 		/let (EASING_.+): any/g,
@@ -455,6 +457,14 @@ const physics = [
 	['let linear_damping: any', 'let linear_damping: number'],
 	['let linear_velocity: any', 'let linear_velocity: vmath.vector3'],
 	['let mass: any', 'const mass: number'],
+	[
+		'function set_listener(callback: any',
+		'function set_listener(callback: (this: any, event: contact_point_event | collision_event | trigger_event | ray_cast_response | ray_cast_missed, data: object) => void',
+	],
+	[
+		'function get_shape(url: string | hash | url, shape: string | hash): any',
+		'function get_shape(url: hash | url | string, shape: hash | string): { type: SHAPE_TYPE_SPHERE | SHAPE_TYPE_BOX | SHAPE_TYPE_CAPSULE | SHAPE_TYPE_HULL, diameter?: number, dimensions?: vmath.vector3, height?: number }; export type SHAPE_TYPE_SPHERE = { readonly _shape_: unique symbol }; export type SHAPE_TYPE_BOX = { readonly _shape_: unique symbol };\n/** 3D Physics Only */\nexport type SHAPE_TYPE_CAPSULE = { readonly _shape_: unique symbol }; export type SHAPE_TYPE_HULL = { readonly _shape_: unique symbol };',
+	],
 	// (greedy)
 	[
 		/let (JOINT_TYPE.+): any/g,
@@ -782,6 +792,15 @@ const sys = [
 		/let (NETWORK_.+): any/g,
 		'const $1: number & { readonly _NETWORK_: unique symbol }',
 	],
+	// greedy
+	[
+		/let (REQUEST_.+): any/g,
+		'const $1: number & { readonly _REQUEST_: unique symbol }',
+	],
+	[
+		'function load_buffer_async(path: string, status_callback: any)',
+		'function load_buffer_async(path: string, status_callback: (this: any, request_id: unknown, result: { status: typeof REQUEST_STATUS_FINISHED | typeof REQUEST_STATUS_ERROR_IO_ERROR | typeof REQUEST_STATUS_ERROR_NOT_FOUND, buffer: buffer | undefined }) => void)',
+	],
 	[
 		'function exists(path: string): any',
 		'function exists(path: string): boolean',
@@ -926,6 +945,10 @@ const image = [
 	['let TYPE_RGB: any', 'const TYPE_RGB: "rgb"'],
 	['let TYPE_RGBA: any', 'const TYPE_RGBA: "rgba"'],
 	[
+		'function load_buffer(buffer: string, premult?: boolean): LuaMultiReturn<[any, any]>',
+		'function load_buffer(buffer: string, premult?: boolean): undefined | { width: number, height: number, type: typeof TYPE_RGB | typeof TYPE_RGBA | typeof TYPE_LUMINANCE | typeof TYPE_LUMINANCE_ALPHA, buffer: buffer }',
+	],
+	[
 		'function load(buffer: string, premult?: boolean): LuaMultiReturn<[any, any]>',
 		'function load(buffer: string, premult?: boolean): undefined | { width: number, height: number, type: typeof image.TYPE_RGB | typeof image.TYPE_RGBA | typeof image.TYPE_LUMINANCE | typeof image.TYPE_LUMINANCE_ALPHA, buffer: string }',
 	],
@@ -933,8 +956,15 @@ const image = [
 
 /** json namespace */
 const jsonChanges = [
-	// Change invalid JSON null type
 	['let null$: any', 'let null$: null'],
+	[
+		'function decode(json: string, options: any)',
+		'function decode(json: string, options?: { decode_null_as_userdata: boolean })',
+	],
+	[
+		'function encode(tbl: any, options: any)',
+		'function encode(tbl: any, options?: { encode_empty_table_as_object: boolean })',
+	],
 ];
 
 /** msg namespace */
@@ -1145,6 +1175,10 @@ const sound = [
 	[
 		'export type sound_stopped = "sound_stopped"',
 		'export type sound_stopped = "sound_stopped"; export type sound_stopped_message = { play_id: number }',
+	],
+	[
+		'function stop(url: string | hash | url, stop_properties?: any)',
+		'function stop(url: string | hash | url, stop_properties?: { play_id: ReturnType<typeof play> })',
 	],
 ];
 
