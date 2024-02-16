@@ -33,9 +33,8 @@ jobs:
             echo "Tag $GIT_VERSION already exists."
           else
             # Bump Version
-            git config user.email "github@thinknathan.com"
-            git config user.name "thinknathan"
-            git remote set-url origin https://$PAT_TOKEN@github.com/$GITHUB_REPOSITORY
+            git config user.email "actions@github.com"
+            git config user.name "GitHub Actions"
             npm --no-git-tag-version version $VERSION
             git add --all
             git commit -m "Bump version to $VERSION"
