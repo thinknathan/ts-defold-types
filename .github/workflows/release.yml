@@ -55,6 +55,8 @@ jobs:
           fi
 
       - name: Publish Tag and Release
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           if git rev-parse --verify --quiet "$GIT_VERSION"; then
             echo "Tag $GIT_VERSION already exists. Skipping publish."
