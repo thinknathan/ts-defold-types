@@ -41,6 +41,16 @@ jobs:
             echo "RELEASE_EXISTS=false" >> $GITHUB_ENV
           fi
 
+  debug:
+    needs: check_version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Debug Output
+        run: |
+          echo "RELEASE_EXISTS: ${{ needs.check_version.outputs.RELEASE_EXISTS }}"
+          echo "VERSION: ${{ needs.check_version.outputs.VERSION }}"
+          echo "GIT_VERSION: ${{ needs.check_version.outputs.GIT_VERSION }}"
+
   create_release:
     needs: check_version
     runs-on: ubuntu-latest
