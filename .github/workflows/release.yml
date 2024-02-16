@@ -40,7 +40,7 @@ jobs:
   create_release:
     needs: check_version
     runs-on: ubuntu-latest
-    if: ${{ env.RELEASE_EXISTS == 'false' }}
+    if: ${{ steps.check_tag_release.outputs.RELEASE_EXISTS == 'false' }}
 
     steps:
       - name: Bump Version
