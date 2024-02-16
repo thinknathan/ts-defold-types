@@ -28,14 +28,17 @@ jobs:
 
       - name: Check Tag and Release
         id: check_tag_release
+        env:
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
           if git rev-parse --verify --quiet "$GIT_VERSION"; then
             echo "Tag $GIT_VERSION already exists."
           else
             # Bump Version
-            npm --no-git-tag-version version $VERSION
             git config user.email "actions@github.com"
             git config user.name "GitHub Actions"
+            git remote set-url origin https://$GITHUB_ACTOR:$PAT_TOKEN@github.com/$GITHUB_REPOSITORY
+            npm --no-git-tag-version version $VERSION
             git add --all
             git commit -m "Bump version to $VERSION"
             git push
