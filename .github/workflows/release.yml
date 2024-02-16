@@ -8,11 +8,6 @@ on:
 jobs:
   check_version:
     runs-on: ubuntu-latest
-    outputs:
-      RELEASE_EXISTS: ${{ steps.check_tag_release.outputs.RELEASE_EXISTS }}
-      VERSION: ${{ steps.get_version.outputs.VERSION }}
-      GIT_VERSION: ${{ steps.get_version.outputs.GIT_VERSION }}
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -36,52 +31,24 @@ jobs:
         run: |
           if git rev-parse --verify --quiet "$GIT_VERSION"; then
             echo "Tag $GIT_VERSION already exists."
-            echo "RELEASE_EXISTS=true" >> $GITHUB_ENV
           else
-            echo "RELEASE_EXISTS=false" >> $GITHUB_ENV
+            # Bump Version
+            npm --no-git-tag-version version $VERSION
+            git config user.email "actions@github.com"
+            git config user.name "GitHub Actions"
+            git add --all
+            git commit -m "Bump version to $VERSION"
+            git push
+
+            # Build
+            yarn
+            yarn run build
+            git add --all
+            git commit -m "Build for Defold stable $GIT_VERSION"
+            git push
+
+            # Create Release
+            git tag $GIT_VERSION
+            git push origin $GIT_VERSION
+            hub release create -m "Release $GIT_VERSION" $GIT_VERSION
           fi
-
-  debug:
-    needs: check_version
-    runs-on: ubuntu-latest
-    steps:
-      - name: Debug Output
-        run: |
-          echo "RELEASE_EXISTS: ${{ needs.check_version.outputs.RELEASE_EXISTS }}"
-          echo "VERSION: ${{ needs.check_version.outputs.VERSION }}"
-          echo "GIT_VERSION: ${{ needs.check_version.outputs.GIT_VERSION }}"
-
-  create_release:
-    needs: check_version
-    runs-on: ubuntu-latest
-    if: ${{ needs.check_version.outputs.RELEASE_EXISTS == 'false' }}
-
-    steps:
-      - name: Bump Version
-        env:
-          VERSION: ${{ needs.check_version.outputs.VERSION }}
-        run: |
-          npm --no-git-tag-version version $VERSION
-          git config user.email "actions@github.com"
-          git config user.name "GitHub Actions"
-          git add --all
-          git commit -m "Bump version to $VERSION"
-          git push
-
-      - name: Build
-        env:
-          GIT_VERSION: ${{ needs.check_version.outputs.GIT_VERSION }}
-        run: |
-          yarn
-          yarn run build
-          git add --all
-          git commit -m "Build for Defold stable $GIT_VERSION"
-          git push
-
-      - name: Create Release
-        env:
-          GIT_VERSION: ${{ needs.check_version.outputs.GIT_VERSION }}
-        run: |
-          git tag $GIT_VERSION
-          git push origin $GIT_VERSION
-          hub release create -m "Release $GIT_VERSION" $GIT_VERSION
