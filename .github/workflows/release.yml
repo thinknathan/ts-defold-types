@@ -19,7 +19,6 @@ jobs:
           cache: 'yarn'
 
       - name: Get Version from JSON
-        id: get_version
         run: |
           VERSION=$(curl -s https://d.defold.com/stable/info.json | jq -r .version)
           GIT_VERSION="v$VERSION"
@@ -27,7 +26,6 @@ jobs:
           echo "GIT_VERSION=$GIT_VERSION" >> $GITHUB_ENV
 
       - name: Check Tag and Release
-        id: check_tag_release
         env:
           PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
@@ -35,9 +33,9 @@ jobs:
             echo "Tag $GIT_VERSION already exists."
           else
             # Bump Version
-            git config user.email "actions@github.com"
-            git config user.name "GitHub Actions"
-            git remote set-url origin https://$GITHUB_ACTOR:$PAT_TOKEN@github.com/$GITHUB_REPOSITORY
+            git config user.email "github@thinknathan.com"
+            git config user.name "thinknathan"
+            git remote set-url origin https://$PAT_TOKEN@github.com/$GITHUB_REPOSITORY
             npm --no-git-tag-version version $VERSION
             git add --all
             git commit -m "Bump version to $VERSION"
