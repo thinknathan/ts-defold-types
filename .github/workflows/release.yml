@@ -26,7 +26,6 @@ jobs:
           echo "GIT_VERSION=$GIT_VERSION" >> $GITHUB_ENV
 
       - name: Bump Version
-        continue-on-error: true
         run: |
           if git rev-parse --verify --quiet "$GIT_VERSION"; then
             echo "Tag $GIT_VERSION already exists. Skipping bump version."
@@ -65,5 +64,5 @@ jobs:
             git tag $GIT_VERSION
             git push origin $GIT_VERSION
             # Create Release
-            gh release create $GIT_VERSION -t "$GIT_VERSION" -n "Release $GIT_VERSION"
+            gh release create $GIT_VERSION -t "$GIT_VERSION" -n "Release for Defold $GIT_VERSION"
           fi
