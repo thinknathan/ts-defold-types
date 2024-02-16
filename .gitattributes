@@ -5,11 +5,12 @@
 * text=auto
 
 # Exclude files from archive
+/.github/* export-ignore
+/.vscode/* export-ignore
+/_docs/* export-ignore
 .eslintignore export-ignore
 .eslintrc export-ignore
 .gitattributes export-ignore
 .prettierignore export-ignore
 .prettierrc.json export-ignore
 patch.cjs export-ignore
-/.vscode/* export-ignore
-/_docs/* export-ignore
