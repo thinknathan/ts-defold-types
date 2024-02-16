@@ -61,8 +61,9 @@ jobs:
           if git rev-parse --verify --quiet "$GIT_VERSION"; then
             echo "Tag $GIT_VERSION already exists. Skipping publish."
           else
-            # Create Release
+            # Create Tag
             git tag $GIT_VERSION
             git push origin $GIT_VERSION
-            gh release create $GIT_VERSION -t "$GIT_VERSION" -n "Release $GIT_VERSION" *
+            # Create Release
+            gh release create $GIT_VERSION -t "$GIT_VERSION" -n "Release $GIT_VERSION"
           fi
