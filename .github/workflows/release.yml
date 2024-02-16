@@ -50,5 +50,5 @@ jobs:
             # Create Release
             git tag $GIT_VERSION
             git push origin $GIT_VERSION
-            hub release create -m "Release $GIT_VERSION" $GIT_VERSION
+            gh release create $GIT_VERSION -t "$GIT_VERSION" -n "Release $GIT_VERSION" *
           fi
