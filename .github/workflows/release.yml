@@ -8,6 +8,10 @@ on:
 jobs:
   check_version:
     runs-on: ubuntu-latest
+    outputs:
+      RELEASE_EXISTS: ${{ steps.check_tag_release.outputs.RELEASE_EXISTS }}
+      VERSION: ${{ steps.get_version.outputs.VERSION }}
+      GIT_VERSION: ${{ steps.get_version.outputs.GIT_VERSION }}
 
     steps:
       - name: Checkout Repository
@@ -40,10 +44,12 @@ jobs:
   create_release:
     needs: check_version
     runs-on: ubuntu-latest
-    if: ${{ steps.check_tag_release.outputs.RELEASE_EXISTS == 'false' }}
+    if: ${{ needs.check_version.outputs.RELEASE_EXISTS == 'false' }}
 
     steps:
       - name: Bump Version
+        env:
+          VERSION: ${{needs.check_version.outputs.VERSION}}
         run: |
           npm --no-git-tag-version version $VERSION
           git config user.email "actions@github.com"
@@ -53,6 +59,8 @@ jobs:
           git push
 
       - name: Build
+        env:
+          GIT_VERSION: ${{needs.check_version.outputs.GIT_VERSION}}
         run: |
           yarn
           yarn run build
@@ -61,6 +69,8 @@ jobs:
           git push
 
       - name: Create Release
+        env:
+          GIT_VERSION: ${{needs.check_version.outputs.GIT_VERSION}}
         run: |
           git tag $GIT_VERSION
           git push origin $GIT_VERSION
