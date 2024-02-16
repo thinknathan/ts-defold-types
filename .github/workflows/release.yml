@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  check_version:
+  check_and_release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -25,12 +25,11 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "GIT_VERSION=$GIT_VERSION" >> $GITHUB_ENV
 
-      - name: Check Tag and Release
-        env:
-          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+      - name: Bump Version
+        continue-on-error: true
         run: |
           if git rev-parse --verify --quiet "$GIT_VERSION"; then
-            echo "Tag $GIT_VERSION already exists."
+            echo "Tag $GIT_VERSION already exists. Skipping bump version."
           else
             # Bump Version
             git config user.email "actions@github.com"
@@ -39,14 +38,27 @@ jobs:
             git add --all
             git commit -m "Bump version to $VERSION"
             git push
+          fi
 
+      - name: Build
+        continue-on-error: true
+        run: |
+          if git rev-parse --verify --quiet "$GIT_VERSION"; then
+            echo "Tag $GIT_VERSION already exists. Skipping build."
+          else
             # Build
             yarn
             yarn run build
             git add --all
             git commit -m "Build for Defold stable $GIT_VERSION"
             git push
+          fi
 
+      - name: Publish Tag and Release
+        run: |
+          if git rev-parse --verify --quiet "$GIT_VERSION"; then
+            echo "Tag $GIT_VERSION already exists. Skipping publish."
+          else
             # Create Release
             git tag $GIT_VERSION
             git push origin $GIT_VERSION
