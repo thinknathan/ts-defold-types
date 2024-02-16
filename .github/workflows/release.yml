@@ -1,0 +1,67 @@
+name: Check Version and Release
+
+on:
+  schedule:
+    - cron: '0 0 * * 1,3,5'
+  workflow_dispatch:
+
+jobs:
+  check_version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set Up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'yarn'
+
+      - name: Get Version from JSON
+        id: get_version
+        run: |
+          VERSION=$(curl -s https://d.defold.com/stable/info.json | jq -r .version)
+          GIT_VERSION="v$VERSION"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "GIT_VERSION=$GIT_VERSION" >> $GITHUB_ENV
+
+      - name: Check Tag and Release
+        id: check_tag_release
+        run: |
+          if git rev-parse "refs/tags/$GIT_VERSION" >/dev/null 2>&1; then
+            echo "Tag $GIT_VERSION already exists."
+            echo "RELEASE_EXISTS=true" >> $GITHUB_ENV
+          else
+            echo "RELEASE_EXISTS=false" >> $GITHUB_ENV
+          fi
+
+  create_release:
+    needs: check_version
+    runs-on: ubuntu-latest
+    if: env.RELEASE_EXISTS == 'false'
+
+    steps:
+      - name: Bump Version
+        run: |
+          npm --no-git-tag-version version $VERSION
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+          git add --all
+          git commit -m "Bump version to $VERSION"
+          git push
+
+      - name: Build
+        run: |
+          yarn
+          yarn run build
+          git add --all
+          git commit -m "Build for Defold stable $GIT_VERSION"
+          git push
+
+      - name: Create Release
+        run: |
+          git tag $GIT_VERSION
+          git push origin $GIT_VERSION
+          hub release create -m "Release $GIT_VERSION" $GIT_VERSION

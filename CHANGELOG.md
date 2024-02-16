@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.6.4
+
+- Releases now match the same version as Defold
+
 ## v1.3.21
 
 - Update for Defold 1.6.4
