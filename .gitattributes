@@ -10,6 +10,6 @@
 .gitattributes export-ignore
 .prettierignore export-ignore
 .prettierrc.json export-ignore
-.vscode export-ignore
 patch.cjs export-ignore
-_docs export-ignore
+/.vscode/* export-ignore
+/_docs/* export-ignore
