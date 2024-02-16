@@ -34,7 +34,7 @@ jobs:
       - name: Check Tag and Release
         id: check_tag_release
         run: |
-          if git rev-parse "refs/tags/$GIT_VERSION" >/dev/null 2>&1; then
+          if git rev-parse --verify --quiet "$GIT_VERSION"; then
             echo "Tag $GIT_VERSION already exists."
             echo "RELEASE_EXISTS=true" >> $GITHUB_ENV
           else
@@ -49,7 +49,7 @@ jobs:
     steps:
       - name: Bump Version
         env:
-          VERSION: ${{needs.check_version.outputs.VERSION}}
+          VERSION: ${{ needs.check_version.outputs.VERSION }}
         run: |
           npm --no-git-tag-version version $VERSION
           git config user.email "actions@github.com"
@@ -60,7 +60,7 @@ jobs:
 
       - name: Build
         env:
-          GIT_VERSION: ${{needs.check_version.outputs.GIT_VERSION}}
+          GIT_VERSION: ${{ needs.check_version.outputs.GIT_VERSION }}
         run: |
           yarn
           yarn run build
@@ -70,7 +70,7 @@ jobs:
 
       - name: Create Release
         env:
-          GIT_VERSION: ${{needs.check_version.outputs.GIT_VERSION}}
+          GIT_VERSION: ${{ needs.check_version.outputs.GIT_VERSION }}
         run: |
           git tag $GIT_VERSION
           git push origin $GIT_VERSION
