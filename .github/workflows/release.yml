@@ -1,0 +1,68 @@
+name: Check Version and Release
+
+on:
+  schedule:
+    - cron: '0 0 * * 1,3,5'
+  workflow_dispatch:
+
+jobs:
+  check_and_release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set Up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'yarn'
+
+      - name: Get Version from JSON
+        run: |
+          VERSION=$(curl -s https://d.defold.com/stable/info.json | jq -r .version)
+          GIT_VERSION="v$VERSION"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "GIT_VERSION=$GIT_VERSION" >> $GITHUB_ENV
+
+      - name: Bump Version
+        run: |
+          if git rev-parse --verify --quiet "$GIT_VERSION"; then
+            echo "Tag $GIT_VERSION already exists. Skipping bump version."
+          else
+            # Bump Version
+            git config user.email "actions@github.com"
+            git config user.name "GitHub Actions"
+            npm --no-git-tag-version version $VERSION
+            git add --all
+            git commit -m "Bump version to $VERSION"
+            git push
+          fi
+
+      - name: Build
+        continue-on-error: true
+        run: |
+          if git rev-parse --verify --quiet "$GIT_VERSION"; then
+            echo "Tag $GIT_VERSION already exists. Skipping build."
+          else
+            # Build
+            yarn
+            yarn run build
+            git add --all
+            git commit -m "Build for Defold stable $GIT_VERSION"
+            git push
+          fi
+
+      - name: Publish Tag and Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git rev-parse --verify --quiet "$GIT_VERSION"; then
+            echo "Tag $GIT_VERSION already exists. Skipping publish."
+          else
+            # Create Tag
+            git tag $GIT_VERSION
+            git push origin $GIT_VERSION
+            # Create Release
+            gh release create $GIT_VERSION -t "$GIT_VERSION" -n "Release for Defold $GIT_VERSION"
+          fi
