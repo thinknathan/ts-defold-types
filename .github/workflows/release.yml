@@ -20,36 +20,38 @@ jobs:
 
       - name: Get Version from JSON
         run: |
-          VERSION=$(curl -s https://d.defold.com/stable/info.json | jq -r .version)
-          GIT_VERSION="v$VERSION"
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "GIT_VERSION=$GIT_VERSION" >> $GITHUB_ENV
+          DEFOLD_VERSION=$(curl -s https://d.defold.com/stable/info.json | jq -r .version)
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          echo "DEFOLD_VERSION=${DEFOLD_VERSION}" >> $GITHUB_ENV
+          echo "PACKAGE_VERSION=${PACKAGE_VERSION}" >> $GITHUB_ENV
 
       - name: Bump Version
         run: |
-          if git rev-parse --verify --quiet "$GIT_VERSION"; then
-            echo "Tag $GIT_VERSION already exists. Skipping bump version."
+          if [ "${DEFOLD_VERSION}" == "${PACKAGE_VERSION}" ]; then
+            echo "${DEFOLD_VERSION} already exists. Skipping bump version."
+            exit 0
           else
             # Bump Version
             git config user.email "actions@github.com"
             git config user.name "GitHub Actions"
-            npm --no-git-tag-version version $VERSION
+            npm --no-git-tag-version version ${DEFOLD_VERSION}
             git add --all
-            git commit -m "Bump version to $VERSION"
+            git commit -m "Bump version to ${DEFOLD_VERSION}"
             git push
           fi
 
       - name: Build
         continue-on-error: true
         run: |
-          if git rev-parse --verify --quiet "$GIT_VERSION"; then
-            echo "Tag $GIT_VERSION already exists. Skipping build."
+          if [ "${DEFOLD_VERSION}" == "${PACKAGE_VERSION}" ]; then
+            echo "${DEFOLD_VERSION} already exists. Skipping build."
+            exit 0
           else
             # Build
             yarn
             yarn run build
             git add --all
-            git commit -m "Build for Defold stable $GIT_VERSION"
+            git commit -m "Build for Defold stable ${DEFOLD_VERSION}"
             git push
           fi
 
@@ -57,12 +59,14 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if git rev-parse --verify --quiet "$GIT_VERSION"; then
-            echo "Tag $GIT_VERSION already exists. Skipping publish."
+          if [ "${DEFOLD_VERSION}" == "${PACKAGE_VERSION}" ]; then
+            echo "${DEFOLD_VERSION} already exists. Skipping publish."
+            exit 0
           else
             # Create Tag
-            git tag $GIT_VERSION
-            git push origin $GIT_VERSION
+            GITHUB_VERSION="v${DEFOLD_VERSION}"
+            git tag ${GITHUB_VERSION}
+            git push origin ${GITHUB_VERSION}
             # Create Release
-            gh release create $GIT_VERSION -t "$GIT_VERSION" -n "Release for Defold $GIT_VERSION"
+            gh release create ${GITHUB_VERSION} -t "${GITHUB_VERSION}" -n "Release for Defold ${GITHUB_VERSION}"
           fi
