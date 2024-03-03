@@ -2,7 +2,7 @@
 
 # Defold Types
 
-[![CI](https://github.com/thinknathan/ts-defold-types/actions/workflows/ci.yml/badge.svg)](https://github.com/thinknathan/ts-defold-types/actions/workflows/ci.yml) <a href="https://discord.gg/eukcq5m"><img alt="Chat with us!" src="https://img.shields.io/discord/766898804896038942.svg?colorB=7581dc&logo=discord&logoColor=white"></a>
+[![CI](https://github.com/thinknathan/ts-defold-types/actions/workflows/ci.yml/badge.svg)](https://github.com/thinknathan/ts-defold-types/actions/workflows/ci.yml) ![GitHub License](https://img.shields.io/github/license/thinknathan/ts-defold-types) <a href="https://discord.gg/eukcq5m"><img alt="Chat with us!" src="https://img.shields.io/discord/766898804896038942.svg?colorB=7581dc&logo=discord&logoColor=white"></a>
 
 > TypeScript definitions for [Defold](https://defold.com/), a high-performance cross-platform game engine.
 
