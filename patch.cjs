@@ -339,7 +339,7 @@ const gui = [
 	],
 	[
 		'function get_blend_mode(node: node): any',
-		'function get_blend_mode(node: node): typeof gui.BLEND_ALPHA | typeof gui.BLEND_ADD | typeof gui.BLEND_ADD_ALPHA | typeof gui.BLEND_MULT ',
+		'function get_blend_mode(node: node): typeof gui.BLEND_ALPHA | typeof gui.BLEND_ADD | typeof gui.BLEND_ADD_ALPHA | typeof gui.BLEND_MULT | typeof gui.BLEND_SCREEN ',
 	],
 	[
 		'function get_clipping_mode(node: node): any',
@@ -393,7 +393,7 @@ const gui = [
 	],
 	[
 		'function set_blend_mode(node: node, blend_mode: any)',
-		'function set_blend_mode(node: node, blend_mode: typeof gui.BLEND_ALPHA | typeof gui.BLEND_ADD | typeof gui.BLEND_ADD_ALPHA | typeof gui.BLEND_MULT)',
+		'function set_blend_mode(node: node, blend_mode: typeof gui.BLEND_ALPHA | typeof gui.BLEND_ADD | typeof gui.BLEND_ADD_ALPHA | typeof gui.BLEND_MULT | typeof gui.BLEND_SCREEN)',
 	],
 	[
 		'function set_clipping_mode(node: node, clipping_mode: any)',
@@ -426,8 +426,8 @@ const gui = [
 		'complete_function?: (this: unknown, node: node) => void',
 	],
 	[
-		'function new_texture(texture: string | hash, width: number, height: number, type: any, buffer: string, flip: boolean): LuaMultiReturn<[boolean, number]>',
-		'function new_texture(texture: string | hash, width: number, height: number, type: "rgb" | "rgba" | "l", buffer: string, flip: boolean): LuaMultiReturn<[boolean, undefined | typeof gui.RESULT_TEXTURE_ALREADY_EXISTS | typeof gui.RESULT_DATA_ERROR | typeof gui.RESULT_OUT_OF_RESOURCES]>',
+		'function new_texture(texture_id: string | hash, width: number, height: number, type: any, buffer: string, flip: boolean): LuaMultiReturn<[boolean, number]>',
+		'function new_texture(texture_id: string | hash, width: number, height: number, type: "rgb" | "rgba" | "l", buffer: string, flip: boolean): LuaMultiReturn<[boolean, undefined | typeof gui.RESULT_TEXTURE_ALREADY_EXISTS | typeof gui.RESULT_DATA_ERROR | typeof gui.RESULT_OUT_OF_RESOURCES]>',
 	],
 	[
 		'function cancel_animation(node: node, property: any)',
@@ -748,6 +748,16 @@ const resource = [
 		'const $1: number & { readonly _TEXTURE_: unique symbol }',
 	],
 	[
+		'function get_render_target_info(path: any): any',
+		`function get_render_target_info(path: string): { handle: unknown, attachments: { handle: unknown, width: number, height: number, depth: number, mipmaps: number, type: typeof TEXTURE_TYPE_2D | typeof TEXTURE_TYPE_CUBE_MAP | typeof TEXTURE_TYPE_2D_ARRAY, buffer_type: typeof BUFFER_TYPE_COLOR0 | typeof BUFFER_TYPE_COLOR1 | typeof BUFFER_TYPE_COLOR2 | typeof BUFFER_TYPE_COLOR3 | typeof BUFFER_TYPE_DEPTH | typeof BUFFER_TYPE_STENCIL }[] };
+		export const BUFFER_TYPE_COLOR0: number & { readonly _BUFFER_: unique symbol };
+		export const BUFFER_TYPE_COLOR1: number & { readonly _BUFFER_: unique symbol };
+		export const BUFFER_TYPE_COLOR2: number & { readonly _BUFFER_: unique symbol };
+		export const BUFFER_TYPE_COLOR3: number & { readonly _BUFFER_: unique symbol };
+		export const BUFFER_TYPE_DEPTH: number & { readonly _BUFFER_: unique symbol };
+		export const BUFFER_TYPE_STENCIL: number & { readonly _BUFFER_: unique symbol };`,
+	],
+	[
 		'function create_atlas(path: string, table: any)',
 		'function create_atlas(path: string, table: {	texture: string | hash,	animations: [{ id: string, width: number, height: number, frame_start: number, frame_end: number, playback?: typeof go.PLAYBACK_ONCE_FORWARD | typeof go.PLAYBACK_ONCE_BACKWARD | typeof go.PLAYBACK_ONCE_PINGPONG | typeof go.PLAYBACK_LOOP_FORWARD | typeof go.PLAYBACK_LOOP_BACKWARD | typeof go.PLAYBACK_LOOP_PINGPONG, fps?: number, flip_vertical?: boolean, flip_horizontal?: boolean }], geometries: [{ vertices: number[], uvs: number[], indices: number[] }] } )',
 	],
@@ -945,12 +955,12 @@ const image = [
 	['let TYPE_RGB: any', 'const TYPE_RGB: "rgb"'],
 	['let TYPE_RGBA: any', 'const TYPE_RGBA: "rgba"'],
 	[
-		'function load_buffer(buffer: string, premult?: boolean): LuaMultiReturn<[any, any]>',
-		'function load_buffer(buffer: string, premult?: boolean): undefined | { width: number, height: number, type: typeof TYPE_RGB | typeof TYPE_RGBA | typeof TYPE_LUMINANCE | typeof TYPE_LUMINANCE_ALPHA, buffer: buffer }',
+		'function load_buffer(buffer: string, options?: any): LuaMultiReturn<[any, any]>',
+		'function load_buffer(buffer: string, options?: { premultiply_alpha?: boolean, flip_vertically?: boolean }): undefined | { width: number, height: number, type: typeof TYPE_RGB | typeof TYPE_RGBA | typeof TYPE_LUMINANCE | typeof TYPE_LUMINANCE_ALPHA, buffer: buffer }',
 	],
 	[
-		'function load(buffer: string, premult?: boolean): LuaMultiReturn<[any, any]>',
-		'function load(buffer: string, premult?: boolean): undefined | { width: number, height: number, type: typeof image.TYPE_RGB | typeof image.TYPE_RGBA | typeof image.TYPE_LUMINANCE | typeof image.TYPE_LUMINANCE_ALPHA, buffer: string }',
+		'function load(buffer: string, options?: any): LuaMultiReturn<[any, any]>',
+		'function load(buffer: string, options?: { premultiply_alpha?: boolean, flip_vertically?: boolean }): undefined | { width: number, height: number, type: typeof image.TYPE_RGB | typeof image.TYPE_RGBA | typeof image.TYPE_LUMINANCE | typeof image.TYPE_LUMINANCE_ALPHA, buffer: string }',
 	],
 ];
 
