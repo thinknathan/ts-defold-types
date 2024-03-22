@@ -81,9 +81,9 @@ const earlyChanges = [
 				/** Turns the JIT engine off. */
 				export function off(): void;
 				/** Enable JIT compilation for a Lua function. */
-				export function on(fn: (...args: unknown[]) => any, recursive?: boolean): void;
+				export function on(fn: (...args: any[]) => unknown, recursive?: boolean): void;
 				/** Disable JIT compilation for a Lua function. */
-				export function off(fn: (...args: unknown[]) => any, recursive?: boolean): void;
+				export function off(fn: (...args: any[]) => unknown, recursive?: boolean): void;
 				/** Enable JIT compilation for a module. */
 				export function on(arg1: true, recursive?: boolean): void;
 				/** Disable JIT compilation for a module. */
@@ -92,7 +92,7 @@ const earlyChanges = [
 				 * Attach a handler to the compiler pipeline with the given priority.
 				 * The handler is detached if no priority is given.
 				 */
-				export function attach(handler: (...args: unknown[]) => any, priority?: number): void;
+				export function attach(handler: (...args: any[]) => unknown, priority?: number): void;
 				export function security(): void;
 				export function flush(): void;
 				export const arch: string;
@@ -110,7 +110,7 @@ const earlyChanges = [
 		'declare type bufferstream = number[] & LuaUserdata & object',
 	],
 	// Pretty print
-	['function pprint(v: any)', 'function pprint(...args: unknown[])'],
+	['function pprint(v: any)', 'function pprint(...args: any[])'],
 	// Replace nil with undefined
 	[/nil/g, 'undefined'],
 	[/Nil/g, 'Undefined'],
@@ -126,11 +126,11 @@ const socket = [
 	['let _VERSION: any', 'const _VERSION: string'],
 	[
 		'newtry(finalizer: any): any',
-		'newtry(finalizer: (...args: unknown[]) => unknown): (...args: unknown[]) => unknown',
+		'newtry(finalizer: (...args: any[]) => unknown): (...args: any[]) => unknown',
 	],
 	[
 		'protect(func: any): any',
-		'protect(func: (...args: unknown[]) => unknown): (...args: unknown[]) => unknown',
+		'protect(func: (...args: any[]) => unknown): (...args: any[]) => unknown',
 	],
 	// Remove duplicate function definition
 	[
@@ -147,7 +147,7 @@ const socket = [
 	],
 	[
 		'function select(recvt: any, sendt: any, timeout?: number): LuaMultiReturn<[any, any, string, any]>',
-		'function select(recvt: unknown[], sendt: unknown[], timeout?: number): LuaMultiReturn<[unknown[], unknown[], string | undefined]>',
+		'function select(recvt: any[], sendt: any[], timeout?: number): LuaMultiReturn<[unknown[], unknown[], string | undefined]>',
 	],
 	[
 		'function tcp(): LuaMultiReturn<[any, any, string, any]>',
@@ -226,7 +226,7 @@ const go = [
 	],
 	[
 		'complete_function?: any',
-		'complete_function?: (this: unknown, url: url, property: hash) => void',
+		'complete_function?: (this: any, url: url, property: hash) => void',
 	],
 	[
 		'function exists(url: string | hash | url): any',
@@ -327,7 +327,7 @@ const gui = [
 	],
 	[
 		'complete_function?: any',
-		'complete_function?: (this: unknown, node: node) => void',
+		'complete_function?: (this: any, node: node) => void',
 	],
 	[
 		'playback?: any',
@@ -414,7 +414,7 @@ const gui = [
 	// function play_particlefx
 	[
 		'emitter_state_function?: any',
-		'emitter_state_function?: (this: unknown, node: node | undefined, emitter: hash, state: typeof particlefx.EMITTER_STATE_SLEEPING | typeof particlefx.EMITTER_STATE_PRESPAWN | typeof particlefx.EMITTER_STATE_SPAWNING | typeof particlefx.EMITTER_STATE_POSTSPAWN) => void',
+		'emitter_state_function?: (this: any, node: node | undefined, emitter: hash, state: typeof particlefx.EMITTER_STATE_SLEEPING | typeof particlefx.EMITTER_STATE_PRESPAWN | typeof particlefx.EMITTER_STATE_SPAWNING | typeof particlefx.EMITTER_STATE_POSTSPAWN) => void',
 	],
 	// function play_flipbook
 	[
@@ -423,7 +423,7 @@ const gui = [
 	],
 	[
 		'complete_function?: any',
-		'complete_function?: (this: unknown, node: node) => void',
+		'complete_function?: (this: any, node: node) => void',
 	],
 	[
 		'function new_texture(texture_id: string | hash, width: number, height: number, type: any, buffer: string, flip: boolean): LuaMultiReturn<[boolean, number]>',
@@ -906,7 +906,7 @@ const windowChanges = [
 	],
 	[
 		'function set_listener(callback: any)',
-		'function set_listener(callback: undefined | ((this: unknown, event: typeof window.WINDOW_EVENT_FOCUS_LOST | typeof window.WINDOW_EVENT_FOCUS_GAINED | typeof window.WINDOW_EVENT_RESIZED | typeof window.WINDOW_EVENT_ICONFIED | typeof window.WINDOW_EVENT_DEICONIFIED, data: { width: number | undefined, height: number | undefined	}) => void))',
+		'function set_listener(callback: undefined | ((this: any, event: typeof window.WINDOW_EVENT_FOCUS_LOST | typeof window.WINDOW_EVENT_FOCUS_GAINED | typeof window.WINDOW_EVENT_RESIZED | typeof window.WINDOW_EVENT_ICONFIED | typeof window.WINDOW_EVENT_DEICONIFIED, data: { width: number | undefined, height: number | undefined	}) => void))',
 	],
 ];
 
@@ -935,7 +935,7 @@ const bufferChanges = [
 const html5 = [
 	[
 		'function set_interaction_listener(callback: any',
-		'function set_interaction_listener(callback: undefined | ((this: unknown) => void)',
+		'function set_interaction_listener(callback: undefined | ((this: any) => void)',
 	],
 ];
 
@@ -944,7 +944,7 @@ const http = [
 	// function request
 	[
 		'function request(url: string, method: string, callback: any, headers?: any, post_data?: string, options?: any)',
-		'function request(url: string, method: string, callback: ( this: unknown, id: hash, response: { status: number; response?: string, headers: { [key:string]: string }; path?: string; error?: string; } ) => void, headers?: { [key:string]: string }, post_data?: string, options?: { timeout?: number, path?: string, ignore_cache?: boolean, chunked_transfer?: boolean })',
+		'function request(url: string, method: string, callback: ( this: any, id: hash, response: { status: number; response?: string, headers: { [key:string]: string }; path?: string; error?: string; } ) => void, headers?: { [key:string]: string }, post_data?: string, options?: { timeout?: number, path?: string, ignore_cache?: boolean, chunked_transfer?: boolean })',
 	],
 ];
 
@@ -994,7 +994,7 @@ const timer = [
 	// function delay
 	[
 		'function delay(delay: number, repeat: boolean, callback: any): hash',
-		'function delay(delay: number, repeat: boolean, callback: (this: unknown, handle: number, time_elapsed: number) => void): hash | typeof timer.INVALID_TIMER_HANDLE',
+		'function delay(delay: number, repeat: boolean, callback: (this: any, handle: number, time_elapsed: number) => void): hash | typeof timer.INVALID_TIMER_HANDLE',
 	],
 	[
 		'function get_info(handle: hash): LuaMultiReturn<[any, any]>',
@@ -1043,7 +1043,7 @@ const collectionFactory = [
 	// function load
 	[
 		'complete_function?: any',
-		'complete_function?: (this: unknown, url: url, result: boolean) => void',
+		'complete_function?: (this: any, url: url, result: boolean) => void',
 	],
 	[
 		'function create(url: string | hash | url, position?: vmath.vector3, rotation?: vmath.quaternion, properties?: any, scale?: number): any',
@@ -1082,7 +1082,7 @@ const factory = [
 	// function load
 	[
 		'complete_function?: any',
-		'complete_function?: (this: unknown, url: url, result: boolean) => void',
+		'complete_function?: (this: any, url: url, result: boolean) => void',
 	],
 	[
 		'function set_prototype(url?: string | hash | url, prototype?: any)',
@@ -1121,7 +1121,7 @@ const model = [
 	],
 	[
 		'complete_function?: any',
-		'complete_function?: (this: unknown, message_id: hash, message: { animation_id: hash, playback: typeof go.PLAYBACK_ONCE_FORWARD | typeof go.PLAYBACK_ONCE_BACKWARD | typeof go.PLAYBACK_ONCE_PINGPONG | typeof go.PLAYBACK_LOOP_FORWARD | typeof go.PLAYBACK_LOOP_BACKWARD | typeof go.PLAYBACK_LOOP_PINGPONG }, sender: url) => void',
+		'complete_function?: (this: any, message_id: hash, message: { animation_id: hash, playback: typeof go.PLAYBACK_ONCE_FORWARD | typeof go.PLAYBACK_ONCE_BACKWARD | typeof go.PLAYBACK_ONCE_PINGPONG | typeof go.PLAYBACK_LOOP_FORWARD | typeof go.PLAYBACK_LOOP_BACKWARD | typeof go.PLAYBACK_LOOP_PINGPONG }, sender: url) => void',
 	],
 	['let textureN: any', 'let textureN: hash'],
 	// Describe message
@@ -1141,7 +1141,7 @@ const particleFx = [
 	// function play
 	[
 		'emitter_state_function?: any',
-		'emitter_state_function?: (this: unknown, id: hash, emitter: hash, state: typeof particlefx.EMITTER_STATE_SLEEPING | typeof particlefx.EMITTER_STATE_PRESPAWN | typeof particlefx.EMITTER_STATE_SPAWNING | typeof particlefx.EMITTER_STATE_POSTSPAWN) => void',
+		'emitter_state_function?: (this: any, id: hash, emitter: hash, state: typeof particlefx.EMITTER_STATE_SLEEPING | typeof particlefx.EMITTER_STATE_PRESPAWN | typeof particlefx.EMITTER_STATE_SPAWNING | typeof particlefx.EMITTER_STATE_POSTSPAWN) => void',
 	],
 	[
 		'function stop(url: string | hash | url, options: any)',
@@ -1162,7 +1162,7 @@ const sound = [
 	],
 	[
 		'complete_function?: any',
-		'complete_function?: (this: unknown, message_id: hash, message: { play_id: number }, sender: url) => void',
+		'complete_function?: (this: any, message_id: hash, message: { play_id: number }, sender: url) => void',
 	],
 	[
 		'function pause(url: string | hash | url, pause: any)',
@@ -1209,7 +1209,7 @@ const sprite = [
 	],
 	[
 		'complete_function?: any',
-		'complete_function?: (this: unknown, message_id: hash, message: { current_tile: number, id: hash }, sender: url) => void',
+		'complete_function?: (this: any, message_id: hash, message: { current_tile: number, id: hash }, sender: url) => void',
 	],
 	// Describe messages
 	[
@@ -1243,13 +1243,12 @@ const tilemap = [
 
 /** Late changes that don't fit anywhere else */
 const finalChanges = [
-	// Replace `any` keyword with `unknown` (greedy)
-	[/\: any/g, ': unknown'],
-	[/\[any/g, '[unknown'],
-	[/any,/g, 'unknown,'],
-	[/any\]/g, 'unknown]'],
-	// Change `this` back to any
-	[/this\: unknown/g, 'this: any'],
+	// Replace `any` keyword with `unknown` in return values (greedy)
+	[/\)\: any/g, '): AnyNotNil | undefined'],
+	[/\=\> any/g, '=> AnyNotNil | undefined'],
+	// Replace generic tables (greedy)
+	[/tbl\: any/g, 'tbl: AnyNotNil'],
+	[/table\: any/g, 'table: AnyNotNil'],
 	// Change uppercase variables to const (greedy)
 	[/let (?:\b|\W)([A-Z0-9_]+)(?:\b|\W)/g, 'const $1'],
 ];

@@ -69,12 +69,12 @@ declare namespace jit {
 	export function off(): void;
 	/** Enable JIT compilation for a Lua function. */
 	export function on(
-		fn: (...args: unknown[]) => unknown,
+		fn: (...args: any[]) => unknown,
 		recursive?: boolean,
 	): void;
 	/** Disable JIT compilation for a Lua function. */
 	export function off(
-		fn: (...args: unknown[]) => unknown,
+		fn: (...args: any[]) => unknown,
 		recursive?: boolean,
 	): void;
 	/** Enable JIT compilation for a module. */
@@ -86,7 +86,7 @@ declare namespace jit {
 	 * The handler is detached if no priority is given.
 	 */
 	export function attach(
-		handler: (...args: unknown[]) => unknown,
+		handler: (...args: any[]) => unknown,
 		priority?: number,
 	): void;
 	export function security(): void;
@@ -170,7 +170,7 @@ declare function hash_to_hex(h: hash): string;
  * will recurse.
  * @param v  value to print
  */
-declare function pprint(...args: unknown[]): void;
+declare function pprint(...args: any[]): void;
 
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
@@ -221,8 +221,8 @@ declare namespace socket {
 	 * @return try  the customized try function.
 	 */
 	export function newtry(
-		finalizer: (...args: unknown[]) => unknown,
-	): (...args: unknown[]) => unknown;
+		finalizer: (...args: any[]) => unknown,
+	): (...args: any[]) => unknown;
 
 	/**
 	 * Converts a function that throws exceptions into a safe function. This function only catches exceptions thrown by try functions. It does not catch normal Lua errors.
@@ -231,8 +231,8 @@ declare namespace socket {
 	 * @return safe_func  an equivalent function that instead of throwing exceptions, returns `undefined` followed by an error message.
 	 */
 	export function protect(
-		func: (...args: unknown[]) => unknown,
-	): (...args: unknown[]) => unknown;
+		func: (...args: any[]) => unknown,
+	): (...args: any[]) => unknown;
 
 	/**
 	 * The function returns a list with the sockets ready for reading, a list with the sockets ready for writing and an error message. The error message is "timeout" if a timeout condition was met and undefined otherwise. The returned tables are doubly keyed both by integers and also by the sockets themselves, to simplify the test if a specific socket has changed status.
@@ -251,8 +251,8 @@ declare namespace socket {
 	 * @return error  an error message. "timeout" if a timeout condition was met, otherwise `undefined`.
 	 */
 	export function select(
-		recvt: unknown[],
-		sendt: unknown[],
+		recvt: any[],
+		sendt: any[],
 		timeout?: number,
 	): LuaMultiReturn<[unknown[], unknown[], string | undefined]>;
 
@@ -416,7 +416,7 @@ declare namespace crash {
 	 * @param handle  crash dump handle
 	 * @return backtrace  table containing the backtrace
 	 */
-	export function get_backtrace(handle: number): unknown;
+	export function get_backtrace(handle: number): AnyNotNil | undefined;
 
 	/**
 	 * The format of read text blob is platform specific
@@ -999,8 +999,8 @@ name of internal property
 	export function get(
 		url: hash | url | string,
 		property: hash | string,
-		options?: unknown,
-	): unknown;
+		options?: any,
+	): AnyNotNil | undefined;
 
 	/**
 	 * Returns or constructs an instance identifier. The instance id is a hash
@@ -1099,7 +1099,7 @@ name of internal property
 	 * @param name  the id of the property
 	 * @param value  default value of the property. In the case of a url, only the empty constructor msg.url() is allowed. In the case of a resource one of the resource constructors (eg resource.atlas(), resource.font() etc) is expected.
 	 */
-	export function property(name: string, value: unknown): void;
+	export function property(name: string, value: any): void;
 
 	/**
 	* sets a named property of the specified game object or component, or a material constant
@@ -1113,8 +1113,8 @@ name of internal property
 	export function set(
 		url: hash | url | string,
 		property: hash | string,
-		value: unknown,
-		options?: unknown,
+		value: any,
+		options?: any,
 	): void;
 
 	/**
@@ -1896,7 +1896,7 @@ with a custom curve. See the animation guide for more information.
 	 * @param node  root node to clone
 	 * @return clones  a table mapping node ids to the corresponding cloned nodes
 	 */
-	export function clone_tree(node: node): unknown;
+	export function clone_tree(node: node): AnyNotNil | undefined;
 
 	/**
 	 * Deletes the specified node. Any child nodes of the specified node will be
@@ -2296,7 +2296,7 @@ with a custom curve. See the animation guide for more information.
 	 * @param node  root node to get node tree from
 	 * @return clones  a table mapping node ids to the corresponding nodes
 	 */
-	export function get_tree(node: node): unknown;
+	export function get_tree(node: node): AnyNotNil | undefined;
 
 	/**
 	 * Returns `true` if a node is visible and `false` if it's not.
@@ -3298,7 +3298,7 @@ end
 	export function get_joint_properties(
 		collisionobject: hash | url | string,
 		joint_id: hash | string,
-	): unknown;
+	): AnyNotNil | undefined;
 
 	/**
 	 * Get the reaction force for a joint. The joint has to be created before
@@ -3486,7 +3486,7 @@ Note: The `collide_connected` field cannot be updated/changed after a connection
 	export function set_joint_properties(
 		collisionobject: hash | url | string,
 		joint_id: hash | string,
-		properties: unknown,
+		properties: any,
 	): void;
 
 	/**
@@ -3566,7 +3566,7 @@ end
 	export function set_shape(
 		url: hash | url | string,
 		shape: hash | string,
-		table: unknown,
+		table: AnyNotNil,
 	): void;
 
 	/**
@@ -4435,7 +4435,7 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	*/
 	export function enable_texture(
 		binding: hash | number | string,
-		handle_or_name: unknown,
+		handle_or_name: any,
 		buffer_type?:
 			typeof render.BUFFER_COLOR_BIT | typeof render.BUFFER_COLOR0_BIT | typeof render.BUFFER_COLOR1_BIT | typeof render.BUFFER_COLOR2_BIT | typeof render.BUFFER_COLOR3_BIT | typeof render.BUFFER_DEPTH_BIT | typeof render.BUFFER_STENCIL_BIT,
 	): void;
@@ -6078,7 +6078,7 @@ declare namespace sys {
 	 * @param buffer  buffer to deserialize from
 	 * @return table  lua table with deserialized data
 	 */
-	export function deserialize(buffer: string): unknown;
+	export function deserialize(buffer: string): AnyNotNil | undefined;
 
 	/**
 	 * Check if a path exists
@@ -6331,7 +6331,7 @@ If the request was successfull, this will contain the request payload in a buffe
 				buffer: buffer | undefined;
 			},
 		) => void,
-	): unknown;
+	): AnyNotNil | undefined;
 
 	/**
 	 * Loads a custom resource. Specify the full filename of the resource that you want
@@ -6404,7 +6404,7 @@ If the request was successfull, this will contain the request payload in a buffe
 	 * @param table  lua table to save
 	 * @return success  a boolean indicating if the table could be saved or not
 	 */
-	export function save(filename: string, table: unknown): boolean;
+	export function save(filename: string, table: AnyNotNil): boolean;
 
 	/**
 	 * The buffer can later deserialized by `sys.deserialize`.
@@ -6412,7 +6412,7 @@ If the request was successfull, this will contain the request payload in a buffe
 	 * @param table  lua table to serialize
 	 * @return buffer  serialized data buffer
 	 */
-	export function serialize(table: unknown): string;
+	export function serialize(table: AnyNotNil): string;
 
 	/**
 	 * Sets the host that is used to check for network connectivity against.
@@ -6998,7 +6998,7 @@ declare namespace json {
 	export function decode(
 		json: string,
 		options?: { decode_null_as_userdata: boolean },
-	): unknown;
+	): AnyNotNil | undefined;
 
 	/**
 	* Encode a lua table to a JSON string.
@@ -7011,7 +7011,7 @@ declare namespace json {
 	* @return json  encoded json
 	*/
 	export function encode(
-		tbl: unknown,
+		tbl: AnyNotNil,
 		options?: { encode_empty_table_as_object: boolean },
 	): string;
 
@@ -7857,7 +7857,7 @@ declare namespace collectionfactory {
 		url: hash | url | string,
 		position?: vmath.vector3,
 		rotation?: vmath.quaternion,
-		properties?: unknown,
+		properties?: any,
 		scale?: number,
 	): LuaMap<hash, hash>;
 
@@ -7904,7 +7904,7 @@ True if resource were loaded successfully
 	 */
 	export function set_prototype(
 		url?: hash | url | string,
-		prototype?: unknown,
+		prototype?: any,
 	): void;
 
 	/**
@@ -8046,7 +8046,7 @@ declare namespace factory {
 		url: hash | url | string,
 		position?: vmath.vector3,
 		rotation?: vmath.quaternion,
-		properties?: unknown,
+		properties?: any,
 		scale?: vmath.vector3 | number,
 	): hash;
 
