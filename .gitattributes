@@ -8,8 +8,7 @@
 /_docs/* export-ignore
 /.github/* export-ignore
 /.vscode/* export-ignore
-.eslintignore export-ignore
-.eslintrc export-ignore
+eslint.config.mjs export-ignore
 .gitattributes export-ignore
 .prettierignore export-ignore
 .prettierrc.json export-ignore

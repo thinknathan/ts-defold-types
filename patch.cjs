@@ -1,3 +1,6 @@
+// @ts-check
+'use strict';
+
 /**
  * Automatically make opinionated changes to the output of `type-gen`.
  * Uses arrays of data pairs ['findThis', 'replaceWithThis']
@@ -1395,7 +1398,9 @@ fs.readFile(filePath, 'utf8', (err, data) => {
 	console.time('Patching definitions');
 
 	// Make early find and replace changes
-	earlyChanges.forEach((pair) => (data = data.replace(pair[0], pair[1])));
+	earlyChanges.forEach((pair) => {
+		if (typeof pair[1] === 'string') data = data.replace(pair[0], pair[1]);
+	});
 
 	// Loop through namespace changes
 	for (const patch of patches) {
@@ -1411,7 +1416,9 @@ fs.readFile(filePath, 'utf8', (err, data) => {
 	}
 
 	// Make final find an replace changes
-	finalChanges.forEach((pair) => (data = data.replace(pair[0], pair[1])));
+	finalChanges.forEach((pair) => {
+		if (typeof pair[1] === 'string') data = data.replace(pair[0], pair[1]);
+	});
 	console.timeEnd('Patching definitions');
 
 	// Save the modified contents back to the file
