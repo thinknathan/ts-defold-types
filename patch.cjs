@@ -1415,7 +1415,7 @@ fs.readFile(filePath, 'utf8', (err, data) => {
 		});
 	}
 
-	// Make final find an replace changes
+	// Make final find and replace changes
 	finalChanges.forEach((pair) => {
 		if (typeof pair[1] === 'string') data = data.replace(pair[0], pair[1]);
 	});
