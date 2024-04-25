@@ -170,6 +170,23 @@ const socket = [
 	],
 ];
 
+/** bd2 namespace */
+const b2d = [
+	[
+		'function get_body(url: url): any',
+		'function get_body(url: url): typeof b2d.body',
+	],
+];
+
+/** bd2.body namespace */
+const b2d_body = [
+	// (greedy)
+	[
+		/let (B2_.+): any/g,
+		'const $1: number & { readonly _B2DBODY_: unique symbol }',
+	],
+];
+
 /** crash namespace */
 const crash = [
 	// (greedy)
@@ -762,7 +779,7 @@ const resource = [
 	],
 	[
 		'function create_atlas(path: string, table: any)',
-		'function create_atlas(path: string, table: {	texture: string | hash,	animations: [{ id: string, width: number, height: number, frame_start: number, frame_end: number, playback?: typeof go.PLAYBACK_ONCE_FORWARD | typeof go.PLAYBACK_ONCE_BACKWARD | typeof go.PLAYBACK_ONCE_PINGPONG | typeof go.PLAYBACK_LOOP_FORWARD | typeof go.PLAYBACK_LOOP_BACKWARD | typeof go.PLAYBACK_LOOP_PINGPONG, fps?: number, flip_vertical?: boolean, flip_horizontal?: boolean }], geometries: [{ vertices: number[], uvs: number[], indices: number[] }] } )',
+		'function create_atlas(path: string, table: {	texture: string | hash,	animations: [{ id: string, width: number, height: number, frame_start: number, frame_end: number, playback?: typeof go.PLAYBACK_ONCE_FORWARD | typeof go.PLAYBACK_ONCE_BACKWARD | typeof go.PLAYBACK_ONCE_PINGPONG | typeof go.PLAYBACK_LOOP_FORWARD | typeof go.PLAYBACK_LOOP_BACKWARD | typeof go.PLAYBACK_LOOP_PINGPONG, fps?: number, flip_vertical?: boolean, flip_horizontal?: boolean }], geometries: { id: string, vertices: number[], uvs: number[], indices: number[] }[] } )',
 	],
 	[
 		'function get_atlas(path: hash | string): any',
@@ -1205,6 +1222,7 @@ const sprite = [
 	['let size: any', 'let size: vmath.vector3'],
 	['let animation: any', 'let animation: hash'],
 	['let cursor: any', 'let cursor: number'],
+	['let slice: any', 'let slice: vmath.vector4'],
 	// function play_flipbook
 	[
 		'play_properties?: any',
@@ -1259,8 +1277,17 @@ const finalChanges = [
 const patches = [
 	// The following are in order of appearance in the final definitions file
 	{
-		regex: /(declare namespace socket {)([\s\S]*?)(declare namespace crash {)/s,
+		regex: /(declare namespace socket {)([\s\S]*?)(declare namespace b2d {)/s,
 		replacements: socket,
+	},
+	{
+		regex: /(declare namespace b2d {)([\s\S]*?)(declare namespace b2d.body {)/s,
+		replacements: b2d,
+	},
+	{
+		regex:
+			/(declare namespace b2d.body {)([\s\S]*?)(declare namespace crash {)/s,
+		replacements: b2d_body,
 	},
 	{
 		regex: /(declare namespace crash {)([\s\S]*?)(declare namespace go {)/s,
@@ -1399,7 +1426,9 @@ fs.readFile(filePath, 'utf8', (err, data) => {
 
 	// Make early find and replace changes
 	earlyChanges.forEach((pair) => {
-		if (typeof pair[1] === 'string') data = data.replace(pair[0], pair[1]);
+		typeof pair[1] === 'string'
+			? (data = data.replace(pair[0], pair[1]))
+			: console.error('Expected pair[1] to be string');
 	});
 
 	// Loop through namespace changes
@@ -1417,7 +1446,9 @@ fs.readFile(filePath, 'utf8', (err, data) => {
 
 	// Make final find and replace changes
 	finalChanges.forEach((pair) => {
-		if (typeof pair[1] === 'string') data = data.replace(pair[0], pair[1]);
+		typeof pair[1] === 'string'
+			? (data = data.replace(pair[0], pair[1]))
+			: console.error('Expected pair[1] to be string');
 	});
 	console.timeEnd('Patching definitions');
 
