@@ -18,7 +18,7 @@
 		"build": "type-gen && yarn run patch && yarn run prettier && yarn run lint",
 		"check": "tsc --noEmit",
 		"lint": "eslint ./index.d.ts --fix",
-		"patch": "node patch.cjs",
+		"patch": "node patch.mjs",
 		"prepublishOnly": "yarn run build && yarn run check",
 		"prettier": "prettier \"./index.d.ts\" --write"
 	},

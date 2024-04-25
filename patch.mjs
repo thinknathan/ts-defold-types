@@ -1,5 +1,4 @@
 // @ts-check
-'use strict';
 
 /**
  * Automatically make opinionated changes to the output of `type-gen`.
@@ -7,7 +6,8 @@
  * Ultimately uses `String.replace`, which accepts either strings or regex.
  */
 
-const fs = require('fs');
+import * as fs from 'fs';
+
 const filePath = 'index.d.ts';
 
 /** Initial generic changes */
