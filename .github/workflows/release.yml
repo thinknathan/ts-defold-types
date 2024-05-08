@@ -36,7 +36,7 @@ jobs:
             git config user.name "GitHub Actions"
             npm --no-git-tag-version version ${DEFOLD_VERSION}
             git add --all
-            git commit -m "Bump version to ${DEFOLD_VERSION}"
+            git commit -m "chore: bump version to ${DEFOLD_VERSION}"
             git push
           fi
 
@@ -51,7 +51,7 @@ jobs:
             yarn
             yarn run build
             git add --all
-            git commit -m "Build for Defold stable ${DEFOLD_VERSION}"
+            git commit -m "feat: build for Defold stable ${DEFOLD_VERSION}"
             git push
           fi
 
