@@ -173,18 +173,44 @@ const socket = [
 /** bd2 namespace */
 const b2d = [
 	[
-		'function get_body(url: url): any',
-		'function get_body(url: url): typeof b2d.body',
+		'function get_body(url: string | hash | url): any',
+		'function get_body(url: string | hash | url): typeof b2d.body | undefined',
 	],
 ];
 
 /** bd2.body namespace */
 const b2d_body = [
+	[
+		'function set_active(body: any, enable: any)',
+		'function set_active(body: typeof b2d.body, enable: boolean)',
+	],
+	[
+		'function set_awake(body: any, enable: any)',
+		'function set_awake(body: typeof b2d.body, enable: boolean)',
+	],
+	[
+		'function set_bullet(body: any, enable: any)',
+		'function set_bullet(body: typeof b2d.body, enable: boolean)',
+	],
+	[
+		'set_fixed_rotation(body: any, enable: any)',
+		'set_fixed_rotation(body: typeof b2d.body, enable: boolean)',
+	],
+	[
+		'function set_sleeping_allowed(body: any, enable: any)',
+		'function set_sleeping_allowed(body: typeof b2d.body, enable: boolean)',
+	],
+	[
+		'function set_type(body: any, type: any)',
+		'function set_type(body: typeof b2d.body, type: typeof b2d.body.B2_DYNAMIC_BODY | typeof b2d.body.B2_KINEMATIC_BODY | typeof b2d.body.B2_STATIC_BODY)',
+	],
 	// (greedy)
 	[
 		/let (B2_.+): any/g,
 		'const $1: number & { readonly _B2DBODY_: unique symbol }',
 	],
+	// (greedy)
+	[/body: any/g, 'body: typeof b2d.body'],
 ];
 
 /** crash namespace */
@@ -458,7 +484,7 @@ const gui = [
 		'function get_parent(node: node): node | undefined',
 	],
 	[
-		'function stop_particlefx(node: node, options: any)',
+		'function stop_particlefx(node: node, options?: any)',
 		'function stop_particlefx(node: node, options?: { clear: boolean })',
 	],
 	// function set_texture_data
@@ -490,6 +516,11 @@ const physics = [
 		/let (JOINT_TYPE.+): any/g,
 		'const $1: number & { readonly _JOINT_TYPE_: unique symbol }',
 	],
+	// (greedy)
+	[
+		/let (SHAPE_TYPE.+): any/g,
+		'const $1: number & { readonly _SHAPE_TYPE_: unique symbol }',
+	],
 	[
 		// function create_joint
 		'properties?: any',
@@ -504,7 +535,7 @@ const physics = [
 		'function set_maskbit(url: hash | url | string, group: hash | string, maskbit: boolean): void',
 	],
 	[
-		'function raycast(from: vmath.vector3, to: vmath.vector3, groups: any, options: any): LuaMultiReturn<[any, any]>',
+		'function raycast(from: vmath.vector3, to: vmath.vector3, groups: any, options?: any): LuaMultiReturn<[any, any]>',
 		'function raycast(from: vmath.vector3, to: vmath.vector3, groups: hash[], options?: { all: boolean }): undefined | physics.ray_cast_response_message[]',
 	],
 	[
@@ -753,6 +784,10 @@ const render = [
 		'export type window_resized = "window_resized"',
 		'export type window_resized = "window_resized"; export type window_resized_message = { height: number, width: number }',
 	],
+	[
+		'function set_camera(camera: any, options?: any)',
+		'function set_camera(camera: any, options?: { use_frustum: boolean })',
+	],
 ];
 
 /** resource namespace */
@@ -794,7 +829,7 @@ const resource = [
 		'function get_texture_info(path: hash | string): { handle: hash, width: number, height: number, depth: number, mipmaps: number, type: typeof resource.TEXTURE_TYPE_2D | typeof resource.TEXTURE_TYPE_CUBE_MAP | typeof resource.TEXTURE_TYPE_2D_ARRAY }',
 	],
 	[
-		'function create_buffer(path: string, table: any)',
+		'function create_buffer(path: string, table?: any)',
 		'function create_buffer(path: string, table: { buffer: buffer, transfer_ownership?: boolean })',
 	],
 	[
@@ -806,7 +841,7 @@ const resource = [
 		'function set_atlas(path: hash | string, table: { texture: string | hash,	animations: [{ id: string, width: number, height: number, frame_start: number, frame_end: number, playback?: typeof go.PLAYBACK_ONCE_FORWARD | typeof go.PLAYBACK_ONCE_BACKWARD | typeof go.PLAYBACK_ONCE_PINGPONG | typeof go.PLAYBACK_LOOP_FORWARD | typeof go.PLAYBACK_LOOP_BACKWARD | typeof go.PLAYBACK_LOOP_PINGPONG, fps?: number, flip_vertical?: boolean, flip_horizontal?: boolean }], geometries: [{ vertices: number[], uvs: number[], indices: number[] }] })',
 	],
 	[
-		'function set_buffer(path: hash | string, buffer: buffer, table: any)',
+		'function set_buffer(path: hash | string, buffer: buffer, table?: any)',
 		'function set_buffer(path: hash | string, buffer: buffer, table?: { transfer_ownership: boolean })',
 	],
 	[
@@ -988,11 +1023,11 @@ const image = [
 const jsonChanges = [
 	['let null$: any', 'let null$: null'],
 	[
-		'function decode(json: string, options: any)',
+		'function decode(json: string, options?: any)',
 		'function decode(json: string, options?: { decode_null_as_userdata: boolean })',
 	],
 	[
-		'function encode(tbl: any, options: any)',
+		'function encode(tbl: any, options?: any)',
 		'function encode(tbl: any, options?: { encode_empty_table_as_object: boolean })',
 	],
 ];
@@ -1164,7 +1199,7 @@ const particleFx = [
 		'emitter_state_function?: (this: any, id: hash, emitter: hash, state: typeof particlefx.EMITTER_STATE_SLEEPING | typeof particlefx.EMITTER_STATE_PRESPAWN | typeof particlefx.EMITTER_STATE_SPAWNING | typeof particlefx.EMITTER_STATE_POSTSPAWN) => void',
 	],
 	[
-		'function stop(url: string | hash | url, options: any)',
+		'function stop(url: string | hash | url, options?: any)',
 		'function stop(url: string | hash | url, options?: { clear: boolean })',
 	],
 ];
@@ -1265,11 +1300,11 @@ const tilemap = [
 /** Late changes that don't fit anywhere else */
 const finalChanges = [
 	// Replace `any` keyword with `unknown` in return values (greedy)
-	[/\)\: any/g, '): AnyNotNil | undefined'],
-	[/\=\> any/g, '=> AnyNotNil | undefined'],
+	[/\): any/g, '): AnyNotNil | undefined'],
+	[/=> any/g, '=> AnyNotNil | undefined'],
 	// Replace generic tables (greedy)
-	[/tbl\: any/g, 'tbl: AnyNotNil'],
-	[/table\: any/g, 'table: AnyNotNil'],
+	[/tbl: any/g, 'tbl: AnyNotNil'],
+	[/table: any/g, 'table: AnyNotNil'],
 	// Change uppercase variables to const (greedy)
 	[/let (?:\b|\W)([A-Z0-9_]+)(?:\b|\W)/g, 'const $1'],
 ];

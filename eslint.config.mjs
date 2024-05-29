@@ -15,6 +15,9 @@ export default tseslint.config(
 			parserOptions: {
 				project: true,
 			},
+			globals: {
+				console: true,
+			},
 		},
 		rules: {
 			'no-mixed-spaces-and-tabs': 'off',
