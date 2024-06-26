@@ -2,7 +2,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="@typescript-to-lua/language-extensions" />
 
-// DEFOLD. stable version 1.8.1 (fd1ad4c17bfdcd890ea7176f2672c35102384419)
+// DEFOLD. stable version 1.9.0 (d6882f432beca85d460ec42497888157c356d058)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 /**
@@ -432,16 +432,6 @@ declare namespace b2d.body {
 	export function get_angular_damping(body: typeof b2d.body): number;
 
 	/**
-	 * Set the angular velocity.
-	 * @param body  body
-	 * @param omega  the new angular velocity in radians/second.
-	 */
-	export function get_angular_velocity(
-		body: typeof b2d.body,
-		omega: number,
-	): void;
-
-	/**
 	 * Get the angular velocity.
 	 * @param body  body
 	 * @return velocity  the angular velocity in radians/second.
@@ -671,6 +661,16 @@ declare namespace b2d.body {
 	export function set_angular_damping(
 		body: typeof b2d.body,
 		damping: number,
+	): void;
+
+	/**
+	 * Set the angular velocity.
+	 * @param body  body
+	 * @param omega  the new angular velocity in radians/second.
+	 */
+	export function set_angular_velocity(
+		body: typeof b2d.body,
+		omega: number,
 	): void;
 
 	/**
@@ -4879,6 +4879,28 @@ declare namespace render {
 	export function disable_texture(binding: hash | number | string): void;
 
 	/**
+	* Dispatches the currently enabled compute program. The dispatch call takes three arguments x,y,z which constitutes
+	* the 'global working group' of the compute dispatch. Together with the 'local working group' specified in the compute shader
+	* as a layout qualifier, these two sets of parameters forms the number of invocations the compute shader will execute.
+	* An optional constant buffer can be provided to override the default constants. If no constants buffer is provided, a default
+	* system constants buffer is used containing constants as defined in the compute program.
+	* @param x  global work group size X
+	* @param y  global work group size Y
+	* @param z  global work group size Z
+	* @param options  optional table with properties:
+
+`constants`
+optional constants to use while rendering
+
+	*/
+	export function dispatch_compute(
+		x: number,
+		y: number,
+		z: number,
+		options?: any,
+	): void;
+
+	/**
 	* Draws all objects that match a specified predicate. An optional constant buffer can be
 	* provided to override the default constants. If no constants buffer is provided, a default
 	* system constants buffer is used containing constants as defined in materials and set through
@@ -5321,6 +5343,14 @@ If true, the renderer will use the cameras view-projection matrix for frustum cu
 	): void;
 
 	/**
+	 * The name of the compute program must be specified in the ".render" resource set
+	 * in the "game.project" setting. If undefined (or no arguments) are passed to this function,
+	 * the current compute program will instead be disabled.
+	 * @param compute  compute id to use, or undefined to disable
+	 */
+	export function set_compute(compute: any): void;
+
+	/**
 	* Specifies whether front- or back-facing polygons can be culled
 	* when polygon culling is enabled. Polygon culling is initially disabled.
 	* If mode is `render.FACE_FRONT_AND_BACK`, no polygons are drawn, but other
@@ -5753,6 +5783,27 @@ declare namespace resource {
 	};
 
 	/**
+	 * Usage hint for creating textures that uses temporary memory
+	 */
+	export const TEXTURE_USAGE_FLAG_MEMORYLESS: number & {
+		readonly _TEXTURE_: unique symbol;
+	};
+
+	/**
+	 * Usage hint for creating textures that can be sampled in a shader
+	 */
+	export const TEXTURE_USAGE_FLAG_SAMPLE: number & {
+		readonly _TEXTURE_: unique symbol;
+	};
+
+	/**
+	 * Usage hint for creating textures that can be used for writing in a shader
+	 */
+	export const TEXTURE_USAGE_FLAG_STORAGE: number & {
+		readonly _TEXTURE_: unique symbol;
+	};
+
+	/**
 	 * Constructor-like function with two purposes:
 	 *
 	 * - Load the specified resource as part of loading the script
@@ -5964,6 +6015,7 @@ The texture type. Supported values:
 
 - `resource.TEXTURE_TYPE_2D`
 - `resource.TEXTURE_TYPE_CUBE_MAP`
+- `resource.TEXTURE_TYPE_IMAGE_2D`
 
 
 `width`
@@ -6006,6 +6058,16 @@ You can test if the device supports these values by checking if a specific enum 
     -- it is safe to use this format
 end
 `
+
+
+`flags`
+Texture creation flags that can be used to dictate how the texture is created. The default value is resource.TEXTURE_USAGE_FLAG_SAMPLE, which means that the texture can be sampled from a shader.
+These flags may or may not be supported on the running device and/or the underlying graphics API and is simply used internally as a 'hint' when creating the texture. There is no guarantee that any of these will have any effect. Supported values:
+
+
+- `resource.TEXTURE_USAGE_FLAG_SAMPLE` - The texture can be sampled from a shader (default)
+- `resource.TEXTURE_USAGE_FLAG_MEMORYLESS` - The texture can be used as a memoryless texture, i.e only transient memory for the texture is used during rendering
+- `resource.TEXTURE_USAGE_FLAG_STORAGE` - The texture can be used as a storage texture, which is required for a shader to write to the texture
 
 
 `max_mipmaps`
@@ -6094,6 +6156,15 @@ These constants might not be available on the device:
 - `resource.TEXTURE_FORMAT_RG16F`
 - `resource.TEXTURE_FORMAT_R32F`
 - `resource.TEXTURE_FORMAT_RG32F`
+
+
+`flags`
+Texture creation flags that can be used to dictate how the texture is created. Supported values:
+
+
+- `resource.TEXTURE_USAGE_FLAG_SAMPLE` - The texture can be sampled from a shader (default)
+- `resource.TEXTURE_USAGE_FLAG_MEMORYLESS` - The texture can be used as a memoryless texture, i.e only transient memory for the texture is used during rendering
+- `resource.TEXTURE_USAGE_FLAG_STORAGE` - The texture can be used as a storage texture, which is required for a shader to write to the texture
 
 You can test if the device supports these values by checking if a specific enum is undefined or not:
 `if resource.TEXTURE_FORMAT_RGBA16F !== undefined then
@@ -6296,11 +6367,14 @@ height of the texture
 depth of the texture (i.e 1 for a 2D texture and 6 for a cube map)
 `mipmaps`
 number of mipmaps of the texture
+`flags`
+usage hints of the texture.
 `type`
 The texture type. Supported values:
 
 
 - `resource.TEXTURE_TYPE_2D`
+- `resource.TEXTURE_TYPE_IMAGE_2D`
 - `resource.TEXTURE_TYPE_CUBE_MAP`
 - `resource.TEXTURE_TYPE_2D_ARRAY`
 
@@ -8405,6 +8479,101 @@ declare namespace camera {
 	export let aspect_ratio: number;
 
 	/**
+	 * get aspect ratio
+	 * @param camera  camera id
+	 * @return aspect_ratio  the aspect ratio.
+	 */
+	export function get_aspect_ratio(camera: any): number;
+
+	/**
+	 * This function returns a table with all the camera URLs that have been
+	 * registered in the render context.
+	 * @param camera  camera id
+	 * @return cameras  a table with all camera URLs
+	 */
+	export function get_cameras(camera: any): AnyNotNil | undefined;
+
+	/**
+	 * get far z
+	 * @param camera  camera id
+	 * @return far_z  the far z.
+	 */
+	export function get_far_z(camera: any): number;
+
+	/**
+	 * get field of view
+	 * @param camera  camera id
+	 * @return fov  the field of view.
+	 */
+	export function get_fov(camera: any): number;
+
+	/**
+	 * get near z
+	 * @param camera  camera id
+	 * @return near_z  the near z.
+	 */
+	export function get_near_z(camera: any): number;
+
+	/**
+	 * get orthographic zoom
+	 * @param camera  camera id
+	 * @return orthographic_zoom  true if the camera is using an orthographic projection.
+	 */
+	export function get_orthographic_zoom(camera: any): boolean;
+
+	/**
+	 * get projection matrix
+	 * @param camera  camera id
+	 * @return projection  the projection matrix.
+	 */
+	export function get_projection(camera: any): vmath.matrix4;
+
+	/**
+	 * get view matrix
+	 * @param camera  camera id
+	 * @return view  the view matrix.
+	 */
+	export function get_view(camera: any): vmath.matrix4;
+
+	/**
+	 * set aspect ratio
+	 * @param camera  camera id
+	 * @param aspect_ratio  the aspect ratio.
+	 */
+	export function set_aspect_ratio(camera: any, aspect_ratio: number): void;
+
+	/**
+	 * set far z
+	 * @param camera  camera id
+	 * @param far_z  the far z.
+	 */
+	export function set_far_z(camera: any, far_z: number): void;
+
+	/**
+	 * set field of view
+	 * @param camera  camera id
+	 * @param fov  the field of view.
+	 */
+	export function set_fov(camera: any, fov: number): void;
+
+	/**
+	 * set near z
+	 * @param camera  camera id
+	 * @param near_z  the near z.
+	 */
+	export function set_near_z(camera: any, near_z: number): void;
+
+	/**
+	 * set orthographic zoom
+	 * @param camera  camera id
+	 * @param orthographic_zoom  true if the camera is using an orthographic projection.
+	 */
+	export function set_orthographic_zoom(
+		camera: any,
+		orthographic_zoom: boolean,
+	): void;
+
+	/**
 	 * Camera frustum far plane.
 	 * The type of the property is float.
 	 */
@@ -8567,14 +8736,16 @@ declare namespace collectionproxy {
 	export type async_load = 'async_load';
 
 	/**
-	 * return an indexed table of resources for a collection proxy. Each
-	 * entry is a hexadecimal string that represents the data of the specific
-	 * resource. This representation corresponds with the filename for each
-	 * individual resource that is exported when you bundle an application with
-	 * LiveUpdate functionality.
-	 * @param collectionproxy  the collectionproxy to check for resources.
-	 * @return resources  the resources
-	 */
+	* return an indexed table of resources for a collection proxy where the
+	* referenced collection has been excluded using LiveUpdate. Each entry is a
+	* hexadecimal string that represents the data of the specific resource.
+	* This representation corresponds with the filename for each individual
+	* resource that is exported when you bundle an application with LiveUpdate
+	* functionality.
+	* @param collectionproxy  the collectionproxy to check for resources.
+	* @return resources  the resources, or an empty list if the
+collection was not excluded.
+	*/
 	export function get_resources(collectionproxy: url): string[];
 
 	/**
