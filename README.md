@@ -14,23 +14,16 @@ Can be used as a drop-in replacement of the original.
 
 ## Installation
 
-1. Get this package from Github
+1. Uninstall `@ts-defold/types`
+
+2. Get this package from Github
 
 ```bash
 yarn add git+https://git@github.com/thinknathan/ts-defold-types.git#^1.3.0 -D
 # or
 npm install git+https://git@github.com/thinknathan/ts-defold-types.git#^1.3.0 --save-dev
-```
-
-2. Modify your `tsconfig.json`
-
-```diff
-{
-  "compilerOptions": {
-+    "typeRoots": ["./node_modules/@ts-defold"],
-+    "types": ["types"]
-  }
-}
+# or
+pnpm install git+https://git@github.com/thinknathan/ts-defold-types.git -D
 ```
 
 ### Shoutouts 📢
