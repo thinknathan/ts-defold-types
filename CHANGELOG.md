@@ -1,5 +1,13 @@
 # Changelog
 
+## Upcoming
+
+- Fix for gui.animate signature
+
+## v1.9.0
+
+- Update for latest Defold
+
 ## v1.8.1
 
 - Update for latest Defold
