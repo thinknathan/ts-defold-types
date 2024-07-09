@@ -1,6 +1,6 @@
 // @ts-check
 
-/** profiler namespace */
+/** profiler namespace @satisfies {(string | RegExp)[][]} */
 export const profiler = [
 	// (greedy)
 	[

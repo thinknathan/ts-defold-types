@@ -1,6 +1,6 @@
 // @ts-check
 
-/** timer namespace */
+/** timer namespace @satisfies {(string | RegExp)[][]} */
 export const timer = [
 	[
 		'let INVALID_TIMER_HANDLE: any',

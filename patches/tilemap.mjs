@@ -1,6 +1,6 @@
 // @ts-check
 
-/** tilemap namespace */
+/** tilemap namespace @satisfies {(string | RegExp)[][]} */
 export const tilemap = [
 	['let material: any', 'let material: hash'],
 	['let tile_source: any', 'let tile_source: hash'],

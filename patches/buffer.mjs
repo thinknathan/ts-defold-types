@@ -1,6 +1,6 @@
 // @ts-check
 
-/** buffer namespace */
+/** buffer namespace @satisfies {(string | RegExp)[][]} */
 export const bufferChanges = [
 	// (greedy)
 	[

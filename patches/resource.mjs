@@ -1,6 +1,6 @@
 // @ts-check
 
-/** resource namespace */
+/** resource namespace @satisfies {(string | RegExp)[][]} */
 export const resource = [
 	// (greedy)
 	[

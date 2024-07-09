@@ -1,6 +1,6 @@
 // @ts-check
 
-/** b2d.body namespace */
+/** b2d.body namespace @satisfies {(string | RegExp)[][]} */
 export const b2dBody = [
 	[
 		'function set_active(body: any, enable: any)',

@@ -1,6 +1,6 @@
 // @ts-check
 
-/** collectionFactory namespace */
+/** collectionFactory namespace @satisfies {(string | RegExp)[][]} */
 export const collectionFactory = [
 	// (greedy)
 	[

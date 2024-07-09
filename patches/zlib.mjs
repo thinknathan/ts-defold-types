@@ -1,4 +1,4 @@
 // @ts-check
 
-/** zlib namespace */
+/** zlib namespace @satisfies {(string | RegExp)[][]} */
 export const zlib = [['', '']];

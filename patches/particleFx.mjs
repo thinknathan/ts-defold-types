@@ -1,6 +1,6 @@
 // @ts-check
 
-/** particlefx namespace */
+/** particlefx namespace @satisfies {(string | RegExp)[][]} */
 export const particleFx = [
 	// (greedy)
 	[

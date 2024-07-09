@@ -1,6 +1,6 @@
 // @ts-check
 
-/** label namespace */
+/** label namespace @satisfies {(string | RegExp)[][]} */
 export const label = [
 	['let material: any', 'let material: hash'],
 	['let color: any', 'let color: vmath.vector4'],

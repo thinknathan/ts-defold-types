@@ -1,6 +1,6 @@
 // @ts-check
 
-/** sprite namespace */
+/** sprite namespace @satisfies {(string | RegExp)[][]} */
 export const sprite = [
 	['let material: any', 'let material: hash'],
 	['let frame_count: any', 'const frame_count: number'],

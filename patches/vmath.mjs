@@ -1,6 +1,6 @@
 // @ts-check
 
-/** vmath namespace */
+/** vmath namespace @satisfies {(string | RegExp)[][]} */
 export const vmathChanges = [
 	[
 		'function vector(t: any): any',

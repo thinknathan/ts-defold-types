@@ -1,6 +1,6 @@
 // @ts-check
 
-/** model namespace */
+/** model namespace @satisfies {(string | RegExp)[][]} */
 export const model = [
 	['let material: any', 'let material: hash'],
 	['let playback_rate: any', 'let playback_rate: number'],

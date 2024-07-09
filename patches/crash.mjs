@@ -1,6 +1,6 @@
 // @ts-check
 
-/** crash namespace */
+/** crash namespace @satisfies {(string | RegExp)[][]} */
 export const crash = [
 	// (greedy)
 	[

@@ -1,6 +1,6 @@
 // @ts-check
 
-/** go namespace */
+/** go namespace @satisfies {(string | RegExp)[][]} */
 export const go = [
 	['let euler: any', 'let euler: vmath.vector3'],
 	['let position: any', 'let position: vmath.vector3'],

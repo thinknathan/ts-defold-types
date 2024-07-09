@@ -1,6 +1,6 @@
 // @ts-check
 
-/** sound namespace */
+/** sound namespace @satisfies {(string | RegExp)[][]} */
 export const sound = [
 	['let sound: any', 'let sound: hash'],
 	['let gain: any', 'let gain: number'],

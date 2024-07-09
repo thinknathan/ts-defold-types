@@ -1,6 +1,6 @@
 // @ts-check
 
-/** image namespace */
+/** image namespace @satisfies {(string | RegExp)[][]} */
 export const image = [
 	['let TYPE_LUMINANCE: any', 'const TYPE_LUMINANCE: "l"'],
 	['let TYPE_LUMINANCE_ALPHA: any', 'const TYPE_LUMINANCE_ALPHA: "la"'],

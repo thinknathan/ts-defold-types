@@ -1,6 +1,6 @@
 // @ts-check
 
-/** render namespace */
+/** render namespace @satisfies {(string | RegExp)[][]} */
 export const render = [
 	// (greedy)
 	[

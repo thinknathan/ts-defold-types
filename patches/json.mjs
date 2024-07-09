@@ -1,6 +1,6 @@
 // @ts-check
 
-/** json namespace */
+/** json namespace @satisfies {(string | RegExp)[][]} */
 export const jsonChanges = [
 	['let null$: any', 'let null$: null'],
 	[

@@ -1,6 +1,6 @@
 // @ts-check
 
-/** collectionproxy namespace */
+/** collectionproxy namespace @satisfies {(string | RegExp)[][]} */
 export const collectionProxy = [
 	[
 		'function missing_resources(collectionproxy: url): any',

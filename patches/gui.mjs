@@ -1,6 +1,6 @@
 // @ts-check
 
-/** gui namespace */
+/** gui namespace @satisfies {(string | RegExp)[][]} */
 export const gui = [
 	['let material: any', 'let material: hash'],
 	['let fonts: any', 'let fonts: hash'],

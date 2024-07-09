@@ -1,6 +1,6 @@
 // @ts-check
 
-/** physics namespace */
+/** physics namespace @satisfies {(string | RegExp)[][]} */
 export const physics = [
 	['let angular_damping: any', 'let angular_damping: number'],
 	['let angular_velocity: any', 'let angular_velocity: vmath.vector3'],

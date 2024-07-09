@@ -1,6 +1,6 @@
 // @ts-check
 
-/** msg namespace */
+/** msg namespace @satisfies {(string | RegExp)[][]} */
 export const msg = [
 	[
 		'export function post(receiver: string | url | hash, message_id: string | hash, message?: any): void',

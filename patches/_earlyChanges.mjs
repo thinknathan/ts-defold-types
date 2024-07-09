@@ -1,6 +1,6 @@
 // @ts-check
 
-/** Initial generic changes */
+/** Initial generic changes @satisfies {(string | RegExp)[][]} */
 export const earlyChanges = [
 	// Describe `url`
 	[

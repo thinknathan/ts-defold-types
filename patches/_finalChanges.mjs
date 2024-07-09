@@ -1,6 +1,6 @@
 // @ts-check
 
-/** Late changes that don't fit anywhere else */
+/** Late changes that don't fit anywhere else @satisfies {(string | RegExp)[][]} */
 export const finalChanges = [
 	// Replace `any` keyword with `unknown` in return values (greedy)
 	[/\): any/g, '): AnyNotNil | undefined'],

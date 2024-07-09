@@ -1,6 +1,6 @@
 // @ts-check
 
-/** camera namespace */
+/** camera namespace @satisfies {(string | RegExp)[][]} */
 export const camera = [
 	['let aspect_ratio: any', 'let aspect_ratio: number'],
 	['let far_z: any', 'let far_z: number'],

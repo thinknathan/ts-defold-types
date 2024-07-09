@@ -1,6 +1,6 @@
 // @ts-check
 
-/** window namespace */
+/** window namespace @satisfies {(string | RegExp)[][]} */
 export const windowChanges = [
 	// (greedy)
 	[

@@ -1,6 +1,6 @@
 // @ts-check
 
-/** socket namespace */
+/** socket namespace @satisfies {(string | RegExp)[][]} */
 export const socket = [
 	['let _SETSIZE: any', 'const _SETSIZE: number'],
 	['let _VERSION: any', 'const _VERSION: string'],

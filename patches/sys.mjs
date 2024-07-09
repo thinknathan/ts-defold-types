@@ -1,6 +1,6 @@
 // @ts-check
 
-/** sys namespace */
+/** sys namespace @satisfies {(string | RegExp)[][]} */
 export const sys = [
 	// (greedy)
 	[

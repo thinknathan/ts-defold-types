@@ -1,6 +1,6 @@
 // @ts-check
 
-/** http namespace */
+/** http namespace @satisfies {(string | RegExp)[][]} */
 export const http = [
 	// function request
 	[
