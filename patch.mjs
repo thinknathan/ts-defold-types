@@ -76,7 +76,8 @@ const earlyChanges = [
 			declare type socketunconnected = object;
 
 			/**
-			 * Not available in HTML5, iOS, Switch builds 
+			 * Not available in HTML5, iOS, Switch builds
+			 * @see {@link https://luajit.org/ext_jit.html|Documentation}
 			 */
 			declare namespace jit {
 				/** Turns the JIT engine on.  */
@@ -112,8 +113,15 @@ const earlyChanges = [
 		'declare type bufferstream = Array<number> & LuaUserdata & {\n}',
 		'declare type bufferstream = number[] & LuaUserdata & object',
 	],
-	// Pretty print
-	['function pprint(v: any)', 'function pprint(...args: any[])'],
+	[
+		'@return hash  a hashed string',
+		'@return hash  a hashed string\n * @see {@link https://defold.com/ref/stable/builtins/#hash:s|Documentation}',
+	],
+	[
+		// Pretty print
+		'function pprint(v: any)',
+		'function pprint(...v: any[])',
+	],
 	// Replace nil with undefined
 	[/nil/g, 'undefined'],
 	[/Nil/g, 'Undefined'],
@@ -1305,6 +1313,8 @@ const finalChanges = [
 	// Replace generic tables (greedy)
 	[/tbl: any/g, 'tbl: AnyNotNil'],
 	[/table: any/g, 'table: AnyNotNil'],
+	// Replace @return with @returns (greedy)
+	[/@return /g, '@returns '],
 	// Change uppercase variables to const (greedy)
 	[/let (?:\b|\W)([A-Z0-9_]+)(?:\b|\W)/g, 'const $1'],
 ];

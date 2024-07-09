@@ -61,6 +61,7 @@ declare type socketunconnected = object;
 
 /**
  * Not available in HTML5, iOS, Switch builds
+ * @see {@link https://luajit.org/ext_jit.html|Documentation}
  */
 declare namespace jit {
 	/** Turns the JIT engine on.  */
@@ -151,7 +152,8 @@ declare namespace vmath {
  * All ids in the engine are represented as hashes, so a string needs to be hashed
  * before it can be compared with an id.
  * @param s  string to hash
- * @return hash  a hashed string
+ * @returns hash  a hashed string
+ * @see {@link https://defold.com/ref/stable/builtins/#hash:s|Documentation}
  */
 declare function hash(s: string): hash;
 
@@ -159,7 +161,7 @@ declare function hash(s: string): hash;
  * Returns a hexadecimal representation of a hash value.
  * The returned string is always padded with leading zeros.
  * @param h  hash value to get hex string for
- * @return hex  hex representation of the hash
+ * @returns hex  hex representation of the hash
  */
 declare function hash_to_hex(h: hash): string;
 
@@ -170,7 +172,7 @@ declare function hash_to_hex(h: hash): string;
  * will recurse.
  * @param v  value to print
  */
-declare function pprint(...args: any[]): void;
+declare function pprint(...v: any[]): void;
 
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
@@ -196,8 +198,8 @@ declare namespace socket {
 	 * @param locaddr  optional local address to bind to.
 	 * @param locport  optional local port to bind to.
 	 * @param family  optional socket family to use, `"inet"` or `"inet6"`.
-	 * @return tcp_client  a new IPv6 TCP client object, or `undefined` in case of error.
-	 * @return error  the error message, or `undefined` if no error occurred.
+	 * @returns tcp_client  a new IPv6 TCP client object, or `undefined` in case of error.
+	 * @returns error  the error message, or `undefined` if no error occurred.
 	 */
 	export function connect(
 		address: string,
@@ -210,7 +212,7 @@ declare namespace socket {
 	/**
 	 * Returns the time in seconds, relative to the system epoch (Unix epoch time since January 1, 1970 (UTC) or Windows file time since January 1, 1601 (UTC)).
 	 * You should use the values returned by this function for relative measurements only.
-	 * @return seconds  the number of seconds elapsed.
+	 * @returns seconds  the number of seconds elapsed.
 	 */
 	export function gettime(): number;
 
@@ -218,7 +220,7 @@ declare namespace socket {
 	 * This function creates and returns a clean try function that allows for cleanup before the exception is raised.
 	 * The `finalizer` function will be called in protected mode (see protect).
 	 * @param finalizer  a function that will be called before the try throws the exception.
-	 * @return try  the customized try function.
+	 * @returns try  the customized try function.
 	 */
 	export function newtry(
 		finalizer: (...args: any[]) => unknown,
@@ -228,7 +230,7 @@ declare namespace socket {
 	 * Converts a function that throws exceptions into a safe function. This function only catches exceptions thrown by try functions. It does not catch normal Lua errors.
 	 * ⚠ Beware that if your function performs some illegal operation that raises an error, the protected function will catch the error and return it as a string. This is because try functions uses errors as the mechanism to throw exceptions.
 	 * @param func  a function that calls a try function (or assert, or error) to throw exceptions.
-	 * @return safe_func  an equivalent function that instead of throwing exceptions, returns `undefined` followed by an error message.
+	 * @returns safe_func  an equivalent function that instead of throwing exceptions, returns `undefined` followed by an error message.
 	 */
 	export function protect(
 		func: (...args: any[]) => unknown,
@@ -246,9 +248,9 @@ declare namespace socket {
 	 * @param recvt  array with the sockets to test for characters available for reading.
 	 * @param sendt  array with sockets that are watched to see if it is OK to immediately write on them.
 	 * @param timeout  the maximum amount of time (in seconds) to wait for a change in status. Undefined, negative or omitted timeout value allows the function to block indefinitely.
-	 * @return sockets_r  a list with the sockets ready for reading.
-	 * @return sockets_w  a list with the sockets ready for writing.
-	 * @return error  an error message. "timeout" if a timeout condition was met, otherwise `undefined`.
+	 * @returns sockets_r  a list with the sockets ready for reading.
+	 * @returns sockets_w  a list with the sockets ready for writing.
+	 * @returns error  an error message. "timeout" if a timeout condition was met, otherwise `undefined`.
 	 */
 	export function select(
 		recvt: any[],
@@ -265,9 +267,9 @@ declare namespace socket {
 	 * @param ret1  argument 1.
 	 * @param ret2  argument 2.
 	 * @param retN  argument N.
-	 * @return retD_1  argument D+1.
-	 * @return retD_2  argument D+2.
-	 * @return retN  argument N.
+	 * @returns retD_1  argument D+1.
+	 * @returns retD_2  argument D+2.
+	 * @returns retN  argument N.
 	 */
 
 	export function skip(
@@ -287,8 +289,8 @@ declare namespace socket {
 
 	/**
 	 * Creates and returns an IPv4 TCP master object. A master object can be transformed into a server object with the method `listen` (after a call to `bind`) or into a client object with the method `connect`. The only other method supported by a master object is the `close` method.
-	 * @return tcp_master  a new IPv4 TCP master object, or `undefined` in case of error.
-	 * @return error  the error message, or `undefined` if no error occurred.
+	 * @returns tcp_master  a new IPv4 TCP master object, or `undefined` in case of error.
+	 * @returns error  the error message, or `undefined` if no error occurred.
 	 */
 	export function tcp(): LuaMultiReturn<
 		[socketmaster | undefined, string | undefined]
@@ -297,8 +299,8 @@ declare namespace socket {
 	/**
 	 * Creates and returns an IPv6 TCP master object. A master object can be transformed into a server object with the method `listen` (after a call to `bind`) or into a client object with the method connect. The only other method supported by a master object is the close method.
 	 * Note: The TCP object returned will have the option "ipv6-v6only" set to true.
-	 * @return tcp_master  a new IPv6 TCP master object, or `undefined` in case of error.
-	 * @return error  the error message, or `undefined` if no error occurred.
+	 * @returns tcp_master  a new IPv6 TCP master object, or `undefined` in case of error.
+	 * @returns error  the error message, or `undefined` if no error occurred.
 	 */
 	export function tcp6(): LuaMultiReturn<
 		[socketmaster | undefined, string | undefined]
@@ -306,8 +308,8 @@ declare namespace socket {
 
 	/**
 	 * Creates and returns an unconnected IPv4 UDP object. Unconnected objects support the `sendto`, `receive`, `receivefrom`, `getoption`, `getsockname`, `setoption`, `settimeout`, `setpeername`, `setsockname`, and `close` methods. The `setpeername` method is used to connect the object.
-	 * @return udp_unconnected  a new unconnected IPv4 UDP object, or `undefined` in case of error.
-	 * @return error  the error message, or `undefined` if no error occurred.
+	 * @returns udp_unconnected  a new unconnected IPv4 UDP object, or `undefined` in case of error.
+	 * @returns error  the error message, or `undefined` if no error occurred.
 	 */
 	export function udp(): LuaMultiReturn<
 		[socketunconnected | undefined, string | unknown]
@@ -316,8 +318,8 @@ declare namespace socket {
 	/**
 	 * Creates and returns an unconnected IPv6 UDP object. Unconnected objects support the `sendto`, `receive`, `receivefrom`, `getoption`, `getsockname`, `setoption`, `settimeout`, `setpeername`, `setsockname`, and `close` methods. The `setpeername` method is used to connect the object.
 	 * Note: The UDP object returned will have the option "ipv6-v6only" set to true.
-	 * @return udp_unconnected  a new unconnected IPv6 UDP object, or `undefined` in case of error.
-	 * @return error  the error message, or `undefined` if no error occurred.
+	 * @returns udp_unconnected  a new unconnected IPv6 UDP object, or `undefined` in case of error.
+	 * @returns error  the error message, or `undefined` if no error occurred.
 	 */
 	export function udp6(): LuaMultiReturn<
 		[socketunconnected | undefined, string | unknown]
@@ -329,7 +331,7 @@ declare namespace b2d {
 	/**
 	 * Get the Box2D body from a collision object
 	 * @param url  the url to the game object collision component
-	 * @return body  the body if successful. Otherwise `undefined`.
+	 * @returns body  the body if successful. Otherwise `undefined`.
 	 */
 	export function get_body(
 		url: hash | url | string,
@@ -337,7 +339,7 @@ declare namespace b2d {
 
 	/**
 	 * Get the Box2D world from the current collection
-	 * @return world  the world if successful. Otherwise `undefined`.
+	 * @returns world  the world if successful. Otherwise `undefined`.
 	 */
 	export function get_world(): AnyNotNil | undefined;
 }
@@ -427,42 +429,42 @@ declare namespace b2d.body {
 	/**
 	 * Get the angular damping of the body.
 	 * @param body  body
-	 * @return damping  the damping
+	 * @returns damping  the damping
 	 */
 	export function get_angular_damping(body: typeof b2d.body): number;
 
 	/**
 	 * Get the angular velocity.
 	 * @param body  body
-	 * @return velocity  the angular velocity in radians/second.
+	 * @returns velocity  the angular velocity in radians/second.
 	 */
 	export function get_angular_velocity(body: typeof b2d.body): number;
 
 	/**
 	 * Get the gravity scale of the body.
 	 * @param body  body
-	 * @return scale  the scale
+	 * @returns scale  the scale
 	 */
 	export function get_gravity_scale(body: typeof b2d.body): number;
 
 	/**
 	 * Get the rotational inertia of the body about the local origin.
 	 * @param body  body
-	 * @return inertia  the rotational inertia, usually in kg-m^2.
+	 * @returns inertia  the rotational inertia, usually in kg-m^2.
 	 */
 	export function get_inertia(body: typeof b2d.body): number;
 
 	/**
 	 * Get the linear damping of the body.
 	 * @param body  body
-	 * @return damping  the damping
+	 * @returns damping  the damping
 	 */
 	export function get_linear_damping(body: typeof b2d.body): number;
 
 	/**
 	 * Get the linear velocity of the center of mass.
 	 * @param body  body
-	 * @return velocity  the linear velocity of the center of mass.
+	 * @returns velocity  the linear velocity of the center of mass.
 	 */
 	export function get_linear_velocity(body: typeof b2d.body): vmath.vector3;
 
@@ -470,7 +472,7 @@ declare namespace b2d.body {
 	 * Get the world velocity of a local point.
 	 * @param body  body
 	 * @param local_point  a point in local coordinates.
-	 * @return velocity  the world velocity of a point.
+	 * @returns velocity  the world velocity of a point.
 	 */
 	export function get_linear_velocity_from_local_point(
 		body: typeof b2d.body,
@@ -481,7 +483,7 @@ declare namespace b2d.body {
 	 * Get the world linear velocity of a world point attached to this body.
 	 * @param body  body
 	 * @param world_point  a point in world coordinates.
-	 * @return velocity  the world velocity of a point.
+	 * @returns velocity  the world velocity of a point.
 	 */
 	export function get_linear_velocity_from_world_point(
 		body: typeof b2d.body,
@@ -491,7 +493,7 @@ declare namespace b2d.body {
 	/**
 	 * Get the local position of the center of mass.
 	 * @param body  body
-	 * @return center  Get the local position of the center of mass.
+	 * @returns center  Get the local position of the center of mass.
 	 */
 	export function get_local_center(body: typeof b2d.body): vmath.vector3;
 
@@ -499,7 +501,7 @@ declare namespace b2d.body {
 	 * Gets a local point relative to the body's origin given a world point.
 	 * @param body  body
 	 * @param world_point  a point in world coordinates.
-	 * @return vector  the corresponding local point relative to the body's origin.
+	 * @returns vector  the corresponding local point relative to the body's origin.
 	 */
 	export function get_local_point(
 		body: typeof b2d.body,
@@ -510,7 +512,7 @@ declare namespace b2d.body {
 	 * Gets a local vector given a world vector.
 	 * @param body  body
 	 * @param world_vector  a vector in world coordinates.
-	 * @return vector  the corresponding local vector.
+	 * @returns vector  the corresponding local vector.
 	 */
 	export function get_local_vector(
 		body: typeof b2d.body,
@@ -520,49 +522,49 @@ declare namespace b2d.body {
 	/**
 	 * Get the total mass of the body.
 	 * @param body  body
-	 * @return mass  the mass, usually in kilograms (kg).
+	 * @returns mass  the mass, usually in kilograms (kg).
 	 */
 	export function get_mass(body: typeof b2d.body): number;
 
 	/**
 	 * Get the next body in the world's body list.
 	 * @param body  body
-	 * @return body  the next body
+	 * @returns body  the next body
 	 */
 	export function get_next(body: typeof b2d.body): AnyNotNil | undefined;
 
 	/**
 	 * Get the world body origin position.
 	 * @param body  body
-	 * @return position  the world position of the body's origin.
+	 * @returns position  the world position of the body's origin.
 	 */
 	export function get_position(body: typeof b2d.body): vmath.vector3;
 
 	/**
 	 * Get the type of this body.
 	 * @param body  body
-	 * @return type  the body type
+	 * @returns type  the body type
 	 */
 	export function get_type(body: typeof b2d.body): AnyNotNil | undefined;
 
 	/**
 	 * Get the parent world of this body.
 	 * @param body  body
-	 * @return world
+	 * @returns world
 	 */
 	export function get_world(body: typeof b2d.body): AnyNotNil | undefined;
 
 	/**
 	 * Get the angle in radians.
 	 * @param body  body
-	 * @return angle  the current world rotation angle in radians.
+	 * @returns angle  the current world rotation angle in radians.
 	 */
 	export function get_world_center(body: typeof b2d.body): number;
 
 	/**
 	 * Get the world position of the center of mass.
 	 * @param body  body
-	 * @return center  Get the world position of the center of mass.
+	 * @returns center  Get the world position of the center of mass.
 	 */
 	export function get_world_center(body: typeof b2d.body): vmath.vector3;
 
@@ -570,7 +572,7 @@ declare namespace b2d.body {
 	 * Get the world coordinates of a point given the local coordinates.
 	 * @param body  body
 	 * @param local_vector  localPoint a point on the body measured relative the the body's origin.
-	 * @return vector  the same point expressed in world coordinates.
+	 * @returns vector  the same point expressed in world coordinates.
 	 */
 	export function get_world_point(
 		body: typeof b2d.body,
@@ -581,7 +583,7 @@ declare namespace b2d.body {
 	 * Get the world coordinates of a vector given the local coordinates.
 	 * @param body  body
 	 * @param local_vector  a vector fixed in the body.
-	 * @return vector  the same vector expressed in world coordinates.
+	 * @returns vector  the same vector expressed in world coordinates.
 	 */
 	export function get_world_vector(
 		body: typeof b2d.body,
@@ -591,28 +593,28 @@ declare namespace b2d.body {
 	/**
 	 * Get the active state of the body.
 	 * @param body  body
-	 * @return enabled  is the body active
+	 * @returns enabled  is the body active
 	 */
 	export function is_active(body: typeof b2d.body): AnyNotNil | undefined;
 
 	/**
 	 * Get the sleeping state of this body.
 	 * @param body  body
-	 * @return enabled  true if the body is awake, false if it's sleeping.
+	 * @returns enabled  true if the body is awake, false if it's sleeping.
 	 */
 	export function is_awake(body: typeof b2d.body): AnyNotNil | undefined;
 
 	/**
 	 * Is this body in bullet mode
 	 * @param body  body
-	 * @return enabled  true if the body is in bullet mode
+	 * @returns enabled  true if the body is in bullet mode
 	 */
 	export function is_bullet(body: typeof b2d.body): AnyNotNil | undefined;
 
 	/**
 	 * Does this body have fixed rotation?
 	 * @param body  body
-	 * @return enabled  is the rotation fixed
+	 * @returns enabled  is the rotation fixed
 	 */
 	export function is_fixed_rotation(
 		body: typeof b2d.body,
@@ -621,7 +623,7 @@ declare namespace b2d.body {
 	/**
 	 * Is this body allowed to sleep
 	 * @param body  body
-	 * @return enabled  true if the body is allowed to sleep
+	 * @returns enabled  true if the body is allowed to sleep
 	 */
 	export function is_sleeping_allowed(
 		body: typeof b2d.body,
@@ -852,7 +854,7 @@ declare namespace crash {
 	/**
 	 * A table is returned containing the addresses of the call stack.
 	 * @param handle  crash dump handle
-	 * @return backtrace  table containing the backtrace
+	 * @returns backtrace  table containing the backtrace
 	 */
 	export function get_backtrace(handle: number): AnyNotNil | undefined;
 
@@ -861,7 +863,7 @@ declare namespace crash {
 	 * and not guaranteed
 	 * but can be useful for manual inspection.
 	 * @param handle  crash dump handle
-	 * @return blob  string with the platform specific data
+	 * @returns blob  string with the platform specific data
 	 */
 	export function get_extra_data(handle: number): string;
 
@@ -869,7 +871,7 @@ declare namespace crash {
 	 * The function returns a table containing entries with sub-tables that
 	 * have fields 'name' and 'address' set for all loaded modules.
 	 * @param handle  crash dump handle
-	 * @return modules  module table
+	 * @returns modules  module table
 	 */
 	export function get_modules(
 		handle: number,
@@ -878,7 +880,7 @@ declare namespace crash {
 	/**
 	 * read signal number from a crash report
 	 * @param handle  crash dump handle
-	 * @return signal  signal number
+	 * @returns signal  signal number
 	 */
 	export function get_signum(handle: number): number;
 
@@ -886,7 +888,7 @@ declare namespace crash {
 	 * reads a system field from a loaded crash dump
 	 * @param handle  crash dump handle
 	 * @param index  system field enum. Must be less than crash.SYSFIELD_MAX
-	 * @return value  value recorded in the crash dump, or `undefined` if it didn't exist
+	 * @returns value  value recorded in the crash dump, or `undefined` if it didn't exist
 	 */
 	export function get_sys_field(
 		handle: number,
@@ -897,14 +899,14 @@ declare namespace crash {
 	 * reads user field from a loaded crash dump
 	 * @param handle  crash dump handle
 	 * @param index  user data slot index
-	 * @return value  user data value recorded in the crash dump
+	 * @returns value  user data value recorded in the crash dump
 	 */
 	export function get_user_field(handle: number, index: number): string;
 
 	/**
 	 * The crash dump will be removed from disk upon a successful
 	 * load, so loading is one-shot.
-	 * @return handle  handle to the loaded dump, or `undefined` if no dump was found
+	 * @returns handle  handle to the loaded dump, or `undefined` if no dump was found
 	 */
 	export function load_previous(): number | undefined;
 
@@ -1421,7 +1423,7 @@ The id of the animated property.
 	/**
 	 * check if the specified game object exists
 	 * @param url  url of the game object to check
-	 * @return exists  true if the game object exists
+	 * @returns exists  true if the game object exists
 	 */
 	export function exists(url: hash | url | string): boolean;
 
@@ -1432,7 +1434,7 @@ The id of the animated property.
 	* @param options  optional options table
 index into array property (1 based)
 name of internal property
-	* @return value  the value of the specified property
+	* @returns value  the value of the specified property
 	*/
 	export function get(
 		url: hash | url | string,
@@ -1448,42 +1450,42 @@ name of internal property
 	 * - If `path` is not specified, the id of the game object instance the script is attached to will be returned.
 	 *
 	 * @param path  path of the instance for which to return the id
-	 * @return id  instance id
+	 * @returns id  instance id
 	 */
 	export function get_id(path?: string): hash;
 
 	/**
 	 * Get the parent for a game object instance.
 	 * @param id  optional id of the game object instance to get parent for, defaults to the instance containing the calling script
-	 * @return parent_id  parent instance or `undefined`
+	 * @returns parent_id  parent instance or `undefined`
 	 */
 	export function get_parent(id?: hash | url | string): hash | undefined;
 
 	/**
 	 * The position is relative the parent (if any). Use go.get_world_position to retrieve the global world position.
 	 * @param id  optional id of the game object instance to get the position for, by default the instance of the calling script
-	 * @return position  instance position
+	 * @returns position  instance position
 	 */
 	export function get_position(id?: hash | url | string): vmath.vector3;
 
 	/**
 	 * The rotation is relative to the parent (if any). Use go.get_world_rotation to retrieve the global world rotation.
 	 * @param id  optional id of the game object instance to get the rotation for, by default the instance of the calling script
-	 * @return rotation  instance rotation
+	 * @returns rotation  instance rotation
 	 */
 	export function get_rotation(id?: hash | url | string): vmath.quaternion;
 
 	/**
 	 * The scale is relative the parent (if any). Use go.get_world_scale to retrieve the global world 3D scale factor.
 	 * @param id  optional id of the game object instance to get the scale for, by default the instance of the calling script
-	 * @return scale  instance scale factor
+	 * @returns scale  instance scale factor
 	 */
 	export function get_scale(id?: hash | url | string): vmath.vector3;
 
 	/**
 	 * The uniform scale is relative the parent (if any). If the underlying scale vector is non-uniform the min element of the vector is returned as the uniform scale factor.
 	 * @param id  optional id of the game object instance to get the uniform scale for, by default the instance of the calling script
-	 * @return scale  uniform instance scale factor
+	 * @returns scale  uniform instance scale factor
 	 */
 	export function get_scale_uniform(id?: hash | url | string): number;
 
@@ -1491,7 +1493,7 @@ name of internal property
 	 * The function will return the world position calculated at the end of the previous frame.
 	 * Use go.get_position to retrieve the position relative to the parent.
 	 * @param id  optional id of the game object instance to get the world position for, by default the instance of the calling script
-	 * @return position  instance world position
+	 * @returns position  instance world position
 	 */
 	export function get_world_position(id?: hash | url | string): vmath.vector3;
 
@@ -1499,7 +1501,7 @@ name of internal property
 	 * The function will return the world rotation calculated at the end of the previous frame.
 	 * Use go.get_rotation to retrieve the rotation relative to the parent.
 	 * @param id  optional id of the game object instance to get the world rotation for, by default the instance of the calling script
-	 * @return rotation  instance world rotation
+	 * @returns rotation  instance world rotation
 	 */
 	export function get_world_rotation(
 		id?: hash | url | string,
@@ -1511,7 +1513,7 @@ name of internal property
 	 * This vector is derived by decomposing the transformation matrix and should be used with care.
 	 * For most cases it should be fine to use go.get_world_scale_uniform instead.
 	 * @param id  optional id of the game object instance to get the world scale for, by default the instance of the calling script
-	 * @return scale  instance world 3D scale factor
+	 * @returns scale  instance world 3D scale factor
 	 */
 	export function get_world_scale(id?: hash | url | string): vmath.vector3;
 
@@ -1519,14 +1521,14 @@ name of internal property
 	 * The function will return the world scale factor calculated at the end of the previous frame.
 	 * Use go.get_scale_uniform to retrieve the scale factor relative to the parent.
 	 * @param id  optional id of the game object instance to get the world scale for, by default the instance of the calling script
-	 * @return scale  instance world scale factor
+	 * @returns scale  instance world scale factor
 	 */
 	export function get_world_scale_uniform(id?: hash | url | string): number;
 
 	/**
 	 * The function will return the world transform matrix calculated at the end of the previous frame.
 	 * @param id  optional id of the game object instance to get the world transform for, by default the instance of the calling script
-	 * @return transform  instance world transform
+	 * @returns transform  instance world transform
 	 */
 	export function get_world_transform(id?: hash | url | string): vmath.matrix4;
 
@@ -1607,7 +1609,7 @@ name of internal property
 	 * ⚠ The function uses world transformation calculated at the end of previous frame.
 	 * @param position  position which need to be converted
 	 * @param url  url of the game object which coordinate system convert to
-	 * @return converted_postion  converted position
+	 * @returns converted_postion  converted position
 	 */
 	export function world_to_local_position(
 		position: vmath.vector3,
@@ -1618,7 +1620,7 @@ name of internal property
 	 * ⚠ The function uses world transformation calculated at the end of previous frame.
 	 * @param transformation  transformation which need to be converted
 	 * @param url  url of the game object which coordinate system convert to
-	 * @return converted_transform  converted transformation
+	 * @returns converted_transform  converted transformation
 	 */
 	export function world_to_local_transform(
 		transformation: vmath.matrix4,
@@ -2291,7 +2293,7 @@ with a custom curve. See the animation guide for more information.
 	 * This function does not clone the supplied node's children nodes.
 	 * Use gui.clone_tree for that purpose.
 	 * @param node  node to clone
-	 * @return clone  the cloned node
+	 * @returns clone  the cloned node
 	 */
 	export function clone(node: node): node;
 
@@ -2299,7 +2301,7 @@ with a custom curve. See the animation guide for more information.
 	 * Make a clone instance of a node and all its children.
 	 * Use gui.clone to clone a node excluding its children.
 	 * @param node  root node to clone
-	 * @return clones  a table mapping node ids to the corresponding cloned nodes
+	 * @returns clones  a table mapping node ids to the corresponding cloned nodes
 	 */
 	export function clone_tree(node: node): AnyNotNil | undefined;
 
@@ -2346,7 +2348,7 @@ with a custom curve. See the animation guide for more information.
 	* The adjust mode defines how the node will adjust itself to screen
 	* resolutions that differs from the one in the project settings.
 	* @param node  node from which to get the adjust mode (node)
-	* @return adjust_mode  the current adjust mode
+	* @returns adjust_mode  the current adjust mode
 
 - `gui.ADJUST_FIT`
 - `gui.ADJUST_ZOOM`
@@ -2367,7 +2369,7 @@ with a custom curve. See the animation guide for more information.
 	* Returns the blend mode of a node.
 	* Blend mode defines how the node will be blended with the background.
 	* @param node  node from which to get the blend mode
-	* @return blend_mode  blend mode
+	* @returns blend_mode  blend mode
 
 - `gui.BLEND_ALPHA`
 - `gui.BLEND_ADD`
@@ -2384,14 +2386,14 @@ with a custom curve. See the animation guide for more information.
 	/**
 	 * If node is set as an inverted clipping node, it will clip anything inside as opposed to outside.
 	 * @param node  node from which to get the clipping inverted state
-	 * @return inverted  true or false
+	 * @returns inverted  true or false
 	 */
 	export function get_clipping_inverted(node: node): boolean;
 
 	/**
 	* Clipping mode defines how the node will clip it's children nodes
 	* @param node  node from which to get the clipping mode
-	* @return clipping_mode  clipping mode
+	* @returns clipping_mode  clipping mode
 
 - `gui.CLIPPING_MODE_NONE`
 - `gui.CLIPPING_MODE_STENCIL`
@@ -2404,7 +2406,7 @@ with a custom curve. See the animation guide for more information.
 	/**
 	 * If node is set as visible clipping node, it will be shown as well as clipping. Otherwise, it will only clip but not show visually.
 	 * @param node  node from which to get the clipping visibility state
-	 * @return visible  true or false
+	 * @returns visible  true or false
 	 */
 	export function get_clipping_visible(node: node): boolean;
 
@@ -2438,7 +2440,7 @@ with a custom curve. See the animation guide for more information.
 	 *
 	 *
 	 * @param node  node to get the color from
-	 * @return color  node color
+	 * @returns color  node color
 	 */
 	export function get_color(node: node): vmath.vector4;
 
@@ -2446,62 +2448,62 @@ with a custom curve. See the animation guide for more information.
 	 * Returns the rotation of the supplied node.
 	 * The rotation is expressed in degree Euler angles.
 	 * @param node  node to get the rotation from
-	 * @return rotation  node rotation
+	 * @returns rotation  node rotation
 	 */
 	export function get_euler(node: node): vmath.vector3;
 
 	/**
 	 * Returns the sector angle of a pie node.
 	 * @param node  node from which to get the fill angle
-	 * @return angle  sector angle
+	 * @returns angle  sector angle
 	 */
 	export function get_fill_angle(node: node): number;
 
 	/**
 	 * Get node flipbook animation.
 	 * @param node  node to get flipbook animation from
-	 * @return animation  animation id
+	 * @returns animation  animation id
 	 */
 	export function get_flipbook(node: node): hash;
 
 	/**
 	 * This is only useful nodes with flipbook animations. Gets the normalized cursor of the flipbook animation on a node.
 	 * @param node  node to get the cursor for (node)
-	 * @return cursor  cursor value
+	 * @returns cursor  cursor value
 	 */
 	export function get_flipbook_cursor(node: node): number;
 
 	/**
 	 * This is only useful nodes with flipbook animations. Gets the playback rate of the flipbook animation on a node.
 	 * @param node  node to set the cursor for
-	 * @return rate  playback rate
+	 * @returns rate  playback rate
 	 */
 	export function get_flipbook_playback_rate(node: node): number;
 
 	/**
 	 * This is only useful for text nodes. The font must be mapped to the gui scene in the gui editor.
 	 * @param node  node from which to get the font
-	 * @return font  font id
+	 * @returns font  font id
 	 */
 	export function get_font(node: node): hash;
 
 	/**
 	 * This is only useful for text nodes. The font must be mapped to the gui scene in the gui editor.
 	 * @param font_name  font of which to get the path hash
-	 * @return hash  path hash to resource
+	 * @returns hash  path hash to resource
 	 */
 	export function get_font_resource(font_name: hash | string): hash;
 
 	/**
 	 * Returns the scene height.
-	 * @return height  scene height
+	 * @returns height  scene height
 	 */
 	export function get_height(): number;
 
 	/**
 	 * Retrieves the id of the specified node.
 	 * @param node  the node to retrieve the id from
-	 * @return id  the id of the node
+	 * @returns id  the id of the node
 	 */
 	export function get_id(node: node): hash;
 
@@ -2510,7 +2512,7 @@ with a custom curve. See the animation guide for more information.
 	 * The index defines the order in which a node appear in a GUI scene.
 	 * Higher index means the node is drawn on top of lower indexed nodes.
 	 * @param node  the node to retrieve the id from
-	 * @return index  the index of the node
+	 * @returns index  the index of the node
 	 */
 	export function get_index(node: node): number;
 
@@ -2524,27 +2526,27 @@ with a custom curve. See the animation guide for more information.
 	 * Returns the inner radius of a pie node.
 	 * The radius is defined along the x-axis.
 	 * @param node  node from where to get the inner radius
-	 * @return radius  inner radius
+	 * @returns radius  inner radius
 	 */
 	export function get_inner_radius(node: node): number;
 
 	/**
 	 * The layer must be mapped to the gui scene in the gui editor.
 	 * @param node  node from which to get the layer
-	 * @return layer  layer id
+	 * @returns layer  layer id
 	 */
 	export function get_layer(node: node): hash;
 
 	/**
 	 * gets the scene current layout
-	 * @return layout  layout id
+	 * @returns layout  layout id
 	 */
 	export function get_layout(): hash;
 
 	/**
 	 * Returns the leading value for a text node.
 	 * @param node  node from where to get the leading
-	 * @return leading  leading scaling value (default=1)
+	 * @returns leading  leading scaling value (default=1)
 	 */
 	export function get_leading(node: node): number;
 
@@ -2552,7 +2554,7 @@ with a custom curve. See the animation guide for more information.
 	 * Returns whether a text node is in line-break mode or not.
 	 * This is only useful for text nodes.
 	 * @param node  node from which to get the line-break for
-	 * @return line_break  `true` or `false`
+	 * @returns line_break  `true` or `false`
 	 */
 	export function get_line_break(node: node): boolean;
 
@@ -2566,14 +2568,14 @@ with a custom curve. See the animation guide for more information.
 	/**
 	 * Retrieves the node with the specified id.
 	 * @param id  id of the node to retrieve
-	 * @return instance  a new node instance
+	 * @returns instance  a new node instance
 	 */
 	export function get_node(id: hash | string): node;
 
 	/**
 	* Returns the outer bounds mode for a pie node.
 	* @param node  node from where to get the outer bounds mode
-	* @return bounds_mode  the outer bounds mode of the pie node:
+	* @returns bounds_mode  the outer bounds mode of the pie node:
 
 - `gui.PIEBOUNDS_RECTANGLE`
 - `gui.PIEBOUNDS_ELLIPSE`
@@ -2587,7 +2589,7 @@ with a custom curve. See the animation guide for more information.
 	 * Returns the outline color of the supplied node.
 	 * See gui.get_color for info how vectors encode color values.
 	 * @param node  node to get the outline color from
-	 * @return color  outline color
+	 * @returns color  outline color
 	 */
 	export function get_outline(node: node): vmath.vector4;
 
@@ -2595,14 +2597,14 @@ with a custom curve. See the animation guide for more information.
 	 * Returns the parent node of the specified node.
 	 * If the supplied node does not have a parent, `undefined` is returned.
 	 * @param node  the node from which to retrieve its parent
-	 * @return parent  parent instance or `undefined`
+	 * @returns parent  parent instance or `undefined`
 	 */
 	export function get_parent(node: node): node | undefined;
 
 	/**
 	 * Get the paricle fx for a gui node
 	 * @param node  node to get particle fx for
-	 * @return particlefx  particle fx id
+	 * @returns particlefx  particle fx id
 	 */
 	export function get_particlefx(node: node): hash;
 
@@ -2610,14 +2612,14 @@ with a custom curve. See the animation guide for more information.
 	 * Returns the number of generated vertices around the perimeter
 	 * of a pie node.
 	 * @param node  pie node
-	 * @return vertices  vertex count
+	 * @returns vertices  vertex count
 	 */
 	export function get_perimeter_vertices(node: node): number;
 
 	/**
 	* The pivot specifies how the node is drawn and rotated from its position.
 	* @param node  node to get pivot from
-	* @return pivot  pivot constant
+	* @returns pivot  pivot constant
 
 - `gui.PIVOT_CENTER`
 - `gui.PIVOT_N`
@@ -2638,7 +2640,7 @@ with a custom curve. See the animation guide for more information.
 	/**
 	 * Returns the position of the supplied node.
 	 * @param node  node to get the position from
-	 * @return position  node position
+	 * @returns position  node position
 	 */
 	export function get_position(node: node): vmath.vector3;
 
@@ -2646,14 +2648,14 @@ with a custom curve. See the animation guide for more information.
 	 * Returns the rotation of the supplied node.
 	 * The rotation is expressed as a quaternion
 	 * @param node  node to get the rotation from
-	 * @return rotation  node rotation
+	 * @returns rotation  node rotation
 	 */
 	export function get_rotation(node: node): vmath.quaternion;
 
 	/**
 	 * Returns the scale of the supplied node.
 	 * @param node  node to get the scale from
-	 * @return scale  node scale
+	 * @returns scale  node scale
 	 */
 	export function get_scale(node: node): vmath.vector3;
 
@@ -2662,7 +2664,7 @@ with a custom curve. See the animation guide for more information.
 	 * calculated transformed position of the node, taking into account any parent node
 	 * transforms.
 	 * @param node  node to get the screen position from
-	 * @return position  node screen position
+	 * @returns position  node screen position
 	 */
 	export function get_screen_position(node: node): vmath.vector3;
 
@@ -2670,14 +2672,14 @@ with a custom curve. See the animation guide for more information.
 	 * Returns the shadow color of the supplied node.
 	 * See gui.get_color for info how vectors encode color values.
 	 * @param node  node to get the shadow color from
-	 * @return color  node shadow color
+	 * @returns color  node shadow color
 	 */
 	export function get_shadow(node: node): vmath.vector4;
 
 	/**
 	 * Returns the size of the supplied node.
 	 * @param node  node to get the size from
-	 * @return size  node size
+	 * @returns size  node size
 	 */
 	export function get_size(node: node): vmath.vector3;
 
@@ -2689,7 +2691,7 @@ with a custom curve. See the animation guide for more information.
 	* to match the assigned image. Particle fx and Text nodes will ignore
 	* any size mode setting.
 	* @param node  node from which to get the size mode (node)
-	* @return size_mode  the current size mode
+	* @returns size_mode  the current size mode
 
 - `gui.SIZE_MODE_MANUAL`
 - `gui.SIZE_MODE_AUTO`
@@ -2702,14 +2704,14 @@ with a custom curve. See the animation guide for more information.
 	/**
 	 * Returns the slice9 configuration values for the node.
 	 * @param node  node to manipulate
-	 * @return values  configuration values
+	 * @returns values  configuration values
 	 */
 	export function get_slice9(node: node): vmath.vector4;
 
 	/**
 	 * Returns the text value of a text node. This is only useful for text nodes.
 	 * @param node  node from which to get the text
-	 * @return text  text value
+	 * @returns text  text value
 	 */
 	export function get_text(node: node): string;
 
@@ -2718,21 +2720,21 @@ with a custom curve. See the animation guide for more information.
 	 * This is currently only useful for box or pie nodes.
 	 * The texture must be mapped to the gui scene in the gui editor.
 	 * @param node  node to get texture from
-	 * @return texture  texture id
+	 * @returns texture  texture id
 	 */
 	export function get_texture(node: node): hash;
 
 	/**
 	 * Returns the tracking value of a text node.
 	 * @param node  node from where to get the tracking
-	 * @return tracking  tracking scaling number (default=0)
+	 * @returns tracking  tracking scaling number (default=0)
 	 */
 	export function get_tracking(node: node): number;
 
 	/**
 	 * Get a node and all its children as a Lua table.
 	 * @param node  root node to get node tree from
-	 * @return clones  a table mapping node ids to the corresponding nodes
+	 * @returns clones  a table mapping node ids to the corresponding nodes
 	 */
 	export function get_tree(node: node): AnyNotNil | undefined;
 
@@ -2740,20 +2742,20 @@ with a custom curve. See the animation guide for more information.
 	 * Returns `true` if a node is visible and `false` if it's not.
 	 * Invisible nodes are not rendered.
 	 * @param node  node to query
-	 * @return visible  whether the node is visible or not
+	 * @returns visible  whether the node is visible or not
 	 */
 	export function get_visible(node: node): boolean;
 
 	/**
 	 * Returns the scene width.
-	 * @return width  scene width
+	 * @returns width  scene width
 	 */
 	export function get_width(): number;
 
 	/**
 	* The x-anchor specifies how the node is moved when the game is run in a different resolution.
 	* @param node  node to get x-anchor from
-	* @return anchor  anchor constant
+	* @returns anchor  anchor constant
 
 - `gui.ANCHOR_NONE`
 - `gui.ANCHOR_LEFT`
@@ -2767,7 +2769,7 @@ with a custom curve. See the animation guide for more information.
 	/**
 	* The y-anchor specifies how the node is moved when the game is run in a different resolution.
 	* @param node  node to get y-anchor from
-	* @return anchor  anchor constant
+	* @returns anchor  anchor constant
 
 - `gui.ANCHOR_NONE`
 - `gui.ANCHOR_TOP`
@@ -2788,7 +2790,7 @@ with a custom curve. See the animation guide for more information.
 	 * Disabled nodes are not rendered and animations acting on them are not evaluated.
 	 * @param node  node to query
 	 * @param recursive  check hierarchy recursively
-	 * @return enabled  whether the node is enabled or not
+	 * @returns enabled  whether the node is enabled or not
 	 */
 	export function is_enabled(node: node, recursive?: boolean): boolean;
 
@@ -2814,7 +2816,7 @@ with a custom curve. See the animation guide for more information.
 	 * Dynamically create a new box node.
 	 * @param pos  node position
 	 * @param size  node size
-	 * @return node  new box node
+	 * @returns node  new box node
 	 */
 	export function new_box_node(
 		pos: vmath.vector3 | vmath.vector4,
@@ -2825,7 +2827,7 @@ with a custom curve. See the animation guide for more information.
 	 * Dynamically create a particle fx node.
 	 * @param pos  node position
 	 * @param particlefx  particle fx resource name
-	 * @return node  new particle fx node
+	 * @returns node  new particle fx node
 	 */
 	export function new_particlefx_node(
 		pos: vmath.vector3 | vmath.vector4,
@@ -2836,7 +2838,7 @@ with a custom curve. See the animation guide for more information.
 	 * Dynamically create a new pie node.
 	 * @param pos  node position
 	 * @param size  node size
-	 * @return node  new pie node
+	 * @returns node  new pie node
 	 */
 	export function new_pie_node(
 		pos: vmath.vector3 | vmath.vector4,
@@ -2847,7 +2849,7 @@ with a custom curve. See the animation guide for more information.
 	 * Dynamically create a new text node.
 	 * @param pos  node position
 	 * @param text  node text
-	 * @return node  new text node
+	 * @returns node  new text node
 	 */
 	export function new_text_node(
 		pos: vmath.vector3 | vmath.vector4,
@@ -2867,8 +2869,8 @@ with a custom curve. See the animation guide for more information.
 
 	* @param buffer  texture data
 	* @param flip  flip texture vertically
-	* @return success  texture creation was successful
-	* @return code  one of the gui.RESULT_* codes if unsuccessful
+	* @returns success  texture creation was successful
+	* @returns code  one of the gui.RESULT_* codes if unsuccessful
 	*/
 	export function new_texture(
 		texture_id: hash | string,
@@ -2892,7 +2894,7 @@ with a custom curve. See the animation guide for more information.
 	 * @param node  node to be tested for picking
 	 * @param x  x-coordinate (see on_input )
 	 * @param y  y-coordinate (see on_input )
-	 * @return pickable  pick result
+	 * @returns pickable  pick result
 	 */
 	export function pick_node(node: node, x: number, y: number): boolean;
 
@@ -2982,7 +2984,7 @@ the new state of the emitter:
 	 * Convert the screen position to the local position of supplied node
 	 * @param node  node used for getting local transformation matrix
 	 * @param screen_position  screen position
-	 * @return local_position  local position
+	 * @returns local_position  local position
 	 */
 	export function screen_to_local(
 		node: node,
@@ -3448,7 +3450,7 @@ the new state of the emitter:
 
 	* @param buffer  texture data
 	* @param flip  flip texture vertically
-	* @return success  setting the data was successful
+	* @returns success  setting the data was successful
 	*/
 	export function set_texture_data(
 		texture: hash | string,
@@ -3779,14 +3781,14 @@ See each joint type for possible properties field. The one field that is accepte
 	 * Get the gravity in runtime. The gravity returned is not global, it will return
 	 * the gravity for the collection that the function is called from.
 	 * Note: For 2D physics the z component will always be zero.
-	 * @return gravity  gravity vector of collection
+	 * @returns gravity  gravity vector of collection
 	 */
 	export function get_gravity(): vmath.vector3;
 
 	/**
 	* Returns the group name of a collision object as a hash.
 	* @param url  the collision object to return the group of.
-	* @return group  hash value of the group.
+	* @returns group  hash value of the group.
 `local function check_is_enemy()
     local group = physics.get_group(&quot;#collisionobject&quot;)
     return group == hash(&quot;enemy&quot;)
@@ -3801,7 +3803,7 @@ end
 	* Note: Currently only supported in 2D physics.
 	* @param collisionobject  collision object where the joint exist
 	* @param joint_id  id of the joint
-	* @return properties  properties table. See the joint types for what fields are available, the only field available for all types is:
+	* @returns properties  properties table. See the joint types for what fields are available, the only field available for all types is:
 
 `collide_connected`: Set this flag to true if the attached bodies should collide.
 
@@ -3817,7 +3819,7 @@ end
 	 * Note: Currently only supported in 2D physics.
 	 * @param collisionobject  collision object where the joint exist
 	 * @param joint_id  id of the joint
-	 * @return force  reaction force for the joint
+	 * @returns force  reaction force for the joint
 	 */
 	export function get_joint_reaction_force(
 		collisionobject: hash | url | string,
@@ -3830,7 +3832,7 @@ end
 	 * Note: Currently only supported in 2D physics.
 	 * @param collisionobject  collision object where the joint exist
 	 * @param joint_id  id of the joint
-	 * @return torque  the reaction torque on bodyB in N*m.
+	 * @returns torque  the reaction torque on bodyB in N*m.
 	 */
 	export function get_joint_reaction_torque(
 		collisionobject: hash | url | string,
@@ -3842,7 +3844,7 @@ end
 	* object, false otherwise.
 	* @param url  the collision object to check the mask of.
 	* @param group  the name of the group to check for.
-	* @return maskbit  boolean value of the maskbit. 'true' if present, 'false' otherwise.
+	* @returns maskbit  boolean value of the maskbit. 'true' if present, 'false' otherwise.
 `local function is_invincible()
     -- check if the collisionobject would collide with the &quot;bullet&quot; group
     local invincible = physics.get_maskbit(&quot;#collisionobject&quot;, &quot;bullet&quot;)
@@ -3856,7 +3858,7 @@ end
 	* Gets collision shape data from a collision object
 	* @param url  the collision object.
 	* @param shape  the name of the shape to get data for.
-	* @return table  A table containing meta data about the physics shape
+	* @returns table  A table containing meta data about the physics shape
 
 `type`
 The shape type. Supported values:
@@ -3922,7 +3924,7 @@ end
 `all`
 Set to `true` to return all ray cast hits. If `false`, it will only return the closest hit.
 
-	* @return result  It returns a list. If missed it returns `undefined`. See ray_cast_response for details on the returned values.
+	* @returns result  It returns a list. If missed it returns `undefined`. See ray_cast_response for details on the returned values.
 	*/
 	export function raycast(
 		from: vmath.vector3,
@@ -4216,7 +4218,7 @@ declare namespace profiler {
 	 * by default in the debug version of the engine. It can be enabled in release version as well
 	 * by checking `track_cpu` under `profiler` in the `game.project` file.
 	 * (This means that the engine will sample the CPU usage in intervalls during execution even in release mode.)
-	 * @return percent  of CPU used by the application
+	 * @returns percent  of CPU used by the application
 	 */
 	export function get_cpu_usage(): number;
 
@@ -4246,7 +4248,7 @@ declare namespace profiler {
 	 *
 	 *
 	 *
-	 * @return bytes  used by the application
+	 * @returns bytes  used by the application
 	 */
 	export function get_memory_usage(): number;
 
@@ -4258,7 +4260,7 @@ declare namespace profiler {
 
 	/**
 	 * Get the number of recorded frames in the on-screen profiler ui recording buffer
-	 * @return frame_count  the number of recorded frames, zero if on-screen profiler is disabled
+	 * @returns frame_count  the number of recorded frames, zero if on-screen profiler is disabled
 	 */
 	export function recorded_frame_count(): number;
 
@@ -4796,7 +4798,7 @@ declare namespace render {
 	/**
 	 * Constant buffers are used to set shader program variables and are optionally passed to the `render.draw()` function.
 	 * The buffer's constant elements can be indexed like an ordinary Lua table, but you can't iterate over them with pairs() or ipairs().
-	 * @return buffer  new constant buffer
+	 * @returns buffer  new constant buffer
 	 */
 	export function constant_buffer(): buffer;
 
@@ -4980,7 +4982,7 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	 * Returns the logical window height that is set in the "game.project" settings.
 	 * Note that the actual window pixel size can change, either by device constraints
 	 * or user input.
-	 * @return height  specified window height
+	 * @returns height  specified window height
 	 */
 	export function get_height(): number;
 
@@ -4993,7 +4995,7 @@ to enable those textures as well. Currently 4 color attachments are supported:
 - `render.BUFFER_DEPTH_BIT`
 - `render.BUFFER_STENCIL_BIT`
 
-	* @return height  the height of the render target buffer texture
+	* @returns height  the height of the render target buffer texture
 	*/
 	export function get_render_target_height(
 		render_target: rendertarget,
@@ -5013,7 +5015,7 @@ to enable those textures as well. Currently 4 color attachments are supported:
 - `render.BUFFER_DEPTH_BIT`
 - `render.BUFFER_STENCIL_BIT`
 
-	* @return width  the width of the render target buffer texture
+	* @returns width  the width of the render target buffer texture
 	*/
 	export function get_render_target_width(
 		render_target: rendertarget,
@@ -5031,7 +5033,7 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	 * Returns the logical window width that is set in the "game.project" settings.
 	 * Note that the actual window pixel size can change, either by device constraints
 	 * or user input.
-	 * @return width  specified window width (number)
+	 * @returns width  specified window width (number)
 	 */
 	export function get_width(): number;
 
@@ -5039,7 +5041,7 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	 * Returns the actual physical window height.
 	 * Note that this value might differ from the logical height that is set in the
 	 * "game.project" settings.
-	 * @return height  actual window height
+	 * @returns height  actual window height
 	 */
 	export function get_window_height(): number;
 
@@ -5047,7 +5049,7 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	 * Returns the actual physical window width.
 	 * Note that this value might differ from the logical width that is set in the
 	 * "game.project" settings.
-	 * @return width  actual window width
+	 * @returns width  actual window width
 	 */
 	export function get_window_width(): number;
 
@@ -5058,7 +5060,7 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	 * with all tags ANDed together.
 	 * The current limit to the number of tags that can be defined is `64`.
 	 * @param tags  table of tags that the predicate should match. The tags can be of either hash or string type
-	 * @return predicate  new predicate
+	 * @returns predicate  new predicate
 	 */
 	export function predicate(
 		tags: Array<hash | string> | LuaSet<hash | string>,
@@ -5125,7 +5127,7 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	 * `
 	 * @param name  render target name
 	 * @param parameters  table of buffer parameters, see the description for available keys and values
-	 * @return render_target  new render target
+	 * @returns render_target  new render target
 	 */
 	export function render_target(
 		name: string,
@@ -5770,7 +5772,7 @@ declare namespace resource {
 	 *
 	 * ⚠ This function can only be called within go.property function calls.
 	 * @param path  optional resource path string to the resource
-	 * @return path  a path hash to the binary version of the resource
+	 * @returns path  a path hash to the binary version of the resource
 	 */
 	export function atlas(path?: string): hash;
 
@@ -5782,7 +5784,7 @@ declare namespace resource {
 	 *
 	 * ⚠ This function can only be called within go.property function calls.
 	 * @param path  optional resource path string to the resource
-	 * @return path  a path hash to the binary version of the resource
+	 * @returns path  a path hash to the binary version of the resource
 	 */
 	export function buffer(path?: string): hash;
 
@@ -5897,7 +5899,7 @@ a list of the indices of the geometry in the form {i0, i1, i2, ..., in}. Each tr
 
 
 
-	* @return path  Returns the atlas resource path
+	* @returns path  Returns the atlas resource path
 	*/
 	export function create_atlas(
 		path: string,
@@ -5951,7 +5953,7 @@ optional flag to determine wether or not the resource should take over ownership
 
 
 
-	* @return path  Returns the buffer resource path
+	* @returns path  Returns the buffer resource path
 	*/
 	export function create_buffer(
 		path: string,
@@ -6040,7 +6042,7 @@ Creating an empty texture with no buffer data is not supported as a core feature
 - `COMPRESSION_TYPE_BASIS_UASTC`
 
 	* @param buffer  optional buffer of precreated pixel data
-	* @return path  The path to the resource.
+	* @returns path  The path to the resource.
 	*/
 	export function create_texture(
 		path: string,
@@ -6143,8 +6145,8 @@ Creating an empty texture with no buffer data is not supported as a core feature
 - `COMPRESSION_TYPE_BASIS_UASTC`
 
 	* @param buffer  optional buffer of precreated pixel data
-	* @return path  The path to the resource.
-	* @return request_id  The request id for the async request.
+	* @returns path  The path to the resource.
+	* @returns request_id  The request id for the async request.
 	*/
 	export function create_texture_async(
 		path: string,
@@ -6160,14 +6162,14 @@ Creating an empty texture with no buffer data is not supported as a core feature
 	 *
 	 * ⚠ This function can only be called within go.property function calls.
 	 * @param path  optional resource path string to the resource
-	 * @return path  a path hash to the binary version of the resource
+	 * @returns path  a path hash to the binary version of the resource
 	 */
 	export function font(path?: string): hash;
 
 	/**
 	* Returns the atlas data for an atlas
 	* @param path  The path to the atlas resource
-	* @return data  A table with the following entries:
+	* @returns data  A table with the following entries:
 
 - texture
 - geometries
@@ -6197,14 +6199,14 @@ See resource.set_atlas for a detailed description of each field
 	/**
 	 * gets the buffer from a resource
 	 * @param path  The path to the resource
-	 * @return buffer  The resource buffer
+	 * @returns buffer  The resource buffer
 	 */
 	export function get_buffer(path: hash | string): buffer;
 
 	/**
 	* Gets render target info from a render target resource path or a render target handle
 	* @param path  The path to the resource or a render target handle
-	* @return table  A table containing info about the render target:
+	* @returns table  A table containing info about the render target:
 
 `handle`
 the opaque handle to the texture resource
@@ -6292,7 +6294,7 @@ The tracking (default 0.0)
 `line_break`
 If the calculation should consider line breaks (default false)
 
-	* @return metrics  a table with the following fields:
+	* @returns metrics  a table with the following fields:
 
 - width
 - height
@@ -6314,7 +6316,7 @@ If the calculation should consider line breaks (default false)
 	/**
 	* Gets texture info from a texture resource path or a texture handle
 	* @param path  The path to the resource or a texture handle
-	* @return table  A table containing info about the texture:
+	* @returns table  A table containing info about the texture:
 
 `handle`
 the opaque handle to the texture resource
@@ -6351,7 +6353,7 @@ The texture type. Supported values:
 	/**
 	 * Loads the resource data for a specific resource.
 	 * @param path  The path to the resource
-	 * @return buffer  Returns the buffer stored on disc
+	 * @returns buffer  Returns the buffer stored on disc
 	 */
 	export function load(path: string): buffer;
 
@@ -6363,7 +6365,7 @@ The texture type. Supported values:
 	 *
 	 * ⚠ This function can only be called within go.property function calls.
 	 * @param path  optional resource path string to the resource
-	 * @return path  a path hash to the binary version of the resource
+	 * @returns path  a path hash to the binary version of the resource
 	 */
 	export function material(path?: string): hash;
 
@@ -6639,7 +6641,7 @@ optional specify the compression type for the data in the buffer object that hol
 	 *
 	 * ⚠ This function can only be called within go.property function calls.
 	 * @param path  optional resource path string to the resource
-	 * @return path  a path hash to the binary version of the resource
+	 * @returns path  a path hash to the binary version of the resource
 	 */
 	export function texture(path?: string): hash;
 
@@ -6651,7 +6653,7 @@ optional specify the compression type for the data in the buffer object that hol
 	 *
 	 * ⚠ This function can only be called within go.property function calls.
 	 * @param path  optional resource path string to the resource
-	 * @return path  a path hash to the binary version of the resource
+	 * @returns path  a path hash to the binary version of the resource
 	 */
 	export function tile_source(path?: string): hash;
 }
@@ -6779,7 +6781,7 @@ declare namespace sys {
 	/**
 	 * deserializes buffer into a lua table
 	 * @param buffer  buffer to deserialize from
-	 * @return table  lua table with deserialized data
+	 * @returns table  lua table with deserialized data
 	 */
 	export function deserialize(buffer: string): AnyNotNil | undefined;
 
@@ -6787,7 +6789,7 @@ declare namespace sys {
 	 * Check if a path exists
 	 * Good for checking if a file exists before loading a large file
 	 * @param path  path to check
-	 * @return result  `true` if the path exists, `false` otherwise
+	 * @returns result  `true` if the path exists, `false` otherwise
 	 */
 	export function exists(path: string): boolean;
 
@@ -6804,7 +6806,7 @@ declare namespace sys {
 	* in a custom "Info.plist".
 	* 📱 On Android, the `app_string` is the package identifier for the app.
 	* @param app_string  platform specific string with application package or query, see above for details.
-	* @return app_info  table with application information in the following fields:
+	* @returns app_info  table with application information in the following fields:
 
 `installed`
 `true` if the application is installed, `false` otherwise.
@@ -6816,7 +6818,7 @@ declare namespace sys {
 
 	/**
 	 * The path from which the application is run.
-	 * @return path  path to application executable
+	 * @returns path  path to application executable
 	 */
 	export function get_application_path(): string;
 
@@ -6824,7 +6826,7 @@ declare namespace sys {
 	 * Get integer config value from the game.project configuration file with optional default value
 	 * @param key  key to get value for. The syntax is SECTION.KEY
 	 * @param default_value  (optional) default value to return if the value does not exist
-	 * @return value  config value as an integer. default_value if the config key does not exist. 0 if no default value was supplied.
+	 * @returns value  config value as an integer. default_value if the config key does not exist. 0 if no default value was supplied.
 	 */
 	export function get_config_int(key: string, default_value?: number): number;
 
@@ -6832,7 +6834,7 @@ declare namespace sys {
 	 * Get number config value from the game.project configuration file with optional default value
 	 * @param key  key to get value for. The syntax is SECTION.KEY
 	 * @param default_value  (optional) default value to return if the value does not exist
-	 * @return value  config value as an number. default_value if the config key does not exist. 0 if no default value was supplied.
+	 * @returns value  config value as an number. default_value if the config key does not exist. 0 if no default value was supplied.
 	 */
 	export function get_config_number(
 		key: string,
@@ -6843,7 +6845,7 @@ declare namespace sys {
 	 * Get string config value from the game.project configuration file with optional default value
 	 * @param key  key to get value for. The syntax is SECTION.KEY
 	 * @param default_value  (optional) default value to return if the value does not exist
-	 * @return value  config value as a string. default_value if the config key does not exist. undefined if no default value was supplied.
+	 * @returns value  config value as a string. default_value if the config key does not exist. undefined if no default value was supplied.
 	 */
 	export function get_config_string(
 		key: string,
@@ -6854,7 +6856,7 @@ declare namespace sys {
 	* 🤖 Returns the current network connectivity status
 	* on mobile platforms.
 	* On desktop, this function always return `sys.NETWORK_CONNECTED`.
-	* @return status  network connectivity status:
+	* @returns status  network connectivity status:
 
 - `sys.NETWORK_DISCONNECTED` (no network connection is found)
 - `sys.NETWORK_CONNECTED_CELLULAR` (connected through mobile cellular)
@@ -6866,7 +6868,7 @@ declare namespace sys {
 
 	/**
 	* Returns a table with engine information.
-	* @return engine_info  table with engine information in the following fields:
+	* @returns engine_info  table with engine information in the following fields:
 
 `version`
 The current Defold engine version, i.e. "1.2.96"
@@ -6886,13 +6888,13 @@ If the engine is a debug or release version
 	 * Create a path to the host device for unit testing
 	 * Useful for saving logs etc during development
 	 * @param filename  file to read from
-	 * @return host_path  the path prefixed with the proper host mount
+	 * @returns host_path  the path prefixed with the proper host mount
 	 */
 	export function get_host_path(filename: string): string;
 
 	/**
 	* Returns an array of tables with information on network interfaces.
-	* @return ifaddrs  an array of tables. Each table entry contain the following fields:
+	* @returns ifaddrs  an array of tables. Each table entry contain the following fields:
 
 `name`
 Interface name
@@ -6918,7 +6920,7 @@ might be undefined if not available.
 	 * The save-file path is operating system specific and is typically located under the user's home directory.
 	 * @param application_id  user defined id of the application, which helps define the location of the save-file
 	 * @param file_name  file-name to get path for
-	 * @return path  path to save-file
+	 * @returns path  path to save-file
 	 */
 	export function get_save_file(
 		application_id: string,
@@ -6929,7 +6931,7 @@ might be undefined if not available.
 	* Returns a table with system information.
 	* @param options  optional options table
 this flag ignores values might be secured by OS e.g. `device_ident`
-	* @return sys_info  table with system information in the following fields:
+	* @returns sys_info  table with system information in the following fields:
 
 `device_model`
 Only available on iOS and Android.
@@ -6972,7 +6974,7 @@ The HTTP user agent, i.e. "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) Apple
 	/**
 	 * If the file exists, it must have been created by `sys.save` to be loaded.
 	 * @param filename  file to read from
-	 * @return loaded  lua table, which is empty if the file could not be found
+	 * @returns loaded  lua table, which is empty if the file could not be found
 	 */
 	export function load(filename: string): LuaMap<AnyNotNil, unknown>;
 
@@ -6988,7 +6990,7 @@ The HTTP user agent, i.e. "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) Apple
 	 * included:
 	 * For example "main/data/,assets/level_data.json".
 	 * @param path  the path to load the buffer from
-	 * @return buffer  the buffer with data
+	 * @returns buffer  the buffer with data
 	 */
 	export function load_buffer(path: string): buffer;
 
@@ -7021,7 +7023,7 @@ The status of the request, supported values are:
 `buffer`
 If the request was successfull, this will contain the request payload in a buffer object, and undefined otherwise. Make sure to check the status before doing anything with the buffer value!
 
-	* @return handle  a handle to the request
+	* @returns handle  a handle to the request
 	*/
 	export function load_buffer_async(
 		path: string,
@@ -7047,8 +7049,8 @@ If the request was successfull, this will contain the request payload in a buffe
 	 * included:
 	 * For example "main/data/,assets/level_data.json".
 	 * @param filename  resource to load, full path
-	 * @return data  loaded data, or `undefined` if the resource could not be loaded
-	 * @return error  the error message, or `undefined` if no error occurred
+	 * @returns data  loaded data, or `undefined` if the resource could not be loaded
+	 * @returns error  the error message, or `undefined` if no error occurred
 	 */
 	export function load_resource(
 		filename: string,
@@ -7065,7 +7067,7 @@ If the request was successfull, this will contain the request payload in a buffe
 - `_parent` - URL is loaded into the parent frame.
 - `_top` - URL replaces any framesets that may be loaded.
 - `name` - The name of the window (Note: the name does not specify the title of the new window).
-	* @return success  a boolean indicating if the url could be opened or not
+	* @returns success  a boolean indicating if the url could be opened or not
 	*/
 	export function open_url(
 		url: string,
@@ -7105,7 +7107,7 @@ If the request was successfull, this will contain the request payload in a buffe
 	 * the limit on the total number of rows remains in effect.
 	 * @param filename  file to write to
 	 * @param table  lua table to save
-	 * @return success  a boolean indicating if the table could be saved or not
+	 * @returns success  a boolean indicating if the table could be saved or not
 	 */
 	export function save(filename: string, table: AnyNotNil): boolean;
 
@@ -7113,7 +7115,7 @@ If the request was successfull, this will contain the request payload in a buffe
 	 * The buffer can later deserialized by `sys.deserialize`.
 	 * This method has all the same limitations as `sys.save`.
 	 * @param table  lua table to serialize
-	 * @return buffer  serialized data buffer
+	 * @returns buffer  serialized data buffer
 	 */
 	export function serialize(table: AnyNotNil): string;
 
@@ -7244,7 +7246,7 @@ declare namespace window {
 	* 🤖 Returns the current dimming mode set on a mobile device.
 	* The dimming mode specifies whether or not a mobile device should dim the screen after a period without user interaction.
 	* On platforms that does not support dimming, `window.DIMMING_UNKNOWN` is always returned.
-	* @return mode  The mode for screen dimming
+	* @returns mode  The mode for screen dimming
 
 - `window.DIMMING_UNKNOWN`
 - `window.DIMMING_ON`
@@ -7256,14 +7258,14 @@ declare namespace window {
 
 	/**
 	 * This returns the current lock state of the mouse cursor
-	 * @return state  The lock state
+	 * @returns state  The lock state
 	 */
 	export function get_mouse_lock(): boolean;
 
 	/**
 	 * This returns the current window size (width and height).
-	 * @return width  The window width
-	 * @return height  The window height
+	 * @returns width  The window width
+	 * @returns height  The window height
 	 */
 	export function get_size(): LuaMultiReturn<[number, number]>;
 
@@ -7439,7 +7441,7 @@ declare namespace buffer {
 `type`: The data type of the stream
 `count`: The number of values each element should hold
 
-	* @return buffer  the new buffer
+	* @returns buffer  the new buffer
 	*/
 	export function create(
 		element_count: number,
@@ -7455,7 +7457,7 @@ declare namespace buffer {
 	 * Get a copy of all the bytes from a specified stream as a Lua string.
 	 * @param buffer  the source buffer
 	 * @param stream_name  the name of the stream
-	 * @return data  the buffer data as a Lua string
+	 * @returns data  the buffer data as a Lua string
 	 */
 	export function get_bytes(buffer: buffer, stream_name: hash): string;
 
@@ -7463,8 +7465,8 @@ declare namespace buffer {
 	 * Get a named metadata entry from a buffer along with its type.
 	 * @param buf  the buffer to get the metadata from
 	 * @param metadata_name  name of the metadata entry
-	 * @return values  table of metadata values or `undefined` if the entry does not exist
-	 * @return value_type  numeric type of values or `undefined`
+	 * @returns values  table of metadata values or `undefined` if the entry does not exist
+	 * @returns value_type  numeric type of values or `undefined`
 	 */
 	export function get_metadata(
 		buf: buffer,
@@ -7482,7 +7484,7 @@ declare namespace buffer {
 	 * Get a specified stream from a buffer.
 	 * @param buffer  the buffer to get the stream from
 	 * @param stream_name  the stream name
-	 * @return stream  the data stream
+	 * @returns stream  the data stream
 	 */
 	export function get_stream(
 		buffer: buffer,
@@ -7513,7 +7515,7 @@ declare namespace html5 {
 	 * A call to this function is blocking, the result is returned as-is, as a string.
 	 * (Internally this will execute the string using the `eval()` JavaScript function.)
 	 * @param code  Javascript code to run
-	 * @return result  result as string
+	 * @returns result  result as string
 	 */
 	export function run(code: string): string;
 
@@ -7623,7 +7625,7 @@ True if alpha should be premultiplied into the color components. Defaults to `fa
 `flip_vertically`
 True if the image contents should be flipped vertically. Defaults to `false`.
 
-	* @return image  object or `undefined` if loading fails. The object is a table with the following fields:
+	* @returns image  object or `undefined` if loading fails. The object is a table with the following fields:
 
 `width`: image width
 `height`: image height
@@ -7659,7 +7661,7 @@ True if alpha should be premultiplied into the color components. Defaults to `fa
 `flip_vertically`
 True if the image contents should be flipped vertically. Defaults to `false`.
 
-	* @return image  object or `undefined` if loading fails. The object is a table with the following fields:
+	* @returns image  object or `undefined` if loading fails. The object is a table with the following fields:
 
 `width`: image width
 `height`: image height
@@ -7696,7 +7698,7 @@ declare namespace json {
 
 `decode_null_as_userdata`: wether to decode a JSON null value as json.null or undefined (default is undefined)
 
-	* @return data  decoded json
+	* @returns data  decoded json
 	*/
 	export function decode(
 		json: string,
@@ -7711,7 +7713,7 @@ declare namespace json {
 
 `encode_empty_table_as_object`: wether to encode an empty table as an JSON object or array (default is object)
 
-	* @return json  encoded json
+	* @returns json  encoded json
 	*/
 	export function encode(
 		tbl: AnyNotNil,
@@ -7753,7 +7755,7 @@ declare namespace msg {
 	/**
 	 * This is equivalent to `msg.url(undefined)` or `msg.url("#")`, which creates an url to the current
 	 * script component.
-	 * @return url  a new URL
+	 * @returns url  a new URL
 	 */
 	export function url(): url;
 
@@ -7771,7 +7773,7 @@ declare namespace msg {
 	 * - `"#"` the current component
 	 *
 	 * @param urlstring  string to create the url from
-	 * @return url  a new URL
+	 * @returns url  a new URL
 	 */
 	export function url(urlstring: string): url;
 
@@ -7780,7 +7782,7 @@ declare namespace msg {
 	 * @param socket  socket of the URL
 	 * @param path  path of the URL
 	 * @param fragment  fragment of the URL
-	 * @return url  a new URL
+	 * @returns url  a new URL
 	 */
 	export function url(
 		socket?: hash | string,
@@ -7802,7 +7804,7 @@ declare namespace timer {
 	 * You may cancel a timer from inside a timer callback.
 	 * Cancelling a timer that is already executed or cancelled is safe.
 	 * @param handle  the timer handle returned by timer.delay()
-	 * @return true  if the timer was active, false if the timer is already cancelled / complete
+	 * @returns true  if the timer was active, false if the timer is already cancelled / complete
 	 */
 	export function cancel(handle: hash): boolean;
 
@@ -7824,7 +7826,7 @@ The handle of the timer
 `time_elapsed`
 The elapsed time - on first trigger it is time since timer.delay call, otherwise time since last trigger
 
-	* @return handle  identifier for the create timer, returns timer.INVALID_TIMER_HANDLE if the timer can not be created
+	* @returns handle  identifier for the create timer, returns timer.INVALID_TIMER_HANDLE if the timer can not be created
 	*/
 	export function delay(
 		delay: number,
@@ -7835,7 +7837,7 @@ The elapsed time - on first trigger it is time since timer.delay call, otherwise
 	/**
 	* Get information about timer.
 	* @param handle  the timer handle returned by timer.delay()
-	* @return data  table or `undefined` if timer is cancelled/completed. table with data in the following fields:
+	* @returns data  table or `undefined` if timer is cancelled/completed. table with data in the following fields:
 
 `time_remaining`
 Time remaining until the next time a timer.delay() fires.
@@ -7852,7 +7854,7 @@ true = repeat timer until cancel, false = one-shot timer.
 	/**
 	 * Manual triggering a callback for a timer.
 	 * @param handle  the timer handle returned by timer.delay()
-	 * @return true  if the timer was active, false if the timer is already cancelled / complete
+	 * @returns true  if the timer was active, false if the timer is already cancelled / complete
 	 */
 	export function trigger(handle: hash): boolean;
 }
@@ -7865,7 +7867,7 @@ declare namespace vmath {
 	 * the imaginary (vector) parts changed:
 	 * `q* = [w, -v]`
 	 * @param q1  quaternion of which to calculate the conjugate
-	 * @return q  the conjugate
+	 * @returns q  the conjugate
 	 */
 	export function conj(q1: vmath.quaternion): vmath.quaternion;
 
@@ -7878,7 +7880,7 @@ declare namespace vmath {
 	 * or if either one has zero length, then their cross product is zero.
 	 * @param v1  first vector
 	 * @param v2  second vector
-	 * @return v  a new vector representing the cross product
+	 * @returns v  a new vector representing the cross product
 	 */
 	export function cross(v1: vmath.vector3, v2: vmath.vector3): vmath.vector3;
 
@@ -7893,7 +7895,7 @@ declare namespace vmath {
 	 *
 	 * @param v1  first vector
 	 * @param v2  second vector
-	 * @return n  dot product
+	 * @returns n  dot product
 	 */
 	export function dot(
 		v1: vmath.vector3 | vmath.vector4,
@@ -7907,7 +7909,7 @@ declare namespace vmath {
 	 * The specialized inverse for ortho-normalized matrices is much faster
 	 * than the general inverse.
 	 * @param m1  matrix to invert
-	 * @return m  inverse of the supplied matrix
+	 * @returns m  inverse of the supplied matrix
 	 */
 	export function inv(m1: vmath.matrix4): vmath.matrix4;
 
@@ -7917,7 +7919,7 @@ declare namespace vmath {
 	 * the length squared instead as it is slightly more efficient to calculate
 	 * (it eliminates a square root calculation).
 	 * @param v  value of which to calculate the length
-	 * @return n  length
+	 * @returns n  length
 	 */
 	export function length(
 		v: vmath.quaternion | vmath.vector3 | vmath.vector4,
@@ -7926,7 +7928,7 @@ declare namespace vmath {
 	/**
 	 * Returns the squared length of the supplied vector or quaternion.
 	 * @param v  value of which to calculate the squared length
-	 * @return n  squared length
+	 * @returns n  squared length
 	 */
 	export function length_sqr(
 		v: vmath.quaternion | vmath.vector3 | vmath.vector4,
@@ -7941,7 +7943,7 @@ declare namespace vmath {
 	 * @param t  interpolation parameter, 0-1
 	 * @param v1  vector to lerp from
 	 * @param v2  vector to lerp to
-	 * @return v  the lerped vector
+	 * @returns v  the lerped vector
 	 */
 	export function lerp(
 		t: number,
@@ -7963,7 +7965,7 @@ declare namespace vmath {
 	 * @param t  interpolation parameter, 0-1
 	 * @param q1  quaternion to lerp from
 	 * @param q2  quaternion to lerp to
-	 * @return q  the lerped quaternion
+	 * @returns q  the lerped quaternion
 	 */
 	export function lerp(
 		t: number,
@@ -7978,14 +7980,14 @@ declare namespace vmath {
 	 * @param t  interpolation parameter, 0-1
 	 * @param n1  number to lerp from
 	 * @param n2  number to lerp to
-	 * @return n  the lerped number
+	 * @returns n  the lerped number
 	 */
 	export function lerp(t: number, n1: number, n2: number): number;
 
 	/**
 	 * The resulting identity matrix describes a transform with
 	 * no translation or rotation.
-	 * @return m  identity matrix
+	 * @returns m  identity matrix
 	 */
 	export function matrix4(): vmath.matrix4;
 
@@ -7994,7 +7996,7 @@ declare namespace vmath {
 	 * corresponding values from the supplied matrix. I.e.
 	 * the function creates a copy of the given matrix.
 	 * @param m1  existing matrix
-	 * @return m  matrix which is a copy of the specified matrix
+	 * @returns m  matrix which is a copy of the specified matrix
 	 */
 	export function matrix4(m1: vmath.matrix4): vmath.matrix4;
 
@@ -8002,7 +8004,7 @@ declare namespace vmath {
 	 * The resulting matrix describes a rotation around the axis by the specified angle.
 	 * @param v  axis
 	 * @param angle  angle in radians
-	 * @return m  matrix represented by axis and angle
+	 * @returns m  matrix represented by axis and angle
 	 */
 	export function matrix4_axis_angle(
 		v: vmath.vector3,
@@ -8012,7 +8014,7 @@ declare namespace vmath {
 	/**
 	 * The resulting matrix describes the same rotation as the quaternion, but does not have any translation (also like the quaternion).
 	 * @param q  quaternion to create matrix from
-	 * @return m  matrix represented by quaternion
+	 * @returns m  matrix represented by quaternion
 	 */
 	export function matrix4_from_quat(q: vmath.quaternion): vmath.matrix4;
 
@@ -8027,7 +8029,7 @@ declare namespace vmath {
 	 * @param top  coordinate for top clipping plane
 	 * @param near  coordinate for near clipping plane
 	 * @param far  coordinate for far clipping plane
-	 * @return m  matrix representing the frustum
+	 * @returns m  matrix representing the frustum
 	 */
 	export function matrix4_frustum(
 		left: number,
@@ -8045,7 +8047,7 @@ declare namespace vmath {
 	 * @param eye  eye position
 	 * @param look_at  look-at position
 	 * @param up  up vector
-	 * @return m  look-at matrix
+	 * @returns m  look-at matrix
 	 */
 	export function matrix4_look_at(
 		eye: vmath.vector3,
@@ -8062,7 +8064,7 @@ declare namespace vmath {
 	 * @param top  coordinate for top clipping plane
 	 * @param near  coordinate for near clipping plane
 	 * @param far  coordinate for far clipping plane
-	 * @return m  orthographic projection matrix
+	 * @returns m  orthographic projection matrix
 	 */
 	export function matrix4_orthographic(
 		left: number,
@@ -8080,7 +8082,7 @@ declare namespace vmath {
 	 * @param aspect  aspect ratio
 	 * @param near  coordinate for near clipping plane
 	 * @param far  coordinate for far clipping plane
-	 * @return m  perspective projection matrix
+	 * @returns m  perspective projection matrix
 	 */
 	export function matrix4_perspective(
 		fov: number,
@@ -8093,7 +8095,7 @@ declare namespace vmath {
 	 * The resulting matrix describes a rotation around the x-axis
 	 * by the specified angle.
 	 * @param angle  angle in radians around x-axis
-	 * @return m  matrix from rotation around x-axis
+	 * @returns m  matrix from rotation around x-axis
 	 */
 	export function matrix4_rotation_x(angle: number): vmath.matrix4;
 
@@ -8101,7 +8103,7 @@ declare namespace vmath {
 	 * The resulting matrix describes a rotation around the y-axis
 	 * by the specified angle.
 	 * @param angle  angle in radians around y-axis
-	 * @return m  matrix from rotation around y-axis
+	 * @returns m  matrix from rotation around y-axis
 	 */
 	export function matrix4_rotation_y(angle: number): vmath.matrix4;
 
@@ -8109,7 +8111,7 @@ declare namespace vmath {
 	 * The resulting matrix describes a rotation around the z-axis
 	 * by the specified angle.
 	 * @param angle  angle in radians around z-axis
-	 * @return m  matrix from rotation around z-axis
+	 * @returns m  matrix from rotation around z-axis
 	 */
 	export function matrix4_rotation_z(angle: number): vmath.matrix4;
 
@@ -8117,7 +8119,7 @@ declare namespace vmath {
 	 * The resulting matrix describes a translation of a point
 	 * in euclidean space.
 	 * @param position  position vector to create matrix from
-	 * @return m  matrix from the supplied position vector
+	 * @returns m  matrix from the supplied position vector
 	 */
 	export function matrix4_translation(
 		position: vmath.vector3 | vmath.vector4,
@@ -8129,7 +8131,7 @@ declare namespace vmath {
 	 * `v = vmath.mul_per_elem(a, b) = vmath.vector3(a.x * b.x, a.y * b.y, a.z * b.z)`
 	 * @param v1  first vector
 	 * @param v2  second vector
-	 * @return v  multiplied vector
+	 * @returns v  multiplied vector
 	 */
 	export function mul_per_elem(
 		v1: vmath.vector3,
@@ -8146,7 +8148,7 @@ declare namespace vmath {
 	 * ⚠ The length of the vector must be above 0, otherwise a
 	 * division-by-zero will occur.
 	 * @param v1  vector to normalize
-	 * @return v  new normalized vector
+	 * @returns v  new normalized vector
 	 */
 	export function normalize(v1: vmath.vector3): vmath.vector3;
 	export function normalize(v1: vmath.vector4): vmath.vector4;
@@ -8159,7 +8161,7 @@ declare namespace vmath {
 	 * ⚠ For matrices that are not ortho-normal
 	 * use the general inverse `vmath.inv()` instead.
 	 * @param m1  ortho-normalized matrix to invert
-	 * @return m  inverse of the supplied matrix
+	 * @returns m  inverse of the supplied matrix
 	 */
 	export function ortho_inv(m1: vmath.matrix4): vmath.matrix4;
 
@@ -8170,7 +8172,7 @@ declare namespace vmath {
 	 * where &#x03B8; is the angle between the vectors P and Q.
 	 * @param v1  vector to be projected on the second
 	 * @param v2  vector onto which the first will be projected, must not have zero length
-	 * @return n  the projected extent of the first vector onto the second
+	 * @returns n  the projected extent of the first vector onto the second
 	 */
 	export function project(v1: vmath.vector3, v2: vmath.vector3): number;
 
@@ -8178,7 +8180,7 @@ declare namespace vmath {
 	 * Creates a new identity quaternion. The identity
 	 * quaternion is equal to:
 	 * `vmath.quat(0, 0, 0, 1)`
-	 * @return q  new identity quaternion
+	 * @returns q  new identity quaternion
 	 */
 	export function quat(): vmath.quaternion;
 
@@ -8187,7 +8189,7 @@ declare namespace vmath {
 	 * corresponding values from the supplied quaternion. I.e.
 	 * This function creates a copy of the given quaternion.
 	 * @param q1  existing quaternion
-	 * @return q  new quaternion
+	 * @returns q  new quaternion
 	 */
 	export function quat(q1: vmath.quaternion): vmath.quaternion;
 
@@ -8198,7 +8200,7 @@ declare namespace vmath {
 	 * @param y  y coordinate
 	 * @param z  z coordinate
 	 * @param w  w coordinate
-	 * @return q  new quaternion
+	 * @returns q  new quaternion
 	 */
 	export function quat(
 		x: number,
@@ -8212,7 +8214,7 @@ declare namespace vmath {
 	 * radians around the axis described by the unit vector `v`.
 	 * @param v  axis
 	 * @param angle  angle
-	 * @return q  quaternion representing the axis-angle rotation
+	 * @returns q  quaternion representing the axis-angle rotation
 	 */
 	export function quat_axis_angle(
 		v: vmath.vector3,
@@ -8226,7 +8228,7 @@ declare namespace vmath {
 	 * @param x  x base vector
 	 * @param y  y base vector
 	 * @param z  z base vector
-	 * @return q  quaternion representing the rotation of the specified base vectors
+	 * @returns q  quaternion representing the rotation of the specified base vectors
 	 */
 	export function quat_basis(
 		x: vmath.vector3,
@@ -8242,7 +8244,7 @@ declare namespace vmath {
 	 * ⚠ The result is undefined if the two vectors point in opposite directions
 	 * @param v1  first unit vector, before rotation
 	 * @param v2  second unit vector, after rotation
-	 * @return q  quaternion representing the rotation from first to second vector
+	 * @returns q  quaternion representing the rotation from first to second vector
 	 */
 	export function quat_from_to(
 		v1: vmath.vector3,
@@ -8253,7 +8255,7 @@ declare namespace vmath {
 	 * The resulting quaternion describes a rotation of `angle`
 	 * radians around the x-axis.
 	 * @param angle  angle in radians around x-axis
-	 * @return q  quaternion representing the rotation around the x-axis
+	 * @returns q  quaternion representing the rotation around the x-axis
 	 */
 	export function quat_rotation_x(angle: number): vmath.quaternion;
 
@@ -8261,7 +8263,7 @@ declare namespace vmath {
 	 * The resulting quaternion describes a rotation of `angle`
 	 * radians around the y-axis.
 	 * @param angle  angle in radians around y-axis
-	 * @return q  quaternion representing the rotation around the y-axis
+	 * @returns q  quaternion representing the rotation around the y-axis
 	 */
 	export function quat_rotation_y(angle: number): vmath.quaternion;
 
@@ -8269,7 +8271,7 @@ declare namespace vmath {
 	 * The resulting quaternion describes a rotation of `angle`
 	 * radians around the z-axis.
 	 * @param angle  angle in radians around z-axis
-	 * @return q  quaternion representing the rotation around the z-axis
+	 * @returns q  quaternion representing the rotation around the z-axis
 	 */
 	export function quat_rotation_z(angle: number): vmath.quaternion;
 
@@ -8279,7 +8281,7 @@ declare namespace vmath {
 	 * quaternion.
 	 * @param q  quaternion
 	 * @param v1  vector to rotate
-	 * @return v  the rotated vector
+	 * @returns v  the rotated vector
 	 */
 	export function rotate(q: vmath.quaternion, v1: vmath.vector3): vmath.vector3;
 
@@ -8295,7 +8297,7 @@ declare namespace vmath {
 	 * @param t  interpolation parameter, 0-1
 	 * @param v1  vector to slerp from
 	 * @param v2  vector to slerp to
-	 * @return v  the slerped vector
+	 * @returns v  the slerped vector
 	 */
 	export function slerp(
 		t: number,
@@ -8319,7 +8321,7 @@ declare namespace vmath {
 	 * @param t  interpolation parameter, 0-1
 	 * @param q1  quaternion to slerp from
 	 * @param q2  quaternion to slerp to
-	 * @return q  the slerped quaternion
+	 * @returns q  the slerped quaternion
 	 */
 	export function slerp(
 		t: number,
@@ -8334,13 +8336,13 @@ declare namespace vmath {
 	 * values. If a value cannot be converted, a 0 is stored in that
 	 * value position in the vector.
 	 * @param t  table of numbers
-	 * @return v  new vector
+	 * @returns v  new vector
 	 */
 	export function vector(t: number[]): number & { [key: number]: number };
 
 	/**
 	 * Creates a new zero vector with all components set to 0.
-	 * @return v  new zero vector
+	 * @returns v  new zero vector
 	 */
 	export function vector3(): vmath.vector3;
 
@@ -8348,7 +8350,7 @@ declare namespace vmath {
 	 * Creates a new vector with all components set to the
 	 * supplied scalar value.
 	 * @param n  scalar value to splat
-	 * @return v  new vector
+	 * @returns v  new vector
 	 */
 	export function vector3(n: number): vmath.vector3;
 
@@ -8357,7 +8359,7 @@ declare namespace vmath {
 	 * corresponding values from the supplied vector. I.e.
 	 * This function creates a copy of the given vector.
 	 * @param v1  existing vector
-	 * @return v  new vector
+	 * @returns v  new vector
 	 */
 	export function vector3(v1: vmath.vector3): vmath.vector3;
 
@@ -8367,13 +8369,13 @@ declare namespace vmath {
 	 * @param x  x coordinate
 	 * @param y  y coordinate
 	 * @param z  z coordinate
-	 * @return v  new vector
+	 * @returns v  new vector
 	 */
 	export function vector3(x: number, y: number, z: number): vmath.vector3;
 
 	/**
 	 * Creates a new zero vector with all components set to 0.
-	 * @return v  new zero vector
+	 * @returns v  new zero vector
 	 */
 	export function vector4(): vmath.vector4;
 
@@ -8381,7 +8383,7 @@ declare namespace vmath {
 	 * Creates a new vector with all components set to the
 	 * supplied scalar value.
 	 * @param n  scalar value to splat
-	 * @return v  new vector
+	 * @returns v  new vector
 	 */
 	export function vector4(n: number): vmath.vector4;
 
@@ -8390,7 +8392,7 @@ declare namespace vmath {
 	 * corresponding values from the supplied vector. I.e.
 	 * This function creates a copy of the given vector.
 	 * @param v1  existing vector
-	 * @return v  new vector
+	 * @returns v  new vector
 	 */
 	export function vector4(v1: vmath.vector4): vmath.vector4;
 
@@ -8401,7 +8403,7 @@ declare namespace vmath {
 	 * @param y  y coordinate
 	 * @param z  z coordinate
 	 * @param w  w coordinate
-	 * @return v  new vector
+	 * @returns v  new vector
 	 */
 	export function vector4(
 		x: number,
@@ -8416,14 +8418,14 @@ declare namespace zlib {
 	/**
 	 * A lua error is raised is on error
 	 * @param buf  buffer to deflate
-	 * @return buf  deflated buffer
+	 * @returns buf  deflated buffer
 	 */
 	export function deflate(buf: string): string;
 
 	/**
 	 * A lua error is raised is on error
 	 * @param buf  buffer to inflate
-	 * @return buf  inflated buffer
+	 * @returns buf  inflated buffer
 	 */
 	export function inflate(buf: string): string;
 }
@@ -8440,7 +8442,7 @@ declare namespace camera {
 	/**
 	 * get aspect ratio
 	 * @param camera  camera id
-	 * @return aspect_ratio  the aspect ratio.
+	 * @returns aspect_ratio  the aspect ratio.
 	 */
 	export function get_aspect_ratio(camera: any): number;
 
@@ -8448,49 +8450,49 @@ declare namespace camera {
 	 * This function returns a table with all the camera URLs that have been
 	 * registered in the render context.
 	 * @param camera  camera id
-	 * @return cameras  a table with all camera URLs
+	 * @returns cameras  a table with all camera URLs
 	 */
 	export function get_cameras(camera: any): AnyNotNil | undefined;
 
 	/**
 	 * get far z
 	 * @param camera  camera id
-	 * @return far_z  the far z.
+	 * @returns far_z  the far z.
 	 */
 	export function get_far_z(camera: any): number;
 
 	/**
 	 * get field of view
 	 * @param camera  camera id
-	 * @return fov  the field of view.
+	 * @returns fov  the field of view.
 	 */
 	export function get_fov(camera: any): number;
 
 	/**
 	 * get near z
 	 * @param camera  camera id
-	 * @return near_z  the near z.
+	 * @returns near_z  the near z.
 	 */
 	export function get_near_z(camera: any): number;
 
 	/**
 	 * get orthographic zoom
 	 * @param camera  camera id
-	 * @return orthographic_zoom  true if the camera is using an orthographic projection.
+	 * @returns orthographic_zoom  true if the camera is using an orthographic projection.
 	 */
 	export function get_orthographic_zoom(camera: any): boolean;
 
 	/**
 	 * get projection matrix
 	 * @param camera  camera id
-	 * @return projection  the projection matrix.
+	 * @returns projection  the projection matrix.
 	 */
 	export function get_projection(camera: any): vmath.matrix4;
 
 	/**
 	 * get view matrix
 	 * @param camera  camera id
-	 * @return view  the view matrix.
+	 * @returns view  the view matrix.
 	 */
 	export function get_view(camera: any): vmath.matrix4;
 
@@ -8621,7 +8623,7 @@ declare namespace collectionfactory {
 	 * @param rotation  rotation to assign to the newly spawned collection
 	 * @param properties  table of script properties to propagate to any new game object instances
 	 * @param scale  uniform scaling to apply to the newly spawned collection (must be greater than 0).
-	 * @return ids  a table mapping the id:s from the collection to the new instance id:s
+	 * @returns ids  a table mapping the id:s from the collection to the new instance id:s
 	 */
 	export function create(
 		url: hash | url | string,
@@ -8635,7 +8637,7 @@ declare namespace collectionfactory {
 	* This returns status of the collection factory.
 	* Calling this function when the factory is not marked as dynamic loading always returns COMP_COLLECTION_FACTORY_STATUS_LOADED.
 	* @param url  the collection factory component to get status from
-	* @return status  status of the collection factory component
+	* @returns status  status of the collection factory component
 
 - `collectionfactory.STATUS_UNLOADED`
 - `collectionfactory.STATUS_LOADING`
@@ -8702,7 +8704,7 @@ declare namespace collectionproxy {
 	* resource that is exported when you bundle an application with LiveUpdate
 	* functionality.
 	* @param collectionproxy  the collectionproxy to check for resources.
-	* @return resources  the resources, or an empty list if the
+	* @returns resources  the resources, or an empty list if the
 collection was not excluded.
 	*/
 	export function get_resources(collectionproxy: url): string[];
@@ -8717,7 +8719,7 @@ collection was not excluded.
 	* before attempting to load the collection proxy.
 	* @param collectionproxy  the collectionproxy to check for missing
 resources.
-	* @return resources  the missing resources
+	* @returns resources  the missing resources
 	*/
 	export function missing_resources(collectionproxy: url): string[];
 
@@ -8812,7 +8814,7 @@ declare namespace factory {
 	 * @param rotation  the rotation of the new game object, the rotation of the game object calling `factory.create()` is used by default, or if the value is `undefined`.
 	 * @param properties  the properties defined in a script attached to the new game object.
 	 * @param scale  the scale of the new game object (must be greater than 0), the scale of the game object containing the factory is used by default, or if the value is `undefined`
-	 * @return id  the global id of the spawned game object
+	 * @returns id  the global id of the spawned game object
 	 */
 	export function create(
 		url: hash | url | string,
@@ -8827,7 +8829,7 @@ declare namespace factory {
 	* Calling this function when the factory is not marked as dynamic loading always returns
 	* factory.STATUS_LOADED.
 	* @param url  the factory component to get status from
-	* @return status  status of the factory component
+	* @returns status  status of the factory component
 
 - `factory.STATUS_UNLOADED`
 - `factory.STATUS_LOADING`
@@ -8891,7 +8893,7 @@ declare namespace label {
 	/**
 	 * Gets the text from a label component
 	 * @param url  the label to get the text from
-	 * @return metrics  the label text
+	 * @returns metrics  the label text
 	 */
 	export function get_text(url: hash | url | string): string;
 
@@ -8983,7 +8985,7 @@ declare namespace model {
 	 * Game objects corresponding to a model skeleton bone can not be individually deleted.
 	 * @param url  the model to query
 	 * @param bone_id  id of the corresponding bone
-	 * @return id  id of the game object
+	 * @returns id  id of the game object
 	 */
 	export function get_go(
 		url: hash | url | string,
@@ -8994,7 +8996,7 @@ declare namespace model {
 	 * Get the enabled state of a mesh
 	 * @param url  the model
 	 * @param mesh_id  the id of the mesh
-	 * @return enabled  true if the mesh is visible, false otherwise
+	 * @returns enabled  true if the mesh is visible, false otherwise
 	 */
 	export function get_mesh_enabled(
 		url: hash | url | string,
@@ -9285,7 +9287,7 @@ declare namespace sound {
 	 * Inversely, to find the linear value from a dB value, use the formula
 	 * `10db/20`.
 	 * @param group  group name
-	 * @return gain  gain in linear scale
+	 * @returns gain  gain in linear scale
 	 */
 	export function get_group_gain(group: hash | string): number;
 
@@ -9295,13 +9297,13 @@ declare namespace sound {
 	 * development tooling only. The function does a reverse hash lookup, which does not
 	 * return a proper string value when the game is built in release mode.
 	 * @param group  group name
-	 * @return name  group name
+	 * @returns name  group name
 	 */
 	export function get_group_name(group: hash | string): string;
 
 	/**
 	 * Get a table of all mixer group names (hashes).
-	 * @return groups  table of mixer group names
+	 * @returns groups  table of mixer group names
 	 */
 	export function get_groups(): hash[];
 
@@ -9315,8 +9317,8 @@ declare namespace sound {
 	 * the effective window might be larger than specified.
 	 * @param group  group name
 	 * @param window  window length in seconds
-	 * @return peak_l  peak value for left channel
-	 * @return peak_r  peak value for right channel
+	 * @returns peak_l  peak value for left channel
+	 * @returns peak_r  peak value for right channel
 	 */
 	export function get_peak(
 		group: hash | string,
@@ -9333,8 +9335,8 @@ declare namespace sound {
 	 * the effective window might be larger than specified.
 	 * @param group  group name
 	 * @param window  window length in seconds
-	 * @return rms_l  RMS value for left channel
-	 * @return rms_r  RMS value for right channel
+	 * @returns rms_l  RMS value for left channel
+	 * @returns rms_r  RMS value for right channel
 	 */
 	export function get_rms(
 		group: hash | string,
@@ -9356,7 +9358,7 @@ declare namespace sound {
 	 *
 	 * Both those times will give you a correct reading of the state even when your application is
 	 * swapped out and in while playing sounds and it works equally well on Android and iOS.
-	 * @return playing  `true` if music is playing, otherwise `false`.
+	 * @returns playing  `true` if music is playing, otherwise `false`.
 	 */
 	export function is_music_playing(): boolean;
 
@@ -9365,7 +9367,7 @@ declare namespace sound {
 	 * other sounds will be muted until the phone call is finished.
 	 * 🌎 On non mobile platforms,
 	 * this function always return `false`.
-	 * @return call_active  `true` if there is an active phone call, `false` otherwise.
+	 * @returns call_active  `true` if there is an active phone call, `false` otherwise.
 	 */
 	export function is_phone_call_active(): boolean;
 
@@ -9411,7 +9413,7 @@ Information about the completion:
 `sender`
 The invoker of the callback: the sound component.
 
-	* @return play_id  The identifier for the sound voice
+	* @returns play_id  The identifier for the sound voice
 	*/
 	export function play(
 		url: hash | url | string,
@@ -9680,10 +9682,10 @@ declare namespace tilemap {
 	 * The resulting values take all tile map layers into account, meaning that
 	 * the bounds are calculated as if all layers were collapsed into one.
 	 * @param url  the tile map
-	 * @return x  x coordinate of the bottom left corner
-	 * @return y  y coordinate of the bottom left corner
-	 * @return w  number of columns (width) in the tile map
-	 * @return h  number of rows (height) in the tile map
+	 * @returns x  x coordinate of the bottom left corner
+	 * @returns y  y coordinate of the bottom left corner
+	 * @returns w  number of columns (width) in the tile map
+	 * @returns h  number of rows (height) in the tile map
 	 */
 	export function get_bounds(
 		url: hash | url | string,
@@ -9699,7 +9701,7 @@ declare namespace tilemap {
 	 * @param layer  name of the layer for the tile
 	 * @param x  x-coordinate of the tile
 	 * @param y  y-coordinate of the tile
-	 * @return tile  index of the tile
+	 * @returns tile  index of the tile
 	 */
 	export function get_tile(
 		url: hash | url | string,
