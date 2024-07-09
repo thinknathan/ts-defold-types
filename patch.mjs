@@ -117,10 +117,131 @@ const earlyChanges = [
 		'@return hash  a hashed string',
 		'@return hash  a hashed string\n * @see {@link https://defold.com/ref/stable/builtins/#hash:s|Documentation}',
 	],
+	['function pprint(v: any)', 'function pprint(...v: any[])'],
+	// Add @see comment tags
 	[
-		// Pretty print
-		'function pprint(v: any)',
-		'function pprint(...v: any[])',
+		'declare namespace socket',
+		'/** @see {@link https://defold.com/ref/stable/socket/|Documentation} */\ndeclare namespace socket',
+	],
+	[
+		'declare namespace b2d {',
+		'/** @see {@link https://defold.com/ref/stable/b2d/|Documentation} */\ndeclare namespace b2d {',
+	],
+	[
+		'declare namespace b2d.body {',
+		'/** @see {@link https://defold.com/ref/stable/b2d.body/|Documentation} */\ndeclare namespace b2d.body {',
+	],
+	[
+		'declare namespace crash',
+		'/** @see {@link https://defold.com/ref/stable/crash/|Documentation} */\ndeclare namespace crash',
+	],
+	[
+		'declare namespace go',
+		'/** @see {@link https://defold.com/ref/stable/go/|Documentation} */\ndeclare namespace go',
+	],
+	[
+		'declare namespace gui',
+		'/** @see {@link https://defold.com/ref/stable/gui/|Documentation} */\ndeclare namespace gui',
+	],
+	[
+		'declare namespace physics',
+		'/** @see {@link https://defold.com/ref/stable/physics/|Documentation} */\ndeclare namespace physics',
+	],
+	[
+		'declare namespace profiler',
+		'/** @see {@link https://defold.com/ref/stable/profiler/|Documentation} */\ndeclare namespace profiler',
+	],
+	[
+		'declare namespace render',
+		'/** @see {@link https://defold.com/ref/stable/render/|Documentation} */\ndeclare namespace render',
+	],
+	[
+		'declare namespace resource',
+		'/** @see {@link https://defold.com/ref/stable/resource/|Documentation} */\ndeclare namespace resource',
+	],
+	[
+		'declare namespace sys',
+		'/** @see {@link https://defold.com/ref/stable/sys/|Documentation} */\ndeclare namespace sys',
+	],
+	[
+		'declare namespace window',
+		'/** @see {@link https://defold.com/ref/stable/window/|Documentation} */\ndeclare namespace window',
+	],
+	[
+		'declare namespace buffer',
+		'/** @see {@link https://defold.com/ref/stable/buffer/|Documentation} */\ndeclare namespace buffer',
+	],
+	[
+		'declare namespace html5',
+		'/** @see {@link https://defold.com/ref/stable/html5/|Documentation} */\ndeclare namespace html5',
+	],
+	[
+		'declare namespace http',
+		'/** @see {@link https://defold.com/ref/stable/http/|Documentation} */\ndeclare namespace http',
+	],
+	[
+		'declare namespace image',
+		'/** @see {@link https://defold.com/ref/stable/image/|Documentation} */\ndeclare namespace image',
+	],
+	[
+		'declare namespace json',
+		'/** @see {@link https://defold.com/ref/stable/json/|Documentation} */\ndeclare namespace json',
+	],
+	[
+		'declare namespace msg',
+		'/** @see {@link https://defold.com/ref/stable/msg/|Documentation} */\ndeclare namespace msg',
+	],
+	[
+		'declare namespace timer',
+		'/** @see {@link https://defold.com/ref/stable/timer/|Documentation} */\ndeclare namespace timer',
+	],
+	[
+		'declare namespace vmath',
+		'/** @see {@link https://defold.com/ref/stable/vmath/|Documentation} */\ndeclare namespace vmath',
+	],
+	[
+		'declare namespace zlib',
+		'/** @see {@link https://defold.com/ref/stable/zlib/|Documentation} */\ndeclare namespace zlib',
+	],
+	[
+		'declare namespace camera',
+		'/** @see {@link https://defold.com/ref/stable/camera/|Documentation} */\ndeclare namespace camera',
+	],
+	[
+		'declare namespace collectionfactory',
+		'/** @see {@link https://defold.com/ref/stable/collectionfactory/|Documentation} */\ndeclare namespace collectionfactory',
+	],
+	[
+		'declare namespace collectionproxy',
+		'/** @see {@link https://defold.com/ref/stable/collectionproxy/|Documentation} */\ndeclare namespace collectionproxy',
+	],
+	[
+		'declare namespace factory',
+		'/** @see {@link https://defold.com/ref/stable/factory/|Documentation} */\ndeclare namespace factory',
+	],
+	[
+		'declare namespace label',
+		'/** @see {@link https://defold.com/ref/stable/label/|Documentation} */\ndeclare namespace label',
+	],
+	[
+		'declare namespace model',
+		'/** @see {@link https://defold.com/ref/stable/model/|Documentation} */\ndeclare namespace model',
+	],
+	[
+		'declare namespace particlefx',
+		'/** @see {@link https://defold.com/ref/stable/particlefx/|Documentation} */\ndeclare namespace particlefx',
+	],
+	[
+		'declare namespace sound',
+		'/** @see {@link https://defold.com/ref/stable/sound/|Documentation} */\ndeclare namespace sound',
+	],
+	[
+		'declare namespace sprite',
+		'/** @see {@link https://defold.com/ref/stable/sprite/|Documentation} */\ndeclare namespace sprite',
+	],
+	[
+		'declare namespace tilemap',
+		'/** @see {@link https://defold.com/ref/stable/tilemap/|Documentation} */\ndeclare namespace tilemap',
 	],
 	// Replace nil with undefined
 	[/nil/g, 'undefined'],

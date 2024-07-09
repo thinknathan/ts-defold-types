@@ -102,6 +102,7 @@ declare namespace jit {
 
 declare type bufferstream = LuaUserdata & number[] & object;
 
+/** @see {@link https://defold.com/ref/stable/vmath/|Documentation} */
 declare namespace vmath {
 	export type vector3 = number & {
 		x: number;
@@ -176,6 +177,7 @@ declare function pprint(...v: any[]): void;
 
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
+/** @see {@link https://defold.com/ref/stable/socket/|Documentation} */
 declare namespace socket {
 	/**
 	 * max numbers of sockets the select function can handle
@@ -327,6 +329,7 @@ declare namespace socket {
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
+/** @see {@link https://defold.com/ref/stable/b2d/|Documentation} */
 declare namespace b2d {
 	/**
 	 * Get the Box2D body from a collision object
@@ -345,6 +348,7 @@ declare namespace b2d {
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
+/** @see {@link https://defold.com/ref/stable/b2d.body/|Documentation} */
 declare namespace b2d.body {
 	/**
 	 * Dynamic body
@@ -765,6 +769,7 @@ declare namespace b2d.body {
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
+/** @see {@link https://defold.com/ref/stable/crash/|Documentation} */
 declare namespace crash {
 	/**
 	 * android build fingerprint
@@ -940,6 +945,7 @@ declare namespace crash {
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
+/** @see {@link https://defold.com/ref/stable/go/|Documentation} */
 declare namespace go {
 	/**
 	 * Post this message to a game object instance to make that instance acquire the user input focus.
@@ -1665,6 +1671,7 @@ name of internal property
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
+/** @see {@link https://defold.com/ref/stable/gui/|Documentation} */
 declare namespace gui {
 	/**
 	 * The fonts used in the gui. The type of the property is hash.
@@ -3570,6 +3577,7 @@ the new state of the emitter:
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
+/** @see {@link https://defold.com/ref/stable/physics/|Documentation} */
 declare namespace physics {
 	/**
 	 * The angular damping value for the collision object. Setting this value alters the damping of
@@ -4167,6 +4175,7 @@ end
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
+/** @see {@link https://defold.com/ref/stable/profiler/|Documentation} */
 declare namespace profiler {
 	/**
 	 * pause on current frame
@@ -4337,6 +4346,7 @@ The recording buffer is also cleared when setting the `MODE_SHOW_PEAK_FRAME` mod
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
+/** @see {@link https://defold.com/ref/stable/render/|Documentation} */
 declare namespace render {
 	/**
 	 * Set render clear color. This is the color that appears on the screen where nothing is rendered, i.e. background.
@@ -5548,6 +5558,7 @@ Transient frame buffer types are only valid while the render target is active, i
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
+/** @see {@link https://defold.com/ref/stable/resource/|Documentation} */
 declare namespace resource {
 	/**
 	 * BASIS_UASTC compression type
@@ -6659,6 +6670,7 @@ optional specify the compression type for the data in the buffer object that hol
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
+/** @see {@link https://defold.com/ref/stable/sys/|Documentation} */
 declare namespace sys {
 	/**
 	 * Terminates the game application and reports the specified `code` to the OS.
@@ -7191,6 +7203,7 @@ The stack traceback.
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
+/** @see {@link https://defold.com/ref/stable/window/|Documentation} */
 declare namespace window {
 	/**
 	 * dimming mode off
@@ -7328,6 +7341,7 @@ The callback value `data` is a table which currently holds these values
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
+/** @see {@link https://defold.com/ref/stable/buffer/|Documentation} */
 declare namespace buffer {
 	/**
 	 * float32
@@ -7509,6 +7523,7 @@ declare namespace buffer {
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
+/** @see {@link https://defold.com/ref/stable/html5/|Documentation} */
 declare namespace html5 {
 	/**
 	 * Executes the supplied string as JavaScript inside the browser.
@@ -7536,6 +7551,7 @@ The calling script
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
+/** @see {@link https://defold.com/ref/stable/http/|Documentation} */
 declare namespace http {
 	/**
 	* Perform a HTTP/HTTPS request.
@@ -7594,6 +7610,7 @@ Not available in HTML5 build
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
+/** @see {@link https://defold.com/ref/stable/image/|Documentation} */
 declare namespace image {
 	/**
 	 * luminance image type
@@ -7689,6 +7706,7 @@ True if the image contents should be flipped vertically. Defaults to `false`.
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
+/** @see {@link https://defold.com/ref/stable/json/|Documentation} */
 declare namespace json {
 	/**
 	* Decode a string of JSON data into a Lua table.
@@ -7728,6 +7746,7 @@ declare namespace json {
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
+/** @see {@link https://defold.com/ref/stable/msg/|Documentation} */
 declare namespace msg {
 	/**
 	 * Post a message to a receiving URL. The most common case is to send messages
@@ -7792,6 +7811,7 @@ declare namespace msg {
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
+/** @see {@link https://defold.com/ref/stable/timer/|Documentation} */
 declare namespace timer {
 	/**
 	 * Indicates an invalid timer handle
@@ -8414,6 +8434,7 @@ declare namespace vmath {
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
+/** @see {@link https://defold.com/ref/stable/zlib/|Documentation} */
 declare namespace zlib {
 	/**
 	 * A lua error is raised is on error
@@ -8431,6 +8452,7 @@ declare namespace zlib {
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
+/** @see {@link https://defold.com/ref/stable/camera/|Documentation} */
 declare namespace camera {
 	/**
 	 * The ratio between the frustum width and height. Used when calculating the
@@ -8587,6 +8609,7 @@ declare namespace camera {
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
+/** @see {@link https://defold.com/ref/stable/collectionfactory/|Documentation} */
 declare namespace collectionfactory {
 	/**
 	 * loaded
@@ -8688,6 +8711,7 @@ True if resource were loaded successfully
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
+/** @see {@link https://defold.com/ref/stable/collectionproxy/|Documentation} */
 declare namespace collectionproxy {
 	/**
 	 * Post this message to a collection-proxy-component to start background loading of the referenced collection.
@@ -8786,6 +8810,7 @@ resources.
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
+/** @see {@link https://defold.com/ref/stable/factory/|Documentation} */
 declare namespace factory {
 	/**
 	 * loaded
@@ -8879,6 +8904,7 @@ True if resources were loaded successfully
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
+/** @see {@link https://defold.com/ref/stable/label/|Documentation} */
 declare namespace label {
 	/**
 	 * The color of the label. The type of the property is vector4.
@@ -8955,6 +8981,7 @@ declare namespace label {
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
+/** @see {@link https://defold.com/ref/stable/model/|Documentation} */
 declare namespace model {
 	/**
 	 * The current animation set on the component. The type of the property is hash.
@@ -9122,6 +9149,7 @@ The invoker of the callback: the model component.
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
+/** @see {@link https://defold.com/ref/stable/particlefx/|Documentation} */
 declare namespace particlefx {
 	/**
 	 * postspawn state
@@ -9236,6 +9264,7 @@ the new state of the emitter:
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
+/** @see {@link https://defold.com/ref/stable/sound/|Documentation} */
 declare namespace sound {
 	/**
 	 * The gain on the sound-component. Note that gain is in linear scale,
@@ -9502,6 +9531,7 @@ the sequential play identifier that should be stopped (was given by the sound.pl
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
+/** @see {@link https://defold.com/ref/stable/sprite/|Documentation} */
 declare namespace sprite {
 	/**
 	 * hash.
@@ -9639,6 +9669,7 @@ the rate with which the animation will be played. Must be positive.
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
+/** @see {@link https://defold.com/ref/stable/tilemap/|Documentation} */
 declare namespace tilemap {
 	/**
 	 * The material used when rendering the tile map. The type of the property is hash.
