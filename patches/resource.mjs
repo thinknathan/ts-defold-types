@@ -1,3 +1,5 @@
+// @ts-check
+
 /** resource namespace */
 export const resource = [
 	// (greedy)

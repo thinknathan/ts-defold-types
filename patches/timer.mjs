@@ -1,3 +1,5 @@
+// @ts-check
+
 /** timer namespace */
 export const timer = [
 	[

@@ -1,3 +1,5 @@
+// @ts-check
+
 /** json namespace */
 export const jsonChanges = [
 	['let null$: any', 'let null$: null'],

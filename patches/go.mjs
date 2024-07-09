@@ -1,3 +1,5 @@
+// @ts-check
+
 /** go namespace */
 export const go = [
 	['let euler: any', 'let euler: vmath.vector3'],

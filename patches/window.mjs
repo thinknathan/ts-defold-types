@@ -1,3 +1,5 @@
+// @ts-check
+
 /** window namespace */
 export const windowChanges = [
 	// (greedy)

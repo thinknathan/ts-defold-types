@@ -1,3 +1,5 @@
+// @ts-check
+
 /** socket namespace */
 export const socket = [
 	['let _SETSIZE: any', 'const _SETSIZE: number'],

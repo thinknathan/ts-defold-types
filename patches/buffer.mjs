@@ -1,3 +1,5 @@
+// @ts-check
+
 /** buffer namespace */
 export const bufferChanges = [
 	// (greedy)

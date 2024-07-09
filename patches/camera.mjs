@@ -1,3 +1,5 @@
+// @ts-check
+
 /** camera namespace */
 export const camera = [
 	['let aspect_ratio: any', 'let aspect_ratio: number'],

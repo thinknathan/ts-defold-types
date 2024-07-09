@@ -1,3 +1,5 @@
+// @ts-check
+
 /** html5 namespace */
 export const html5 = [
 	[

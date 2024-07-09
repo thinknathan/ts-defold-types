@@ -1,3 +1,5 @@
+// @ts-check
+
 /** collectionproxy namespace */
 export const collectionProxy = [
 	[

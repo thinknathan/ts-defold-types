@@ -1,3 +1,5 @@
+// @ts-check
+
 /** Late changes that don't fit anywhere else */
 export const finalChanges = [
 	// Replace `any` keyword with `unknown` in return values (greedy)

@@ -1,3 +1,5 @@
+// @ts-check
+
 /** crash namespace */
 export const crash = [
 	// (greedy)

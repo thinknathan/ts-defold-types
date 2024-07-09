@@ -1,3 +1,5 @@
+// @ts-check
+
 /** vmath namespace */
 export const vmathChanges = [
 	[

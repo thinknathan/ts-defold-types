@@ -1,3 +1,5 @@
+// @ts-check
+
 /** image namespace */
 export const image = [
 	['let TYPE_LUMINANCE: any', 'const TYPE_LUMINANCE: "l"'],

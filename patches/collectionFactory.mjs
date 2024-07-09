@@ -1,3 +1,5 @@
+// @ts-check
+
 /** collectionFactory namespace */
 export const collectionFactory = [
 	// (greedy)

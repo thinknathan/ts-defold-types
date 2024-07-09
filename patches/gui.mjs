@@ -1,3 +1,5 @@
+// @ts-check
+
 /** gui namespace */
 export const gui = [
 	['let material: any', 'let material: hash'],

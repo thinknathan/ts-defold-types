@@ -1,3 +1,5 @@
+// @ts-check
+
 /** factory namespace */
 export const factory = [
 	// (greedy)

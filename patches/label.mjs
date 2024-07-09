@@ -1,3 +1,5 @@
+// @ts-check
+
 /** label namespace */
 export const label = [
 	['let material: any', 'let material: hash'],

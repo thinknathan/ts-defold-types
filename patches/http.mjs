@@ -1,3 +1,5 @@
+// @ts-check
+
 /** http namespace */
 export const http = [
 	// function request

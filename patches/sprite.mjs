@@ -1,3 +1,5 @@
+// @ts-check
+
 /** sprite namespace */
 export const sprite = [
 	['let material: any', 'let material: hash'],

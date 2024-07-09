@@ -1,3 +1,5 @@
+// @ts-check
+
 /** b2d.body namespace */
 export const b2dBody = [
 	[

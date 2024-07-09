@@ -1,3 +1,5 @@
+// @ts-check
+
 /** sound namespace */
 export const sound = [
 	['let sound: any', 'let sound: hash'],

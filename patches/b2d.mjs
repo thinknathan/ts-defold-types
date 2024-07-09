@@ -1,3 +1,5 @@
+// @ts-check
+
 /** b2d namespace */
 export const b2d = [
 	[

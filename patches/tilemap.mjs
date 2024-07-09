@@ -1,3 +1,5 @@
+// @ts-check
+
 /** tilemap namespace */
 export const tilemap = [
 	['let material: any', 'let material: hash'],

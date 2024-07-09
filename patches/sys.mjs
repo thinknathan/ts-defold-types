@@ -1,3 +1,5 @@
+// @ts-check
+
 /** sys namespace */
 export const sys = [
 	// (greedy)

@@ -1,3 +1,5 @@
+// @ts-check
+
 /** profiler namespace */
 export const profiler = [
 	// (greedy)

@@ -1,3 +1,5 @@
+// @ts-check
+
 /** Initial generic changes */
 export const earlyChanges = [
 	// Describe `url`

@@ -1,3 +1,5 @@
+// @ts-check
+
 /** model namespace */
 export const model = [
 	['let material: any', 'let material: hash'],

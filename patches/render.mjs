@@ -1,3 +1,5 @@
+// @ts-check
+
 /** render namespace */
 export const render = [
 	// (greedy)

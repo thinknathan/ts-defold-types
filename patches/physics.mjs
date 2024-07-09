@@ -1,3 +1,5 @@
+// @ts-check
+
 /** physics namespace */
 export const physics = [
 	['let angular_damping: any', 'let angular_damping: number'],

@@ -1,3 +1,5 @@
+// @ts-check
+
 /** particlefx namespace */
 export const particleFx = [
 	// (greedy)
