@@ -204,7 +204,7 @@ fs.readFile(filePath, 'utf8', (err, data) => {
 	for (const patch of patches) {
 		const { regex, replacements } = patch;
 
-		data = data.replace(regex, (match, namespace, group, namespace2) => {
+		data = data.replace(regex, (_match, namespace, group, namespace2) => {
 			// Apply replacements using string.replace dynamically
 			replacements.forEach(([search, replace]) => {
 				group = group.replace(search, replace);
