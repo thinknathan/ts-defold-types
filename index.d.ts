@@ -329,7 +329,7 @@ declare namespace socket {
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
-/** @see {@link https://defold.com/ref/stable/b2d/|Documentation} */
+/** @see {@link https://defold.com/ref/stable/b2d/|Box2D Documentation} @since 1.8.0 */
 declare namespace b2d {
 	/**
 	 * Get the Box2D body from a collision object
@@ -348,7 +348,7 @@ declare namespace b2d {
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
-/** @see {@link https://defold.com/ref/stable/b2d.body/|Documentation} */
+/** @see {@link https://defold.com/ref/stable/b2d.body/|Box2D b2Body Documentation} */
 declare namespace b2d.body {
 	/**
 	 * Dynamic body

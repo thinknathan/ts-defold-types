@@ -115,11 +115,11 @@ export const earlyChanges = [
 	],
 	[
 		'declare namespace b2d {',
-		'/** @see {@link https://defold.com/ref/stable/b2d/|Documentation} */\ndeclare namespace b2d {',
+		'/** @see {@link https://defold.com/ref/stable/b2d/|Box2D Documentation} @since 1.8.0 */\ndeclare namespace b2d {',
 	],
 	[
 		'declare namespace b2d.body {',
-		'/** @see {@link https://defold.com/ref/stable/b2d.body/|Documentation} */\ndeclare namespace b2d.body {',
+		'/** @see {@link https://defold.com/ref/stable/b2d.body/|Box2D b2Body Documentation} */\ndeclare namespace b2d.body {',
 	],
 	[
 		'declare namespace crash',
