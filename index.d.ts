@@ -7,6 +7,7 @@
 
 /**
  * A unique identifier used to reference resources, messages, properties, and other entities within the game.
+ * @see {@link https://defold.com/manuals/addressing/#hashed-identifiers|Addressing Manual}
  */
 declare type hash = Readonly<
 	LuaUserdata & {
@@ -16,6 +17,7 @@ declare type hash = Readonly<
 
 /**
  * A reference to game resources, such as game objects, components, and assets.
+ * @see {@link https://defold.com/manuals/addressing/|Addressing Manual}
  */
 declare type url = {
 	socket: hash;
@@ -23,6 +25,10 @@ declare type url = {
 	fragment: hash | undefined;
 };
 
+/**
+ * A representation of a GUI object.
+ * @see {@link https://defold.com/manuals/gui/|GUI Manual}
+ */
 declare type node = Readonly<
 	LuaUserdata & {
 		readonly __node__: unique symbol;
@@ -31,11 +37,13 @@ declare type node = Readonly<
 
 /**
  * A block of memory that can store binary data.
+ * @see {@link https://defold.com/manuals/buffer/|Buffer Manual}
  */
 declare type buffer = object;
 
 /**
  * Render pipeline predicate.
+ * @see {@link https://defold.com/manuals/render/|Render Manual}
  */
 declare type predicate = Readonly<
 	LuaUserdata & {
@@ -45,6 +53,7 @@ declare type predicate = Readonly<
 
 /**
  * Render pipeline target.
+ * @see {@link https://defold.com/manuals/render/|Render Manual}
  */
 declare type rendertarget = Readonly<
 	LuaUserdata & {
@@ -100,9 +109,13 @@ declare namespace jit {
 	export const os: string;
 }
 
+/**
+ * A data stream derived from a buffer.
+ * @see {@link https://defold.com/ref/stable/buffer/#buffer.get_stream:buffer-stream_name|API Documentation}
+ */
 declare type bufferstream = LuaUserdata & number[] & object;
 
-/** @see {@link https://defold.com/ref/stable/vmath/|Documentation} */
+/** @see {@link https://defold.com/ref/stable/vmath/|API Documentation} */
 declare namespace vmath {
 	export type vector3 = number & {
 		x: number;
@@ -154,7 +167,7 @@ declare namespace vmath {
  * before it can be compared with an id.
  * @param s  string to hash
  * @returns hash  a hashed string
- * @see {@link https://defold.com/ref/stable/builtins/#hash:s|Documentation}
+ * @see {@link https://defold.com/ref/stable/builtins/#hash:s|API Documentation}
  */
 declare function hash(s: string): hash;
 
@@ -163,6 +176,7 @@ declare function hash(s: string): hash;
  * The returned string is always padded with leading zeros.
  * @param h  hash value to get hex string for
  * @returns hex  hex representation of the hash
+ * @see {@link https://defold.com/ref/stable/builtins/#hash_to_hex:h|API Documentation}
  */
 declare function hash_to_hex(h: hash): string;
 
@@ -172,12 +186,13 @@ declare function hash_to_hex(h: hash): string;
  * and pretty print them. There is a limit to how deep the function
  * will recurse.
  * @param v  value to print
+ * @see {@link https://defold.com/ref/stable/builtins/#pprint:v|API Documentation}
  */
 declare function pprint(...v: any[]): void;
 
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
-/** @see {@link https://defold.com/ref/stable/socket/|Documentation} */
+/** @see {@link https://defold.com/ref/stable/socket/|API Documentation} */
 declare namespace socket {
 	/**
 	 * max numbers of sockets the select function can handle
@@ -335,6 +350,7 @@ declare namespace b2d {
 	 * Get the Box2D body from a collision object
 	 * @param url  the url to the game object collision component
 	 * @returns body  the body if successful. Otherwise `undefined`.
+	 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_body|API Documentation}
 	 */
 	export function get_body(
 		url: hash | url | string,
@@ -343,6 +359,7 @@ declare namespace b2d {
 	/**
 	 * Get the Box2D world from the current collection
 	 * @returns world  the world if successful. Otherwise `undefined`.
+	 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_world|API Documentation}
 	 */
 	export function get_world(): AnyNotNil | undefined;
 }
@@ -371,6 +388,7 @@ declare namespace b2d.body {
 	 * Apply an angular impulse.
 	 * @param body  body
 	 * @param impulse  impulse the angular impulse in units of kg*m*m/s
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.apply_angular_impulse|API Documentation}
 	 */
 	export function apply_angular_impulse(
 		body: typeof b2d.body,
@@ -384,6 +402,7 @@ declare namespace b2d.body {
 	 * @param body  body
 	 * @param force  the world force vector, usually in Newtons (N).
 	 * @param point  the world position of the point of application.
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.apply_force|API Documentation}
 	 */
 	export function apply_force(
 		body: typeof b2d.body,
@@ -395,6 +414,7 @@ declare namespace b2d.body {
 	 * Apply a force to the center of mass. This wakes up the body.
 	 * @param body  body
 	 * @param force  the world force vector, usually in Newtons (N).
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.apply_force_to_center|API Documentation}
 	 */
 	export function apply_force_to_center(
 		body: typeof b2d.body,
@@ -408,6 +428,7 @@ declare namespace b2d.body {
 	 * @param body  body
 	 * @param impulse  the world impulse vector, usually in N-seconds or kg-m/s.
 	 * @param point  the world position of the point of application.
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.apply_linear_impulse|API Documentation}
 	 */
 	export function apply_linear_impulse(
 		body: typeof b2d.body,
@@ -421,12 +442,14 @@ declare namespace b2d.body {
 	 * This wakes up the body.
 	 * @param body  body
 	 * @param torque  torque about the z-axis (out of the screen), usually in N-m.
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.apply_torque|API Documentation}
 	 */
 	export function apply_torque(body: typeof b2d.body, torque: number): void;
 
 	/**
 	 * Print the body representation to the log output
 	 * @param body  body
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.dump|API Documentation}
 	 */
 	export function dump(body: typeof b2d.body): void;
 
@@ -434,6 +457,7 @@ declare namespace b2d.body {
 	 * Get the angular damping of the body.
 	 * @param body  body
 	 * @returns damping  the damping
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.get_angular_damping|API Documentation}
 	 */
 	export function get_angular_damping(body: typeof b2d.body): number;
 
@@ -441,6 +465,7 @@ declare namespace b2d.body {
 	 * Get the angular velocity.
 	 * @param body  body
 	 * @returns velocity  the angular velocity in radians/second.
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.get_angular_velocity|API Documentation}
 	 */
 	export function get_angular_velocity(body: typeof b2d.body): number;
 
@@ -448,6 +473,7 @@ declare namespace b2d.body {
 	 * Get the gravity scale of the body.
 	 * @param body  body
 	 * @returns scale  the scale
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.get_gravity_scale|API Documentation}
 	 */
 	export function get_gravity_scale(body: typeof b2d.body): number;
 
@@ -455,6 +481,7 @@ declare namespace b2d.body {
 	 * Get the rotational inertia of the body about the local origin.
 	 * @param body  body
 	 * @returns inertia  the rotational inertia, usually in kg-m^2.
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.get_inertia|API Documentation}
 	 */
 	export function get_inertia(body: typeof b2d.body): number;
 
@@ -462,6 +489,7 @@ declare namespace b2d.body {
 	 * Get the linear damping of the body.
 	 * @param body  body
 	 * @returns damping  the damping
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.get_linear_damping|API Documentation}
 	 */
 	export function get_linear_damping(body: typeof b2d.body): number;
 
@@ -469,6 +497,7 @@ declare namespace b2d.body {
 	 * Get the linear velocity of the center of mass.
 	 * @param body  body
 	 * @returns velocity  the linear velocity of the center of mass.
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.get_linear_velocity|API Documentation}
 	 */
 	export function get_linear_velocity(body: typeof b2d.body): vmath.vector3;
 
@@ -477,6 +506,7 @@ declare namespace b2d.body {
 	 * @param body  body
 	 * @param local_point  a point in local coordinates.
 	 * @returns velocity  the world velocity of a point.
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.get_linear_velocity_from_local_point|API Documentation}
 	 */
 	export function get_linear_velocity_from_local_point(
 		body: typeof b2d.body,
@@ -488,6 +518,7 @@ declare namespace b2d.body {
 	 * @param body  body
 	 * @param world_point  a point in world coordinates.
 	 * @returns velocity  the world velocity of a point.
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.get_linear_velocity_from_world_point|API Documentation}
 	 */
 	export function get_linear_velocity_from_world_point(
 		body: typeof b2d.body,
@@ -498,6 +529,7 @@ declare namespace b2d.body {
 	 * Get the local position of the center of mass.
 	 * @param body  body
 	 * @returns center  Get the local position of the center of mass.
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.get_local_center|API Documentation}
 	 */
 	export function get_local_center(body: typeof b2d.body): vmath.vector3;
 
@@ -506,6 +538,7 @@ declare namespace b2d.body {
 	 * @param body  body
 	 * @param world_point  a point in world coordinates.
 	 * @returns vector  the corresponding local point relative to the body's origin.
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.get_local_point|API Documentation}
 	 */
 	export function get_local_point(
 		body: typeof b2d.body,
@@ -517,6 +550,7 @@ declare namespace b2d.body {
 	 * @param body  body
 	 * @param world_vector  a vector in world coordinates.
 	 * @returns vector  the corresponding local vector.
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.get_local_vector|API Documentation}
 	 */
 	export function get_local_vector(
 		body: typeof b2d.body,
@@ -527,6 +561,7 @@ declare namespace b2d.body {
 	 * Get the total mass of the body.
 	 * @param body  body
 	 * @returns mass  the mass, usually in kilograms (kg).
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.get_mass|API Documentation}
 	 */
 	export function get_mass(body: typeof b2d.body): number;
 
@@ -534,6 +569,7 @@ declare namespace b2d.body {
 	 * Get the next body in the world's body list.
 	 * @param body  body
 	 * @returns body  the next body
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.get_next|API Documentation}
 	 */
 	export function get_next(body: typeof b2d.body): AnyNotNil | undefined;
 
@@ -541,6 +577,7 @@ declare namespace b2d.body {
 	 * Get the world body origin position.
 	 * @param body  body
 	 * @returns position  the world position of the body's origin.
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.get_position|API Documentation}
 	 */
 	export function get_position(body: typeof b2d.body): vmath.vector3;
 
@@ -548,6 +585,7 @@ declare namespace b2d.body {
 	 * Get the type of this body.
 	 * @param body  body
 	 * @returns type  the body type
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.get_type|API Documentation}
 	 */
 	export function get_type(body: typeof b2d.body): AnyNotNil | undefined;
 
@@ -555,6 +593,7 @@ declare namespace b2d.body {
 	 * Get the parent world of this body.
 	 * @param body  body
 	 * @returns world
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.get_world|API Documentation}
 	 */
 	export function get_world(body: typeof b2d.body): AnyNotNil | undefined;
 
@@ -562,6 +601,7 @@ declare namespace b2d.body {
 	 * Get the angle in radians.
 	 * @param body  body
 	 * @returns angle  the current world rotation angle in radians.
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.get_world_center|API Documentation}
 	 */
 	export function get_world_center(body: typeof b2d.body): number;
 
@@ -569,6 +609,7 @@ declare namespace b2d.body {
 	 * Get the world position of the center of mass.
 	 * @param body  body
 	 * @returns center  Get the world position of the center of mass.
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.get_world_center|API Documentation}
 	 */
 	export function get_world_center(body: typeof b2d.body): vmath.vector3;
 
@@ -577,6 +618,7 @@ declare namespace b2d.body {
 	 * @param body  body
 	 * @param local_vector  localPoint a point on the body measured relative the the body's origin.
 	 * @returns vector  the same point expressed in world coordinates.
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.get_world_point|API Documentation}
 	 */
 	export function get_world_point(
 		body: typeof b2d.body,
@@ -588,6 +630,7 @@ declare namespace b2d.body {
 	 * @param body  body
 	 * @param local_vector  a vector fixed in the body.
 	 * @returns vector  the same vector expressed in world coordinates.
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.get_world_vector|API Documentation}
 	 */
 	export function get_world_vector(
 		body: typeof b2d.body,
@@ -598,6 +641,7 @@ declare namespace b2d.body {
 	 * Get the active state of the body.
 	 * @param body  body
 	 * @returns enabled  is the body active
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.is_active|API Documentation}
 	 */
 	export function is_active(body: typeof b2d.body): AnyNotNil | undefined;
 
@@ -605,6 +649,7 @@ declare namespace b2d.body {
 	 * Get the sleeping state of this body.
 	 * @param body  body
 	 * @returns enabled  true if the body is awake, false if it's sleeping.
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.is_awake|API Documentation}
 	 */
 	export function is_awake(body: typeof b2d.body): AnyNotNil | undefined;
 
@@ -612,6 +657,7 @@ declare namespace b2d.body {
 	 * Is this body in bullet mode
 	 * @param body  body
 	 * @returns enabled  true if the body is in bullet mode
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.is_bullet|API Documentation}
 	 */
 	export function is_bullet(body: typeof b2d.body): AnyNotNil | undefined;
 
@@ -619,6 +665,7 @@ declare namespace b2d.body {
 	 * Does this body have fixed rotation?
 	 * @param body  body
 	 * @returns enabled  is the rotation fixed
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.is_fixed_rotation|API Documentation}
 	 */
 	export function is_fixed_rotation(
 		body: typeof b2d.body,
@@ -628,6 +675,7 @@ declare namespace b2d.body {
 	 * Is this body allowed to sleep
 	 * @param body  body
 	 * @returns enabled  true if the body is allowed to sleep
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.is_sleeping_allowed|API Documentation}
 	 */
 	export function is_sleeping_allowed(
 		body: typeof b2d.body,
@@ -637,6 +685,7 @@ declare namespace b2d.body {
 	 * This resets the mass properties to the sum of the mass properties of the fixtures.
 	 * This normally does not need to be called unless you called SetMassData to override
 	 * @param body  body
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.reset_mass_data|API Documentation}
 	 */
 	export function reset_mass_data(body: typeof b2d.body): void;
 
@@ -656,6 +705,7 @@ declare namespace b2d.body {
 	 * in the body list.
 	 * @param body  body
 	 * @param enable  true if the body should be active
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.set_active|API Documentation}
 	 */
 	export function set_active(body: typeof b2d.body, enable: boolean): void;
 
@@ -663,6 +713,7 @@ declare namespace b2d.body {
 	 * Set the angular damping of the body.
 	 * @param body  body
 	 * @param damping  the damping
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.set_angular_damping|API Documentation}
 	 */
 	export function set_angular_damping(
 		body: typeof b2d.body,
@@ -673,6 +724,7 @@ declare namespace b2d.body {
 	 * Set the angular velocity.
 	 * @param body  body
 	 * @param omega  the new angular velocity in radians/second.
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.set_angular_velocity|API Documentation}
 	 */
 	export function set_angular_velocity(
 		body: typeof b2d.body,
@@ -683,6 +735,7 @@ declare namespace b2d.body {
 	 * Set the sleep state of the body. A sleeping body has very low CPU cost.
 	 * @param body  body
 	 * @param enable  flag set to false to put body to sleep, true to wake it.
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.set_awake|API Documentation}
 	 */
 	export function set_awake(body: typeof b2d.body, enable: boolean): void;
 
@@ -690,6 +743,7 @@ declare namespace b2d.body {
 	 * Should this body be treated like a bullet for continuous collision detection?
 	 * @param body  body
 	 * @param enable  if true, the body will be in bullet mode
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.set_bullet|API Documentation}
 	 */
 	export function set_bullet(body: typeof b2d.body, enable: boolean): void;
 
@@ -697,6 +751,7 @@ declare namespace b2d.body {
 	 * Set this body to have fixed rotation. This causes the mass to be reset.
 	 * @param body  body
 	 * @param enable  true if the rotation should be fixed
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.set_fixed_rotation|API Documentation}
 	 */
 	export function set_fixed_rotation(
 		body: typeof b2d.body,
@@ -707,6 +762,7 @@ declare namespace b2d.body {
 	 * Set the gravity scale of the body.
 	 * @param body  body
 	 * @param scale  the scale
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.set_gravity_scale|API Documentation}
 	 */
 	export function set_gravity_scale(body: typeof b2d.body, scale: number): void;
 
@@ -714,6 +770,7 @@ declare namespace b2d.body {
 	 * Set the linear damping of the body.
 	 * @param body  body
 	 * @param damping  the damping
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.set_linear_damping|API Documentation}
 	 */
 	export function set_linear_damping(
 		body: typeof b2d.body,
@@ -724,6 +781,7 @@ declare namespace b2d.body {
 	 * Set the linear velocity of the center of mass.
 	 * @param body  body
 	 * @param velocity  the new linear velocity of the center of mass.
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.set_linear_velocity|API Documentation}
 	 */
 	export function set_linear_velocity(
 		body: typeof b2d.body,
@@ -734,6 +792,7 @@ declare namespace b2d.body {
 	 * You can disable sleeping on this body. If you disable sleeping, the body will be woken.
 	 * @param body  body
 	 * @param enable  if false, the body will never sleep, and consume more CPU
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.set_sleeping_allowed|API Documentation}
 	 */
 	export function set_sleeping_allowed(
 		body: typeof b2d.body,
@@ -747,6 +806,7 @@ declare namespace b2d.body {
 	 * @param body  body
 	 * @param position  the world position of the body's local origin.
 	 * @param angle  the world position of the body's local origin.
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.set_transform|API Documentation}
 	 */
 	export function set_transform(
 		body: typeof b2d.body,
@@ -758,6 +818,7 @@ declare namespace b2d.body {
 	 * Set the type of this body. This may alter the mass and velocity.
 	 * @param body  body
 	 * @param type  the body type
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.set_type|API Documentation}
 	 */
 	export function set_type(
 		body: typeof b2d.body,
@@ -769,7 +830,7 @@ declare namespace b2d.body {
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
-/** @see {@link https://defold.com/ref/stable/crash/|Documentation} */
+/** @see {@link https://defold.com/ref/stable/crash/|API Documentation} */
 declare namespace crash {
 	/**
 	 * android build fingerprint
@@ -860,6 +921,7 @@ declare namespace crash {
 	 * A table is returned containing the addresses of the call stack.
 	 * @param handle  crash dump handle
 	 * @returns backtrace  table containing the backtrace
+	 * @see {@link https://defold.com/ref/stable/crash/#crash.get_backtrace|API Documentation}
 	 */
 	export function get_backtrace(handle: number): AnyNotNil | undefined;
 
@@ -869,6 +931,7 @@ declare namespace crash {
 	 * but can be useful for manual inspection.
 	 * @param handle  crash dump handle
 	 * @returns blob  string with the platform specific data
+	 * @see {@link https://defold.com/ref/stable/crash/#crash.get_extra_data|API Documentation}
 	 */
 	export function get_extra_data(handle: number): string;
 
@@ -877,6 +940,7 @@ declare namespace crash {
 	 * have fields 'name' and 'address' set for all loaded modules.
 	 * @param handle  crash dump handle
 	 * @returns modules  module table
+	 * @see {@link https://defold.com/ref/stable/crash/#crash.get_modules|API Documentation}
 	 */
 	export function get_modules(
 		handle: number,
@@ -886,6 +950,7 @@ declare namespace crash {
 	 * read signal number from a crash report
 	 * @param handle  crash dump handle
 	 * @returns signal  signal number
+	 * @see {@link https://defold.com/ref/stable/crash/#crash.get_signum|API Documentation}
 	 */
 	export function get_signum(handle: number): number;
 
@@ -894,6 +959,7 @@ declare namespace crash {
 	 * @param handle  crash dump handle
 	 * @param index  system field enum. Must be less than crash.SYSFIELD_MAX
 	 * @returns value  value recorded in the crash dump, or `undefined` if it didn't exist
+	 * @see {@link https://defold.com/ref/stable/crash/#crash.get_sys_field|API Documentation}
 	 */
 	export function get_sys_field(
 		handle: number,
@@ -905,6 +971,7 @@ declare namespace crash {
 	 * @param handle  crash dump handle
 	 * @param index  user data slot index
 	 * @returns value  user data value recorded in the crash dump
+	 * @see {@link https://defold.com/ref/stable/crash/#crash.get_user_field|API Documentation}
 	 */
 	export function get_user_field(handle: number, index: number): string;
 
@@ -912,18 +979,21 @@ declare namespace crash {
 	 * The crash dump will be removed from disk upon a successful
 	 * load, so loading is one-shot.
 	 * @returns handle  handle to the loaded dump, or `undefined` if no dump was found
+	 * @see {@link https://defold.com/ref/stable/crash/#crash.load_previous|API Documentation}
 	 */
 	export function load_previous(): number | undefined;
 
 	/**
 	 * releases a previously loaded crash dump
 	 * @param handle  handle to loaded crash dump
+	 * @see {@link https://defold.com/ref/stable/crash/#crash.release|API Documentation}
 	 */
 	export function release(handle: number): void;
 
 	/**
 	 * Crashes occuring before the path is set will be stored to a default engine location.
 	 * @param path  file path to use
+	 * @see {@link https://defold.com/ref/stable/crash/#crash.set_file_path|API Documentation}
 	 */
 	export function set_file_path(path: string): void;
 
@@ -933,6 +1003,7 @@ declare namespace crash {
 	 * There are 32 slots indexed from 0. Each slot stores at most 255 characters.
 	 * @param index  slot index. 0-indexed
 	 * @param value  string value to store
+	 * @see {@link https://defold.com/ref/stable/crash/#crash.set_user_field|API Documentation}
 	 */
 	export function set_user_field(index: number, value: string): void;
 
@@ -940,12 +1011,13 @@ declare namespace crash {
 	 * Performs the same steps as if a crash had just occured but
 	 * allows the program to continue.
 	 * The generated dump can be read by crash.load_previous
+	 * @see {@link https://defold.com/ref/stable/crash/#crash.write_dump|API Documentation}
 	 */
 	export function write_dump(): void;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
-/** @see {@link https://defold.com/ref/stable/go/|Documentation} */
+/** @see {@link https://defold.com/ref/stable/go/|API Documentation} */
 declare namespace go {
 	/**
 	 * Post this message to a game object instance to make that instance acquire the user input focus.
@@ -1342,6 +1414,7 @@ The game object or component instance for which the property is animated.
 `property`
 
 The id of the animated property.
+* @see {@link https://defold.com/ref/stable/go/#go.animate|API Documentation}
 
 
 	*/
@@ -1404,6 +1477,7 @@ The id of the animated property.
 	 * See the properties guide for which properties can be animated and the animation guide for how to animate them.
 	 * @param url  url of the game object or component
 	 * @param property  optional id of the property to cancel
+	 * @see {@link https://defold.com/ref/stable/go/#go.cancel_animations|API Documentation}
 	 */
 	export function cancel_animations(
 		url: hash | url | string,
@@ -1430,6 +1504,7 @@ The id of the animated property.
 	 * check if the specified game object exists
 	 * @param url  url of the game object to check
 	 * @returns exists  true if the game object exists
+	 * @see {@link https://defold.com/ref/stable/go/#go.exists|API Documentation}
 	 */
 	export function exists(url: hash | url | string): boolean;
 
@@ -1441,6 +1516,7 @@ The id of the animated property.
 index into array property (1 based)
 name of internal property
 	* @returns value  the value of the specified property
+* @see {@link https://defold.com/ref/stable/go/#go.get|API Documentation}
 	*/
 	export function get(
 		url: hash | url | string,
@@ -1457,6 +1533,7 @@ name of internal property
 	 *
 	 * @param path  path of the instance for which to return the id
 	 * @returns id  instance id
+	 * @see {@link https://defold.com/ref/stable/go/#go.get_id|API Documentation}
 	 */
 	export function get_id(path?: string): hash;
 
@@ -1464,6 +1541,7 @@ name of internal property
 	 * Get the parent for a game object instance.
 	 * @param id  optional id of the game object instance to get parent for, defaults to the instance containing the calling script
 	 * @returns parent_id  parent instance or `undefined`
+	 * @see {@link https://defold.com/ref/stable/go/#go.get_parent|API Documentation}
 	 */
 	export function get_parent(id?: hash | url | string): hash | undefined;
 
@@ -1471,6 +1549,7 @@ name of internal property
 	 * The position is relative the parent (if any). Use go.get_world_position to retrieve the global world position.
 	 * @param id  optional id of the game object instance to get the position for, by default the instance of the calling script
 	 * @returns position  instance position
+	 * @see {@link https://defold.com/ref/stable/go/#go.get_position|API Documentation}
 	 */
 	export function get_position(id?: hash | url | string): vmath.vector3;
 
@@ -1478,6 +1557,7 @@ name of internal property
 	 * The rotation is relative to the parent (if any). Use go.get_world_rotation to retrieve the global world rotation.
 	 * @param id  optional id of the game object instance to get the rotation for, by default the instance of the calling script
 	 * @returns rotation  instance rotation
+	 * @see {@link https://defold.com/ref/stable/go/#go.get_rotation|API Documentation}
 	 */
 	export function get_rotation(id?: hash | url | string): vmath.quaternion;
 
@@ -1485,6 +1565,7 @@ name of internal property
 	 * The scale is relative the parent (if any). Use go.get_world_scale to retrieve the global world 3D scale factor.
 	 * @param id  optional id of the game object instance to get the scale for, by default the instance of the calling script
 	 * @returns scale  instance scale factor
+	 * @see {@link https://defold.com/ref/stable/go/#go.get_scale|API Documentation}
 	 */
 	export function get_scale(id?: hash | url | string): vmath.vector3;
 
@@ -1492,6 +1573,7 @@ name of internal property
 	 * The uniform scale is relative the parent (if any). If the underlying scale vector is non-uniform the min element of the vector is returned as the uniform scale factor.
 	 * @param id  optional id of the game object instance to get the uniform scale for, by default the instance of the calling script
 	 * @returns scale  uniform instance scale factor
+	 * @see {@link https://defold.com/ref/stable/go/#go.get_scale_uniform|API Documentation}
 	 */
 	export function get_scale_uniform(id?: hash | url | string): number;
 
@@ -1500,6 +1582,7 @@ name of internal property
 	 * Use go.get_position to retrieve the position relative to the parent.
 	 * @param id  optional id of the game object instance to get the world position for, by default the instance of the calling script
 	 * @returns position  instance world position
+	 * @see {@link https://defold.com/ref/stable/go/#go.get_world_position|API Documentation}
 	 */
 	export function get_world_position(id?: hash | url | string): vmath.vector3;
 
@@ -1508,6 +1591,7 @@ name of internal property
 	 * Use go.get_rotation to retrieve the rotation relative to the parent.
 	 * @param id  optional id of the game object instance to get the world rotation for, by default the instance of the calling script
 	 * @returns rotation  instance world rotation
+	 * @see {@link https://defold.com/ref/stable/go/#go.get_world_rotation|API Documentation}
 	 */
 	export function get_world_rotation(
 		id?: hash | url | string,
@@ -1520,6 +1604,7 @@ name of internal property
 	 * For most cases it should be fine to use go.get_world_scale_uniform instead.
 	 * @param id  optional id of the game object instance to get the world scale for, by default the instance of the calling script
 	 * @returns scale  instance world 3D scale factor
+	 * @see {@link https://defold.com/ref/stable/go/#go.get_world_scale|API Documentation}
 	 */
 	export function get_world_scale(id?: hash | url | string): vmath.vector3;
 
@@ -1528,6 +1613,7 @@ name of internal property
 	 * Use go.get_scale_uniform to retrieve the scale factor relative to the parent.
 	 * @param id  optional id of the game object instance to get the world scale for, by default the instance of the calling script
 	 * @returns scale  instance world scale factor
+	 * @see {@link https://defold.com/ref/stable/go/#go.get_world_scale_uniform|API Documentation}
 	 */
 	export function get_world_scale_uniform(id?: hash | url | string): number;
 
@@ -1535,6 +1621,7 @@ name of internal property
 	 * The function will return the world transform matrix calculated at the end of the previous frame.
 	 * @param id  optional id of the game object instance to get the world transform for, by default the instance of the calling script
 	 * @returns transform  instance world transform
+	 * @see {@link https://defold.com/ref/stable/go/#go.get_world_transform|API Documentation}
 	 */
 	export function get_world_transform(id?: hash | url | string): vmath.matrix4;
 
@@ -1544,6 +1631,7 @@ name of internal property
 	 * Note that you can only use this function outside any callback-functions like init and update.
 	 * @param name  the id of the property
 	 * @param value  default value of the property. In the case of a url, only the empty constructor msg.url() is allowed. In the case of a resource one of the resource constructors (eg resource.atlas(), resource.font() etc) is expected.
+	 * @see {@link https://defold.com/ref/stable/go/#go.property|API Documentation}
 	 */
 	export function property(name: string, value: any): void;
 
@@ -1555,6 +1643,7 @@ name of internal property
 	* @param options  optional options table
 index into array property (1 based)
 name of internal property
+* @see {@link https://defold.com/ref/stable/go/#go.set|API Documentation}
 	*/
 	export function set(
 		url: hash | url | string,
@@ -1573,6 +1662,7 @@ name of internal property
 	 * @param id  optional id of the game object instance to set parent for, defaults to the instance containing the calling script
 	 * @param parent_id  optional id of the new parent game object, defaults to detaching game object from its parent
 	 * @param keep_world_transform  optional boolean, set to true to maintain the world transform when changing spaces. Defaults to false.
+	 * @see {@link https://defold.com/ref/stable/go/#go.set_parent|API Documentation}
 	 */
 	export function set_parent(
 		id?: hash | url | string,
@@ -1584,6 +1674,7 @@ name of internal property
 	 * The position is relative to the parent (if any). The global world position cannot be manually set.
 	 * @param position  position to set
 	 * @param id  optional id of the game object instance to set the position for, by default the instance of the calling script
+	 * @see {@link https://defold.com/ref/stable/go/#go.set_position|API Documentation}
 	 */
 	export function set_position(
 		position: vmath.vector3,
@@ -1594,6 +1685,7 @@ name of internal property
 	 * The rotation is relative to the parent (if any). The global world rotation cannot be manually set.
 	 * @param rotation  rotation to set
 	 * @param id  optional id of the game object instance to get the rotation for, by default the instance of the calling script
+	 * @see {@link https://defold.com/ref/stable/go/#go.set_rotation|API Documentation}
 	 */
 	export function set_rotation(
 		rotation: vmath.quaternion,
@@ -1605,6 +1697,7 @@ name of internal property
 	 * ⚠ Physics are currently not affected when setting scale from this function.
 	 * @param scale  vector or uniform scale factor, must be greater than 0
 	 * @param id  optional id of the game object instance to get the scale for, by default the instance of the calling script
+	 * @see {@link https://defold.com/ref/stable/go/#go.set_scale|API Documentation}
 	 */
 	export function set_scale(
 		scale: vmath.vector3 | number,
@@ -1616,6 +1709,7 @@ name of internal property
 	 * @param position  position which need to be converted
 	 * @param url  url of the game object which coordinate system convert to
 	 * @returns converted_postion  converted position
+	 * @see {@link https://defold.com/ref/stable/go/#go.world_to_local_position|API Documentation}
 	 */
 	export function world_to_local_position(
 		position: vmath.vector3,
@@ -1627,6 +1721,7 @@ name of internal property
 	 * @param transformation  transformation which need to be converted
 	 * @param url  url of the game object which coordinate system convert to
 	 * @returns converted_transform  converted transformation
+	 * @see {@link https://defold.com/ref/stable/go/#go.world_to_local_transform|API Documentation}
 	 */
 	export function world_to_local_transform(
 		transformation: vmath.matrix4,
@@ -1671,7 +1766,7 @@ name of internal property
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
-/** @see {@link https://defold.com/ref/stable/gui/|Documentation} */
+/** @see {@link https://defold.com/ref/stable/gui/|API Documentation} */
 declare namespace gui {
 	/**
 	 * The fonts used in the gui. The type of the property is hash.
@@ -2247,6 +2342,7 @@ with a custom curve. See the animation guide for more information.
 - `gui.PLAYBACK_LOOP_FORWARD`
 - `gui.PLAYBACK_LOOP_BACKWARD`
 - `gui.PLAYBACK_LOOP_PINGPONG`
+* @see {@link https://defold.com/ref/stable/gui/#gui.animate|API Documentation}
 
 	*/
 	export function animate(
@@ -2279,6 +2375,7 @@ with a custom curve. See the animation guide for more information.
 - `"fill_angle"` (pie)
 - `"inner_radius"` (pie)
 - `"slice9"` (slice9)
+* @see {@link https://defold.com/ref/stable/gui/#gui.cancel_animation|API Documentation}
 
 	*/
 	export function cancel_animation(
@@ -2290,6 +2387,7 @@ with a custom curve. See the animation guide for more information.
 	/**
 	 * Cancels any running flipbook animation on the specified node.
 	 * @param node  node cancel flipbook animation for
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.cancel_flipbook|API Documentation}
 	 */
 	export function cancel_flipbook(node: node): void;
 
@@ -2301,6 +2399,7 @@ with a custom curve. See the animation guide for more information.
 	 * Use gui.clone_tree for that purpose.
 	 * @param node  node to clone
 	 * @returns clone  the cloned node
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.clone|API Documentation}
 	 */
 	export function clone(node: node): node;
 
@@ -2309,6 +2408,7 @@ with a custom curve. See the animation guide for more information.
 	 * Use gui.clone to clone a node excluding its children.
 	 * @param node  root node to clone
 	 * @returns clones  a table mapping node ids to the corresponding cloned nodes
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.clone_tree|API Documentation}
 	 */
 	export function clone_tree(node: node): AnyNotNil | undefined;
 
@@ -2316,12 +2416,14 @@ with a custom curve. See the animation guide for more information.
 	 * Deletes the specified node. Any child nodes of the specified node will be
 	 * recursively deleted.
 	 * @param node  node to delete
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.delete_node|API Documentation}
 	 */
 	export function delete_node(node: node): void;
 
 	/**
 	 * Delete a dynamically created texture.
 	 * @param texture  texture id
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.delete_texture|API Documentation}
 	 */
 	export function delete_texture(texture: hash | string): void;
 
@@ -2347,6 +2449,7 @@ with a custom curve. See the animation guide for more information.
 	 * property will return a vec4 while getting the "position.x" property will return a single value.
 	 * @param node  node to get the property for
 	 * @param property  the property to retrieve
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get|API Documentation}
 	 */
 	export function get(node: node, property: any): void;
 
@@ -2360,6 +2463,7 @@ with a custom curve. See the animation guide for more information.
 - `gui.ADJUST_FIT`
 - `gui.ADJUST_ZOOM`
 - `gui.ADJUST_STRETCH`
+* @see {@link https://defold.com/ref/stable/gui/#gui.get_adjust_mode|API Documentation}
 
 	*/
 	export function get_adjust_mode(
@@ -2369,6 +2473,7 @@ with a custom curve. See the animation guide for more information.
 	/**
 	 * gets the node alpha
 	 * @param node  node from which to get alpha
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_alpha|API Documentation}
 	 */
 	export function get_alpha(node: node): void;
 
@@ -2383,6 +2488,7 @@ with a custom curve. See the animation guide for more information.
 - `gui.BLEND_ADD_ALPHA`
 - `gui.BLEND_MULT`
 - `gui.BLEND_SCREEN`
+* @see {@link https://defold.com/ref/stable/gui/#gui.get_blend_mode|API Documentation}
 
 	*/
 	export function get_blend_mode(
@@ -2394,6 +2500,7 @@ with a custom curve. See the animation guide for more information.
 	 * If node is set as an inverted clipping node, it will clip anything inside as opposed to outside.
 	 * @param node  node from which to get the clipping inverted state
 	 * @returns inverted  true or false
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_clipping_inverted|API Documentation}
 	 */
 	export function get_clipping_inverted(node: node): boolean;
 
@@ -2404,6 +2511,7 @@ with a custom curve. See the animation guide for more information.
 
 - `gui.CLIPPING_MODE_NONE`
 - `gui.CLIPPING_MODE_STENCIL`
+* @see {@link https://defold.com/ref/stable/gui/#gui.get_clipping_mode|API Documentation}
 
 	*/
 	export function get_clipping_mode(
@@ -2414,6 +2522,7 @@ with a custom curve. See the animation guide for more information.
 	 * If node is set as visible clipping node, it will be shown as well as clipping. Otherwise, it will only clip but not show visually.
 	 * @param node  node from which to get the clipping visibility state
 	 * @returns visible  true or false
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_clipping_visible|API Documentation}
 	 */
 	export function get_clipping_visible(node: node): boolean;
 
@@ -2448,6 +2557,7 @@ with a custom curve. See the animation guide for more information.
 	 *
 	 * @param node  node to get the color from
 	 * @returns color  node color
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_color|API Documentation}
 	 */
 	export function get_color(node: node): vmath.vector4;
 
@@ -2456,6 +2566,7 @@ with a custom curve. See the animation guide for more information.
 	 * The rotation is expressed in degree Euler angles.
 	 * @param node  node to get the rotation from
 	 * @returns rotation  node rotation
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_euler|API Documentation}
 	 */
 	export function get_euler(node: node): vmath.vector3;
 
@@ -2463,6 +2574,7 @@ with a custom curve. See the animation guide for more information.
 	 * Returns the sector angle of a pie node.
 	 * @param node  node from which to get the fill angle
 	 * @returns angle  sector angle
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_fill_angle|API Documentation}
 	 */
 	export function get_fill_angle(node: node): number;
 
@@ -2470,6 +2582,7 @@ with a custom curve. See the animation guide for more information.
 	 * Get node flipbook animation.
 	 * @param node  node to get flipbook animation from
 	 * @returns animation  animation id
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_flipbook|API Documentation}
 	 */
 	export function get_flipbook(node: node): hash;
 
@@ -2477,6 +2590,7 @@ with a custom curve. See the animation guide for more information.
 	 * This is only useful nodes with flipbook animations. Gets the normalized cursor of the flipbook animation on a node.
 	 * @param node  node to get the cursor for (node)
 	 * @returns cursor  cursor value
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_flipbook_cursor|API Documentation}
 	 */
 	export function get_flipbook_cursor(node: node): number;
 
@@ -2484,6 +2598,7 @@ with a custom curve. See the animation guide for more information.
 	 * This is only useful nodes with flipbook animations. Gets the playback rate of the flipbook animation on a node.
 	 * @param node  node to set the cursor for
 	 * @returns rate  playback rate
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_flipbook_playback_rate|API Documentation}
 	 */
 	export function get_flipbook_playback_rate(node: node): number;
 
@@ -2491,6 +2606,7 @@ with a custom curve. See the animation guide for more information.
 	 * This is only useful for text nodes. The font must be mapped to the gui scene in the gui editor.
 	 * @param node  node from which to get the font
 	 * @returns font  font id
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_font|API Documentation}
 	 */
 	export function get_font(node: node): hash;
 
@@ -2498,12 +2614,14 @@ with a custom curve. See the animation guide for more information.
 	 * This is only useful for text nodes. The font must be mapped to the gui scene in the gui editor.
 	 * @param font_name  font of which to get the path hash
 	 * @returns hash  path hash to resource
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_font_resource|API Documentation}
 	 */
 	export function get_font_resource(font_name: hash | string): hash;
 
 	/**
 	 * Returns the scene height.
 	 * @returns height  scene height
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_height|API Documentation}
 	 */
 	export function get_height(): number;
 
@@ -2511,6 +2629,7 @@ with a custom curve. See the animation guide for more information.
 	 * Retrieves the id of the specified node.
 	 * @param node  the node to retrieve the id from
 	 * @returns id  the id of the node
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_id|API Documentation}
 	 */
 	export function get_id(node: node): hash;
 
@@ -2520,12 +2639,14 @@ with a custom curve. See the animation guide for more information.
 	 * Higher index means the node is drawn on top of lower indexed nodes.
 	 * @param node  the node to retrieve the id from
 	 * @returns index  the index of the node
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_index|API Documentation}
 	 */
 	export function get_index(node: node): number;
 
 	/**
 	 * gets the node inherit alpha state
 	 * @param node  node from which to get the inherit alpha state
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_inherit_alpha|API Documentation}
 	 */
 	export function get_inherit_alpha(node: node): void;
 
@@ -2534,6 +2655,7 @@ with a custom curve. See the animation guide for more information.
 	 * The radius is defined along the x-axis.
 	 * @param node  node from where to get the inner radius
 	 * @returns radius  inner radius
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_inner_radius|API Documentation}
 	 */
 	export function get_inner_radius(node: node): number;
 
@@ -2541,12 +2663,14 @@ with a custom curve. See the animation guide for more information.
 	 * The layer must be mapped to the gui scene in the gui editor.
 	 * @param node  node from which to get the layer
 	 * @returns layer  layer id
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_layer|API Documentation}
 	 */
 	export function get_layer(node: node): hash;
 
 	/**
 	 * gets the scene current layout
 	 * @returns layout  layout id
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_layout|API Documentation}
 	 */
 	export function get_layout(): hash;
 
@@ -2554,6 +2678,7 @@ with a custom curve. See the animation guide for more information.
 	 * Returns the leading value for a text node.
 	 * @param node  node from where to get the leading
 	 * @returns leading  leading scaling value (default=1)
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_leading|API Documentation}
 	 */
 	export function get_leading(node: node): number;
 
@@ -2562,6 +2687,7 @@ with a custom curve. See the animation guide for more information.
 	 * This is only useful for text nodes.
 	 * @param node  node from which to get the line-break for
 	 * @returns line_break  `true` or `false`
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_line_break|API Documentation}
 	 */
 	export function get_line_break(node: node): boolean;
 
@@ -2569,6 +2695,7 @@ with a custom curve. See the animation guide for more information.
 	 * Returns the material of a node.
 	 * The material must be mapped to the gui scene in the gui editor.
 	 * @param node  node to get the material for
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_material|API Documentation}
 	 */
 	export function get_material(node: node): void;
 
@@ -2576,6 +2703,7 @@ with a custom curve. See the animation guide for more information.
 	 * Retrieves the node with the specified id.
 	 * @param id  id of the node to retrieve
 	 * @returns instance  a new node instance
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_node|API Documentation}
 	 */
 	export function get_node(id: hash | string): node;
 
@@ -2586,6 +2714,7 @@ with a custom curve. See the animation guide for more information.
 
 - `gui.PIEBOUNDS_RECTANGLE`
 - `gui.PIEBOUNDS_ELLIPSE`
+* @see {@link https://defold.com/ref/stable/gui/#gui.get_outer_bounds|API Documentation}
 
 	*/
 	export function get_outer_bounds(
@@ -2597,6 +2726,7 @@ with a custom curve. See the animation guide for more information.
 	 * See gui.get_color for info how vectors encode color values.
 	 * @param node  node to get the outline color from
 	 * @returns color  outline color
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_outline|API Documentation}
 	 */
 	export function get_outline(node: node): vmath.vector4;
 
@@ -2605,6 +2735,7 @@ with a custom curve. See the animation guide for more information.
 	 * If the supplied node does not have a parent, `undefined` is returned.
 	 * @param node  the node from which to retrieve its parent
 	 * @returns parent  parent instance or `undefined`
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_parent|API Documentation}
 	 */
 	export function get_parent(node: node): node | undefined;
 
@@ -2612,6 +2743,7 @@ with a custom curve. See the animation guide for more information.
 	 * Get the paricle fx for a gui node
 	 * @param node  node to get particle fx for
 	 * @returns particlefx  particle fx id
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_particlefx|API Documentation}
 	 */
 	export function get_particlefx(node: node): hash;
 
@@ -2620,6 +2752,7 @@ with a custom curve. See the animation guide for more information.
 	 * of a pie node.
 	 * @param node  pie node
 	 * @returns vertices  vertex count
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_perimeter_vertices|API Documentation}
 	 */
 	export function get_perimeter_vertices(node: node): number;
 
@@ -2637,6 +2770,7 @@ with a custom curve. See the animation guide for more information.
 - `gui.PIVOT_SW`
 - `gui.PIVOT_W`
 - `gui.PIVOT_NW`
+* @see {@link https://defold.com/ref/stable/gui/#gui.get_pivot|API Documentation}
 
 	*/
 	export function get_pivot(
@@ -2648,6 +2782,7 @@ with a custom curve. See the animation guide for more information.
 	 * Returns the position of the supplied node.
 	 * @param node  node to get the position from
 	 * @returns position  node position
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_position|API Documentation}
 	 */
 	export function get_position(node: node): vmath.vector3;
 
@@ -2656,6 +2791,7 @@ with a custom curve. See the animation guide for more information.
 	 * The rotation is expressed as a quaternion
 	 * @param node  node to get the rotation from
 	 * @returns rotation  node rotation
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_rotation|API Documentation}
 	 */
 	export function get_rotation(node: node): vmath.quaternion;
 
@@ -2663,6 +2799,7 @@ with a custom curve. See the animation guide for more information.
 	 * Returns the scale of the supplied node.
 	 * @param node  node to get the scale from
 	 * @returns scale  node scale
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_scale|API Documentation}
 	 */
 	export function get_scale(node: node): vmath.vector3;
 
@@ -2672,6 +2809,7 @@ with a custom curve. See the animation guide for more information.
 	 * transforms.
 	 * @param node  node to get the screen position from
 	 * @returns position  node screen position
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_screen_position|API Documentation}
 	 */
 	export function get_screen_position(node: node): vmath.vector3;
 
@@ -2680,6 +2818,7 @@ with a custom curve. See the animation guide for more information.
 	 * See gui.get_color for info how vectors encode color values.
 	 * @param node  node to get the shadow color from
 	 * @returns color  node shadow color
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_shadow|API Documentation}
 	 */
 	export function get_shadow(node: node): vmath.vector4;
 
@@ -2687,6 +2826,7 @@ with a custom curve. See the animation guide for more information.
 	 * Returns the size of the supplied node.
 	 * @param node  node to get the size from
 	 * @returns size  node size
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_size|API Documentation}
 	 */
 	export function get_size(node: node): vmath.vector3;
 
@@ -2702,6 +2842,7 @@ with a custom curve. See the animation guide for more information.
 
 - `gui.SIZE_MODE_MANUAL`
 - `gui.SIZE_MODE_AUTO`
+* @see {@link https://defold.com/ref/stable/gui/#gui.get_size_mode|API Documentation}
 
 	*/
 	export function get_size_mode(
@@ -2712,6 +2853,7 @@ with a custom curve. See the animation guide for more information.
 	 * Returns the slice9 configuration values for the node.
 	 * @param node  node to manipulate
 	 * @returns values  configuration values
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_slice9|API Documentation}
 	 */
 	export function get_slice9(node: node): vmath.vector4;
 
@@ -2719,6 +2861,7 @@ with a custom curve. See the animation guide for more information.
 	 * Returns the text value of a text node. This is only useful for text nodes.
 	 * @param node  node from which to get the text
 	 * @returns text  text value
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_text|API Documentation}
 	 */
 	export function get_text(node: node): string;
 
@@ -2728,6 +2871,7 @@ with a custom curve. See the animation guide for more information.
 	 * The texture must be mapped to the gui scene in the gui editor.
 	 * @param node  node to get texture from
 	 * @returns texture  texture id
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_texture|API Documentation}
 	 */
 	export function get_texture(node: node): hash;
 
@@ -2735,6 +2879,7 @@ with a custom curve. See the animation guide for more information.
 	 * Returns the tracking value of a text node.
 	 * @param node  node from where to get the tracking
 	 * @returns tracking  tracking scaling number (default=0)
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_tracking|API Documentation}
 	 */
 	export function get_tracking(node: node): number;
 
@@ -2742,6 +2887,7 @@ with a custom curve. See the animation guide for more information.
 	 * Get a node and all its children as a Lua table.
 	 * @param node  root node to get node tree from
 	 * @returns clones  a table mapping node ids to the corresponding nodes
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_tree|API Documentation}
 	 */
 	export function get_tree(node: node): AnyNotNil | undefined;
 
@@ -2750,12 +2896,14 @@ with a custom curve. See the animation guide for more information.
 	 * Invisible nodes are not rendered.
 	 * @param node  node to query
 	 * @returns visible  whether the node is visible or not
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_visible|API Documentation}
 	 */
 	export function get_visible(node: node): boolean;
 
 	/**
 	 * Returns the scene width.
 	 * @returns width  scene width
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_width|API Documentation}
 	 */
 	export function get_width(): number;
 
@@ -2767,6 +2915,7 @@ with a custom curve. See the animation guide for more information.
 - `gui.ANCHOR_NONE`
 - `gui.ANCHOR_LEFT`
 - `gui.ANCHOR_RIGHT`
+* @see {@link https://defold.com/ref/stable/gui/#gui.get_xanchor|API Documentation}
 
 	*/
 	export function get_xanchor(
@@ -2781,6 +2930,7 @@ with a custom curve. See the animation guide for more information.
 - `gui.ANCHOR_NONE`
 - `gui.ANCHOR_TOP`
 - `gui.ANCHOR_BOTTOM`
+* @see {@link https://defold.com/ref/stable/gui/#gui.get_yanchor|API Documentation}
 
 	*/
 	export function get_yanchor(
@@ -2789,6 +2939,7 @@ with a custom curve. See the animation guide for more information.
 
 	/**
 	 * Hides the on-display touch keyboard on the device.
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.hide_keyboard|API Documentation}
 	 */
 	export function hide_keyboard(): void;
 
@@ -2798,6 +2949,7 @@ with a custom curve. See the animation guide for more information.
 	 * @param node  node to query
 	 * @param recursive  check hierarchy recursively
 	 * @returns enabled  whether the node is enabled or not
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.is_enabled|API Documentation}
 	 */
 	export function is_enabled(node: node, recursive?: boolean): boolean;
 
@@ -2807,6 +2959,7 @@ with a custom curve. See the animation guide for more information.
 	 * If the second argument is `undefined` the first node is moved to the top.
 	 * @param node  to move
 	 * @param reference  reference node above which the first node should be moved
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.move_above|API Documentation}
 	 */
 	export function move_above(node: node, reference: node): void;
 
@@ -2816,6 +2969,7 @@ with a custom curve. See the animation guide for more information.
 	 * If the second argument is `undefined` the first node is moved to the bottom.
 	 * @param node  to move
 	 * @param reference  reference node below which the first node should be moved
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.move_below|API Documentation}
 	 */
 	export function move_below(node: node, reference: node): void;
 
@@ -2824,6 +2978,7 @@ with a custom curve. See the animation guide for more information.
 	 * @param pos  node position
 	 * @param size  node size
 	 * @returns node  new box node
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.new_box_node|API Documentation}
 	 */
 	export function new_box_node(
 		pos: vmath.vector3 | vmath.vector4,
@@ -2835,6 +2990,7 @@ with a custom curve. See the animation guide for more information.
 	 * @param pos  node position
 	 * @param particlefx  particle fx resource name
 	 * @returns node  new particle fx node
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.new_particlefx_node|API Documentation}
 	 */
 	export function new_particlefx_node(
 		pos: vmath.vector3 | vmath.vector4,
@@ -2846,6 +3002,7 @@ with a custom curve. See the animation guide for more information.
 	 * @param pos  node position
 	 * @param size  node size
 	 * @returns node  new pie node
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.new_pie_node|API Documentation}
 	 */
 	export function new_pie_node(
 		pos: vmath.vector3 | vmath.vector4,
@@ -2857,6 +3014,7 @@ with a custom curve. See the animation guide for more information.
 	 * @param pos  node position
 	 * @param text  node text
 	 * @returns node  new text node
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.new_text_node|API Documentation}
 	 */
 	export function new_text_node(
 		pos: vmath.vector3 | vmath.vector4,
@@ -2878,6 +3036,7 @@ with a custom curve. See the animation guide for more information.
 	* @param flip  flip texture vertically
 	* @returns success  texture creation was successful
 	* @returns code  one of the gui.RESULT_* codes if unsuccessful
+* @see {@link https://defold.com/ref/stable/gui/#gui.new_texture|API Documentation}
 	*/
 	export function new_texture(
 		texture_id: hash | string,
@@ -2902,6 +3061,7 @@ with a custom curve. See the animation guide for more information.
 	 * @param x  x-coordinate (see on_input )
 	 * @param y  y-coordinate (see on_input )
 	 * @returns pickable  pick result
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.pick_node|API Documentation}
 	 */
 	export function pick_node(node: node, x: number, y: number): boolean;
 
@@ -2928,6 +3088,7 @@ The node that is animated.
 The normalized initial value of the animation cursor when the animation starts playing
 `playback_rate`
 The rate with which the animation will be played. Must be positive
+* @see {@link https://defold.com/ref/stable/gui/#gui.play_flipbook|API Documentation}
 
 	*/
 	export function play_flipbook(
@@ -2956,6 +3117,7 @@ the new state of the emitter:
 - `particlefx.EMITTER_STATE_PRESPAWN`
 - `particlefx.EMITTER_STATE_SPAWNING`
 - `particlefx.EMITTER_STATE_POSTSPAWN`
+* @see {@link https://defold.com/ref/stable/gui/#gui.play_particlefx|API Documentation}
 
 	*/
 	export function play_particlefx(
@@ -2971,12 +3133,14 @@ the new state of the emitter:
 
 	/**
 	 * Resets the input context of keyboard. This will clear marked text.
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.reset_keyboard|API Documentation}
 	 */
 	export function reset_keyboard(): void;
 
 	/**
 	 * Resets the node material to the material assigned in the gui scene.
 	 * @param node  node to reset the material for
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.reset_material|API Documentation}
 	 */
 	export function reset_material(node: node): void;
 
@@ -2984,6 +3148,7 @@ the new state of the emitter:
 	 * Resets all nodes in the current GUI scene to their initial state.
 	 * The reset only applies to static node loaded from the scene.
 	 * Nodes that are created dynamically from script are not affected.
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.reset_nodes|API Documentation}
 	 */
 	export function reset_nodes(): void;
 
@@ -2992,6 +3157,7 @@ the new state of the emitter:
 	 * @param node  node used for getting local transformation matrix
 	 * @param screen_position  screen position
 	 * @returns local_position  local position
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.screen_to_local|API Documentation}
 	 */
 	export function screen_to_local(
 		node: node,
@@ -3025,6 +3191,7 @@ the new state of the emitter:
 	 * @param node  node to set the property for
 	 * @param property  the property to set
 	 * @param value  the property to set
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.set|API Documentation}
 	 */
 	export function set(
 		node: node,
@@ -3042,6 +3209,7 @@ the new state of the emitter:
 - `gui.ADJUST_FIT`
 - `gui.ADJUST_ZOOM`
 - `gui.ADJUST_STRETCH`
+* @see {@link https://defold.com/ref/stable/gui/#gui.set_adjust_mode|API Documentation}
 
 	*/
 	export function set_adjust_mode(
@@ -3054,6 +3222,7 @@ the new state of the emitter:
 	 * sets the node alpha
 	 * @param node  node for which to set alpha
 	 * @param alpha  0..1 alpha color
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.set_alpha|API Documentation}
 	 */
 	export function set_alpha(node: node, alpha: number): void;
 
@@ -3068,6 +3237,7 @@ the new state of the emitter:
 - `gui.BLEND_ADD_ALPHA`
 - `gui.BLEND_MULT`
 - `gui.BLEND_SCREEN`
+* @see {@link https://defold.com/ref/stable/gui/#gui.set_blend_mode|API Documentation}
 
 	*/
 	export function set_blend_mode(
@@ -3080,6 +3250,7 @@ the new state of the emitter:
 	 * If node is set as an inverted clipping node, it will clip anything inside as opposed to outside.
 	 * @param node  node to set clipping inverted state for
 	 * @param inverted  true or false
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.set_clipping_inverted|API Documentation}
 	 */
 	export function set_clipping_inverted(node: node, inverted: boolean): void;
 
@@ -3090,6 +3261,7 @@ the new state of the emitter:
 
 - `gui.CLIPPING_MODE_NONE`
 - `gui.CLIPPING_MODE_STENCIL`
+* @see {@link https://defold.com/ref/stable/gui/#gui.set_clipping_mode|API Documentation}
 
 	*/
 	export function set_clipping_mode(
@@ -3103,6 +3275,7 @@ the new state of the emitter:
 	 * If node is set as an visible clipping node, it will be shown as well as clipping. Otherwise, it will only clip but not show visually.
 	 * @param node  node to set clipping visibility for
 	 * @param visible  true or false
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.set_clipping_visible|API Documentation}
 	 */
 	export function set_clipping_visible(node: node, visible: boolean): void;
 
@@ -3137,6 +3310,7 @@ the new state of the emitter:
 	 *
 	 * @param node  node to set the color for
 	 * @param color  new color
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.set_color|API Documentation}
 	 */
 	export function set_color(
 		node: node,
@@ -3148,6 +3322,7 @@ the new state of the emitter:
 	 * Disabled nodes are not rendered and animations acting on them are not evaluated.
 	 * @param node  node to be enabled/disabled
 	 * @param enabled  whether the node should be enabled or not
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.set_enabled|API Documentation}
 	 */
 	export function set_enabled(node: node, enabled: boolean): void;
 
@@ -3156,6 +3331,7 @@ the new state of the emitter:
 	 * The rotation is expressed in degree Euler angles.
 	 * @param node  node to set the rotation for
 	 * @param rotation  new rotation
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.set_euler|API Documentation}
 	 */
 	export function set_euler(
 		node: node,
@@ -3166,6 +3342,7 @@ the new state of the emitter:
 	 * Set the sector angle of a pie node.
 	 * @param node  node to set the fill angle for
 	 * @param angle  sector angle
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.set_fill_angle|API Documentation}
 	 */
 	export function set_fill_angle(node: node, angle: number): void;
 
@@ -3173,6 +3350,7 @@ the new state of the emitter:
 	 * This is only useful nodes with flipbook animations. The cursor is normalized.
 	 * @param node  node to set the cursor for
 	 * @param cursor  cursor value
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.set_flipbook_cursor|API Documentation}
 	 */
 	export function set_flipbook_cursor(node: node, cursor: number): void;
 
@@ -3180,6 +3358,7 @@ the new state of the emitter:
 	 * This is only useful nodes with flipbook animations. Sets the playback rate of the flipbook animation on a node. Must be positive.
 	 * @param node  node to set the cursor for
 	 * @param playback_rate  playback rate
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.set_flipbook_playback_rate|API Documentation}
 	 */
 	export function set_flipbook_playback_rate(
 		node: node,
@@ -3191,6 +3370,7 @@ the new state of the emitter:
 	 * The font must be mapped to the gui scene in the gui editor.
 	 * @param node  node for which to set the font
 	 * @param font  font id
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.set_font|API Documentation}
 	 */
 	export function set_font(node: node, font: hash | string): void;
 
@@ -3203,6 +3383,7 @@ the new state of the emitter:
 	 * It is up to you to make sure you use unique ids.
 	 * @param node  node to set the id for
 	 * @param id  id to set
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.set_id|API Documentation}
 	 */
 	export function set_id(node: node, id: hash | string): void;
 
@@ -3210,6 +3391,7 @@ the new state of the emitter:
 	 * sets the node inherit alpha state
 	 * @param node  node from which to set the inherit alpha state
 	 * @param inherit_alpha  true or false
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.set_inherit_alpha|API Documentation}
 	 */
 	export function set_inherit_alpha(node: node, inherit_alpha: boolean): void;
 
@@ -3218,6 +3400,7 @@ the new state of the emitter:
 	 * The radius is defined along the x-axis.
 	 * @param node  node to set the inner radius for
 	 * @param radius  inner radius
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.set_inner_radius|API Documentation}
 	 */
 	export function set_inner_radius(node: node, radius: number): void;
 
@@ -3225,6 +3408,7 @@ the new state of the emitter:
 	 * The layer must be mapped to the gui scene in the gui editor.
 	 * @param node  node for which to set the layer
 	 * @param layer  layer id
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.set_layer|API Documentation}
 	 */
 	export function set_layer(node: node, layer: hash | string): void;
 
@@ -3233,6 +3417,7 @@ the new state of the emitter:
 	 * scale the line spacing of text.
 	 * @param node  node for which to set the leading
 	 * @param leading  a scaling value for the line spacing (default=1)
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.set_leading|API Documentation}
 	 */
 	export function set_leading(node: node, leading: number): void;
 
@@ -3241,6 +3426,7 @@ the new state of the emitter:
 	 * This is only useful for text nodes.
 	 * @param node  node to set line-break for
 	 * @param line_break  true or false
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.set_line_break|API Documentation}
 	 */
 	export function set_line_break(node: node, line_break: boolean): void;
 
@@ -3250,6 +3436,7 @@ the new state of the emitter:
 	 * is assigned to the gui scene node, use `gui.reset_material(node_id)` instead.
 	 * @param node  node to set material for
 	 * @param material  material id
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.set_material|API Documentation}
 	 */
 	export function set_material(node: node, material: hash | string): void;
 
@@ -3260,6 +3447,7 @@ the new state of the emitter:
 
 - `gui.PIEBOUNDS_RECTANGLE`
 - `gui.PIEBOUNDS_ELLIPSE`
+* @see {@link https://defold.com/ref/stable/gui/#gui.set_outer_bounds|API Documentation}
 
 	*/
 	export function set_outer_bounds(
@@ -3272,6 +3460,7 @@ the new state of the emitter:
 	 * See gui.set_color for info how vectors encode color values.
 	 * @param node  node to set the outline color for
 	 * @param color  new outline color
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.set_outline|API Documentation}
 	 */
 	export function set_outline(
 		node: node,
@@ -3283,6 +3472,7 @@ the new state of the emitter:
 	 * @param node  node for which to set its parent
 	 * @param parent  parent node to set, pass `undefined` to remove parent
 	 * @param keep_scene_transform  optional flag to make the scene position being perserved
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.set_parent|API Documentation}
 	 */
 	export function set_parent(
 		node: node,
@@ -3294,6 +3484,7 @@ the new state of the emitter:
 	 * Set the paricle fx for a gui node
 	 * @param node  node to set particle fx for
 	 * @param particlefx  particle fx id
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.set_particlefx|API Documentation}
 	 */
 	export function set_particlefx(node: node, particlefx: hash | string): void;
 
@@ -3301,6 +3492,7 @@ the new state of the emitter:
 	 * Sets the number of generated vertices around the perimeter of a pie node.
 	 * @param node  pie node
 	 * @param vertices  vertex count
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.set_perimeter_vertices|API Documentation}
 	 */
 	export function set_perimeter_vertices(node: node, vertices: number): void;
 
@@ -3318,6 +3510,7 @@ the new state of the emitter:
 - `gui.PIVOT_SW`
 - `gui.PIVOT_W`
 - `gui.PIVOT_NW`
+* @see {@link https://defold.com/ref/stable/gui/#gui.set_pivot|API Documentation}
 
 	*/
 	export function set_pivot(
@@ -3330,6 +3523,7 @@ the new state of the emitter:
 	 * Sets the position of the supplied node.
 	 * @param node  node to set the position for
 	 * @param position  new position
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.set_position|API Documentation}
 	 */
 	export function set_position(
 		node: node,
@@ -3343,6 +3537,7 @@ the new state of the emitter:
 	 * to other currently rendered GUI scenes.
 	 * The number must be in the range 0 to 15.
 	 * @param order  rendering order (0-15)
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.set_render_order|API Documentation}
 	 */
 	export function set_render_order(order: number): void;
 
@@ -3351,6 +3546,7 @@ the new state of the emitter:
 	 * The rotation is expressed as a quaternion
 	 * @param node  node to set the rotation for
 	 * @param rotation  new rotation
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.set_rotation|API Documentation}
 	 */
 	export function set_rotation(
 		node: node,
@@ -3361,6 +3557,7 @@ the new state of the emitter:
 	 * Sets the scaling of the supplied node.
 	 * @param node  node to set the scale for
 	 * @param scale  new scale
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.set_scale|API Documentation}
 	 */
 	export function set_scale(
 		node: node,
@@ -3371,6 +3568,7 @@ the new state of the emitter:
 	 * Set the screen position to the supplied node
 	 * @param node  node to set the screen position to
 	 * @param screen_position  screen position
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.set_screen_position|API Documentation}
 	 */
 	export function set_screen_position(
 		node: node,
@@ -3382,6 +3580,7 @@ the new state of the emitter:
 	 * See gui.set_color for info how vectors encode color values.
 	 * @param node  node to set the shadow color for
 	 * @param color  new shadow color
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.set_shadow|API Documentation}
 	 */
 	export function set_shadow(
 		node: node,
@@ -3393,6 +3592,7 @@ the new state of the emitter:
 	 * ⚠ You can only set size on nodes with size mode set to SIZE_MODE_MANUAL
 	 * @param node  node to set the size for
 	 * @param size  new size
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.set_size|API Documentation}
 	 */
 	export function set_size(
 		node: node,
@@ -3411,6 +3611,7 @@ the new state of the emitter:
 
 - `gui.SIZE_MODE_MANUAL`
 - `gui.SIZE_MODE_AUTO`
+* @see {@link https://defold.com/ref/stable/gui/#gui.set_size_mode|API Documentation}
 
 	*/
 	export function set_size_mode(
@@ -3422,6 +3623,7 @@ the new state of the emitter:
 	 * Set the slice9 configuration values for the node.
 	 * @param node  node to manipulate
 	 * @param values  new values
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.set_slice9|API Documentation}
 	 */
 	export function set_slice9(node: node, values: vmath.vector4): void;
 
@@ -3429,6 +3631,7 @@ the new state of the emitter:
 	 * Set the text value of a text node. This is only useful for text nodes.
 	 * @param node  node to set text for
 	 * @param text  text to set
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.set_text|API Documentation}
 	 */
 	export function set_text(node: node, text: number | string): void;
 
@@ -3441,6 +3644,7 @@ the new state of the emitter:
 	 * addition to this function.
 	 * @param node  node to set texture for
 	 * @param texture  texture id
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.set_texture|API Documentation}
 	 */
 	export function set_texture(node: node, texture: hash | string): void;
 
@@ -3458,6 +3662,7 @@ the new state of the emitter:
 	* @param buffer  texture data
 	* @param flip  flip texture vertically
 	* @returns success  setting the data was successful
+* @see {@link https://defold.com/ref/stable/gui/#gui.set_texture_data|API Documentation}
 	*/
 	export function set_texture_data(
 		texture: hash | string,
@@ -3473,6 +3678,7 @@ the new state of the emitter:
 	 * adjust the vertical spacing of characters in the text.
 	 * @param node  node for which to set the tracking
 	 * @param tracking  a scaling number for the letter spacing (default=0)
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.set_tracking|API Documentation}
 	 */
 	export function set_tracking(node: node, tracking: number): void;
 
@@ -3480,6 +3686,7 @@ the new state of the emitter:
 	 * Set if a node should be visible or not. Only visible nodes are rendered.
 	 * @param node  node to be visible or not
 	 * @param visible  whether the node should be visible or not
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.set_visible|API Documentation}
 	 */
 	export function set_visible(node: node, visible: boolean): void;
 
@@ -3491,6 +3698,7 @@ the new state of the emitter:
 - `gui.ANCHOR_NONE`
 - `gui.ANCHOR_LEFT`
 - `gui.ANCHOR_RIGHT`
+* @see {@link https://defold.com/ref/stable/gui/#gui.set_xanchor|API Documentation}
 
 	*/
 	export function set_xanchor(
@@ -3507,6 +3715,7 @@ the new state of the emitter:
 - `gui.ANCHOR_NONE`
 - `gui.ANCHOR_TOP`
 - `gui.ANCHOR_BOTTOM`
+* @see {@link https://defold.com/ref/stable/gui/#gui.set_yanchor|API Documentation}
 
 	*/
 	export function set_yanchor(
@@ -3528,6 +3737,7 @@ the new state of the emitter:
 - `gui.KEYBOARD_TYPE_PASSWORD`
 
 	* @param autoclose  if the keyboard should automatically close when clicking outside
+* @see {@link https://defold.com/ref/stable/gui/#gui.show_keyboard|API Documentation}
 	*/
 	export function show_keyboard(
 		type:
@@ -3544,6 +3754,7 @@ the new state of the emitter:
 	* @param options  options when stopping the particle fx. Supported options:
 
 `clear`: instantly clear spawned particles
+* @see {@link https://defold.com/ref/stable/gui/#gui.stop_particlefx|API Documentation}
 
 	*/
 	export function stop_particlefx(
@@ -3577,7 +3788,7 @@ the new state of the emitter:
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
-/** @see {@link https://defold.com/ref/stable/physics/|Documentation} */
+/** @see {@link https://defold.com/ref/stable/physics/|API Documentation} */
 declare namespace physics {
 	/**
 	 * The angular damping value for the collision object. Setting this value alters the damping of
@@ -3762,6 +3973,7 @@ declare namespace physics {
 	* @param properties  optional joint specific properties table
 See each joint type for possible properties field. The one field that is accepted for all joint types is:
 `collide_connected`: Set this flag to true if the attached bodies should collide.
+* @see {@link https://defold.com/ref/stable/physics/#physics.create_joint|API Documentation}
 	*/
 	export function create_joint(
 		joint_type: number,
@@ -3779,6 +3991,7 @@ See each joint type for possible properties field. The one field that is accepte
 	 * Note: Currently only supported in 2D physics.
 	 * @param collisionobject  collision object where the joint exist
 	 * @param joint_id  id of the joint
+	 * @see {@link https://defold.com/ref/stable/physics/#physics.destroy_joint|API Documentation}
 	 */
 	export function destroy_joint(
 		collisionobject: hash | url | string,
@@ -3790,6 +4003,7 @@ See each joint type for possible properties field. The one field that is accepte
 	 * the gravity for the collection that the function is called from.
 	 * Note: For 2D physics the z component will always be zero.
 	 * @returns gravity  gravity vector of collection
+	 * @see {@link https://defold.com/ref/stable/physics/#physics.get_gravity|API Documentation}
 	 */
 	export function get_gravity(): vmath.vector3;
 
@@ -3802,6 +4016,7 @@ See each joint type for possible properties field. The one field that is accepte
     return group == hash(&quot;enemy&quot;)
 end
 `
+* @see {@link https://defold.com/ref/stable/physics/#physics.get_group|API Documentation}
 	*/
 	export function get_group(url: hash | url | string): hash;
 
@@ -3814,6 +4029,7 @@ end
 	* @returns properties  properties table. See the joint types for what fields are available, the only field available for all types is:
 
 `collide_connected`: Set this flag to true if the attached bodies should collide.
+* @see {@link https://defold.com/ref/stable/physics/#physics.get_joint_properties|API Documentation}
 
 	*/
 	export function get_joint_properties(
@@ -3828,6 +4044,7 @@ end
 	 * @param collisionobject  collision object where the joint exist
 	 * @param joint_id  id of the joint
 	 * @returns force  reaction force for the joint
+	 * @see {@link https://defold.com/ref/stable/physics/#physics.get_joint_reaction_force|API Documentation}
 	 */
 	export function get_joint_reaction_force(
 		collisionobject: hash | url | string,
@@ -3841,6 +4058,7 @@ end
 	 * @param collisionobject  collision object where the joint exist
 	 * @param joint_id  id of the joint
 	 * @returns torque  the reaction torque on bodyB in N*m.
+	 * @see {@link https://defold.com/ref/stable/physics/#physics.get_joint_reaction_torque|API Documentation}
 	 */
 	export function get_joint_reaction_torque(
 		collisionobject: hash | url | string,
@@ -3859,6 +4077,7 @@ end
     return invincible
 end
 `
+* @see {@link https://defold.com/ref/stable/physics/#physics.get_maskbit|API Documentation}
 	*/
 	export function get_maskbit(url: hash | url | string, group: string): boolean;
 
@@ -3901,6 +4120,7 @@ the height of the capsule
     return sphere
 end
 `
+* @see {@link https://defold.com/ref/stable/physics/#physics.get_shape|API Documentation}
 	*/
 	export function get_shape(
 		url: hash | url | string,
@@ -3933,6 +4153,7 @@ end
 Set to `true` to return all ray cast hits. If `false`, it will only return the closest hit.
 
 	* @returns result  It returns a list. If missed it returns `undefined`. See ray_cast_response for details on the returned values.
+* @see {@link https://defold.com/ref/stable/physics/#physics.raycast|API Documentation}
 	*/
 	export function raycast(
 		from: vmath.vector3,
@@ -3956,6 +4177,7 @@ Set to `true` to return all ray cast hits. If `false`, it will only return the c
 	 * @param to  the world position of the end of the ray
 	 * @param groups  a lua table containing the hashed groups for which to test collisions against
 	 * @param request_id  a number between [0,-255]. It will be sent back in the response for identification, 0 by default
+	 * @see {@link https://defold.com/ref/stable/physics/#physics.raycast_async|API Documentation}
 	 */
 	export function raycast_async(
 		from: vmath.vector3,
@@ -3969,6 +4191,7 @@ Set to `true` to return all ray cast hits. If `false`, it will only return the c
 	 * the collection that the function is called from.
 	 * Note: For 2D physics the z component of the gravity vector will be ignored.
 	 * @param gravity  the new gravity vector
+	 * @see {@link https://defold.com/ref/stable/physics/#physics.set_gravity|API Documentation}
 	 */
 	export function set_gravity(gravity: vmath.vector3): void;
 
@@ -3982,6 +4205,7 @@ Set to `true` to return all ray cast hits. If `false`, it will only return the c
      physics.set_group(&quot;#collisionobject&quot;, &quot;enemy&quot;)
 end
 `
+* @see {@link https://defold.com/ref/stable/physics/#physics.set_group|API Documentation}
 	*/
 	export function set_group(
 		url: hash | url | string,
@@ -3992,6 +4216,7 @@ end
 	 * Flips the collision shapes horizontally for a collision object
 	 * @param url  the collision object that should flip its shapes
 	 * @param flip  `true` if the collision object should flip its shapes, `false` if not
+	 * @see {@link https://defold.com/ref/stable/physics/#physics.set_hflip|API Documentation}
 	 */
 	export function set_hflip(url: hash | url | string, flip: boolean): void;
 
@@ -4003,6 +4228,7 @@ end
 	* @param joint_id  id of the joint
 	* @param properties  joint specific properties table
 Note: The `collide_connected` field cannot be updated/changed after a connection has been made.
+* @see {@link https://defold.com/ref/stable/physics/#physics.set_joint_properties|API Documentation}
 	*/
 	export function set_joint_properties(
 		collisionobject: hash | url | string,
@@ -4029,6 +4255,7 @@ The type of event. Can be one of these messages:
 
 `data`
 The callback value data is a table that contains event-related data. See the documentation for details on the messages.
+* @see {@link https://defold.com/ref/stable/physics/#physics.set_listener|API Documentation}
 
 	*/
 	export function set_listener(
@@ -4050,6 +4277,7 @@ The callback value data is a table that contains event-related data. See the doc
     physics.set_maskbit(&quot;#collisionobject&quot;, &quot;bullet&quot;, false)
 end
 `
+* @see {@link https://defold.com/ref/stable/physics/#physics.set_maskbit|API Documentation}
 	*/
 	export function set_maskbit(
 		url: hash | url | string,
@@ -4086,6 +4314,7 @@ See physics.get_shape for a detailed description of each field in the data table
     physics.set_shape(&quot;#collisionobject&quot;, &quot;my_box_shape&quot;, data)
 end
 `
+* @see {@link https://defold.com/ref/stable/physics/#physics.set_shape|API Documentation}
 	*/
 	export function set_shape(
 		url: hash | url | string,
@@ -4097,6 +4326,7 @@ end
 	 * Flips the collision shapes vertically for a collision object
 	 * @param url  the collision object that should flip its shapes
 	 * @param flip  `true` if the collision object should flip its shapes, `false` if not
+	 * @see {@link https://defold.com/ref/stable/physics/#physics.set_vflip|API Documentation}
 	 */
 	export function set_vflip(url: hash | url | string, flip: boolean): void;
 
@@ -4105,6 +4335,7 @@ end
 	 * Note: Currently only supported in 2D physics.
 	 * @param collisionobject  the collision object whose mass needs to be updated.
 	 * @param mass  the new mass value to set for the collision object.
+	 * @see {@link https://defold.com/ref/stable/physics/#physics.update_mass|API Documentation}
 	 */
 	export function update_mass(
 		collisionobject: hash | url | string,
@@ -4121,6 +4352,7 @@ end
     end
 end
 `
+* @see {@link https://defold.com/ref/stable/physics/#physics.wakeup|API Documentation}
 	*/
 	export function wakeup(url: hash | url | string): void;
 
@@ -4175,7 +4407,7 @@ end
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
-/** @see {@link https://defold.com/ref/stable/profiler/|Documentation} */
+/** @see {@link https://defold.com/ref/stable/profiler/|API Documentation} */
 declare namespace profiler {
 	/**
 	 * pause on current frame
@@ -4217,6 +4449,7 @@ declare namespace profiler {
 	 * in each scope per frame as well as counters. The profiler is very useful for
 	 * tracking down performance and resource problems.
 	 * @param enabled  true to enable, false to disable
+	 * @see {@link https://defold.com/ref/stable/profiler/#profiler.enable_ui|API Documentation}
 	 */
 	export function enable_ui(enabled: boolean): void;
 
@@ -4228,6 +4461,7 @@ declare namespace profiler {
 	 * by checking `track_cpu` under `profiler` in the `game.project` file.
 	 * (This means that the engine will sample the CPU usage in intervalls during execution even in release mode.)
 	 * @returns percent  of CPU used by the application
+	 * @see {@link https://defold.com/ref/stable/profiler/#profiler.get_cpu_usage|API Documentation}
 	 */
 	export function get_cpu_usage(): number;
 
@@ -4258,29 +4492,34 @@ declare namespace profiler {
 	 *
 	 *
 	 * @returns bytes  used by the application
+	 * @see {@link https://defold.com/ref/stable/profiler/#profiler.get_memory_usage|API Documentation}
 	 */
 	export function get_memory_usage(): number;
 
 	/**
 	 * Send a text to the profiler
 	 * @param text  the string to send to the profiler
+	 * @see {@link https://defold.com/ref/stable/profiler/#profiler.log_text|API Documentation}
 	 */
 	export function log_text(text: string): void;
 
 	/**
 	 * Get the number of recorded frames in the on-screen profiler ui recording buffer
 	 * @returns frame_count  the number of recorded frames, zero if on-screen profiler is disabled
+	 * @see {@link https://defold.com/ref/stable/profiler/#profiler.recorded_frame_count|API Documentation}
 	 */
 	export function recorded_frame_count(): number;
 
 	/**
 	 * Starts a profile scope.
 	 * @param name  The name of the scope
+	 * @see {@link https://defold.com/ref/stable/profiler/#profiler.scope_begin|API Documentation}
 	 */
 	export function scope_begin(name: string): void;
 
 	/**
 	 * End the current profile scope.
+	 * @see {@link https://defold.com/ref/stable/profiler/#profiler.scope_end|API Documentation}
 	 */
 	export function scope_end(): void;
 
@@ -4297,6 +4536,7 @@ To stop recording, switch to a different mode such as `MODE_PAUSE` or `MODE_RUN`
 You can also use the `view_recorded_frame` function to display a recorded frame. Doing so stops the recording as well.
 Every time you switch to recording mode the recording buffer is cleared.
 The recording buffer is also cleared when setting the `MODE_SHOW_PEAK_FRAME` mode.
+* @see {@link https://defold.com/ref/stable/profiler/#profiler.set_ui_mode|API Documentation}
 	*/
 	export function set_ui_mode(
 		mode:
@@ -4309,6 +4549,7 @@ The recording buffer is also cleared when setting the `MODE_SHOW_PEAK_FRAME` mod
 
 - `profiler.VIEW_MODE_FULL` The default mode which displays all the ui profiler details
 - `profiler.VIEW_MODE_MINIMIZED` Minimized mode which only shows the top header (fps counters and ui profiler mode)
+* @see {@link https://defold.com/ref/stable/profiler/#profiler.set_ui_view_mode|API Documentation}
 
 	*/
 	export function set_ui_view_mode(
@@ -4327,6 +4568,7 @@ The recording buffer is also cleared when setting the `MODE_SHOW_PEAK_FRAME` mod
 	 * recorded frames so it is possible to toggle this on and off when viewing recorded frames.
 	 * By default the vsync wait times is displayed in the profiler.
 	 * @param visible  true to include it in the display, false to hide it.
+	 * @see {@link https://defold.com/ref/stable/profiler/#profiler.set_ui_vsync_wait_visible|API Documentation}
 	 */
 	export function set_ui_vsync_wait_visible(visible: boolean): void;
 
@@ -4337,6 +4579,7 @@ The recording buffer is also cleared when setting the `MODE_SHOW_PEAK_FRAME` mod
 
 - `distance` The offset from the currently displayed frame (this is truncated between zero and the number of recorded frames)
 - `frame` The frame index in the recording buffer (1 is first recorded frame)
+* @see {@link https://defold.com/ref/stable/profiler/#profiler.view_recorded_frame|API Documentation}
 
 	*/
 	export function view_recorded_frame(frame_index: {
@@ -4346,7 +4589,7 @@ The recording buffer is also cleared when setting the `MODE_SHOW_PEAK_FRAME` mod
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
-/** @see {@link https://defold.com/ref/stable/render/|Documentation} */
+/** @see {@link https://defold.com/ref/stable/render/|API Documentation} */
 declare namespace render {
 	/**
 	 * Set render clear color. This is the color that appears on the screen where nothing is rendered, i.e. background.
@@ -5558,7 +5801,7 @@ Transient frame buffer types are only valid while the render target is active, i
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
-/** @see {@link https://defold.com/ref/stable/resource/|Documentation} */
+/** @see {@link https://defold.com/ref/stable/resource/|API Documentation} */
 declare namespace resource {
 	/**
 	 * BASIS_UASTC compression type
@@ -6670,7 +6913,7 @@ optional specify the compression type for the data in the buffer object that hol
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
-/** @see {@link https://defold.com/ref/stable/sys/|Documentation} */
+/** @see {@link https://defold.com/ref/stable/sys/|API Documentation} */
 declare namespace sys {
 	/**
 	 * Terminates the game application and reports the specified `code` to the OS.
@@ -6794,6 +7037,7 @@ declare namespace sys {
 	 * deserializes buffer into a lua table
 	 * @param buffer  buffer to deserialize from
 	 * @returns table  lua table with deserialized data
+	 * @see {@link https://defold.com/ref/stable/sys/#sys.deserialize|API Documentation}
 	 */
 	export function deserialize(buffer: string): AnyNotNil | undefined;
 
@@ -6802,12 +7046,14 @@ declare namespace sys {
 	 * Good for checking if a file exists before loading a large file
 	 * @param path  path to check
 	 * @returns result  `true` if the path exists, `false` otherwise
+	 * @see {@link https://defold.com/ref/stable/sys/#sys.exists|API Documentation}
 	 */
 	export function exists(path: string): boolean;
 
 	/**
 	 * Terminates the game application and reports the specified `code` to the OS.
 	 * @param code  exit code to report to the OS, 0 means clean exit
+	 * @see {@link https://defold.com/ref/stable/sys/#sys.exit|API Documentation}
 	 */
 	export function exit(code: number): void;
 
@@ -6822,6 +7068,7 @@ declare namespace sys {
 
 `installed`
 `true` if the application is installed, `false` otherwise.
+* @see {@link https://defold.com/ref/stable/sys/#sys.get_application_info|API Documentation}
 
 	*/
 	export function get_application_info(app_string: string): {
@@ -6831,6 +7078,7 @@ declare namespace sys {
 	/**
 	 * The path from which the application is run.
 	 * @returns path  path to application executable
+	 * @see {@link https://defold.com/ref/stable/sys/#sys.get_application_path|API Documentation}
 	 */
 	export function get_application_path(): string;
 
@@ -6839,6 +7087,7 @@ declare namespace sys {
 	 * @param key  key to get value for. The syntax is SECTION.KEY
 	 * @param default_value  (optional) default value to return if the value does not exist
 	 * @returns value  config value as an integer. default_value if the config key does not exist. 0 if no default value was supplied.
+	 * @see {@link https://defold.com/ref/stable/sys/#sys.get_config_int|API Documentation}
 	 */
 	export function get_config_int(key: string, default_value?: number): number;
 
@@ -6847,6 +7096,7 @@ declare namespace sys {
 	 * @param key  key to get value for. The syntax is SECTION.KEY
 	 * @param default_value  (optional) default value to return if the value does not exist
 	 * @returns value  config value as an number. default_value if the config key does not exist. 0 if no default value was supplied.
+	 * @see {@link https://defold.com/ref/stable/sys/#sys.get_config_number|API Documentation}
 	 */
 	export function get_config_number(
 		key: string,
@@ -6858,6 +7108,7 @@ declare namespace sys {
 	 * @param key  key to get value for. The syntax is SECTION.KEY
 	 * @param default_value  (optional) default value to return if the value does not exist
 	 * @returns value  config value as a string. default_value if the config key does not exist. undefined if no default value was supplied.
+	 * @see {@link https://defold.com/ref/stable/sys/#sys.get_config_string|API Documentation}
 	 */
 	export function get_config_string(
 		key: string,
@@ -6873,6 +7124,7 @@ declare namespace sys {
 - `sys.NETWORK_DISCONNECTED` (no network connection is found)
 - `sys.NETWORK_CONNECTED_CELLULAR` (connected through mobile cellular)
 - `sys.NETWORK_CONNECTED` (otherwise, Wifi)
+* @see {@link https://defold.com/ref/stable/sys/#sys.get_connectivity|API Documentation}
 
 	*/
 	export function get_connectivity():
@@ -6888,6 +7140,7 @@ The current Defold engine version, i.e. "1.2.96"
 The SHA1 for the current engine build, i.e. "0060183cce2e29dbd09c85ece83cbb72068ee050"
 `is_debug`
 If the engine is a debug or release version
+* @see {@link https://defold.com/ref/stable/sys/#sys.get_engine_info|API Documentation}
 
 	*/
 	export function get_engine_info(): {
@@ -6901,6 +7154,7 @@ If the engine is a debug or release version
 	 * Useful for saving logs etc during development
 	 * @param filename  file to read from
 	 * @returns host_path  the path prefixed with the proper host mount
+	 * @see {@link https://defold.com/ref/stable/sys/#sys.get_host_path|API Documentation}
 	 */
 	export function get_host_path(filename: string): string;
 
@@ -6918,6 +7172,7 @@ might be undefined if not available.
 `true` if the interface is up (available to transmit and receive data), `false` otherwise.
 `running`
 `true` if the interface is running, `false` otherwise.
+* @see {@link https://defold.com/ref/stable/sys/#sys.get_ifaddrs|API Documentation}
 
 	*/
 	export function get_ifaddrs(): {
@@ -6933,6 +7188,7 @@ might be undefined if not available.
 	 * @param application_id  user defined id of the application, which helps define the location of the save-file
 	 * @param file_name  file-name to get path for
 	 * @returns path  path to save-file
+	 * @see {@link https://defold.com/ref/stable/sys/#sys.get_save_file|API Documentation}
 	 */
 	export function get_save_file(
 		application_id: string,
@@ -6967,6 +7223,7 @@ The current offset from GMT (Greenwich Mean Time), in minutes.
 "android_id" on Android. On Android, you need to add `READ_PHONE_STATE` permission to be able to get this data. We don't use this permission in Defold.
 `user_agent`
 The HTTP user agent, i.e. "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/602.4.8 (KHTML, like Gecko) Version/10.0.3 Safari/602.4.8"
+* @see {@link https://defold.com/ref/stable/sys/#sys.get_sys_info|API Documentation}
 
 	*/
 	export function get_sys_info(options?: { ignore_secure: boolean }): {
@@ -6987,6 +7244,7 @@ The HTTP user agent, i.e. "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) Apple
 	 * If the file exists, it must have been created by `sys.save` to be loaded.
 	 * @param filename  file to read from
 	 * @returns loaded  lua table, which is empty if the file could not be found
+	 * @see {@link https://defold.com/ref/stable/sys/#sys.load|API Documentation}
 	 */
 	export function load(filename: string): LuaMap<AnyNotNil, unknown>;
 
@@ -7003,6 +7261,7 @@ The HTTP user agent, i.e. "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) Apple
 	 * For example "main/data/,assets/level_data.json".
 	 * @param path  the path to load the buffer from
 	 * @returns buffer  the buffer with data
+	 * @see {@link https://defold.com/ref/stable/sys/#sys.load_buffer|API Documentation}
 	 */
 	export function load_buffer(path: string): buffer;
 
@@ -7036,6 +7295,7 @@ The status of the request, supported values are:
 If the request was successfull, this will contain the request payload in a buffer object, and undefined otherwise. Make sure to check the status before doing anything with the buffer value!
 
 	* @returns handle  a handle to the request
+* @see {@link https://defold.com/ref/stable/sys/#sys.load_buffer_async|API Documentation}
 	*/
 	export function load_buffer_async(
 		path: string,
@@ -7063,6 +7323,7 @@ If the request was successfull, this will contain the request payload in a buffe
 	 * @param filename  resource to load, full path
 	 * @returns data  loaded data, or `undefined` if the resource could not be loaded
 	 * @returns error  the error message, or `undefined` if no error occurred
+	 * @see {@link https://defold.com/ref/stable/sys/#sys.load_resource|API Documentation}
 	 */
 	export function load_resource(
 		filename: string,
@@ -7080,6 +7341,7 @@ If the request was successfull, this will contain the request payload in a buffe
 - `_top` - URL replaces any framesets that may be loaded.
 - `name` - The name of the window (Note: the name does not specify the title of the new window).
 	* @returns success  a boolean indicating if the url could be opened or not
+* @see {@link https://defold.com/ref/stable/sys/#sys.open_url|API Documentation}
 	*/
 	export function open_url(
 		url: string,
@@ -7098,6 +7360,7 @@ If the request was successfull, this will contain the request payload in a buffe
 	 * @param arg4  argument 4
 	 * @param arg5  argument 5
 	 * @param arg6  argument 6
+	 * @see {@link https://defold.com/ref/stable/sys/#sys.reboot|API Documentation}
 	 */
 	export function reboot(
 		arg1?: string,
@@ -7120,6 +7383,7 @@ If the request was successfull, this will contain the request payload in a buffe
 	 * @param filename  file to write to
 	 * @param table  lua table to save
 	 * @returns success  a boolean indicating if the table could be saved or not
+	 * @see {@link https://defold.com/ref/stable/sys/#sys.save|API Documentation}
 	 */
 	export function save(filename: string, table: AnyNotNil): boolean;
 
@@ -7128,12 +7392,14 @@ If the request was successfull, this will contain the request payload in a buffe
 	 * This method has all the same limitations as `sys.save`.
 	 * @param table  lua table to serialize
 	 * @returns buffer  serialized data buffer
+	 * @see {@link https://defold.com/ref/stable/sys/#sys.serialize|API Documentation}
 	 */
 	export function serialize(table: AnyNotNil): string;
 
 	/**
 	 * Sets the host that is used to check for network connectivity against.
 	 * @param host  hostname to check against
+	 * @see {@link https://defold.com/ref/stable/sys/#sys.set_connectivity_host|API Documentation}
 	 */
 	export function set_connectivity_host(host: string): void;
 
@@ -7148,6 +7414,7 @@ The runtime context of the error. Currently, this is always `"lua"`.
 The source file, line number and error message.
 `traceback`
 The stack traceback.
+* @see {@link https://defold.com/ref/stable/sys/#sys.set_error_handler|API Documentation}
 
 	*/
 	export function set_error_handler(
@@ -7161,6 +7428,7 @@ The stack traceback.
 	 * unchecked the engine will try to respect the rate in software using timers. There is no
 	 * guarantee that the frame cap will be achieved depending on platform specifics and hardware settings.
 	 * @param frequency  target frequency. 60 for 60 fps
+	 * @see {@link https://defold.com/ref/stable/sys/#sys.set_update_frequency|API Documentation}
 	 */
 	export function set_update_frequency(frequency: number): void;
 
@@ -7175,6 +7443,7 @@ The stack traceback.
 	 * "game.project" in software instead.
 	 * This setting may be overridden by driver settings.
 	 * @param swap_interval  target swap interval.
+	 * @see {@link https://defold.com/ref/stable/sys/#sys.set_vsync_swap_interval|API Documentation}
 	 */
 	export function set_vsync_swap_interval(swap_interval: number): void;
 
@@ -7203,7 +7472,7 @@ The stack traceback.
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
-/** @see {@link https://defold.com/ref/stable/window/|Documentation} */
+/** @see {@link https://defold.com/ref/stable/window/|API Documentation} */
 declare namespace window {
 	/**
 	 * dimming mode off
@@ -7264,6 +7533,7 @@ declare namespace window {
 - `window.DIMMING_UNKNOWN`
 - `window.DIMMING_ON`
 - `window.DIMMING_OFF`
+* @see {@link https://defold.com/ref/stable/window/#window.get_dim_mode|API Documentation}
 
 	*/
 	export function get_dim_mode():
@@ -7272,6 +7542,7 @@ declare namespace window {
 	/**
 	 * This returns the current lock state of the mouse cursor
 	 * @returns state  The lock state
+	 * @see {@link https://defold.com/ref/stable/window/#window.get_mouse_lock|API Documentation}
 	 */
 	export function get_mouse_lock(): boolean;
 
@@ -7279,6 +7550,7 @@ declare namespace window {
 	 * This returns the current window size (width and height).
 	 * @returns width  The window width
 	 * @returns height  The window height
+	 * @see {@link https://defold.com/ref/stable/window/#window.get_size|API Documentation}
 	 */
 	export function get_size(): LuaMultiReturn<[number, number]>;
 
@@ -7290,6 +7562,7 @@ declare namespace window {
 
 - `window.DIMMING_ON`
 - `window.DIMMING_OFF`
+* @see {@link https://defold.com/ref/stable/window/#window.set_dim_mode|API Documentation}
 
 	*/
 	export function set_dim_mode(
@@ -7319,6 +7592,7 @@ The callback value `data` is a table which currently holds these values
 
 `width`: The width of a resize event. undefined otherwise.
 `height`: The height of a resize event. undefined otherwise.
+* @see {@link https://defold.com/ref/stable/window/#window.set_listener|API Documentation}
 
 	*/
 	export function set_listener(
@@ -7336,12 +7610,13 @@ The callback value `data` is a table which currently holds these values
 	 * This function locks or unlocks the mouse cursor to the center point of the window. While the cursor is locked,
 	 * mouse position updates will still be sent to the scripts as usual.
 	 * @param flag  The lock state for the mouse cursor
+	 * @see {@link https://defold.com/ref/stable/window/#window.set_mouse_lock|API Documentation}
 	 */
 	export function set_mouse_lock(flag: boolean): void;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
-/** @see {@link https://defold.com/ref/stable/buffer/|Documentation} */
+/** @see {@link https://defold.com/ref/stable/buffer/|API Documentation} */
 declare namespace buffer {
 	/**
 	 * float32
@@ -7416,6 +7691,7 @@ declare namespace buffer {
 	 * @param src  the source data buffer
 	 * @param srcoffset  the offset to start copying data from
 	 * @param count  the number of elements to copy
+	 * @see {@link https://defold.com/ref/stable/buffer/#buffer.copy_buffer|API Documentation}
 	 */
 	export function copy_buffer(
 		dst: buffer,
@@ -7434,6 +7710,7 @@ declare namespace buffer {
 	 * @param src  the source data stream
 	 * @param srcoffset  the offset to start copying data from (measured in value type)
 	 * @param count  the number of values to copy (measured in value type)
+	 * @see {@link https://defold.com/ref/stable/buffer/#buffer.copy_stream|API Documentation}
 	 */
 	export function copy_stream(
 		dst: bufferstream,
@@ -7456,6 +7733,7 @@ declare namespace buffer {
 `count`: The number of values each element should hold
 
 	* @returns buffer  the new buffer
+* @see {@link https://defold.com/ref/stable/buffer/#buffer.create|API Documentation}
 	*/
 	export function create(
 		element_count: number,
@@ -7472,6 +7750,7 @@ declare namespace buffer {
 	 * @param buffer  the source buffer
 	 * @param stream_name  the name of the stream
 	 * @returns data  the buffer data as a Lua string
+	 * @see {@link https://defold.com/ref/stable/buffer/#buffer.get_bytes|API Documentation}
 	 */
 	export function get_bytes(buffer: buffer, stream_name: hash): string;
 
@@ -7481,6 +7760,7 @@ declare namespace buffer {
 	 * @param metadata_name  name of the metadata entry
 	 * @returns values  table of metadata values or `undefined` if the entry does not exist
 	 * @returns value_type  numeric type of values or `undefined`
+	 * @see {@link https://defold.com/ref/stable/buffer/#buffer.get_metadata|API Documentation}
 	 */
 	export function get_metadata(
 		buf: buffer,
@@ -7499,6 +7779,7 @@ declare namespace buffer {
 	 * @param buffer  the buffer to get the stream from
 	 * @param stream_name  the stream name
 	 * @returns stream  the data stream
+	 * @see {@link https://defold.com/ref/stable/buffer/#buffer.get_stream|API Documentation}
 	 */
 	export function get_stream(
 		buffer: buffer,
@@ -7512,6 +7793,7 @@ declare namespace buffer {
 	 * @param metadata_name  name of the metadata entry
 	 * @param values  actual metadata, an array of numeric values
 	 * @param value_type  type of values when stored
+	 * @see {@link https://defold.com/ref/stable/buffer/#buffer.set_metadata|API Documentation}
 	 */
 	export function set_metadata(
 		buf: buffer,
@@ -7523,7 +7805,7 @@ declare namespace buffer {
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
-/** @see {@link https://defold.com/ref/stable/html5/|Documentation} */
+/** @see {@link https://defold.com/ref/stable/html5/|API Documentation} */
 declare namespace html5 {
 	/**
 	 * Executes the supplied string as JavaScript inside the browser.
@@ -7531,6 +7813,7 @@ declare namespace html5 {
 	 * (Internally this will execute the string using the `eval()` JavaScript function.)
 	 * @param code  Javascript code to run
 	 * @returns result  result as string
+	 * @see {@link https://defold.com/ref/stable/html5/#html5.run|API Documentation}
 	 */
 	export function run(code: string): string;
 
@@ -7543,6 +7826,7 @@ declare namespace html5 {
 
 `this`
 The calling script
+* @see {@link https://defold.com/ref/stable/html5/#html5.set_interaction_listener|API Documentation}
 
 	*/
 	export function set_interaction_listener(
@@ -7551,7 +7835,7 @@ The calling script
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
-/** @see {@link https://defold.com/ref/stable/http/|Documentation} */
+/** @see {@link https://defold.com/ref/stable/http/|API Documentation} */
 declare namespace http {
 	/**
 	* Perform a HTTP/HTTPS request.
@@ -7610,7 +7894,7 @@ Not available in HTML5 build
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
-/** @see {@link https://defold.com/ref/stable/image/|Documentation} */
+/** @see {@link https://defold.com/ref/stable/image/|API Documentation} */
 declare namespace image {
 	/**
 	 * luminance image type
@@ -7654,6 +7938,7 @@ True if the image contents should be flipped vertically. Defaults to `false`.
 
 
 `buffer`: the raw image data
+* @see {@link https://defold.com/ref/stable/image/#image.load|API Documentation}
 
 	*/
 	export function load(
@@ -7690,6 +7975,7 @@ True if the image contents should be flipped vertically. Defaults to `false`.
 
 
 `buffer`: the script buffer that holds the decompressed image data. See buffer.create how to use the buffer.
+* @see {@link https://defold.com/ref/stable/image/#image.load_buffer|API Documentation}
 
 	*/
 	export function load_buffer(
@@ -7706,7 +7992,7 @@ True if the image contents should be flipped vertically. Defaults to `false`.
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
-/** @see {@link https://defold.com/ref/stable/json/|Documentation} */
+/** @see {@link https://defold.com/ref/stable/json/|API Documentation} */
 declare namespace json {
 	/**
 	* Decode a string of JSON data into a Lua table.
@@ -7717,6 +8003,7 @@ declare namespace json {
 `decode_null_as_userdata`: wether to decode a JSON null value as json.null or undefined (default is undefined)
 
 	* @returns data  decoded json
+* @see {@link https://defold.com/ref/stable/json/#json.decode|API Documentation}
 	*/
 	export function decode(
 		json: string,
@@ -7732,6 +8019,7 @@ declare namespace json {
 `encode_empty_table_as_object`: wether to encode an empty table as an JSON object or array (default is object)
 
 	* @returns json  encoded json
+* @see {@link https://defold.com/ref/stable/json/#json.encode|API Documentation}
 	*/
 	export function encode(
 		tbl: AnyNotNil,
@@ -7746,7 +8034,7 @@ declare namespace json {
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
-/** @see {@link https://defold.com/ref/stable/msg/|Documentation} */
+/** @see {@link https://defold.com/ref/stable/msg/|API Documentation} */
 declare namespace msg {
 	/**
 	 * Post a message to a receiving URL. The most common case is to send messages
@@ -7761,6 +8049,7 @@ declare namespace msg {
 	 * @param receiver  The receiver must be a string in URL-format, a URL object or a hashed string.
 	 * @param message_id  The id must be a string or a hashed string.
 	 * @param message  a lua table with message parameters to send.
+	 * @see {@link https://defold.com/ref/stable/msg/#msg.post|API Documentation}
 	 */
 	export function post(
 		receiver: hash | url | string,
@@ -7775,6 +8064,7 @@ declare namespace msg {
 	 * This is equivalent to `msg.url(undefined)` or `msg.url("#")`, which creates an url to the current
 	 * script component.
 	 * @returns url  a new URL
+	 * @see {@link https://defold.com/ref/stable/msg/#msg.url|API Documentation}
 	 */
 	export function url(): url;
 
@@ -7793,6 +8083,7 @@ declare namespace msg {
 	 *
 	 * @param urlstring  string to create the url from
 	 * @returns url  a new URL
+	 * @see {@link https://defold.com/ref/stable/msg/#msg.url|API Documentation}
 	 */
 	export function url(urlstring: string): url;
 
@@ -7802,6 +8093,7 @@ declare namespace msg {
 	 * @param path  path of the URL
 	 * @param fragment  fragment of the URL
 	 * @returns url  a new URL
+	 * @see {@link https://defold.com/ref/stable/msg/#msg.url|API Documentation}
 	 */
 	export function url(
 		socket?: hash | string,
@@ -7811,7 +8103,7 @@ declare namespace msg {
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
-/** @see {@link https://defold.com/ref/stable/timer/|Documentation} */
+/** @see {@link https://defold.com/ref/stable/timer/|API Documentation} */
 declare namespace timer {
 	/**
 	 * Indicates an invalid timer handle
@@ -7825,6 +8117,7 @@ declare namespace timer {
 	 * Cancelling a timer that is already executed or cancelled is safe.
 	 * @param handle  the timer handle returned by timer.delay()
 	 * @returns true  if the timer was active, false if the timer is already cancelled / complete
+	 * @see {@link https://defold.com/ref/stable/timer/#timer.cancel|API Documentation}
 	 */
 	export function cancel(handle: hash): boolean;
 
@@ -7847,6 +8140,7 @@ The handle of the timer
 The elapsed time - on first trigger it is time since timer.delay call, otherwise time since last trigger
 
 	* @returns handle  identifier for the create timer, returns timer.INVALID_TIMER_HANDLE if the timer can not be created
+* @see {@link https://defold.com/ref/stable/timer/#timer.delay|API Documentation}
 	*/
 	export function delay(
 		delay: number,
@@ -7865,6 +8159,7 @@ Time remaining until the next time a timer.delay() fires.
 Time interval.
 `repeating`
 true = repeat timer until cancel, false = one-shot timer.
+* @see {@link https://defold.com/ref/stable/timer/#timer.get_info|API Documentation}
 
 	*/
 	export function get_info(
@@ -7875,6 +8170,7 @@ true = repeat timer until cancel, false = one-shot timer.
 	 * Manual triggering a callback for a timer.
 	 * @param handle  the timer handle returned by timer.delay()
 	 * @returns true  if the timer was active, false if the timer is already cancelled / complete
+	 * @see {@link https://defold.com/ref/stable/timer/#timer.trigger|API Documentation}
 	 */
 	export function trigger(handle: hash): boolean;
 }
@@ -7888,6 +8184,7 @@ declare namespace vmath {
 	 * `q* = [w, -v]`
 	 * @param q1  quaternion of which to calculate the conjugate
 	 * @returns q  the conjugate
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.conj|API Documentation}
 	 */
 	export function conj(q1: vmath.quaternion): vmath.quaternion;
 
@@ -7901,6 +8198,7 @@ declare namespace vmath {
 	 * @param v1  first vector
 	 * @param v2  second vector
 	 * @returns v  a new vector representing the cross product
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.cross|API Documentation}
 	 */
 	export function cross(v1: vmath.vector3, v2: vmath.vector3): vmath.vector3;
 
@@ -7916,6 +8214,7 @@ declare namespace vmath {
 	 * @param v1  first vector
 	 * @param v2  second vector
 	 * @returns n  dot product
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.dot|API Documentation}
 	 */
 	export function dot(
 		v1: vmath.vector3 | vmath.vector4,
@@ -7930,6 +8229,7 @@ declare namespace vmath {
 	 * than the general inverse.
 	 * @param m1  matrix to invert
 	 * @returns m  inverse of the supplied matrix
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.inv|API Documentation}
 	 */
 	export function inv(m1: vmath.matrix4): vmath.matrix4;
 
@@ -7940,6 +8240,7 @@ declare namespace vmath {
 	 * (it eliminates a square root calculation).
 	 * @param v  value of which to calculate the length
 	 * @returns n  length
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.length|API Documentation}
 	 */
 	export function length(
 		v: vmath.quaternion | vmath.vector3 | vmath.vector4,
@@ -7949,6 +8250,7 @@ declare namespace vmath {
 	 * Returns the squared length of the supplied vector or quaternion.
 	 * @param v  value of which to calculate the squared length
 	 * @returns n  squared length
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.length_sqr|API Documentation}
 	 */
 	export function length_sqr(
 		v: vmath.quaternion | vmath.vector3 | vmath.vector4,
@@ -7964,6 +8266,7 @@ declare namespace vmath {
 	 * @param v1  vector to lerp from
 	 * @param v2  vector to lerp to
 	 * @returns v  the lerped vector
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.lerp|API Documentation}
 	 */
 	export function lerp(
 		t: number,
@@ -7986,6 +8289,7 @@ declare namespace vmath {
 	 * @param q1  quaternion to lerp from
 	 * @param q2  quaternion to lerp to
 	 * @returns q  the lerped quaternion
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.lerp|API Documentation}
 	 */
 	export function lerp(
 		t: number,
@@ -8001,6 +8305,7 @@ declare namespace vmath {
 	 * @param n1  number to lerp from
 	 * @param n2  number to lerp to
 	 * @returns n  the lerped number
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.lerp|API Documentation}
 	 */
 	export function lerp(t: number, n1: number, n2: number): number;
 
@@ -8008,6 +8313,7 @@ declare namespace vmath {
 	 * The resulting identity matrix describes a transform with
 	 * no translation or rotation.
 	 * @returns m  identity matrix
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.matrix4|API Documentation}
 	 */
 	export function matrix4(): vmath.matrix4;
 
@@ -8017,6 +8323,7 @@ declare namespace vmath {
 	 * the function creates a copy of the given matrix.
 	 * @param m1  existing matrix
 	 * @returns m  matrix which is a copy of the specified matrix
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.matrix4|API Documentation}
 	 */
 	export function matrix4(m1: vmath.matrix4): vmath.matrix4;
 
@@ -8025,6 +8332,7 @@ declare namespace vmath {
 	 * @param v  axis
 	 * @param angle  angle in radians
 	 * @returns m  matrix represented by axis and angle
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.matrix4_axis_angle|API Documentation}
 	 */
 	export function matrix4_axis_angle(
 		v: vmath.vector3,
@@ -8035,6 +8343,7 @@ declare namespace vmath {
 	 * The resulting matrix describes the same rotation as the quaternion, but does not have any translation (also like the quaternion).
 	 * @param q  quaternion to create matrix from
 	 * @returns m  matrix represented by quaternion
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.matrix4_from_quat|API Documentation}
 	 */
 	export function matrix4_from_quat(q: vmath.quaternion): vmath.matrix4;
 
@@ -8050,6 +8359,7 @@ declare namespace vmath {
 	 * @param near  coordinate for near clipping plane
 	 * @param far  coordinate for far clipping plane
 	 * @returns m  matrix representing the frustum
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.matrix4_frustum|API Documentation}
 	 */
 	export function matrix4_frustum(
 		left: number,
@@ -8068,6 +8378,7 @@ declare namespace vmath {
 	 * @param look_at  look-at position
 	 * @param up  up vector
 	 * @returns m  look-at matrix
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.matrix4_look_at|API Documentation}
 	 */
 	export function matrix4_look_at(
 		eye: vmath.vector3,
@@ -8085,6 +8396,7 @@ declare namespace vmath {
 	 * @param near  coordinate for near clipping plane
 	 * @param far  coordinate for far clipping plane
 	 * @returns m  orthographic projection matrix
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.matrix4_orthographic|API Documentation}
 	 */
 	export function matrix4_orthographic(
 		left: number,
@@ -8103,6 +8415,7 @@ declare namespace vmath {
 	 * @param near  coordinate for near clipping plane
 	 * @param far  coordinate for far clipping plane
 	 * @returns m  perspective projection matrix
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.matrix4_perspective|API Documentation}
 	 */
 	export function matrix4_perspective(
 		fov: number,
@@ -8116,6 +8429,7 @@ declare namespace vmath {
 	 * by the specified angle.
 	 * @param angle  angle in radians around x-axis
 	 * @returns m  matrix from rotation around x-axis
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.matrix4_rotation_x|API Documentation}
 	 */
 	export function matrix4_rotation_x(angle: number): vmath.matrix4;
 
@@ -8124,6 +8438,7 @@ declare namespace vmath {
 	 * by the specified angle.
 	 * @param angle  angle in radians around y-axis
 	 * @returns m  matrix from rotation around y-axis
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.matrix4_rotation_y|API Documentation}
 	 */
 	export function matrix4_rotation_y(angle: number): vmath.matrix4;
 
@@ -8132,6 +8447,7 @@ declare namespace vmath {
 	 * by the specified angle.
 	 * @param angle  angle in radians around z-axis
 	 * @returns m  matrix from rotation around z-axis
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.matrix4_rotation_z|API Documentation}
 	 */
 	export function matrix4_rotation_z(angle: number): vmath.matrix4;
 
@@ -8140,6 +8456,7 @@ declare namespace vmath {
 	 * in euclidean space.
 	 * @param position  position vector to create matrix from
 	 * @returns m  matrix from the supplied position vector
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.matrix4_translation|API Documentation}
 	 */
 	export function matrix4_translation(
 		position: vmath.vector3 | vmath.vector4,
@@ -8152,6 +8469,7 @@ declare namespace vmath {
 	 * @param v1  first vector
 	 * @param v2  second vector
 	 * @returns v  multiplied vector
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.mul_per_elem|API Documentation}
 	 */
 	export function mul_per_elem(
 		v1: vmath.vector3,
@@ -8169,6 +8487,7 @@ declare namespace vmath {
 	 * division-by-zero will occur.
 	 * @param v1  vector to normalize
 	 * @returns v  new normalized vector
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.normalize|API Documentation}
 	 */
 	export function normalize(v1: vmath.vector3): vmath.vector3;
 	export function normalize(v1: vmath.vector4): vmath.vector4;
@@ -8182,6 +8501,7 @@ declare namespace vmath {
 	 * use the general inverse `vmath.inv()` instead.
 	 * @param m1  ortho-normalized matrix to invert
 	 * @returns m  inverse of the supplied matrix
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.ortho_inv|API Documentation}
 	 */
 	export function ortho_inv(m1: vmath.matrix4): vmath.matrix4;
 
@@ -8193,6 +8513,7 @@ declare namespace vmath {
 	 * @param v1  vector to be projected on the second
 	 * @param v2  vector onto which the first will be projected, must not have zero length
 	 * @returns n  the projected extent of the first vector onto the second
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.project|API Documentation}
 	 */
 	export function project(v1: vmath.vector3, v2: vmath.vector3): number;
 
@@ -8201,6 +8522,7 @@ declare namespace vmath {
 	 * quaternion is equal to:
 	 * `vmath.quat(0, 0, 0, 1)`
 	 * @returns q  new identity quaternion
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.quat|API Documentation}
 	 */
 	export function quat(): vmath.quaternion;
 
@@ -8210,6 +8532,7 @@ declare namespace vmath {
 	 * This function creates a copy of the given quaternion.
 	 * @param q1  existing quaternion
 	 * @returns q  new quaternion
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.quat|API Documentation}
 	 */
 	export function quat(q1: vmath.quaternion): vmath.quaternion;
 
@@ -8221,6 +8544,7 @@ declare namespace vmath {
 	 * @param z  z coordinate
 	 * @param w  w coordinate
 	 * @returns q  new quaternion
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.quat|API Documentation}
 	 */
 	export function quat(
 		x: number,
@@ -8235,6 +8559,7 @@ declare namespace vmath {
 	 * @param v  axis
 	 * @param angle  angle
 	 * @returns q  quaternion representing the axis-angle rotation
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.quat_axis_angle|API Documentation}
 	 */
 	export function quat_axis_angle(
 		v: vmath.vector3,
@@ -8249,6 +8574,7 @@ declare namespace vmath {
 	 * @param y  y base vector
 	 * @param z  z base vector
 	 * @returns q  quaternion representing the rotation of the specified base vectors
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.quat_basis|API Documentation}
 	 */
 	export function quat_basis(
 		x: vmath.vector3,
@@ -8265,6 +8591,7 @@ declare namespace vmath {
 	 * @param v1  first unit vector, before rotation
 	 * @param v2  second unit vector, after rotation
 	 * @returns q  quaternion representing the rotation from first to second vector
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.quat_from_to|API Documentation}
 	 */
 	export function quat_from_to(
 		v1: vmath.vector3,
@@ -8276,6 +8603,7 @@ declare namespace vmath {
 	 * radians around the x-axis.
 	 * @param angle  angle in radians around x-axis
 	 * @returns q  quaternion representing the rotation around the x-axis
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.quat_rotation_x|API Documentation}
 	 */
 	export function quat_rotation_x(angle: number): vmath.quaternion;
 
@@ -8284,6 +8612,7 @@ declare namespace vmath {
 	 * radians around the y-axis.
 	 * @param angle  angle in radians around y-axis
 	 * @returns q  quaternion representing the rotation around the y-axis
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.quat_rotation_y|API Documentation}
 	 */
 	export function quat_rotation_y(angle: number): vmath.quaternion;
 
@@ -8292,6 +8621,7 @@ declare namespace vmath {
 	 * radians around the z-axis.
 	 * @param angle  angle in radians around z-axis
 	 * @returns q  quaternion representing the rotation around the z-axis
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.quat_rotation_z|API Documentation}
 	 */
 	export function quat_rotation_z(angle: number): vmath.quaternion;
 
@@ -8302,6 +8632,7 @@ declare namespace vmath {
 	 * @param q  quaternion
 	 * @param v1  vector to rotate
 	 * @returns v  the rotated vector
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.rotate|API Documentation}
 	 */
 	export function rotate(q: vmath.quaternion, v1: vmath.vector3): vmath.vector3;
 
@@ -8318,6 +8649,7 @@ declare namespace vmath {
 	 * @param v1  vector to slerp from
 	 * @param v2  vector to slerp to
 	 * @returns v  the slerped vector
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.slerp|API Documentation}
 	 */
 	export function slerp(
 		t: number,
@@ -8342,6 +8674,7 @@ declare namespace vmath {
 	 * @param q1  quaternion to slerp from
 	 * @param q2  quaternion to slerp to
 	 * @returns q  the slerped quaternion
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.slerp|API Documentation}
 	 */
 	export function slerp(
 		t: number,
@@ -8357,12 +8690,14 @@ declare namespace vmath {
 	 * value position in the vector.
 	 * @param t  table of numbers
 	 * @returns v  new vector
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.vector|API Documentation}
 	 */
 	export function vector(t: number[]): number & { [key: number]: number };
 
 	/**
 	 * Creates a new zero vector with all components set to 0.
 	 * @returns v  new zero vector
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.vector3|API Documentation}
 	 */
 	export function vector3(): vmath.vector3;
 
@@ -8371,6 +8706,7 @@ declare namespace vmath {
 	 * supplied scalar value.
 	 * @param n  scalar value to splat
 	 * @returns v  new vector
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.vector3|API Documentation}
 	 */
 	export function vector3(n: number): vmath.vector3;
 
@@ -8380,6 +8716,7 @@ declare namespace vmath {
 	 * This function creates a copy of the given vector.
 	 * @param v1  existing vector
 	 * @returns v  new vector
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.vector3|API Documentation}
 	 */
 	export function vector3(v1: vmath.vector3): vmath.vector3;
 
@@ -8390,12 +8727,14 @@ declare namespace vmath {
 	 * @param y  y coordinate
 	 * @param z  z coordinate
 	 * @returns v  new vector
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.vector3|API Documentation}
 	 */
 	export function vector3(x: number, y: number, z: number): vmath.vector3;
 
 	/**
 	 * Creates a new zero vector with all components set to 0.
 	 * @returns v  new zero vector
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.vector4|API Documentation}
 	 */
 	export function vector4(): vmath.vector4;
 
@@ -8404,6 +8743,7 @@ declare namespace vmath {
 	 * supplied scalar value.
 	 * @param n  scalar value to splat
 	 * @returns v  new vector
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.vector4|API Documentation}
 	 */
 	export function vector4(n: number): vmath.vector4;
 
@@ -8413,6 +8753,7 @@ declare namespace vmath {
 	 * This function creates a copy of the given vector.
 	 * @param v1  existing vector
 	 * @returns v  new vector
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.vector4|API Documentation}
 	 */
 	export function vector4(v1: vmath.vector4): vmath.vector4;
 
@@ -8424,6 +8765,7 @@ declare namespace vmath {
 	 * @param z  z coordinate
 	 * @param w  w coordinate
 	 * @returns v  new vector
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.vector4|API Documentation}
 	 */
 	export function vector4(
 		x: number,
@@ -8434,12 +8776,13 @@ declare namespace vmath {
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
-/** @see {@link https://defold.com/ref/stable/zlib/|Documentation} */
+/** @see {@link https://defold.com/ref/stable/zlib/|API Documentation} */
 declare namespace zlib {
 	/**
 	 * A lua error is raised is on error
 	 * @param buf  buffer to deflate
 	 * @returns buf  deflated buffer
+	 * @see {@link https://defold.com/ref/stable/zlib/#zlib.deflate|API Documentation}
 	 */
 	export function deflate(buf: string): string;
 
@@ -8447,12 +8790,13 @@ declare namespace zlib {
 	 * A lua error is raised is on error
 	 * @param buf  buffer to inflate
 	 * @returns buf  inflated buffer
+	 * @see {@link https://defold.com/ref/stable/zlib/#zlib.inflate|API Documentation}
 	 */
 	export function inflate(buf: string): string;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
-/** @see {@link https://defold.com/ref/stable/camera/|Documentation} */
+/** @see {@link https://defold.com/ref/stable/camera/|API Documentation} */
 declare namespace camera {
 	/**
 	 * The ratio between the frustum width and height. Used when calculating the
@@ -8465,6 +8809,7 @@ declare namespace camera {
 	 * get aspect ratio
 	 * @param camera  camera id
 	 * @returns aspect_ratio  the aspect ratio.
+	 * @see {@link https://defold.com/ref/stable/camera/#camera.get_aspect_ratio|API Documentation}
 	 */
 	export function get_aspect_ratio(camera: any): number;
 
@@ -8473,6 +8818,7 @@ declare namespace camera {
 	 * registered in the render context.
 	 * @param camera  camera id
 	 * @returns cameras  a table with all camera URLs
+	 * @see {@link https://defold.com/ref/stable/camera/#camera.get_cameras|API Documentation}
 	 */
 	export function get_cameras(camera: any): AnyNotNil | undefined;
 
@@ -8480,6 +8826,7 @@ declare namespace camera {
 	 * get far z
 	 * @param camera  camera id
 	 * @returns far_z  the far z.
+	 * @see {@link https://defold.com/ref/stable/camera/#camera.get_far_z|API Documentation}
 	 */
 	export function get_far_z(camera: any): number;
 
@@ -8487,6 +8834,7 @@ declare namespace camera {
 	 * get field of view
 	 * @param camera  camera id
 	 * @returns fov  the field of view.
+	 * @see {@link https://defold.com/ref/stable/camera/#camera.get_fov|API Documentation}
 	 */
 	export function get_fov(camera: any): number;
 
@@ -8494,6 +8842,7 @@ declare namespace camera {
 	 * get near z
 	 * @param camera  camera id
 	 * @returns near_z  the near z.
+	 * @see {@link https://defold.com/ref/stable/camera/#camera.get_near_z|API Documentation}
 	 */
 	export function get_near_z(camera: any): number;
 
@@ -8501,6 +8850,7 @@ declare namespace camera {
 	 * get orthographic zoom
 	 * @param camera  camera id
 	 * @returns orthographic_zoom  true if the camera is using an orthographic projection.
+	 * @see {@link https://defold.com/ref/stable/camera/#camera.get_orthographic_zoom|API Documentation}
 	 */
 	export function get_orthographic_zoom(camera: any): boolean;
 
@@ -8508,6 +8858,7 @@ declare namespace camera {
 	 * get projection matrix
 	 * @param camera  camera id
 	 * @returns projection  the projection matrix.
+	 * @see {@link https://defold.com/ref/stable/camera/#camera.get_projection|API Documentation}
 	 */
 	export function get_projection(camera: any): vmath.matrix4;
 
@@ -8515,6 +8866,7 @@ declare namespace camera {
 	 * get view matrix
 	 * @param camera  camera id
 	 * @returns view  the view matrix.
+	 * @see {@link https://defold.com/ref/stable/camera/#camera.get_view|API Documentation}
 	 */
 	export function get_view(camera: any): vmath.matrix4;
 
@@ -8522,6 +8874,7 @@ declare namespace camera {
 	 * set aspect ratio
 	 * @param camera  camera id
 	 * @param aspect_ratio  the aspect ratio.
+	 * @see {@link https://defold.com/ref/stable/camera/#camera.set_aspect_ratio|API Documentation}
 	 */
 	export function set_aspect_ratio(camera: any, aspect_ratio: number): void;
 
@@ -8529,6 +8882,7 @@ declare namespace camera {
 	 * set far z
 	 * @param camera  camera id
 	 * @param far_z  the far z.
+	 * @see {@link https://defold.com/ref/stable/camera/#camera.set_far_z|API Documentation}
 	 */
 	export function set_far_z(camera: any, far_z: number): void;
 
@@ -8536,6 +8890,7 @@ declare namespace camera {
 	 * set field of view
 	 * @param camera  camera id
 	 * @param fov  the field of view.
+	 * @see {@link https://defold.com/ref/stable/camera/#camera.set_fov|API Documentation}
 	 */
 	export function set_fov(camera: any, fov: number): void;
 
@@ -8543,6 +8898,7 @@ declare namespace camera {
 	 * set near z
 	 * @param camera  camera id
 	 * @param near_z  the near z.
+	 * @see {@link https://defold.com/ref/stable/camera/#camera.set_near_z|API Documentation}
 	 */
 	export function set_near_z(camera: any, near_z: number): void;
 
@@ -8550,6 +8906,7 @@ declare namespace camera {
 	 * set orthographic zoom
 	 * @param camera  camera id
 	 * @param orthographic_zoom  true if the camera is using an orthographic projection.
+	 * @see {@link https://defold.com/ref/stable/camera/#camera.set_orthographic_zoom|API Documentation}
 	 */
 	export function set_orthographic_zoom(
 		camera: any,
@@ -8609,7 +8966,7 @@ declare namespace camera {
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
-/** @see {@link https://defold.com/ref/stable/collectionfactory/|Documentation} */
+/** @see {@link https://defold.com/ref/stable/collectionfactory/|API Documentation} */
 declare namespace collectionfactory {
 	/**
 	 * loaded
@@ -8647,6 +9004,7 @@ declare namespace collectionfactory {
 	 * @param properties  table of script properties to propagate to any new game object instances
 	 * @param scale  uniform scaling to apply to the newly spawned collection (must be greater than 0).
 	 * @returns ids  a table mapping the id:s from the collection to the new instance id:s
+	 * @see {@link https://defold.com/ref/stable/collectionfactory/#collectionfactory.create|API Documentation}
 	 */
 	export function create(
 		url: hash | url | string,
@@ -8665,6 +9023,7 @@ declare namespace collectionfactory {
 - `collectionfactory.STATUS_UNLOADED`
 - `collectionfactory.STATUS_LOADING`
 - `collectionfactory.STATUS_LOADED`
+* @see {@link https://defold.com/ref/stable/collectionfactory/#collectionfactory.get_status|API Documentation}
 
 	*/
 	export function get_status(
@@ -8684,6 +9043,7 @@ The current object.
 url of the collection factory component
 `result`
 True if resource were loaded successfully
+* @see {@link https://defold.com/ref/stable/collectionfactory/#collectionfactory.load|API Documentation}
 
 	*/
 	export function load(
@@ -8696,6 +9056,7 @@ True if resource were loaded successfully
 	 * Setting the prototype to "undefined" will revert back to the original prototype.
 	 * @param url  the collection factory component
 	 * @param prototype  the path to the new prototype, or `undefined`
+	 * @see {@link https://defold.com/ref/stable/collectionfactory/#collectionfactory.set_prototype|API Documentation}
 	 */
 	export function set_prototype(
 		url?: hash | url | string,
@@ -8706,12 +9067,13 @@ True if resource were loaded successfully
 	 * This decreases the reference count for each resource loaded with collectionfactory.load. If reference is zero, the resource is destroyed.
 	 * Calling this function when the factory is not marked as dynamic loading does nothing.
 	 * @param url  the collection factory component to unload
+	 * @see {@link https://defold.com/ref/stable/collectionfactory/#collectionfactory.unload|API Documentation}
 	 */
 	export function unload(url?: hash | url | string): void;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
-/** @see {@link https://defold.com/ref/stable/collectionproxy/|Documentation} */
+/** @see {@link https://defold.com/ref/stable/collectionproxy/|API Documentation} */
 declare namespace collectionproxy {
 	/**
 	 * Post this message to a collection-proxy-component to start background loading of the referenced collection.
@@ -8730,6 +9092,7 @@ declare namespace collectionproxy {
 	* @param collectionproxy  the collectionproxy to check for resources.
 	* @returns resources  the resources, or an empty list if the
 collection was not excluded.
+* @see {@link https://defold.com/ref/stable/collectionproxy/#collectionproxy.get_resources|API Documentation}
 	*/
 	export function get_resources(collectionproxy: url): string[];
 
@@ -8744,6 +9107,7 @@ collection was not excluded.
 	* @param collectionproxy  the collectionproxy to check for missing
 resources.
 	* @returns resources  the missing resources
+* @see {@link https://defold.com/ref/stable/collectionproxy/#collectionproxy.missing_resources|API Documentation}
 	*/
 	export function missing_resources(collectionproxy: url): string[];
 
@@ -8810,7 +9174,7 @@ resources.
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
-/** @see {@link https://defold.com/ref/stable/factory/|Documentation} */
+/** @see {@link https://defold.com/ref/stable/factory/|API Documentation} */
 declare namespace factory {
 	/**
 	 * loaded
@@ -8840,6 +9204,7 @@ declare namespace factory {
 	 * @param properties  the properties defined in a script attached to the new game object.
 	 * @param scale  the scale of the new game object (must be greater than 0), the scale of the game object containing the factory is used by default, or if the value is `undefined`
 	 * @returns id  the global id of the spawned game object
+	 * @see {@link https://defold.com/ref/stable/factory/#factory.create|API Documentation}
 	 */
 	export function create(
 		url: hash | url | string,
@@ -8859,6 +9224,7 @@ declare namespace factory {
 - `factory.STATUS_UNLOADED`
 - `factory.STATUS_LOADING`
 - `factory.STATUS_LOADED`
+* @see {@link https://defold.com/ref/stable/factory/#factory.get_status|API Documentation}
 
 	*/
 	export function get_status(
@@ -8878,6 +9244,7 @@ The current object.
 url of the factory component
 `result`
 True if resources were loaded successfully
+* @see {@link https://defold.com/ref/stable/factory/#factory.load|API Documentation}
 
 	*/
 	export function load(
@@ -8889,6 +9256,7 @@ True if resources were loaded successfully
 	 * Changes the prototype for the factory.
 	 * @param url  the factory component
 	 * @param prototype  the path to the new prototype, or `undefined`
+	 * @see {@link https://defold.com/ref/stable/factory/#factory.set_prototype|API Documentation}
 	 */
 	export function set_prototype(
 		url?: hash | url | string,
@@ -8899,12 +9267,13 @@ True if resources were loaded successfully
 	 * This decreases the reference count for each resource loaded with factory.load. If reference is zero, the resource is destroyed.
 	 * Calling this function when the factory is not marked as dynamic loading does nothing.
 	 * @param url  the factory component to unload
+	 * @see {@link https://defold.com/ref/stable/factory/#factory.unload|API Documentation}
 	 */
 	export function unload(url?: hash | url | string): void;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
-/** @see {@link https://defold.com/ref/stable/label/|Documentation} */
+/** @see {@link https://defold.com/ref/stable/label/|API Documentation} */
 declare namespace label {
 	/**
 	 * The color of the label. The type of the property is vector4.
@@ -8920,6 +9289,7 @@ declare namespace label {
 	 * Gets the text from a label component
 	 * @param url  the label to get the text from
 	 * @returns metrics  the label text
+	 * @see {@link https://defold.com/ref/stable/label/#label.get_text|API Documentation}
 	 */
 	export function get_text(url: hash | url | string): string;
 
@@ -8929,6 +9299,7 @@ declare namespace label {
 	 * More information is available in the Application Lifecycle manual.
 	 * @param url  the label that should have a constant set
 	 * @param text  the text
+	 * @see {@link https://defold.com/ref/stable/label/#label.set_text|API Documentation}
 	 */
 	export function set_text(url: hash | url | string, text: string): void;
 
@@ -8981,7 +9352,7 @@ declare namespace label {
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
-/** @see {@link https://defold.com/ref/stable/model/|Documentation} */
+/** @see {@link https://defold.com/ref/stable/model/|API Documentation} */
 declare namespace model {
 	/**
 	 * The current animation set on the component. The type of the property is hash.
@@ -9002,6 +9373,7 @@ declare namespace model {
 	/**
 	 * Cancels all animation on a model component.
 	 * @param url  the model for which to cancel the animation
+	 * @see {@link https://defold.com/ref/stable/model/#model.cancel|API Documentation}
 	 */
 	export function cancel(url: hash | url | string): void;
 
@@ -9013,6 +9385,7 @@ declare namespace model {
 	 * @param url  the model to query
 	 * @param bone_id  id of the corresponding bone
 	 * @returns id  id of the game object
+	 * @see {@link https://defold.com/ref/stable/model/#model.get_go|API Documentation}
 	 */
 	export function get_go(
 		url: hash | url | string,
@@ -9024,6 +9397,7 @@ declare namespace model {
 	 * @param url  the model
 	 * @param mesh_id  the id of the mesh
 	 * @returns enabled  true if the mesh is visible, false otherwise
+	 * @see {@link https://defold.com/ref/stable/model/#model.get_mesh_enabled|API Documentation}
 	 */
 	export function get_mesh_enabled(
 		url: hash | url | string,
@@ -9081,6 +9455,7 @@ Information about the completion:
 
 `sender`
 The invoker of the callback: the model component.
+* @see {@link https://defold.com/ref/stable/model/#model.play_anim|API Documentation}
 
 	*/
 	export function play_anim(
@@ -9110,6 +9485,7 @@ The invoker of the callback: the model component.
 	 * @param url  the model
 	 * @param mesh_id  the id of the mesh
 	 * @param enabled  true if the mesh should be visible, false if it should be hideen
+	 * @see {@link https://defold.com/ref/stable/model/#model.set_mesh_enabled|API Documentation}
 	 */
 	export function set_mesh_enabled(
 		url: hash | url | string,
@@ -9149,7 +9525,7 @@ The invoker of the callback: the model component.
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
-/** @see {@link https://defold.com/ref/stable/particlefx/|Documentation} */
+/** @see {@link https://defold.com/ref/stable/particlefx/|API Documentation} */
 declare namespace particlefx {
 	/**
 	 * postspawn state
@@ -9201,6 +9577,7 @@ the new state of the emitter:
 - `particlefx.EMITTER_STATE_PRESPAWN`
 - `particlefx.EMITTER_STATE_SPAWNING`
 - `particlefx.EMITTER_STATE_POSTSPAWN`
+* @see {@link https://defold.com/ref/stable/particlefx/#particlefx.play|API Documentation}
 
 	*/
 	export function play(
@@ -9222,6 +9599,7 @@ the new state of the emitter:
 	 * @param url  the particle FX that should have a constant reset
 	 * @param emitter  the id of the emitter
 	 * @param constant  the name of the constant
+	 * @see {@link https://defold.com/ref/stable/particlefx/#particlefx.reset_constant|API Documentation}
 	 */
 	export function reset_constant(
 		url: hash | url | string,
@@ -9239,6 +9617,7 @@ the new state of the emitter:
 	 * @param emitter  the id of the emitter
 	 * @param constant  the name of the constant
 	 * @param value  the value of the constant
+	 * @see {@link https://defold.com/ref/stable/particlefx/#particlefx.set_constant|API Documentation}
 	 */
 	export function set_constant(
 		url: hash | url | string,
@@ -9255,6 +9634,7 @@ the new state of the emitter:
 	* @param options  Options when stopping the particle fx. Supported options:
 
 `clear`: instantly clear spawned particles
+* @see {@link https://defold.com/ref/stable/particlefx/#particlefx.stop|API Documentation}
 
 	*/
 	export function stop(
@@ -9264,7 +9644,7 @@ the new state of the emitter:
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
-/** @see {@link https://defold.com/ref/stable/sound/|Documentation} */
+/** @see {@link https://defold.com/ref/stable/sound/|API Documentation} */
 declare namespace sound {
 	/**
 	 * The gain on the sound-component. Note that gain is in linear scale,
@@ -9317,6 +9697,7 @@ declare namespace sound {
 	 * `10db/20`.
 	 * @param group  group name
 	 * @returns gain  gain in linear scale
+	 * @see {@link https://defold.com/ref/stable/sound/#sound.get_group_gain|API Documentation}
 	 */
 	export function get_group_gain(group: hash | string): number;
 
@@ -9327,12 +9708,14 @@ declare namespace sound {
 	 * return a proper string value when the game is built in release mode.
 	 * @param group  group name
 	 * @returns name  group name
+	 * @see {@link https://defold.com/ref/stable/sound/#sound.get_group_name|API Documentation}
 	 */
 	export function get_group_name(group: hash | string): string;
 
 	/**
 	 * Get a table of all mixer group names (hashes).
 	 * @returns groups  table of mixer group names
+	 * @see {@link https://defold.com/ref/stable/sound/#sound.get_groups|API Documentation}
 	 */
 	export function get_groups(): hash[];
 
@@ -9348,6 +9731,7 @@ declare namespace sound {
 	 * @param window  window length in seconds
 	 * @returns peak_l  peak value for left channel
 	 * @returns peak_r  peak value for right channel
+	 * @see {@link https://defold.com/ref/stable/sound/#sound.get_peak|API Documentation}
 	 */
 	export function get_peak(
 		group: hash | string,
@@ -9366,6 +9750,7 @@ declare namespace sound {
 	 * @param window  window length in seconds
 	 * @returns rms_l  RMS value for left channel
 	 * @returns rms_r  RMS value for right channel
+	 * @see {@link https://defold.com/ref/stable/sound/#sound.get_rms|API Documentation}
 	 */
 	export function get_rms(
 		group: hash | string,
@@ -9388,6 +9773,7 @@ declare namespace sound {
 	 * Both those times will give you a correct reading of the state even when your application is
 	 * swapped out and in while playing sounds and it works equally well on Android and iOS.
 	 * @returns playing  `true` if music is playing, otherwise `false`.
+	 * @see {@link https://defold.com/ref/stable/sound/#sound.is_music_playing|API Documentation}
 	 */
 	export function is_music_playing(): boolean;
 
@@ -9397,6 +9783,7 @@ declare namespace sound {
 	 * 🌎 On non mobile platforms,
 	 * this function always return `false`.
 	 * @returns call_active  `true` if there is an active phone call, `false` otherwise.
+	 * @see {@link https://defold.com/ref/stable/sound/#sound.is_phone_call_active|API Documentation}
 	 */
 	export function is_phone_call_active(): boolean;
 
@@ -9404,6 +9791,7 @@ declare namespace sound {
 	 * Pause all active voices
 	 * @param url  the sound that should pause
 	 * @param pause  true if the sound should pause
+	 * @see {@link https://defold.com/ref/stable/sound/#sound.pause|API Documentation}
 	 */
 	export function pause(url: hash | url | string, pause?: boolean): void;
 
@@ -9443,6 +9831,7 @@ Information about the completion:
 The invoker of the callback: the sound component.
 
 	* @returns play_id  The identifier for the sound voice
+* @see {@link https://defold.com/ref/stable/sound/#sound.play|API Documentation}
 	*/
 	export function play(
 		url: hash | url | string,
@@ -9468,6 +9857,7 @@ The invoker of the callback: the sound component.
 	 * `10db/20`.
 	 * @param url  the sound to set the gain of
 	 * @param gain  sound gain between 0 and 1. The final gain of the sound will be a combination of this gain, the group gain and the master gain.
+	 * @see {@link https://defold.com/ref/stable/sound/#sound.set_gain|API Documentation}
 	 */
 	export function set_gain(url: hash | url | string, gain?: number): void;
 
@@ -9479,6 +9869,7 @@ The invoker of the callback: the sound component.
 	 * `10db/20`.
 	 * @param group  group name
 	 * @param gain  gain in linear scale
+	 * @see {@link https://defold.com/ref/stable/sound/#sound.set_group_gain|API Documentation}
 	 */
 	export function set_group_gain(group: hash | string, gain: number): void;
 
@@ -9487,6 +9878,7 @@ The invoker of the callback: the sound component.
 	 * The valid range is from -1.0 to 1.0, representing -45 degrees left, to +45 degrees right.
 	 * @param url  the sound to set the panning value to
 	 * @param pan  sound panning between -1.0 and 1.0
+	 * @see {@link https://defold.com/ref/stable/sound/#sound.set_pan|API Documentation}
 	 */
 	export function set_pan(url: hash | url | string, pan?: number): void;
 
@@ -9497,6 +9889,7 @@ The invoker of the callback: the sound component.
 optional table with properties:
 `play_id`
 the sequential play identifier that should be stopped (was given by the sound.play() function)
+* @see {@link https://defold.com/ref/stable/sound/#sound.stop|API Documentation}
 
 	*/
 	export function stop(
@@ -9531,7 +9924,7 @@ the sequential play identifier that should be stopped (was given by the sound.pl
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
-/** @see {@link https://defold.com/ref/stable/sprite/|Documentation} */
+/** @see {@link https://defold.com/ref/stable/sprite/|API Documentation} */
 declare namespace sprite {
 	/**
 	 * hash.
@@ -9635,6 +10028,7 @@ The invoker of the callback: the sprite component.
 the normalized initial value of the animation cursor when the animation starts playing.
 `playback_rate`
 the rate with which the animation will be played. Must be positive.
+* @see {@link https://defold.com/ref/stable/sprite/#sprite.play_flipbook|API Documentation}
 
 	*/
 	export function play_flipbook(
@@ -9655,6 +10049,7 @@ the rate with which the animation will be played. Must be positive.
 	 * If the currently playing animation is flipped by default, flipping it again will make it appear like the original texture.
 	 * @param url  the sprite that should flip its animations
 	 * @param flip  `true` if the sprite should flip its animations, `false` if not
+	 * @see {@link https://defold.com/ref/stable/sprite/#sprite.set_hflip|API Documentation}
 	 */
 	export function set_hflip(url: hash | url | string, flip: boolean): void;
 
@@ -9664,12 +10059,13 @@ the rate with which the animation will be played. Must be positive.
 	 * If the currently playing animation is flipped by default, flipping it again will make it appear like the original texture.
 	 * @param url  the sprite that should flip its animations
 	 * @param flip  `true` if the sprite should flip its animations, `false` if not
+	 * @see {@link https://defold.com/ref/stable/sprite/#sprite.set_vflip|API Documentation}
 	 */
 	export function set_vflip(url: hash | url | string, flip: boolean): void;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
-/** @see {@link https://defold.com/ref/stable/tilemap/|Documentation} */
+/** @see {@link https://defold.com/ref/stable/tilemap/|API Documentation} */
 declare namespace tilemap {
 	/**
 	 * The material used when rendering the tile map. The type of the property is hash.
@@ -9717,6 +10113,7 @@ declare namespace tilemap {
 	 * @returns y  y coordinate of the bottom left corner
 	 * @returns w  number of columns (width) in the tile map
 	 * @returns h  number of rows (height) in the tile map
+	 * @see {@link https://defold.com/ref/stable/tilemap/#tilemap.get_bounds|API Documentation}
 	 */
 	export function get_bounds(
 		url: hash | url | string,
@@ -9733,6 +10130,7 @@ declare namespace tilemap {
 	 * @param x  x-coordinate of the tile
 	 * @param y  y-coordinate of the tile
 	 * @returns tile  index of the tile
+	 * @see {@link https://defold.com/ref/stable/tilemap/#tilemap.get_tile|API Documentation}
 	 */
 	export function get_tile(
 		url: hash | url | string,
@@ -9770,6 +10168,7 @@ declare namespace tilemap {
 	 * @param y  y-coordinate of the tile
 	 * @param tile  index of new tile to set. 0 resets the cell
 	 * @param transform_bitmask  optional flip and/or rotation should be applied to the tile
+	 * @see {@link https://defold.com/ref/stable/tilemap/#tilemap.set_tile|API Documentation}
 	 */
 	export function set_tile(
 		url: hash | url | string,
@@ -9785,6 +10184,7 @@ declare namespace tilemap {
 	 * @param url  the tile map
 	 * @param layer  name of the layer for the tile
 	 * @param visible  should the layer be visible
+	 * @see {@link https://defold.com/ref/stable/tilemap/#tilemap.set_visible|API Documentation}
 	 */
 	export function set_visible(
 		url: hash | url | string,

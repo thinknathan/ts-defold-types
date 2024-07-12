@@ -3,7 +3,7 @@
 ## Upcoming
 
 - Fixed `gui.animate` signature
-- Added `@see` documentation comments for each namespace
+- Added `@see` documentation comments for each namespace and function
 
 ## v1.9.0
 

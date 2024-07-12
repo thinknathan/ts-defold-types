@@ -40,6 +40,7 @@ import { sound } from './patches/sound.mjs';
 import { sprite } from './patches/sprite.mjs';
 import { tilemap } from './patches/tilemap.mjs';
 import { finalChanges } from './patches/_finalChanges.mjs';
+import { getApiDocLinks } from './patches/_getApiDocLinks.mjs';
 
 const patches = [
 	// The following are in order of appearance in the final definitions file
@@ -220,6 +221,9 @@ fs.readFile(filePath, 'utf8', (err, data) => {
 			: console.error('Expected pair[1] to be string');
 	});
 	console.timeEnd('Patching definitions');
+
+	// Insert API links
+	data = getApiDocLinks(data);
 
 	// Save the modified contents back to the file
 	console.time('Saving file');
