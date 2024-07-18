@@ -118,12 +118,64 @@ declare type bufferstream = LuaUserdata & number[] & object;
 /** @see {@link https://defold.com/ref/stable/vmath/|API Documentation} */
 declare namespace vmath {
 	export type vector3 = number & {
+		/**
+		 * Addition Operator for Vector3
+		 * @see {@link https://typescripttolua.github.io/docs/advanced/language-extensions#operator-map-types|TSTL Docs}
+		 */
+		add: LuaAdditionMethod<vmath.vector3, vmath.vector3>;
+		/**
+		 * Subtraction Operator for Vector3
+		 * @see {@link https://typescripttolua.github.io/docs/advanced/language-extensions#operator-map-types|TSTL Docs}
+		 */
+		sub: LuaSubtractionMethod<vmath.vector3, vmath.vector3>;
+		/**
+		 * Multiplication Operator for Vector3
+		 * @see {@link https://typescripttolua.github.io/docs/advanced/language-extensions#operator-map-types|TSTL Docs}
+		 */
+		mul: LuaMultiplicationMethod<number, vmath.vector3>;
+		/**
+		 * Division Operator for Vector3
+		 * @see {@link https://typescripttolua.github.io/docs/advanced/language-extensions#operator-map-types|TSTL Docs}
+		 */
+		div: LuaDivisionMethod<number, vmath.vector3>;
+		/**
+		 * Negation Operator for Vector3
+		 * @see {@link https://typescripttolua.github.io/docs/advanced/language-extensions#operator-map-types|TSTL Docs}
+		 */
+		unm: LuaNegationMethod<vmath.vector3>;
+
 		x: number;
 		y: number;
 		z: number;
 	};
 
 	export type vector4 = number & {
+		/**
+		 * Addition Operator for Vector4
+		 * @see {@link https://typescripttolua.github.io/docs/advanced/language-extensions#operator-map-types|TSTL Docs}
+		 */
+		add: LuaAdditionMethod<vmath.vector4, vmath.vector4>;
+		/**
+		 * Subtraction Operator for Vector4
+		 * @see {@link https://typescripttolua.github.io/docs/advanced/language-extensions#operator-map-types|TSTL Docs}
+		 */
+		sub: LuaSubtractionMethod<vmath.vector4, vmath.vector4>;
+		/**
+		 * Multiplication Operator for Vector4
+		 * @see {@link https://typescripttolua.github.io/docs/advanced/language-extensions#operator-map-types|TSTL Docs}
+		 */
+		mul: LuaMultiplicationMethod<number, vmath.vector4>;
+		/**
+		 * Division Operator for Vector4
+		 * @see {@link https://typescripttolua.github.io/docs/advanced/language-extensions#operator-map-types|TSTL Docs}
+		 */
+		div: LuaDivisionMethod<number, vmath.vector4>;
+		/**
+		 * Negation Operator for Vector4
+		 * @see {@link https://typescripttolua.github.io/docs/advanced/language-extensions#operator-map-types|TSTL Docs}
+		 */
+		unm: LuaNegationMethod<vmath.vector4>;
+
 		x: number;
 		y: number;
 		z: number;
@@ -131,6 +183,12 @@ declare namespace vmath {
 	};
 
 	export type matrix4 = number & {
+		/**
+		 * Multiplication Operator for Matrix4
+		 * @see {@link https://typescripttolua.github.io/docs/advanced/language-extensions#operator-map-types|TSTL Docs}
+		 */
+		mul: LuaMultiplicationMethod<number, vmath.matrix4> & LuaMultiplicationMethod<vmath.vector4, vmath.vector4>;
+
 		c0: vmath.vector4;
 		c1: vmath.vector4;
 		c2: vmath.vector4;
@@ -154,6 +212,12 @@ declare namespace vmath {
 	};
 
 	export type quaternion = number & {
+		/**
+		 * Multiplication Operator for Matrix4
+		 * @see {@link https://typescripttolua.github.io/docs/advanced/language-extensions#operator-map-types|TSTL Docs}
+		 */
+		mul: LuaMultiplicationMethod<vmath.quaternion, vmath.quaternion>;
+
 		x: number;
 		y: number;
 		z: number;

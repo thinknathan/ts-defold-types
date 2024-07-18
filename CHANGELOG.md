@@ -4,6 +4,7 @@
 
 - Fixed `gui.animate` signature
 - Added `@see` documentation comments for each namespace and function
+- Added operator map type methods to `vmath`
 
 ## v1.9.0
 
