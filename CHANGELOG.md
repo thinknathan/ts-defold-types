@@ -1,7 +1,8 @@
 # Changelog
 
-## Upcoming
+## v1.9.1
 
+- Update for latest Defold
 - Fixed `gui.animate` signature
 - Added `@see` documentation comments for each namespace and function
 - Added operator map type methods to `vmath`
