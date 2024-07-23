@@ -19,7 +19,7 @@ export const socket = [
 	],
 	[
 		'function skip(d: number, ret1?: any, ret2?: any, retN?: any): any',
-		'function skip(d: number, ret1?: unknown, ret2?: unknown, retN?: unknown): LuaMultiReturn<[unknown | undefined, unknown | undefined, unknown | undefined]>',
+		'function skip(d: number, ret1?: unknown, ret2?: unknown, retN?: unknown): LuaMultiReturn<[AnyNotNil | undefined, AnyNotNil | undefined, AnyNotNil | undefined]>',
 	],
 	[
 		'function connect(address: string, port: number, locaddr?: string, locport?: number, family?: string): LuaMultiReturn<[any, any, string, any]>',
@@ -39,10 +39,10 @@ export const socket = [
 	],
 	[
 		'function udp(): LuaMultiReturn<[any, any, string, any]>',
-		'function udp(): LuaMultiReturn<[socketunconnected | undefined, string | unknown]>',
+		'function udp(): LuaMultiReturn<[socketunconnected | undefined, string | undefined]>',
 	],
 	[
 		'function udp6(): LuaMultiReturn<[any, any, string, any]>',
-		'function udp6(): LuaMultiReturn<[socketunconnected | undefined, string | unknown]>',
+		'function udp6(): LuaMultiReturn<[socketunconnected | undefined, string | undefined]>',
 	],
 ];

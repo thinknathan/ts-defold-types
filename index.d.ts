@@ -359,7 +359,7 @@ declare namespace socket {
 		ret2?: unknown,
 		retN?: unknown,
 	): LuaMultiReturn<
-		[unknown | undefined, unknown | undefined, unknown | undefined]
+		[AnyNotNil | undefined, AnyNotNil | undefined, AnyNotNil | undefined]
 	>;
 
 	/**
@@ -393,7 +393,7 @@ declare namespace socket {
 	 * @returns error  the error message, or `undefined` if no error occurred.
 	 */
 	export function udp(): LuaMultiReturn<
-		[socketunconnected | undefined, string | unknown]
+		[socketunconnected | undefined, string | undefined]
 	>;
 
 	/**
@@ -403,7 +403,7 @@ declare namespace socket {
 	 * @returns error  the error message, or `undefined` if no error occurred.
 	 */
 	export function udp6(): LuaMultiReturn<
-		[socketunconnected | undefined, string | unknown]
+		[socketunconnected | undefined, string | undefined]
 	>;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
@@ -434,19 +434,17 @@ declare namespace b2d.body {
 	/**
 	 * Dynamic body
 	 */
-	export const B2_DYNAMIC_BODY: number & { readonly _B2DBODY_: unique symbol };
+	export const B2_DYNAMIC_BODY: number & { readonly __brand: 'b2d.body.B2' };
 
 	/**
 	 * Kinematic body
 	 */
-	export const B2_KINEMATIC_BODY: number & {
-		readonly _B2DBODY_: unique symbol;
-	};
+	export const B2_KINEMATIC_BODY: number & { readonly __brand: 'b2d.body.B2' };
 
 	/**
 	 * Static (immovable) body
 	 */
-	export const B2_STATIC_BODY: number & { readonly _B2DBODY_: unique symbol };
+	export const B2_STATIC_BODY: number & { readonly __brand: 'b2d.body.B2' };
 
 	/**
 	 * Apply an angular impulse.
@@ -900,86 +898,86 @@ declare namespace crash {
 	 * android build fingerprint
 	 */
 	export const SYSFIELD_ANDROID_BUILD_FINGERPRINT: number & {
-		readonly _SYSFIELD_: unique symbol;
+		readonly __brand: 'crash.SYSFIELD';
 	};
 
 	/**
 	 * system device language as reported by sys.get_sys_info
 	 */
 	export const SYSFIELD_DEVICE_LANGUAGE: number & {
-		readonly _SYSFIELD_: unique symbol;
+		readonly __brand: 'crash.SYSFIELD';
 	};
 
 	/**
 	 * device model as reported by sys.get_sys_info
 	 */
 	export const SYSFIELD_DEVICE_MODEL: number & {
-		readonly _SYSFIELD_: unique symbol;
+		readonly __brand: 'crash.SYSFIELD';
 	};
 
 	/**
 	 * engine version as hash
 	 */
 	export const SYSFIELD_ENGINE_HASH: number & {
-		readonly _SYSFIELD_: unique symbol;
+		readonly __brand: 'crash.SYSFIELD';
 	};
 
 	/**
 	 * engine version as release number
 	 */
 	export const SYSFIELD_ENGINE_VERSION: number & {
-		readonly _SYSFIELD_: unique symbol;
+		readonly __brand: 'crash.SYSFIELD';
 	};
 
 	/**
 	 * system language as reported by sys.get_sys_info
 	 */
 	export const SYSFIELD_LANGUAGE: number & {
-		readonly _SYSFIELD_: unique symbol;
+		readonly __brand: 'crash.SYSFIELD';
 	};
 
 	/**
 	 * device manufacturer as reported by sys.get_sys_info
 	 */
 	export const SYSFIELD_MANUFACTURER: number & {
-		readonly _SYSFIELD_: unique symbol;
+		readonly __brand: 'crash.SYSFIELD';
 	};
 
 	/**
 	 * The max number of sysfields.
 	 */
-	export const SYSFIELD_MAX: number & { readonly _SYSFIELD_: unique symbol };
+	export const SYSFIELD_MAX: number & { readonly __brand: 'crash.SYSFIELD' };
 
 	/**
 	 * system name as reported by sys.get_sys_info
 	 */
 	export const SYSFIELD_SYSTEM_NAME: number & {
-		readonly _SYSFIELD_: unique symbol;
+		readonly __brand: 'crash.SYSFIELD';
 	};
 
 	/**
 	 * system version as reported by sys.get_sys_info
 	 */
 	export const SYSFIELD_SYSTEM_VERSION: number & {
-		readonly _SYSFIELD_: unique symbol;
+		readonly __brand: 'crash.SYSFIELD';
 	};
 
 	/**
 	 * system territory as reported by sys.get_sys_info
 	 */
 	export const SYSFIELD_TERRITORY: number & {
-		readonly _SYSFIELD_: unique symbol;
+		readonly __brand: 'crash.SYSFIELD';
 	};
 
 	/**
 	 * The max number of user fields.
 	 */
-	export const USERFIELD_MAX: number & { readonly _USERFIELD_: unique symbol };
+	export const USERFIELD_MAX: number & { readonly __brand: 'crash.USERFIELD' };
 
 	/**
 	 * The max size of a single user field.
 	 */
-	export const USERFIELD_SIZE: number & { readonly _USERFIELD_: unique symbol };
+	export const USERFIELD_SIZE: number & { readonly __brand: 'crash.USERFIELD' };
 
 	/**
 	 * A table is returned containing the addresses of the call stack.
@@ -1186,261 +1184,253 @@ declare namespace go {
 	/**
 	 * in-back
 	 */
-	export const EASING_INBACK: number & { readonly _EASING_: unique symbol };
+	export const EASING_INBACK: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * in-bounce
 	 */
-	export const EASING_INBOUNCE: number & { readonly _EASING_: unique symbol };
+	export const EASING_INBOUNCE: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * in-circlic
 	 */
-	export const EASING_INCIRC: number & { readonly _EASING_: unique symbol };
+	export const EASING_INCIRC: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * in-cubic
 	 */
-	export const EASING_INCUBIC: number & { readonly _EASING_: unique symbol };
+	export const EASING_INCUBIC: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * in-elastic
 	 */
-	export const EASING_INELASTIC: number & { readonly _EASING_: unique symbol };
+	export const EASING_INELASTIC: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * in-exponential
 	 */
-	export const EASING_INEXPO: number & { readonly _EASING_: unique symbol };
+	export const EASING_INEXPO: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * in-out-back
 	 */
-	export const EASING_INOUTBACK: number & { readonly _EASING_: unique symbol };
+	export const EASING_INOUTBACK: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * in-out-bounce
 	 */
-	export const EASING_INOUTBOUNCE: number & {
-		readonly _EASING_: unique symbol;
-	};
+	export const EASING_INOUTBOUNCE: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * in-out-circlic
 	 */
-	export const EASING_INOUTCIRC: number & { readonly _EASING_: unique symbol };
+	export const EASING_INOUTCIRC: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * in-out-cubic
 	 */
-	export const EASING_INOUTCUBIC: number & { readonly _EASING_: unique symbol };
+	export const EASING_INOUTCUBIC: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * in-out-elastic
 	 */
-	export const EASING_INOUTELASTIC: number & {
-		readonly _EASING_: unique symbol;
-	};
+	export const EASING_INOUTELASTIC: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * in-out-exponential
 	 */
-	export const EASING_INOUTEXPO: number & { readonly _EASING_: unique symbol };
+	export const EASING_INOUTEXPO: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * in-out-quadratic
 	 */
-	export const EASING_INOUTQUAD: number & { readonly _EASING_: unique symbol };
+	export const EASING_INOUTQUAD: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * in-out-quartic
 	 */
-	export const EASING_INOUTQUART: number & { readonly _EASING_: unique symbol };
+	export const EASING_INOUTQUART: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * in-out-quintic
 	 */
-	export const EASING_INOUTQUINT: number & { readonly _EASING_: unique symbol };
+	export const EASING_INOUTQUINT: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * in-out-sine
 	 */
-	export const EASING_INOUTSINE: number & { readonly _EASING_: unique symbol };
+	export const EASING_INOUTSINE: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * in-quadratic
 	 */
-	export const EASING_INQUAD: number & { readonly _EASING_: unique symbol };
+	export const EASING_INQUAD: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * in-quartic
 	 */
-	export const EASING_INQUART: number & { readonly _EASING_: unique symbol };
+	export const EASING_INQUART: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * in-quintic
 	 */
-	export const EASING_INQUINT: number & { readonly _EASING_: unique symbol };
+	export const EASING_INQUINT: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * in-sine
 	 */
-	export const EASING_INSINE: number & { readonly _EASING_: unique symbol };
+	export const EASING_INSINE: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * linear interpolation
 	 */
-	export const EASING_LINEAR: number & { readonly _EASING_: unique symbol };
+	export const EASING_LINEAR: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * out-back
 	 */
-	export const EASING_OUTBACK: number & { readonly _EASING_: unique symbol };
+	export const EASING_OUTBACK: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * out-bounce
 	 */
-	export const EASING_OUTBOUNCE: number & { readonly _EASING_: unique symbol };
+	export const EASING_OUTBOUNCE: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * out-circlic
 	 */
-	export const EASING_OUTCIRC: number & { readonly _EASING_: unique symbol };
+	export const EASING_OUTCIRC: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * out-cubic
 	 */
-	export const EASING_OUTCUBIC: number & { readonly _EASING_: unique symbol };
+	export const EASING_OUTCUBIC: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * out-elastic
 	 */
-	export const EASING_OUTELASTIC: number & { readonly _EASING_: unique symbol };
+	export const EASING_OUTELASTIC: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * out-exponential
 	 */
-	export const EASING_OUTEXPO: number & { readonly _EASING_: unique symbol };
+	export const EASING_OUTEXPO: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * out-in-back
 	 */
-	export const EASING_OUTINBACK: number & { readonly _EASING_: unique symbol };
+	export const EASING_OUTINBACK: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * out-in-bounce
 	 */
-	export const EASING_OUTINBOUNCE: number & {
-		readonly _EASING_: unique symbol;
-	};
+	export const EASING_OUTINBOUNCE: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * out-in-circlic
 	 */
-	export const EASING_OUTINCIRC: number & { readonly _EASING_: unique symbol };
+	export const EASING_OUTINCIRC: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * out-in-cubic
 	 */
-	export const EASING_OUTINCUBIC: number & { readonly _EASING_: unique symbol };
+	export const EASING_OUTINCUBIC: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * out-in-elastic
 	 */
-	export const EASING_OUTINELASTIC: number & {
-		readonly _EASING_: unique symbol;
-	};
+	export const EASING_OUTINELASTIC: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * out-in-exponential
 	 */
-	export const EASING_OUTINEXPO: number & { readonly _EASING_: unique symbol };
+	export const EASING_OUTINEXPO: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * out-in-quadratic
 	 */
-	export const EASING_OUTINQUAD: number & { readonly _EASING_: unique symbol };
+	export const EASING_OUTINQUAD: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * out-in-quartic
 	 */
-	export const EASING_OUTINQUART: number & { readonly _EASING_: unique symbol };
+	export const EASING_OUTINQUART: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * out-in-quintic
 	 */
-	export const EASING_OUTINQUINT: number & { readonly _EASING_: unique symbol };
+	export const EASING_OUTINQUINT: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * out-in-sine
 	 */
-	export const EASING_OUTINSINE: number & { readonly _EASING_: unique symbol };
+	export const EASING_OUTINSINE: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * out-quadratic
 	 */
-	export const EASING_OUTQUAD: number & { readonly _EASING_: unique symbol };
+	export const EASING_OUTQUAD: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * out-quartic
 	 */
-	export const EASING_OUTQUART: number & { readonly _EASING_: unique symbol };
+	export const EASING_OUTQUART: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * out-quintic
 	 */
-	export const EASING_OUTQUINT: number & { readonly _EASING_: unique symbol };
+	export const EASING_OUTQUINT: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * out-sine
 	 */
-	export const EASING_OUTSINE: number & { readonly _EASING_: unique symbol };
+	export const EASING_OUTSINE: number & { readonly __brand: 'go.EASING' };
 
 	/**
 	 * loop backward
 	 */
 	export const PLAYBACK_LOOP_BACKWARD: number & {
-		readonly _PLAYBACK_: unique symbol;
+		readonly __brand: 'go.PLAYBACK';
 	};
 
 	/**
 	 * loop forward
 	 */
 	export const PLAYBACK_LOOP_FORWARD: number & {
-		readonly _PLAYBACK_: unique symbol;
+		readonly __brand: 'go.PLAYBACK';
 	};
 
 	/**
 	 * ping pong loop
 	 */
 	export const PLAYBACK_LOOP_PINGPONG: number & {
-		readonly _PLAYBACK_: unique symbol;
+		readonly __brand: 'go.PLAYBACK';
 	};
 
 	/**
 	 * no playback
 	 */
-	export const PLAYBACK_NONE: number & { readonly _PLAYBACK_: unique symbol };
+	export const PLAYBACK_NONE: number & { readonly __brand: 'go.PLAYBACK' };
 
 	/**
 	 * once backward
 	 */
 	export const PLAYBACK_ONCE_BACKWARD: number & {
-		readonly _PLAYBACK_: unique symbol;
+		readonly __brand: 'go.PLAYBACK';
 	};
 
 	/**
 	 * once forward
 	 */
 	export const PLAYBACK_ONCE_FORWARD: number & {
-		readonly _PLAYBACK_: unique symbol;
+		readonly __brand: 'go.PLAYBACK';
 	};
 
 	/**
 	 * once ping pong
 	 */
 	export const PLAYBACK_ONCE_PINGPONG: number & {
-		readonly _PLAYBACK_: unique symbol;
+		readonly __brand: 'go.PLAYBACK';
 	};
 
 	/**
@@ -1843,519 +1833,509 @@ declare namespace gui {
 	/**
 	 * fit adjust mode
 	 */
-	export const ADJUST_FIT: number & { readonly _ADJUST_: unique symbol };
+	export const ADJUST_FIT: number & { readonly __brand: 'gui.ADJUST' };
 
 	/**
 	 * stretch adjust mode
 	 */
-	export const ADJUST_STRETCH: number & { readonly _ADJUST_: unique symbol };
+	export const ADJUST_STRETCH: number & { readonly __brand: 'gui.ADJUST' };
 
 	/**
 	 * zoom adjust mode
 	 */
-	export const ADJUST_ZOOM: number & { readonly _ADJUST_: unique symbol };
+	export const ADJUST_ZOOM: number & { readonly __brand: 'gui.ADJUST' };
 
 	/**
 	 * bottom y-anchor
 	 */
-	export const ANCHOR_BOTTOM: number & { readonly _ANCHOR_: unique symbol };
+	export const ANCHOR_BOTTOM: number & { readonly __brand: 'gui.ANCHOR' };
 
 	/**
 	 * left x-anchor
 	 */
-	export const ANCHOR_LEFT: number & { readonly _ANCHOR_: unique symbol };
+	export const ANCHOR_LEFT: number & { readonly __brand: 'gui.ANCHOR' };
 
 	/**
 	 * no anchor
 	 */
-	export const ANCHOR_NONE: number & { readonly _ANCHOR_: unique symbol };
+	export const ANCHOR_NONE: number & { readonly __brand: 'gui.ANCHOR' };
 
 	/**
 	 * right x-anchor
 	 */
-	export const ANCHOR_RIGHT: number & { readonly _ANCHOR_: unique symbol };
+	export const ANCHOR_RIGHT: number & { readonly __brand: 'gui.ANCHOR' };
 
 	/**
 	 * top y-anchor
 	 */
-	export const ANCHOR_TOP: number & { readonly _ANCHOR_: unique symbol };
+	export const ANCHOR_TOP: number & { readonly __brand: 'gui.ANCHOR' };
 
 	/**
 	 * additive blending
 	 */
-	export const BLEND_ADD: number & { readonly _BLEND_: unique symbol };
+	export const BLEND_ADD: number & { readonly __brand: 'gui.BLEND' };
 
 	/**
 	 * additive alpha blending
 	 */
-	export const BLEND_ADD_ALPHA: number & { readonly _BLEND_: unique symbol };
+	export const BLEND_ADD_ALPHA: number & { readonly __brand: 'gui.BLEND' };
 
 	/**
 	 * alpha blending
 	 */
-	export const BLEND_ALPHA: number & { readonly _BLEND_: unique symbol };
+	export const BLEND_ALPHA: number & { readonly __brand: 'gui.BLEND' };
 
 	/**
 	 * multiply blending
 	 */
-	export const BLEND_MULT: number & { readonly _BLEND_: unique symbol };
+	export const BLEND_MULT: number & { readonly __brand: 'gui.BLEND' };
 
 	/**
 	 * screen blending
 	 */
-	export const BLEND_SCREEN: number & { readonly _BLEND_: unique symbol };
+	export const BLEND_SCREEN: number & { readonly __brand: 'gui.BLEND' };
 
 	/**
 	 * clipping mode none
 	 */
 	export const CLIPPING_MODE_NONE: number & {
-		readonly _CLIPPING_MODE_: unique symbol;
+		readonly __brand: 'gui.CLIPPING_MODE';
 	};
 
 	/**
 	 * clipping mode stencil
 	 */
 	export const CLIPPING_MODE_STENCIL: number & {
-		readonly _CLIPPING_MODE_: unique symbol;
+		readonly __brand: 'gui.CLIPPING_MODE';
 	};
 
 	/**
 	 * in-back
 	 */
-	export const EASING_INBACK: number & { readonly _EASING_: unique symbol };
+	export const EASING_INBACK: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * in-bounce
 	 */
-	export const EASING_INBOUNCE: number & { readonly _EASING_: unique symbol };
+	export const EASING_INBOUNCE: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * in-circlic
 	 */
-	export const EASING_INCIRC: number & { readonly _EASING_: unique symbol };
+	export const EASING_INCIRC: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * in-cubic
 	 */
-	export const EASING_INCUBIC: number & { readonly _EASING_: unique symbol };
+	export const EASING_INCUBIC: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * in-elastic
 	 */
-	export const EASING_INELASTIC: number & { readonly _EASING_: unique symbol };
+	export const EASING_INELASTIC: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * in-exponential
 	 */
-	export const EASING_INEXPO: number & { readonly _EASING_: unique symbol };
+	export const EASING_INEXPO: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * in-out-back
 	 */
-	export const EASING_INOUTBACK: number & { readonly _EASING_: unique symbol };
+	export const EASING_INOUTBACK: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * in-out-bounce
 	 */
-	export const EASING_INOUTBOUNCE: number & {
-		readonly _EASING_: unique symbol;
-	};
+	export const EASING_INOUTBOUNCE: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * in-out-circlic
 	 */
-	export const EASING_INOUTCIRC: number & { readonly _EASING_: unique symbol };
+	export const EASING_INOUTCIRC: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * in-out-cubic
 	 */
-	export const EASING_INOUTCUBIC: number & { readonly _EASING_: unique symbol };
+	export const EASING_INOUTCUBIC: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * in-out-elastic
 	 */
-	export const EASING_INOUTELASTIC: number & {
-		readonly _EASING_: unique symbol;
-	};
+	export const EASING_INOUTELASTIC: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * in-out-exponential
 	 */
-	export const EASING_INOUTEXPO: number & { readonly _EASING_: unique symbol };
+	export const EASING_INOUTEXPO: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * in-out-quadratic
 	 */
-	export const EASING_INOUTQUAD: number & { readonly _EASING_: unique symbol };
+	export const EASING_INOUTQUAD: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * in-out-quartic
 	 */
-	export const EASING_INOUTQUART: number & { readonly _EASING_: unique symbol };
+	export const EASING_INOUTQUART: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * in-out-quintic
 	 */
-	export const EASING_INOUTQUINT: number & { readonly _EASING_: unique symbol };
+	export const EASING_INOUTQUINT: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * in-out-sine
 	 */
-	export const EASING_INOUTSINE: number & { readonly _EASING_: unique symbol };
+	export const EASING_INOUTSINE: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * in-quadratic
 	 */
-	export const EASING_INQUAD: number & { readonly _EASING_: unique symbol };
+	export const EASING_INQUAD: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * in-quartic
 	 */
-	export const EASING_INQUART: number & { readonly _EASING_: unique symbol };
+	export const EASING_INQUART: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * in-quintic
 	 */
-	export const EASING_INQUINT: number & { readonly _EASING_: unique symbol };
+	export const EASING_INQUINT: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * in-sine
 	 */
-	export const EASING_INSINE: number & { readonly _EASING_: unique symbol };
+	export const EASING_INSINE: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * linear interpolation
 	 */
-	export const EASING_LINEAR: number & { readonly _EASING_: unique symbol };
+	export const EASING_LINEAR: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * out-back
 	 */
-	export const EASING_OUTBACK: number & { readonly _EASING_: unique symbol };
+	export const EASING_OUTBACK: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * out-bounce
 	 */
-	export const EASING_OUTBOUNCE: number & { readonly _EASING_: unique symbol };
+	export const EASING_OUTBOUNCE: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * out-circlic
 	 */
-	export const EASING_OUTCIRC: number & { readonly _EASING_: unique symbol };
+	export const EASING_OUTCIRC: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * out-cubic
 	 */
-	export const EASING_OUTCUBIC: number & { readonly _EASING_: unique symbol };
+	export const EASING_OUTCUBIC: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * out-elastic
 	 */
-	export const EASING_OUTELASTIC: number & { readonly _EASING_: unique symbol };
+	export const EASING_OUTELASTIC: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * out-exponential
 	 */
-	export const EASING_OUTEXPO: number & { readonly _EASING_: unique symbol };
+	export const EASING_OUTEXPO: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * out-in-back
 	 */
-	export const EASING_OUTINBACK: number & { readonly _EASING_: unique symbol };
+	export const EASING_OUTINBACK: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * out-in-bounce
 	 */
-	export const EASING_OUTINBOUNCE: number & {
-		readonly _EASING_: unique symbol;
-	};
+	export const EASING_OUTINBOUNCE: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * out-in-circlic
 	 */
-	export const EASING_OUTINCIRC: number & { readonly _EASING_: unique symbol };
+	export const EASING_OUTINCIRC: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * out-in-cubic
 	 */
-	export const EASING_OUTINCUBIC: number & { readonly _EASING_: unique symbol };
+	export const EASING_OUTINCUBIC: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * out-in-elastic
 	 */
-	export const EASING_OUTINELASTIC: number & {
-		readonly _EASING_: unique symbol;
-	};
+	export const EASING_OUTINELASTIC: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * out-in-exponential
 	 */
-	export const EASING_OUTINEXPO: number & { readonly _EASING_: unique symbol };
+	export const EASING_OUTINEXPO: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * out-in-quadratic
 	 */
-	export const EASING_OUTINQUAD: number & { readonly _EASING_: unique symbol };
+	export const EASING_OUTINQUAD: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * out-in-quartic
 	 */
-	export const EASING_OUTINQUART: number & { readonly _EASING_: unique symbol };
+	export const EASING_OUTINQUART: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * out-in-quintic
 	 */
-	export const EASING_OUTINQUINT: number & { readonly _EASING_: unique symbol };
+	export const EASING_OUTINQUINT: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * out-in-sine
 	 */
-	export const EASING_OUTINSINE: number & { readonly _EASING_: unique symbol };
+	export const EASING_OUTINSINE: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * out-quadratic
 	 */
-	export const EASING_OUTQUAD: number & { readonly _EASING_: unique symbol };
+	export const EASING_OUTQUAD: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * out-quartic
 	 */
-	export const EASING_OUTQUART: number & { readonly _EASING_: unique symbol };
+	export const EASING_OUTQUART: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * out-quintic
 	 */
-	export const EASING_OUTQUINT: number & { readonly _EASING_: unique symbol };
+	export const EASING_OUTQUINT: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * out-sine
 	 */
-	export const EASING_OUTSINE: number & { readonly _EASING_: unique symbol };
+	export const EASING_OUTSINE: number & { readonly __brand: 'gui.EASING' };
 
 	/**
 	 * default keyboard
 	 */
 	export const KEYBOARD_TYPE_DEFAULT: number & {
-		readonly _KEYBOARD_TYPE_: unique symbol;
+		readonly __brand: 'gui.KEYBOARD_TYPE';
 	};
 
 	/**
 	 * email keyboard
 	 */
 	export const KEYBOARD_TYPE_EMAIL: number & {
-		readonly _KEYBOARD_TYPE_: unique symbol;
+		readonly __brand: 'gui.KEYBOARD_TYPE';
 	};
 
 	/**
 	 * number input keyboard
 	 */
 	export const KEYBOARD_TYPE_NUMBER_PAD: number & {
-		readonly _KEYBOARD_TYPE_: unique symbol;
+		readonly __brand: 'gui.KEYBOARD_TYPE';
 	};
 
 	/**
 	 * password keyboard
 	 */
 	export const KEYBOARD_TYPE_PASSWORD: number & {
-		readonly _KEYBOARD_TYPE_: unique symbol;
+		readonly __brand: 'gui.KEYBOARD_TYPE';
 	};
 
 	/**
 	 * elliptical pie node bounds
 	 */
 	export const PIEBOUNDS_ELLIPSE: number & {
-		readonly _PIEBOUNDS_: unique symbol;
+		readonly __brand: 'gui.PIEBOUNDS';
 	};
 
 	/**
 	 * rectangular pie node bounds
 	 */
 	export const PIEBOUNDS_RECTANGLE: number & {
-		readonly _PIEBOUNDS_: unique symbol;
+		readonly __brand: 'gui.PIEBOUNDS';
 	};
 
 	/**
 	 * center pivot
 	 */
-	export const PIVOT_CENTER: number & { readonly _PIVOT_: unique symbol };
+	export const PIVOT_CENTER: number & { readonly __brand: 'gui.PIVOT' };
 
 	/**
 	 * east pivot
 	 */
-	export const PIVOT_E: number & { readonly _PIVOT_: unique symbol };
+	export const PIVOT_E: number & { readonly __brand: 'gui.PIVOT' };
 
 	/**
 	 * north pivot
 	 */
-	export const PIVOT_N: number & { readonly _PIVOT_: unique symbol };
+	export const PIVOT_N: number & { readonly __brand: 'gui.PIVOT' };
 
 	/**
 	 * north-east pivot
 	 */
-	export const PIVOT_NE: number & { readonly _PIVOT_: unique symbol };
+	export const PIVOT_NE: number & { readonly __brand: 'gui.PIVOT' };
 
 	/**
 	 * north-west pivot
 	 */
-	export const PIVOT_NW: number & { readonly _PIVOT_: unique symbol };
+	export const PIVOT_NW: number & { readonly __brand: 'gui.PIVOT' };
 
 	/**
 	 * south pivot
 	 */
-	export const PIVOT_S: number & { readonly _PIVOT_: unique symbol };
+	export const PIVOT_S: number & { readonly __brand: 'gui.PIVOT' };
 
 	/**
 	 * south-east pivot
 	 */
-	export const PIVOT_SE: number & { readonly _PIVOT_: unique symbol };
+	export const PIVOT_SE: number & { readonly __brand: 'gui.PIVOT' };
 
 	/**
 	 * south-west pivot
 	 */
-	export const PIVOT_SW: number & { readonly _PIVOT_: unique symbol };
+	export const PIVOT_SW: number & { readonly __brand: 'gui.PIVOT' };
 
 	/**
 	 * west pivot
 	 */
-	export const PIVOT_W: number & { readonly _PIVOT_: unique symbol };
+	export const PIVOT_W: number & { readonly __brand: 'gui.PIVOT' };
 
 	/**
 	 * loop backward
 	 */
 	export const PLAYBACK_LOOP_BACKWARD: number & {
-		readonly _PLAYBACK_: unique symbol;
+		readonly __brand: 'gui.PLAYBACK';
 	};
 
 	/**
 	 * loop forward
 	 */
 	export const PLAYBACK_LOOP_FORWARD: number & {
-		readonly _PLAYBACK_: unique symbol;
+		readonly __brand: 'gui.PLAYBACK';
 	};
 
 	/**
 	 * ping pong loop
 	 */
 	export const PLAYBACK_LOOP_PINGPONG: number & {
-		readonly _PLAYBACK_: unique symbol;
+		readonly __brand: 'gui.PLAYBACK';
 	};
 
 	/**
 	 * once backward
 	 */
 	export const PLAYBACK_ONCE_BACKWARD: number & {
-		readonly _PLAYBACK_: unique symbol;
+		readonly __brand: 'gui.PLAYBACK';
 	};
 
 	/**
 	 * once forward
 	 */
 	export const PLAYBACK_ONCE_FORWARD: number & {
-		readonly _PLAYBACK_: unique symbol;
+		readonly __brand: 'gui.PLAYBACK';
 	};
 
 	/**
 	 * once forward and then backward
 	 */
 	export const PLAYBACK_ONCE_PINGPONG: number & {
-		readonly _PLAYBACK_: unique symbol;
+		readonly __brand: 'gui.PLAYBACK';
 	};
 
 	/**
 	 * color property
 	 */
-	export const PROP_COLOR: string & { readonly _PROP_: unique symbol };
+	export const PROP_COLOR: string & { readonly __brand: 'gui.PROP' };
 
 	/**
 	 * euler property
 	 */
-	export const PROP_EULER: string & { readonly _PROP_: unique symbol };
+	export const PROP_EULER: string & { readonly __brand: 'gui.PROP' };
 
 	/**
 	 * fill_angle property
 	 */
-	export const PROP_FILL_ANGLE: string & { readonly _PROP_: unique symbol };
+	export const PROP_FILL_ANGLE: string & { readonly __brand: 'gui.PROP' };
 
 	/**
 	 * inner_radius property
 	 */
-	export const PROP_INNER_RADIUS: string & { readonly _PROP_: unique symbol };
+	export const PROP_INNER_RADIUS: string & { readonly __brand: 'gui.PROP' };
 
 	/**
 	 * leading property
 	 */
-	export const PROP_LEADING: string & { readonly _PROP_: unique symbol };
+	export const PROP_LEADING: string & { readonly __brand: 'gui.PROP' };
 
 	/**
 	 * outline color property
 	 */
-	export const PROP_OUTLINE: string & { readonly _PROP_: unique symbol };
+	export const PROP_OUTLINE: string & { readonly __brand: 'gui.PROP' };
 
 	/**
 	 * position property
 	 */
-	export const PROP_POSITION: string & { readonly _PROP_: unique symbol };
+	export const PROP_POSITION: string & { readonly __brand: 'gui.PROP' };
 
 	/**
 	 * rotation property
 	 */
-	export const PROP_ROTATION: string & { readonly _PROP_: unique symbol };
+	export const PROP_ROTATION: string & { readonly __brand: 'gui.PROP' };
 
 	/**
 	 * scale property
 	 */
-	export const PROP_SCALE: string & { readonly _PROP_: unique symbol };
+	export const PROP_SCALE: string & { readonly __brand: 'gui.PROP' };
 
 	/**
 	 * shadow color property
 	 */
-	export const PROP_SHADOW: string & { readonly _PROP_: unique symbol };
+	export const PROP_SHADOW: string & { readonly __brand: 'gui.PROP' };
 
 	/**
 	 * size property
 	 */
-	export const PROP_SIZE: string & { readonly _PROP_: unique symbol };
+	export const PROP_SIZE: string & { readonly __brand: 'gui.PROP' };
 
 	/**
 	 * slice9 property
 	 */
-	export const PROP_SLICE9: string & { readonly _PROP_: unique symbol };
+	export const PROP_SLICE9: string & { readonly __brand: 'gui.PROP' };
 
 	/**
 	 * tracking property
 	 */
-	export const PROP_TRACKING: string & { readonly _PROP_: unique symbol };
+	export const PROP_TRACKING: string & { readonly __brand: 'gui.PROP' };
 
 	/**
 	 * data error
 	 */
-	export const RESULT_DATA_ERROR: number & { readonly _RESULT_: unique symbol };
+	export const RESULT_DATA_ERROR: number & { readonly __brand: 'gui.RESULT' };
 
 	/**
 	 * out of resource
 	 */
 	export const RESULT_OUT_OF_RESOURCES: number & {
-		readonly _RESULT_: unique symbol;
+		readonly __brand: 'gui.RESULT';
 	};
 
 	/**
 	 * texture already exists
 	 */
 	export const RESULT_TEXTURE_ALREADY_EXISTS: number & {
-		readonly _RESULT_: unique symbol;
+		readonly __brand: 'gui.RESULT';
 	};
 
 	/**
 	 * automatic size mode
 	 */
-	export const SIZE_MODE_AUTO: number & { readonly _SIZE_MODE_: unique symbol };
+	export const SIZE_MODE_AUTO: number & { readonly __brand: 'gui.SIZE_MODE' };
 
 	/**
 	 * manual size mode
 	 */
-	export const SIZE_MODE_MANUAL: number & {
-		readonly _SIZE_MODE_: unique symbol;
-	};
+	export const SIZE_MODE_MANUAL: number & { readonly __brand: 'gui.SIZE_MODE' };
 
 	/**
 	* This starts an animation of a node property according to the specified parameters.
@@ -3994,70 +3974,70 @@ declare namespace physics {
 	 * fixed joint type
 	 */
 	export const JOINT_TYPE_FIXED: number & {
-		readonly _JOINT_TYPE_: unique symbol;
+		readonly __brand: 'physics.JOINT_TYPE';
 	};
 
 	/**
 	 * hinge joint type
 	 */
 	export const JOINT_TYPE_HINGE: number & {
-		readonly _JOINT_TYPE_: unique symbol;
+		readonly __brand: 'physics.JOINT_TYPE';
 	};
 
 	/**
 	 * slider joint type
 	 */
 	export const JOINT_TYPE_SLIDER: number & {
-		readonly _JOINT_TYPE_: unique symbol;
+		readonly __brand: 'physics.JOINT_TYPE';
 	};
 
 	/**
 	 * spring joint type
 	 */
 	export const JOINT_TYPE_SPRING: number & {
-		readonly _JOINT_TYPE_: unique symbol;
+		readonly __brand: 'physics.JOINT_TYPE';
 	};
 
 	/**
 	 * weld joint type
 	 */
 	export const JOINT_TYPE_WELD: number & {
-		readonly _JOINT_TYPE_: unique symbol;
+		readonly __brand: 'physics.JOINT_TYPE';
 	};
 
 	/**
 	 * wheel joint type
 	 */
 	export const JOINT_TYPE_WHEEL: number & {
-		readonly _JOINT_TYPE_: unique symbol;
+		readonly __brand: 'physics.JOINT_TYPE';
 	};
 
 	/**
 	 *
 	 */
 	export const SHAPE_TYPE_BOX: number & {
-		readonly _SHAPE_TYPE_: unique symbol;
+		readonly __brand: 'physics.SHAPE_TYPE';
 	};
 
 	/**
 	 *
 	 */
 	export const SHAPE_TYPE_CAPSULE: number & {
-		readonly _SHAPE_TYPE_: unique symbol;
+		readonly __brand: 'physics.SHAPE_TYPE';
 	};
 
 	/**
 	 *
 	 */
 	export const SHAPE_TYPE_HULL: number & {
-		readonly _SHAPE_TYPE_: unique symbol;
+		readonly __brand: 'physics.SHAPE_TYPE';
 	};
 
 	/**
 	 *
 	 */
 	export const SHAPE_TYPE_SPHERE: number & {
-		readonly _SHAPE_TYPE_: unique symbol;
+		readonly __brand: 'physics.SHAPE_TYPE';
 	};
 
 	/**
@@ -4231,11 +4211,19 @@ end
 		dimensions?: vmath.vector3;
 		height?: number;
 	};
-	export type SHAPE_TYPE_SPHERE = { readonly _shape_: unique symbol };
-	export type SHAPE_TYPE_BOX = { readonly _shape_: unique symbol };
+	export type SHAPE_TYPE_SPHERE = number & {
+		readonly __brand: 'physics.SHAPE_TYPE';
+	};
+	export type SHAPE_TYPE_BOX = number & {
+		readonly __brand: 'physics.SHAPE_TYPE';
+	};
 	/** 3D Physics Only */
-	export type SHAPE_TYPE_CAPSULE = { readonly _shape_: unique symbol };
-	export type SHAPE_TYPE_HULL = { readonly _shape_: unique symbol };
+	export type SHAPE_TYPE_CAPSULE = number & {
+		readonly __brand: 'physics.SHAPE_TYPE';
+	};
+	export type SHAPE_TYPE_HULL = number & {
+		readonly __brand: 'physics.SHAPE_TYPE';
+	};
 
 	/**
 	* Ray casts are used to test for intersections against collision objects in the physics world.
@@ -4511,35 +4499,37 @@ declare namespace profiler {
 	/**
 	 * pause on current frame
 	 */
-	export const MODE_PAUSE: number & { readonly _MODE_: unique symbol };
+	export const MODE_PAUSE: number & { readonly __brand: 'profiler.MODE' };
 
 	/**
 	 * start recording
 	 */
-	export const MODE_RECORD: number & { readonly _MODE_: unique symbol };
+	export const MODE_RECORD: number & { readonly __brand: 'profiler.MODE' };
 
 	/**
 	 * continously show latest frame
 	 */
-	export const MODE_RUN: number & { readonly _MODE_: unique symbol };
+	export const MODE_RUN: number & { readonly __brand: 'profiler.MODE' };
 
 	/**
 	 * pause at peak frame
 	 */
 	export const MODE_SHOW_PEAK_FRAME: number & {
-		readonly _MODE_: unique symbol;
+		readonly __brand: 'profiler.MODE';
 	};
 
 	/**
 	 * show full profiler ui
 	 */
-	export const VIEW_MODE_FULL: number & { readonly _VIEW_MODE_: unique symbol };
+	export const VIEW_MODE_FULL: number & {
+		readonly __brand: 'profiler.VIEW_MODE';
+	};
 
 	/**
 	 * show mimimal profiler ui
 	 */
 	export const VIEW_MODE_MINIMIZED: number & {
-		readonly _VIEW_MODE_: unique symbol;
+		readonly __brand: 'profiler.VIEW_MODE';
 	};
 
 	/**
@@ -4720,413 +4710,425 @@ declare namespace render {
 	 *
 	 */
 	export const BLEND_CONSTANT_ALPHA: number & {
-		readonly _BLEND_: unique symbol;
+		readonly __brand: 'render.BLEND';
 	};
 
 	/**
 	 *
 	 */
 	export const BLEND_CONSTANT_COLOR: number & {
-		readonly _BLEND_: unique symbol;
+		readonly __brand: 'render.BLEND';
 	};
 
 	/**
 	 *
 	 */
-	export const BLEND_DST_ALPHA: number & { readonly _BLEND_: unique symbol };
+	export const BLEND_DST_ALPHA: number & { readonly __brand: 'render.BLEND' };
 
 	/**
 	 *
 	 */
-	export const BLEND_DST_COLOR: number & { readonly _BLEND_: unique symbol };
+	export const BLEND_DST_COLOR: number & { readonly __brand: 'render.BLEND' };
 
 	/**
 	 *
 	 */
-	export const BLEND_ONE: number & { readonly _BLEND_: unique symbol };
+	export const BLEND_ONE: number & { readonly __brand: 'render.BLEND' };
 
 	/**
 	 *
 	 */
 	export const BLEND_ONE_MINUS_CONSTANT_ALPHA: number & {
-		readonly _BLEND_: unique symbol;
+		readonly __brand: 'render.BLEND';
 	};
 
 	/**
 	 *
 	 */
 	export const BLEND_ONE_MINUS_CONSTANT_COLOR: number & {
-		readonly _BLEND_: unique symbol;
+		readonly __brand: 'render.BLEND';
 	};
 
 	/**
 	 *
 	 */
 	export const BLEND_ONE_MINUS_DST_ALPHA: number & {
-		readonly _BLEND_: unique symbol;
+		readonly __brand: 'render.BLEND';
 	};
 
 	/**
 	 *
 	 */
 	export const BLEND_ONE_MINUS_DST_COLOR: number & {
-		readonly _BLEND_: unique symbol;
+		readonly __brand: 'render.BLEND';
 	};
 
 	/**
 	 *
 	 */
 	export const BLEND_ONE_MINUS_SRC_ALPHA: number & {
-		readonly _BLEND_: unique symbol;
+		readonly __brand: 'render.BLEND';
 	};
 
 	/**
 	 *
 	 */
 	export const BLEND_ONE_MINUS_SRC_COLOR: number & {
-		readonly _BLEND_: unique symbol;
+		readonly __brand: 'render.BLEND';
 	};
 
 	/**
 	 *
 	 */
-	export const BLEND_SRC_ALPHA: number & { readonly _BLEND_: unique symbol };
+	export const BLEND_SRC_ALPHA: number & { readonly __brand: 'render.BLEND' };
 
 	/**
 	 *
 	 */
 	export const BLEND_SRC_ALPHA_SATURATE: number & {
-		readonly _BLEND_: unique symbol;
+		readonly __brand: 'render.BLEND';
 	};
 
 	/**
 	 *
 	 */
-	export const BLEND_SRC_COLOR: number & { readonly _BLEND_: unique symbol };
+	export const BLEND_SRC_COLOR: number & { readonly __brand: 'render.BLEND' };
 
 	/**
 	 *
 	 */
-	export const BLEND_ZERO: number & { readonly _BLEND_: unique symbol };
+	export const BLEND_ZERO: number & { readonly __brand: 'render.BLEND' };
 
 	/**
 	 *
 	 */
-	export const BUFFER_COLOR0_BIT: number & { readonly _BUFFER_: unique symbol };
+	export const BUFFER_COLOR0_BIT: number & {
+		readonly __brand: 'render.BUFFER';
+	};
 
 	/**
 	 *
 	 */
-	export const BUFFER_COLOR1_BIT: number & { readonly _BUFFER_: unique symbol };
+	export const BUFFER_COLOR1_BIT: number & {
+		readonly __brand: 'render.BUFFER';
+	};
 
 	/**
 	 *
 	 */
-	export const BUFFER_COLOR2_BIT: number & { readonly _BUFFER_: unique symbol };
+	export const BUFFER_COLOR2_BIT: number & {
+		readonly __brand: 'render.BUFFER';
+	};
 
 	/**
 	 *
 	 */
-	export const BUFFER_COLOR3_BIT: number & { readonly _BUFFER_: unique symbol };
+	export const BUFFER_COLOR3_BIT: number & {
+		readonly __brand: 'render.BUFFER';
+	};
 
 	/**
 	 *
 	 */
-	export const BUFFER_COLOR_BIT: number & { readonly _BUFFER_: unique symbol };
+	export const BUFFER_COLOR_BIT: number & { readonly __brand: 'render.BUFFER' };
 
 	/**
 	 *
 	 */
-	export const BUFFER_DEPTH_BIT: number & { readonly _BUFFER_: unique symbol };
+	export const BUFFER_DEPTH_BIT: number & { readonly __brand: 'render.BUFFER' };
 
 	/**
 	 *
 	 */
 	export const BUFFER_STENCIL_BIT: number & {
-		readonly _BUFFER_: unique symbol;
+		readonly __brand: 'render.BUFFER';
 	};
 
 	/**
 	 *
 	 */
 	export const COMPARE_FUNC_ALWAYS: number & {
-		readonly _COMPARE_FUNC_: unique symbol;
+		readonly __brand: 'render.COMPARE_FUNC';
 	};
 
 	/**
 	 *
 	 */
 	export const COMPARE_FUNC_EQUAL: number & {
-		readonly _COMPARE_FUNC_: unique symbol;
+		readonly __brand: 'render.COMPARE_FUNC';
 	};
 
 	/**
 	 *
 	 */
 	export const COMPARE_FUNC_GEQUAL: number & {
-		readonly _COMPARE_FUNC_: unique symbol;
+		readonly __brand: 'render.COMPARE_FUNC';
 	};
 
 	/**
 	 *
 	 */
 	export const COMPARE_FUNC_GREATER: number & {
-		readonly _COMPARE_FUNC_: unique symbol;
+		readonly __brand: 'render.COMPARE_FUNC';
 	};
 
 	/**
 	 *
 	 */
 	export const COMPARE_FUNC_LEQUAL: number & {
-		readonly _COMPARE_FUNC_: unique symbol;
+		readonly __brand: 'render.COMPARE_FUNC';
 	};
 
 	/**
 	 *
 	 */
 	export const COMPARE_FUNC_LESS: number & {
-		readonly _COMPARE_FUNC_: unique symbol;
+		readonly __brand: 'render.COMPARE_FUNC';
 	};
 
 	/**
 	 *
 	 */
 	export const COMPARE_FUNC_NEVER: number & {
-		readonly _COMPARE_FUNC_: unique symbol;
+		readonly __brand: 'render.COMPARE_FUNC';
 	};
 
 	/**
 	 *
 	 */
 	export const COMPARE_FUNC_NOTEQUAL: number & {
-		readonly _COMPARE_FUNC_: unique symbol;
+		readonly __brand: 'render.COMPARE_FUNC';
 	};
 
 	/**
 	 *
 	 */
-	export const FACE_BACK: number & { readonly _FACE_: unique symbol };
+	export const FACE_BACK: number & { readonly __brand: 'render.FACE' };
 
 	/**
 	 *
 	 */
-	export const FACE_FRONT: number & { readonly _FACE_: unique symbol };
+	export const FACE_FRONT: number & { readonly __brand: 'render.FACE' };
 
 	/**
 	 *
 	 */
-	export const FACE_FRONT_AND_BACK: number & { readonly _FACE_: unique symbol };
+	export const FACE_FRONT_AND_BACK: number & {
+		readonly __brand: 'render.FACE';
+	};
 
 	/**
 	 *
 	 */
-	export const FILTER_LINEAR: number & { readonly _FILTER_: unique symbol };
+	export const FILTER_LINEAR: number & { readonly __brand: 'render.FILTER' };
 
 	/**
 	 *
 	 */
-	export const FILTER_NEAREST: number & { readonly _FILTER_: unique symbol };
+	export const FILTER_NEAREST: number & { readonly __brand: 'render.FILTER' };
 
 	/**
 	 *
 	 */
-	export const FORMAT_DEPTH: number & { readonly _FORMAT_: unique symbol };
+	export const FORMAT_DEPTH: number & { readonly __brand: 'render.FORMAT' };
 
 	/**
 	 *
 	 */
-	export const FORMAT_LUMINANCE: number & { readonly _FORMAT_: unique symbol };
+	export const FORMAT_LUMINANCE: number & { readonly __brand: 'render.FORMAT' };
 
 	/**
 	 * May be undefined if the format isn't supported
 	 */
 	export const FORMAT_R16F:
-		| (number & { readonly _FORMAT_: unique symbol })
+		| (number & { readonly __brand: 'render.FORMAT' })
 		| undefined;
 
 	/**
 	 * May be undefined if the format isn't supported
 	 */
 	export const FORMAT_R32F:
-		| (number & { readonly _FORMAT_: unique symbol })
+		| (number & { readonly __brand: 'render.FORMAT' })
 		| undefined;
 
 	/**
 	 * May be undefined if the format isn't supported
 	 */
 	export const FORMAT_RG16F:
-		| (number & { readonly _FORMAT_: unique symbol })
+		| (number & { readonly __brand: 'render.FORMAT' })
 		| undefined;
 
 	/**
 	 * May be undefined if the format isn't supported
 	 */
 	export const FORMAT_RG32F:
-		| (number & { readonly _FORMAT_: unique symbol })
+		| (number & { readonly __brand: 'render.FORMAT' })
 		| undefined;
 
 	/**
 	 *
 	 */
-	export const FORMAT_RGB: number & { readonly _FORMAT_: unique symbol };
+	export const FORMAT_RGB: number & { readonly __brand: 'render.FORMAT' };
 
 	/**
 	 * May be undefined if the format isn't supported
 	 */
 	export const FORMAT_RGB16F:
-		| (number & { readonly _FORMAT_: unique symbol })
+		| (number & { readonly __brand: 'render.FORMAT' })
 		| undefined;
 
 	/**
 	 * May be undefined if the format isn't supported
 	 */
 	export const FORMAT_RGB32F:
-		| (number & { readonly _FORMAT_: unique symbol })
+		| (number & { readonly __brand: 'render.FORMAT' })
 		| undefined;
 
 	/**
 	 *
 	 */
-	export const FORMAT_RGBA: number & { readonly _FORMAT_: unique symbol };
+	export const FORMAT_RGBA: number & { readonly __brand: 'render.FORMAT' };
 
 	/**
 	 * May be undefined if the format isn't supported
 	 */
 	export const FORMAT_RGBA16F:
-		| (number & { readonly _FORMAT_: unique symbol })
+		| (number & { readonly __brand: 'render.FORMAT' })
 		| undefined;
 
 	/**
 	 * May be undefined if the format isn't supported
 	 */
 	export const FORMAT_RGBA32F:
-		| (number & { readonly _FORMAT_: unique symbol })
+		| (number & { readonly __brand: 'render.FORMAT' })
 		| undefined;
 
 	/**
 	 *
 	 */
-	export const FORMAT_STENCIL: number & { readonly _FORMAT_: unique symbol };
+	export const FORMAT_STENCIL: number & { readonly __brand: 'render.FORMAT' };
 
 	/**
 	 *
 	 */
 	export const FRUSTUM_PLANES_ALL: number & {
-		readonly _FRUSTUM_PLANES_: unique symbol;
+		readonly __brand: 'render.FRUSTUM_PLANES';
 	};
 
 	/**
 	 *
 	 */
 	export const FRUSTUM_PLANES_SIDES: number & {
-		readonly _FRUSTUM_PLANES_: unique symbol;
+		readonly __brand: 'render.FRUSTUM_PLANES';
 	};
 
 	/**
 	 *
 	 */
 	export const RENDER_TARGET_DEFAULT: number & {
-		readonly _RENDER_TARGET_DEFAULT: unique symbol;
+		readonly __brand: 'render.RENDER_TARGET';
 	};
 
 	/**
 	 *
 	 */
-	export const STATE_BLEND: number & { readonly _STATE_: unique symbol };
+	export const STATE_BLEND: number & { readonly __brand: 'render.STATE' };
 
 	/**
 	 *
 	 */
-	export const STATE_CULL_FACE: number & { readonly _STATE_: unique symbol };
+	export const STATE_CULL_FACE: number & { readonly __brand: 'render.STATE' };
 
 	/**
 	 *
 	 */
-	export const STATE_DEPTH_TEST: number & { readonly _STATE_: unique symbol };
+	export const STATE_DEPTH_TEST: number & { readonly __brand: 'render.STATE' };
 
 	/**
 	 *
 	 */
 	export const STATE_POLYGON_OFFSET_FILL: number & {
-		readonly _STATE_: unique symbol;
+		readonly __brand: 'render.STATE';
 	};
 
 	/**
 	 *
 	 */
-	export const STATE_STENCIL_TEST: number & { readonly _STATE_: unique symbol };
+	export const STATE_STENCIL_TEST: number & {
+		readonly __brand: 'render.STATE';
+	};
 
 	/**
 	 *
 	 */
-	export const STENCIL_OP_DECR: number & { readonly _STENCIL_: unique symbol };
+	export const STENCIL_OP_DECR: number & { readonly __brand: 'render.STENCIL' };
 
 	/**
 	 *
 	 */
 	export const STENCIL_OP_DECR_WRAP: number & {
-		readonly _STENCIL_: unique symbol;
+		readonly __brand: 'render.STENCIL';
 	};
 
 	/**
 	 *
 	 */
-	export const STENCIL_OP_INCR: number & { readonly _STENCIL_: unique symbol };
+	export const STENCIL_OP_INCR: number & { readonly __brand: 'render.STENCIL' };
 
 	/**
 	 *
 	 */
 	export const STENCIL_OP_INCR_WRAP: number & {
-		readonly _STENCIL_: unique symbol;
+		readonly __brand: 'render.STENCIL';
 	};
 
 	/**
 	 *
 	 */
 	export const STENCIL_OP_INVERT: number & {
-		readonly _STENCIL_: unique symbol;
+		readonly __brand: 'render.STENCIL';
 	};
 
 	/**
 	 *
 	 */
-	export const STENCIL_OP_KEEP: number & { readonly _STENCIL_: unique symbol };
+	export const STENCIL_OP_KEEP: number & { readonly __brand: 'render.STENCIL' };
 
 	/**
 	 *
 	 */
 	export const STENCIL_OP_REPLACE: number & {
-		readonly _STENCIL_: unique symbol;
+		readonly __brand: 'render.STENCIL';
 	};
 
 	/**
 	 *
 	 */
-	export const STENCIL_OP_ZERO: number & { readonly _STENCIL_: unique symbol };
+	export const STENCIL_OP_ZERO: number & { readonly __brand: 'render.STENCIL' };
 
 	/**
 	 *
 	 */
 	export const WRAP_CLAMP_TO_BORDER: number & {
-		readonly _WRAP_: unique symbol;
+		readonly __brand: 'render.WRAP';
 	};
 
 	/**
 	 *
 	 */
-	export const WRAP_CLAMP_TO_EDGE: number & { readonly _WRAP_: unique symbol };
+	export const WRAP_CLAMP_TO_EDGE: number & { readonly __brand: 'render.WRAP' };
 
 	/**
 	 *
 	 */
 	export const WRAP_MIRRORED_REPEAT: number & {
-		readonly _WRAP_: unique symbol;
+		readonly __brand: 'render.WRAP';
 	};
 
 	/**
 	 *
 	 */
-	export const WRAP_REPEAT: number & { readonly _WRAP_: unique symbol };
+	export const WRAP_REPEAT: number & { readonly __brand: 'render.WRAP' };
 
 	/**
 	* Clear buffers in the currently enabled render target with specified value. If the render target has been created with multiple
@@ -5906,215 +5908,217 @@ declare namespace resource {
 	 * BASIS_UASTC compression type
 	 */
 	export const COMPRESSION_TYPE_BASIS_UASTC: number & {
-		readonly _COMPRESSION_: unique symbol;
+		readonly __brand: 'resource.COMPRESSION';
 	};
 
 	/**
 	 * COMPRESSION_TYPE_DEFAULT compression type
 	 */
 	export const COMPRESSION_TYPE_DEFAULT: number & {
-		readonly _COMPRESSION_: unique symbol;
+		readonly __brand: 'resource.COMPRESSION';
 	};
 
 	/**
 	 * luminance type texture format
 	 */
 	export const TEXTURE_FORMAT_LUMINANCE: number & {
-		readonly _TEXTURE_: unique symbol;
+		readonly __brand: 'resource.TEXTURE';
 	};
 
 	/**
 	 * R16F type texture format
 	 */
 	export const TEXTURE_FORMAT_R16F: number & {
-		readonly _TEXTURE_: unique symbol;
+		readonly __brand: 'resource.TEXTURE';
 	};
 
 	/**
 	 * R32F type texture format
 	 */
 	export const TEXTURE_FORMAT_R32F: number & {
-		readonly _TEXTURE_: unique symbol;
+		readonly __brand: 'resource.TEXTURE';
 	};
 
 	/**
 	 * RG16F type texture format
 	 */
 	export const TEXTURE_FORMAT_RG16F: number & {
-		readonly _TEXTURE_: unique symbol;
+		readonly __brand: 'resource.TEXTURE';
 	};
 
 	/**
 	 * RG32F type texture format
 	 */
 	export const TEXTURE_FORMAT_RG32F: number & {
-		readonly _TEXTURE_: unique symbol;
+		readonly __brand: 'resource.TEXTURE';
 	};
 
 	/**
 	 * RGB type texture format
 	 */
 	export const TEXTURE_FORMAT_RGB: number & {
-		readonly _TEXTURE_: unique symbol;
+		readonly __brand: 'resource.TEXTURE';
 	};
 
 	/**
 	 * RGB16F type texture format
 	 */
 	export const TEXTURE_FORMAT_RGB16F: number & {
-		readonly _TEXTURE_: unique symbol;
+		readonly __brand: 'resource.TEXTURE';
 	};
 
 	/**
 	 * RGB32F type texture format
 	 */
 	export const TEXTURE_FORMAT_RGB32F: number & {
-		readonly _TEXTURE_: unique symbol;
+		readonly __brand: 'resource.TEXTURE';
 	};
 
 	/**
 	 * RGBA type texture format
 	 */
 	export const TEXTURE_FORMAT_RGBA: number & {
-		readonly _TEXTURE_: unique symbol;
+		readonly __brand: 'resource.TEXTURE';
 	};
 
 	/**
 	 * RGBA16F type texture format
 	 */
 	export const TEXTURE_FORMAT_RGBA16F: number & {
-		readonly _TEXTURE_: unique symbol;
+		readonly __brand: 'resource.TEXTURE';
 	};
 
 	/**
 	 * RGBA32F type texture format
 	 */
 	export const TEXTURE_FORMAT_RGBA32F: number & {
-		readonly _TEXTURE_: unique symbol;
+		readonly __brand: 'resource.TEXTURE';
 	};
 
 	/**
 	 * RGBA_ASTC_4x4 type texture format
 	 */
 	export const TEXTURE_FORMAT_RGBA_ASTC_4x4: number & {
-		readonly _TEXTURE_: unique symbol;
+		readonly __brand: 'resource.TEXTURE';
 	};
 
 	/**
 	 * RGBA_BC3 type texture format
 	 */
 	export const TEXTURE_FORMAT_RGBA_BC3: number & {
-		readonly _TEXTURE_: unique symbol;
+		readonly __brand: 'resource.TEXTURE';
 	};
 
 	/**
 	 * RGBA_BC7 type texture format
 	 */
 	export const TEXTURE_FORMAT_RGBA_BC7: number & {
-		readonly _TEXTURE_: unique symbol;
+		readonly __brand: 'resource.TEXTURE';
 	};
 
 	/**
 	 * RGBA_ETC2 type texture format
 	 */
 	export const TEXTURE_FORMAT_RGBA_ETC2: number & {
-		readonly _TEXTURE_: unique symbol;
+		readonly __brand: 'resource.TEXTURE';
 	};
 
 	/**
 	 * RGBA_PVRTC_2BPPV1 type texture format
 	 */
 	export const TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1: number & {
-		readonly _TEXTURE_: unique symbol;
+		readonly __brand: 'resource.TEXTURE';
 	};
 
 	/**
 	 * RGBA_PVRTC_4BPPV1 type texture format
 	 */
 	export const TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1: number & {
-		readonly _TEXTURE_: unique symbol;
+		readonly __brand: 'resource.TEXTURE';
 	};
 
 	/**
 	 * RGB_BC1 type texture format
 	 */
 	export const TEXTURE_FORMAT_RGB_BC1: number & {
-		readonly _TEXTURE_: unique symbol;
+		readonly __brand: 'resource.TEXTURE';
 	};
 
 	/**
 	 * RGB_ETC1 type texture format
 	 */
 	export const TEXTURE_FORMAT_RGB_ETC1: number & {
-		readonly _TEXTURE_: unique symbol;
+		readonly __brand: 'resource.TEXTURE';
 	};
 
 	/**
 	 * RGB_PVRTC_2BPPV1 type texture format
 	 */
 	export const TEXTURE_FORMAT_RGB_PVRTC_2BPPV1: number & {
-		readonly _TEXTURE_: unique symbol;
+		readonly __brand: 'resource.TEXTURE';
 	};
 
 	/**
 	 * RGB_PVRTC_4BPPV1 type texture format
 	 */
 	export const TEXTURE_FORMAT_RGB_PVRTC_4BPPV1: number & {
-		readonly _TEXTURE_: unique symbol;
+		readonly __brand: 'resource.TEXTURE';
 	};
 
 	/**
 	 * RG_BC5 type texture format
 	 */
 	export const TEXTURE_FORMAT_RG_BC5: number & {
-		readonly _TEXTURE_: unique symbol;
+		readonly __brand: 'resource.TEXTURE';
 	};
 
 	/**
 	 * R_BC4 type texture format
 	 */
 	export const TEXTURE_FORMAT_R_BC4: number & {
-		readonly _TEXTURE_: unique symbol;
+		readonly __brand: 'resource.TEXTURE';
 	};
 
 	/**
 	 * 2D texture type
 	 */
-	export const TEXTURE_TYPE_2D: number & { readonly _TEXTURE_: unique symbol };
+	export const TEXTURE_TYPE_2D: number & {
+		readonly __brand: 'resource.TEXTURE';
+	};
 
 	/**
 	 * 2D Array texture type
 	 */
 	export const TEXTURE_TYPE_2D_ARRAY: number & {
-		readonly _TEXTURE_: unique symbol;
+		readonly __brand: 'resource.TEXTURE';
 	};
 
 	/**
 	 * Cube map texture type
 	 */
 	export const TEXTURE_TYPE_CUBE_MAP: number & {
-		readonly _TEXTURE_: unique symbol;
+		readonly __brand: 'resource.TEXTURE';
 	};
 
 	/**
 	 * Usage hint for creating textures that uses temporary memory
 	 */
 	export const TEXTURE_USAGE_FLAG_MEMORYLESS: number & {
-		readonly _TEXTURE_: unique symbol;
+		readonly __brand: 'resource.TEXTURE';
 	};
 
 	/**
 	 * Usage hint for creating textures that can be sampled in a shader
 	 */
 	export const TEXTURE_USAGE_FLAG_SAMPLE: number & {
-		readonly _TEXTURE_: unique symbol;
+		readonly __brand: 'resource.TEXTURE';
 	};
 
 	/**
 	 * Usage hint for creating textures that can be used for writing in a shader
 	 */
 	export const TEXTURE_USAGE_FLAG_STORAGE: number & {
-		readonly _TEXTURE_: unique symbol;
+		readonly __brand: 'resource.TEXTURE';
 	};
 
 	/**
@@ -6624,20 +6628,22 @@ The hashed path to the attachment texture resource. This field is only available
 		}[];
 	};
 	export const BUFFER_TYPE_COLOR0: number & {
-		readonly _BUFFER_: unique symbol;
+		readonly __brand: 'resource.BUFFER_TYPE';
 	};
 	export const BUFFER_TYPE_COLOR1: number & {
-		readonly _BUFFER_: unique symbol;
+		readonly __brand: 'resource.BUFFER_TYPE';
 	};
 	export const BUFFER_TYPE_COLOR2: number & {
-		readonly _BUFFER_: unique symbol;
+		readonly __brand: 'resource.BUFFER_TYPE';
 	};
 	export const BUFFER_TYPE_COLOR3: number & {
-		readonly _BUFFER_: unique symbol;
+		readonly __brand: 'resource.BUFFER_TYPE';
 	};
-	export const BUFFER_TYPE_DEPTH: number & { readonly _BUFFER_: unique symbol };
+	export const BUFFER_TYPE_DEPTH: number & {
+		readonly __brand: 'resource.BUFFER_TYPE';
+	};
 	export const BUFFER_TYPE_STENCIL: number & {
-		readonly _BUFFER_: unique symbol;
+		readonly __brand: 'resource.BUFFER_TYPE';
 	};
 
 	/**
@@ -7113,43 +7119,41 @@ declare namespace sys {
 	/**
 	 * network connected through other, non cellular, connection
 	 */
-	export const NETWORK_CONNECTED: number & {
-		readonly _NETWORK_: unique symbol;
-	};
+	export const NETWORK_CONNECTED: number & { readonly __brand: 'sys.NETWORK' };
 
 	/**
 	 * network connected through mobile cellular
 	 */
 	export const NETWORK_CONNECTED_CELLULAR: number & {
-		readonly _NETWORK_: unique symbol;
+		readonly __brand: 'sys.NETWORK';
 	};
 
 	/**
 	 * no network connection found
 	 */
 	export const NETWORK_DISCONNECTED: number & {
-		readonly _NETWORK_: unique symbol;
+		readonly __brand: 'sys.NETWORK';
 	};
 
 	/**
 	 * an asyncronous request is unable to read the resource
 	 */
 	export const REQUEST_STATUS_ERROR_IO_ERROR: number & {
-		readonly _REQUEST_: unique symbol;
+		readonly __brand: 'sys.REQUEST';
 	};
 
 	/**
 	 * an asyncronous request is unable to locate the resource
 	 */
 	export const REQUEST_STATUS_ERROR_NOT_FOUND: number & {
-		readonly _REQUEST_: unique symbol;
+		readonly __brand: 'sys.REQUEST';
 	};
 
 	/**
 	 * an asyncronous request has finished successfully
 	 */
 	export const REQUEST_STATUS_FINISHED: number & {
-		readonly _REQUEST_: unique symbol;
+		readonly __brand: 'sys.REQUEST';
 	};
 
 	/**
@@ -7464,7 +7468,7 @@ If the request was successfull, this will contain the request payload in a buffe
 	*/
 	export function open_url(
 		url: string,
-		attributes?: { target?: string | '_blank' | '_parent' | '_self' | '_top' },
+		attributes?: { target?: string },
 	): boolean;
 
 	/**
@@ -7596,51 +7600,51 @@ declare namespace window {
 	/**
 	 * dimming mode off
 	 */
-	export const DIMMING_OFF: number & { readonly _DIMMING_: unique symbol };
+	export const DIMMING_OFF: number & { readonly __brand: 'window.DIMMING' };
 
 	/**
 	 * dimming mode on
 	 */
-	export const DIMMING_ON: number & { readonly _DIMMING_: unique symbol };
+	export const DIMMING_ON: number & { readonly __brand: 'window.DIMMING' };
 
 	/**
 	 * dimming mode unknown
 	 */
-	export const DIMMING_UNKNOWN: number & { readonly _DIMMING_: unique symbol };
+	export const DIMMING_UNKNOWN: number & { readonly __brand: 'window.DIMMING' };
 
 	/**
 	 * deiconified window event
 	 */
 	export const WINDOW_EVENT_DEICONIFIED: number & {
-		readonly _WINDOW_EVENT_: unique symbol;
+		readonly __brand: 'window.WINDOW_EVENT';
 	};
 
 	/**
 	 * focus gained window event
 	 */
 	export const WINDOW_EVENT_FOCUS_GAINED: number & {
-		readonly _WINDOW_EVENT_: unique symbol;
+		readonly __brand: 'window.WINDOW_EVENT';
 	};
 
 	/**
 	 * focus lost window event
 	 */
 	export const WINDOW_EVENT_FOCUS_LOST: number & {
-		readonly _WINDOW_EVENT_: unique symbol;
+		readonly __brand: 'window.WINDOW_EVENT';
 	};
 
 	/**
 	 * iconify window event
 	 */
 	export const WINDOW_EVENT_ICONFIED: number & {
-		readonly _WINDOW_EVENT_: unique symbol;
+		readonly __brand: 'window.WINDOW_EVENT';
 	};
 
 	/**
 	 * resized window event
 	 */
 	export const WINDOW_EVENT_RESIZED: number & {
-		readonly _WINDOW_EVENT_: unique symbol;
+		readonly __brand: 'window.WINDOW_EVENT';
 	};
 
 	/**
@@ -7741,63 +7745,63 @@ declare namespace buffer {
 	 * float32
 	 */
 	export const VALUE_TYPE_FLOAT32: number & {
-		readonly _VALUE_TYPE_: unique symbol;
+		readonly __brand: 'buffer.VALUE_TYPE';
 	};
 
 	/**
 	 * int16
 	 */
 	export const VALUE_TYPE_INT16: number & {
-		readonly _VALUE_TYPE_: unique symbol;
+		readonly __brand: 'buffer.VALUE_TYPE';
 	};
 
 	/**
 	 * int32
 	 */
 	export const VALUE_TYPE_INT32: number & {
-		readonly _VALUE_TYPE_: unique symbol;
+		readonly __brand: 'buffer.VALUE_TYPE';
 	};
 
 	/**
 	 * int64
 	 */
 	export const VALUE_TYPE_INT64: number & {
-		readonly _VALUE_TYPE_: unique symbol;
+		readonly __brand: 'buffer.VALUE_TYPE';
 	};
 
 	/**
 	 * int8
 	 */
 	export const VALUE_TYPE_INT8: number & {
-		readonly _VALUE_TYPE_: unique symbol;
+		readonly __brand: 'buffer.VALUE_TYPE';
 	};
 
 	/**
 	 * uint16
 	 */
 	export const VALUE_TYPE_UINT16: number & {
-		readonly _VALUE_TYPE_: unique symbol;
+		readonly __brand: 'buffer.VALUE_TYPE';
 	};
 
 	/**
 	 * uint32
 	 */
 	export const VALUE_TYPE_UINT32: number & {
-		readonly _VALUE_TYPE_: unique symbol;
+		readonly __brand: 'buffer.VALUE_TYPE';
 	};
 
 	/**
 	 * uint64
 	 */
 	export const VALUE_TYPE_UINT64: number & {
-		readonly _VALUE_TYPE_: unique symbol;
+		readonly __brand: 'buffer.VALUE_TYPE';
 	};
 
 	/**
 	 * uint8
 	 */
 	export const VALUE_TYPE_UINT8: number & {
-		readonly _VALUE_TYPE_: unique symbol;
+		readonly __brand: 'buffer.VALUE_TYPE';
 	};
 
 	/**
@@ -8228,7 +8232,7 @@ declare namespace timer {
 	 * Indicates an invalid timer handle
 	 */
 	export const INVALID_TIMER_HANDLE: number & {
-		readonly _INVALID_TIMER_: unique symbol;
+		readonly __brand: 'timer.INVALID_TIMER_HANDLE';
 	};
 
 	/**
@@ -9089,17 +9093,23 @@ declare namespace collectionfactory {
 	/**
 	 * loaded
 	 */
-	export const STATUS_LOADED: number & { readonly _STATUS_: unique symbol };
+	export const STATUS_LOADED: number & {
+		readonly __brand: 'collectionFactory.STATUS';
+	};
 
 	/**
 	 * loading
 	 */
-	export const STATUS_LOADING: number & { readonly _STATUS_: unique symbol };
+	export const STATUS_LOADING: number & {
+		readonly __brand: 'collectionFactory.STATUS';
+	};
 
 	/**
 	 * unloaded
 	 */
-	export const STATUS_UNLOADED: number & { readonly _STATUS_: unique symbol };
+	export const STATUS_UNLOADED: number & {
+		readonly __brand: 'collectionFactory.STATUS';
+	};
 
 	/**
 	 * The URL identifies the collectionfactory component that should do the spawning.
@@ -9297,17 +9307,17 @@ declare namespace factory {
 	/**
 	 * loaded
 	 */
-	export const STATUS_LOADED: number & { readonly _STATUS_: unique symbol };
+	export const STATUS_LOADED: number & { readonly __brand: 'factory.STATUS' };
 
 	/**
 	 * loading
 	 */
-	export const STATUS_LOADING: number & { readonly _STATUS_: unique symbol };
+	export const STATUS_LOADING: number & { readonly __brand: 'factory.STATUS' };
 
 	/**
 	 * unloaded
 	 */
-	export const STATUS_UNLOADED: number & { readonly _STATUS_: unique symbol };
+	export const STATUS_UNLOADED: number & { readonly __brand: 'factory.STATUS' };
 
 	/**
 	 * The URL identifies which factory should create the game object.
@@ -9649,28 +9659,28 @@ declare namespace particlefx {
 	 * postspawn state
 	 */
 	export const EMITTER_STATE_POSTSPAWN: number & {
-		readonly _EMITTER_STATE_: unique symbol;
+		readonly __brand: 'particlefx.EMITTER_STATE';
 	};
 
 	/**
 	 * prespawn state
 	 */
 	export const EMITTER_STATE_PRESPAWN: number & {
-		readonly _EMITTER_STATE_: unique symbol;
+		readonly __brand: 'particlefx.EMITTER_STATE';
 	};
 
 	/**
 	 * sleeping state
 	 */
 	export const EMITTER_STATE_SLEEPING: number & {
-		readonly _EMITTER_STATE_: unique symbol;
+		readonly __brand: 'particlefx.EMITTER_STATE';
 	};
 
 	/**
 	 * spawning state
 	 */
 	export const EMITTER_STATE_SPAWNING: number & {
-		readonly _EMITTER_STATE_: unique symbol;
+		readonly __brand: 'particlefx.EMITTER_STATE';
 	};
 
 	/**
@@ -10198,27 +10208,27 @@ declare namespace tilemap {
 	/**
 	 * flip tile horizontally
 	 */
-	export const H_FLIP: number & { readonly __FLIP_: unique symbol };
+	export const H_FLIP: number & { readonly __brand: 'tilemap.H_FLIP' };
 
 	/**
 	 * rotate tile 180 degrees clockwise
 	 */
-	export const ROTATE_180: number & { readonly _ROTATE_: unique symbol };
+	export const ROTATE_180: number & { readonly __brand: 'tilemap.ROTATE' };
 
 	/**
 	 * rotate tile 270 degrees clockwise
 	 */
-	export const ROTATE_270: number & { readonly _ROTATE_: unique symbol };
+	export const ROTATE_270: number & { readonly __brand: 'tilemap.ROTATE' };
 
 	/**
 	 * rotate tile 90 degrees clockwise
 	 */
-	export const ROTATE_90: number & { readonly _ROTATE_: unique symbol };
+	export const ROTATE_90: number & { readonly __brand: 'tilemap.ROTATE' };
 
 	/**
 	 * flip tile vertically
 	 */
-	export const V_FLIP: number & { readonly __FLIP_: unique symbol };
+	export const V_FLIP: number & { readonly __brand: 'tilemap.V_FLIP' };
 
 	/**
 	 * Get the bounds for a tile map. This function returns multiple values:

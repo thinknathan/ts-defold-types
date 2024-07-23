@@ -11,12 +11,12 @@ export const go = [
 	// (greedy)
 	[
 		/let (EASING_.+): any/g,
-		'const $1: number & { readonly _EASING_: unique symbol }',
+		'const $1: number & { readonly __brand: "go.EASING" }',
 	],
 	// (greedy)
 	[
 		/let (PLAYBACK_.+): any/g,
-		'const $1: number & { readonly _PLAYBACK_: unique symbol }',
+		'const $1: number & { readonly __brand: "go.PLAYBACK" }',
 	],
 	[
 		'function delete$(id?: any, recursive?: boolean)',

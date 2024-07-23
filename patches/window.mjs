@@ -5,12 +5,12 @@ export const windowChanges = [
 	// (greedy)
 	[
 		/let (DIMMING_.+): any/g,
-		'const $1: number & { readonly _DIMMING_: unique symbol }',
+		'const $1: number & { readonly __brand: "window.DIMMING" }',
 	],
 	// (greedy)
 	[
 		/let (WINDOW_EVENT_.+): any/g,
-		'const $1: number & { readonly _WINDOW_EVENT_: unique symbol }',
+		'const $1: number & { readonly __brand: "window.WINDOW_EVENT" }',
 	],
 	[
 		'function get_dim_mode(): any',

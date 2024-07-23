@@ -5,7 +5,7 @@ export const factory = [
 	// (greedy)
 	[
 		/let (STATUS_.+): any/g,
-		'const $1: number & { readonly _STATUS_: unique symbol }',
+		'const $1: number & { readonly __brand: "factory.STATUS" }',
 	],
 	[
 		'function get_status(url?: string | hash | url): any',

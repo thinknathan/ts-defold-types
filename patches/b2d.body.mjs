@@ -29,7 +29,7 @@ export const b2dBody = [
 	// (greedy)
 	[
 		/let (B2_.+): any/g,
-		'const $1: number & { readonly _B2DBODY_: unique symbol }',
+		'const $1: number & { readonly __brand: "b2d.body.B2" }',
 	],
 	// (greedy)
 	[/body: any/g, 'body: typeof b2d.body'],

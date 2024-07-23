@@ -6,6 +6,7 @@
 - Fixed `gui.animate` signature
 - Added `@see` documentation comments for each namespace and function
 - Added operator map type methods to `vmath`
+- Reduced use of `unique symbol` in branded types
 
 ## v1.9.0
 

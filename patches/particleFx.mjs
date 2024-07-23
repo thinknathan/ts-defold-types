@@ -5,7 +5,7 @@ export const particleFx = [
 	// (greedy)
 	[
 		/let (EMITTER_STATE_.+): any/g,
-		'const $1: number & { readonly _EMITTER_STATE_: unique symbol }',
+		'const $1: number & { readonly __brand: "particlefx.EMITTER_STATE" }',
 	],
 	// function play
 	[

@@ -21,7 +21,7 @@ export default tseslint.config(
 		},
 		rules: {
 			'no-mixed-spaces-and-tabs': 'off',
-			'@typescript-eslint/no-redundant-type-constituents': 'off',
+			'@typescript-eslint/no-redundant-type-constituents': 'warn',
 			'@typescript-eslint/no-explicit-any': 'off',
 			'@typescript-eslint/sort-type-constituents': 'warn',
 		},

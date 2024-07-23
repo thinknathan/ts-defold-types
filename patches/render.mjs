@@ -5,90 +5,90 @@ export const render = [
 	// (greedy)
 	[
 		/let (BLEND_.+): any/g,
-		'const $1: number & { readonly _BLEND_: unique symbol }',
+		'const $1: number & { readonly __brand: "render.BLEND" }',
 	],
 	// (greedy)
 	[
 		/let (BUFFER_.+): any/g,
-		'const $1: number & { readonly _BUFFER_: unique symbol }',
+		'const $1: number & { readonly __brand: "render.BUFFER" }',
 	],
 	// (greedy)
 	[
 		/let (COMPARE_FUNC_.+): any/g,
-		'const $1: number & { readonly _COMPARE_FUNC_: unique symbol }',
+		'const $1: number & { readonly __brand: "render.COMPARE_FUNC" }',
 	],
 	// (greedy)
 	[
 		/let (FACE_.+): any/g,
-		'const $1: number & { readonly _FACE_: unique symbol }',
+		'const $1: number & { readonly __brand: "render.FACE" }',
 	],
 	// (greedy)
 	[
 		/let (FILTER_.+): any/g,
-		'const $1: number & { readonly _FILTER_: unique symbol }',
+		'const $1: number & { readonly __brand: "render.FILTER" }',
 	],
 	// (greedy)
 	[/(render_target): any/g, '$1: rendertarget'],
 	[
 		'let FORMAT_R16F: any',
-		'const FORMAT_R16F: number & { readonly _FORMAT_: unique symbol } | undefined',
+		'const FORMAT_R16F: number & { readonly __brand: "render.FORMAT" } | undefined',
 	],
 	[
 		'let FORMAT_R32F: any',
-		'const FORMAT_R32F: number & { readonly _FORMAT_: unique symbol } | undefined',
+		'const FORMAT_R32F: number & { readonly __brand: "render.FORMAT" } | undefined',
 	],
 	[
 		'let FORMAT_RG16F: any',
-		'const FORMAT_RG16F: number & { readonly _FORMAT_: unique symbol } | undefined',
+		'const FORMAT_RG16F: number & { readonly __brand: "render.FORMAT" } | undefined',
 	],
 	[
 		'let FORMAT_RG32F: any',
-		'const FORMAT_RG32F: number & { readonly _FORMAT_: unique symbol } | undefined',
+		'const FORMAT_RG32F: number & { readonly __brand: "render.FORMAT" } | undefined',
 	],
 	[
 		'let FORMAT_RGB16F: any',
-		'const FORMAT_RGB16F: number & { readonly _FORMAT_: unique symbol } | undefined',
+		'const FORMAT_RGB16F: number & { readonly __brand: "render.FORMAT" } | undefined',
 	],
 	[
 		'let FORMAT_RGB32F: any',
-		'const FORMAT_RGB32F: number & { readonly _FORMAT_: unique symbol } | undefined',
+		'const FORMAT_RGB32F: number & { readonly __brand: "render.FORMAT" } | undefined',
 	],
 	[
 		'let FORMAT_RGBA16F: any',
-		'const FORMAT_RGBA16F: number & { readonly _FORMAT_: unique symbol } | undefined',
+		'const FORMAT_RGBA16F: number & { readonly __brand: "render.FORMAT" } | undefined',
 	],
 	[
 		'let FORMAT_RGBA32F: any',
-		'const FORMAT_RGBA32F: number & { readonly _FORMAT_: unique symbol } | undefined',
+		'const FORMAT_RGBA32F: number & { readonly __brand: "render.FORMAT" } | undefined',
 	],
 	// (greedy)
 	[
 		/let (FORMAT_.+): any/g,
-		'const $1: number & { readonly _FORMAT_: unique symbol }',
+		'const $1: number & { readonly __brand: "render.FORMAT" }',
 	],
 	// (greedy)
 	[
 		/let (FRUSTUM_PLANES_.+): any/g,
-		'const $1: number & { readonly _FRUSTUM_PLANES_: unique symbol }',
+		'const $1: number & { readonly __brand: "render.FRUSTUM_PLANES" }',
 	],
 	[
 		'let RENDER_TARGET_DEFAULT: any',
-		'const RENDER_TARGET_DEFAULT: number & { readonly _RENDER_TARGET_DEFAULT: unique symbol }',
+		'const RENDER_TARGET_DEFAULT: number & { readonly __brand: "render.RENDER_TARGET" }',
 	],
 	// (greedy)
 	[
 		/let (STATE_.+): any/g,
-		'const $1: number & { readonly _STATE_: unique symbol }',
+		'const $1: number & { readonly __brand: "render.STATE" }',
 	],
 	// (greedy)
 	[
 		/let (STENCIL_.+): any/g,
-		'const $1: number & { readonly _STENCIL_: unique symbol }',
+		'const $1: number & { readonly __brand: "render.STENCIL" }',
 	],
 	// (greedy)
 	[
 		/let (WRAP_.+): any/g,
-		'const $1: number & { readonly _WRAP_: unique symbol }',
+		'const $1: number & { readonly __brand: "render.WRAP" }',
 	],
 	[
 		'function disable_state(state: any',

@@ -13,17 +13,22 @@ export const physics = [
 	],
 	[
 		'function get_shape(url: string | hash | url, shape: string | hash): any',
-		'function get_shape(url: hash | url | string, shape: hash | string): { type: SHAPE_TYPE_SPHERE | SHAPE_TYPE_BOX | SHAPE_TYPE_CAPSULE | SHAPE_TYPE_HULL, diameter?: number, dimensions?: vmath.vector3, height?: number }; export type SHAPE_TYPE_SPHERE = { readonly _shape_: unique symbol }; export type SHAPE_TYPE_BOX = { readonly _shape_: unique symbol };\n/** 3D Physics Only */\nexport type SHAPE_TYPE_CAPSULE = { readonly _shape_: unique symbol }; export type SHAPE_TYPE_HULL = { readonly _shape_: unique symbol };',
+		`function get_shape(url: hash | url | string, shape: hash | string): { type: SHAPE_TYPE_SPHERE | SHAPE_TYPE_BOX | SHAPE_TYPE_CAPSULE | SHAPE_TYPE_HULL, diameter?: number, dimensions?: vmath.vector3, height?: number };
+		export type SHAPE_TYPE_SPHERE = number & { readonly __brand: "physics.SHAPE_TYPE" };
+		export type SHAPE_TYPE_BOX = number & { readonly __brand: "physics.SHAPE_TYPE" };
+		/** 3D Physics Only */
+		export type SHAPE_TYPE_CAPSULE = number & { readonly __brand: "physics.SHAPE_TYPE" };
+		export type SHAPE_TYPE_HULL = number & { readonly __brand: "physics.SHAPE_TYPE" };`,
 	],
 	// (greedy)
 	[
 		/let (JOINT_TYPE.+): any/g,
-		'const $1: number & { readonly _JOINT_TYPE_: unique symbol }',
+		'const $1: number & { readonly __brand: "physics.JOINT_TYPE" }',
 	],
 	// (greedy)
 	[
 		/let (SHAPE_TYPE.+): any/g,
-		'const $1: number & { readonly _SHAPE_TYPE_: unique symbol }',
+		'const $1: number & { readonly __brand: "physics.SHAPE_TYPE" }',
 	],
 	[
 		// function create_joint

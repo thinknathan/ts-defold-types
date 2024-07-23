@@ -5,12 +5,12 @@ export const crash = [
 	// (greedy)
 	[
 		/let (SYSFIELD_.+): any/g,
-		'const $1: number & { readonly _SYSFIELD_: unique symbol }',
+		'const $1: number & { readonly __brand: "crash.SYSFIELD" }',
 	],
 	// (greedy)
 	[
 		/let (USERFIELD_.+): any/g,
-		'const $1: number & { readonly _USERFIELD_: unique symbol }',
+		'const $1: number & { readonly __brand: "crash.USERFIELD" }',
 	],
 	[
 		'get_sys_field(handle: number, index: number): LuaMultiReturn<[string, any]>',

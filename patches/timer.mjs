@@ -4,7 +4,7 @@
 export const timer = [
 	[
 		'let INVALID_TIMER_HANDLE: any',
-		'const INVALID_TIMER_HANDLE: number & { readonly _INVALID_TIMER_: unique symbol }',
+		'const INVALID_TIMER_HANDLE: number & { readonly __brand: "timer.INVALID_TIMER_HANDLE" }',
 	],
 	// function delay
 	[

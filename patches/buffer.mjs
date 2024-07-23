@@ -5,7 +5,7 @@ export const bufferChanges = [
 	// (greedy)
 	[
 		/let (VALUE_TYPE_.+): any/g,
-		'const $1: number & { readonly _VALUE_TYPE_: unique symbol }',
+		'const $1: number & { readonly __brand: "buffer.VALUE_TYPE" }',
 	],
 	[
 		'function create(element_count: number, declaration: any)',

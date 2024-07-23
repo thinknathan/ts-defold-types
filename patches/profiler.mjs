@@ -5,12 +5,12 @@ export const profiler = [
 	// (greedy)
 	[
 		/let (MODE_.+): any/g,
-		'const $1: number & { readonly _MODE_: unique symbol }',
+		'const $1: number & { readonly __brand: "profiler.MODE" }',
 	],
 	// (greedy)
 	[
 		/let (VIEW_MODE_.+): any/g,
-		'const $1: number & { readonly _VIEW_MODE_: unique symbol }',
+		'const $1: number & { readonly __brand: "profiler.VIEW_MODE" }',
 	],
 	[
 		'function set_ui_mode(mode: any',

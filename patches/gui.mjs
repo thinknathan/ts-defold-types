@@ -7,62 +7,62 @@ export const gui = [
 	// (greedy)
 	[
 		/let (EASING_.+): any/g,
-		'const $1: number & { readonly _EASING_: unique symbol }',
+		'const $1: number & { readonly __brand: "gui.EASING" }',
 	],
 	// (greedy)
 	[
 		/let (PLAYBACK_.+): any/g,
-		'const $1: number & { readonly _PLAYBACK_: unique symbol }',
+		'const $1: number & { readonly __brand: "gui.PLAYBACK" }',
 	],
 	// (greedy)
 	[
 		/let (ADJUST_.+): any/g,
-		'const $1: number & { readonly _ADJUST_: unique symbol }',
+		'const $1: number & { readonly __brand: "gui.ADJUST" }',
 	],
 	// (greedy)
 	[
 		/let (ANCHOR_.+): any/g,
-		'const $1: number & { readonly _ANCHOR_: unique symbol }',
+		'const $1: number & { readonly __brand: "gui.ANCHOR" }',
 	],
 	// (greedy)
 	[
 		/let (BLEND_.+): any/g,
-		'const $1: number & { readonly _BLEND_: unique symbol }',
+		'const $1: number & { readonly __brand: "gui.BLEND" }',
 	],
 	// (greedy)
 	[
 		/let (CLIPPING_MODE_.+): any/g,
-		'const $1: number & { readonly _CLIPPING_MODE_: unique symbol }',
+		'const $1: number & { readonly __brand: "gui.CLIPPING_MODE" }',
 	],
 	// (greedy)
 	[
 		/let (KEYBOARD_TYPE_.+): any/g,
-		'const $1: number & { readonly _KEYBOARD_TYPE_: unique symbol }',
+		'const $1: number & { readonly __brand: "gui.KEYBOARD_TYPE" }',
 	],
 	// (greedy)
 	[
 		/let (PIEBOUNDS_.+): any/g,
-		'const $1: number & { readonly _PIEBOUNDS_: unique symbol }',
+		'const $1: number & { readonly __brand: "gui.PIEBOUNDS" }',
 	],
 	// (greedy)
 	[
 		/let (PIVOT_.+): any/g,
-		'const $1: number & { readonly _PIVOT_: unique symbol }',
+		'const $1: number & { readonly __brand: "gui.PIVOT" }',
 	],
 	// (greedy)
 	[
 		/let (PROP_.+): any/g,
-		'const $1: string & { readonly _PROP_: unique symbol }',
+		'const $1: string & { readonly __brand: "gui.PROP" }',
 	],
 	// (greedy)
 	[
 		/let (RESULT_.+): any/g,
-		'const $1: number & { readonly _RESULT_: unique symbol }',
+		'const $1: number & { readonly __brand: "gui.RESULT" }',
 	],
 	// (greedy)
 	[
 		/let (SIZE_MODE_.+): any/g,
-		'const $1: number & { readonly _SIZE_MODE_: unique symbol }',
+		'const $1: number & { readonly __brand: "gui.SIZE_MODE" }',
 	],
 	// function animate
 	[

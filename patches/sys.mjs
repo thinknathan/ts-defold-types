@@ -5,12 +5,12 @@ export const sys = [
 	// (greedy)
 	[
 		/let (NETWORK_.+): any/g,
-		'const $1: number & { readonly _NETWORK_: unique symbol }',
+		'const $1: number & { readonly __brand: "sys.NETWORK" }',
 	],
 	// greedy
 	[
 		/let (REQUEST_.+): any/g,
-		'const $1: number & { readonly _REQUEST_: unique symbol }',
+		'const $1: number & { readonly __brand: "sys.REQUEST" }',
 	],
 	[
 		'function load_buffer_async(path: string, status_callback: any)',
@@ -46,7 +46,7 @@ export const sys = [
 	],
 	[
 		'function open_url(url: string, attributes?: any)',
-		'function open_url(url: string, attributes?: { target?: "_self" | "_blank" | "_parent" | "_top" | string })',
+		'function open_url(url: string, attributes?: { target?: string })',
 	],
 	// Remove overloaded function
 	['export function load_resource(filename: string): any', ''],
