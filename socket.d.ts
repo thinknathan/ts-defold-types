@@ -9,15 +9,12 @@ declare namespace socket {
 	type SuccessOrFailure<T> = LuaMultiReturn<
 		[T | undefined, string | undefined]
 	>;
-	type Family = 'inet' | 'inet6';
 
 	type TCP = TCPClient & TCPMaster & TCPServer;
-	type UDP = UDPConnected & UDPUnconnected;
-
 	type TCPReceivePattern = number | '*a' | '*l';
 	type TCPReceiveError = 'closed' | 'timeout';
 	type TCPShutdownMode = 'both' | 'receive' | 'send';
-	type TCPOption =
+	type TCPOptions =
 		| 'ipv6-v6only'
 		| 'keepalive'
 		| 'linger'
@@ -25,12 +22,7 @@ declare namespace socket {
 		| 'tcp-nodelay';
 	type TCPTimeoutMode = 'b' | 't';
 
-	interface TCPLingerOption {
-		on: boolean;
-		timeout: number;
-	}
-	type TCPLinger = 'linger';
-
+	type UDP = UDPConnected & UDPUnconnected;
 	type UDPOptions =
 		| 'broadcast'
 		| 'dontroute'
@@ -42,7 +34,6 @@ declare namespace socket {
 		| 'ipv6-v6only'
 		| 'reuseaddr'
 		| 'reuseport';
-	type UDPTimeout = 'timeout';
 
 	/**
 	 * This constant has a string describing the current LuaSocket version.
@@ -67,7 +58,6 @@ declare namespace socket {
 	 * @param family optional socket family to use, "inet" or "inet6".
 	 * @returns a new IPv6 TCP client object, or undefined in case of error.
 	 * @returns the error message, or undefined if no error occurred.
-	 * @no
 	 */
 	export function connect(
 		this: void,
@@ -75,7 +65,7 @@ declare namespace socket {
 		port: number,
 		locaddr?: string,
 		locport?: number,
-		family?: Family,
+		family?: 'inet' | 'inet6',
 	): SuccessOrFailure<TCP>;
 
 	/** @noSelf */
@@ -228,10 +218,10 @@ declare namespace socket {
 	 */
 	export function select(
 		this: void,
-		recvt: Table,
-		sendt: Table,
+		recvt: any[] | undefined,
+		sendt: any[] | undefined,
 		timeout?: number,
-	): LuaMultiReturn<[Table, Table, string | undefined]>;
+	): LuaMultiReturn<[unknown[], unknown[], 'timeout' | undefined]>;
 
 	/**
 	 * @param d is the number of arguments to drop.
@@ -311,7 +301,7 @@ declare namespace socket {
 		 * Gets options for the TCP object. See client:setoption for description of the option names and values.
 		 * @param option the name of the option to get
 		 */
-		getoption(option: TCPOption): SuccessOrFailure<unknown>;
+		getoption(option: TCPOptions): SuccessOrFailure<unknown>;
 
 		/**
 		 * Returns information about the remote side of a connected client object. It makes no sense to call this method on server objects.
@@ -400,7 +390,7 @@ If the 'on' field is set to true, the system will block the process on the close
 		 * @returns the value 1, or undefined in case of error.
 		 * @returns the error message, or undefined if no error occurred.
 		 */
-		setoption(option: TCPOption, value?: any): SuccessOrFailure<1>;
+		setoption(option: TCPOptions, value?: any): SuccessOrFailure<1>;
 
 		/**
 		 * Resets accounting information on the socket, useful for throttling of bandwidth.
@@ -462,7 +452,7 @@ If the 'on' field is set to true, the system will block the process on the close
 		 * @returns the option value, or undefined in case of error.
 		 * @returns the error message, or undefined if no error occurred.
 		 */
-		getoption(option: TCPOption): SuccessOrFailure<unknown>;
+		getoption(option: UDPOptions): SuccessOrFailure<unknown>;
 
 		/**
 		 * Retrieves information about the peer associated with a connected UDP object. It makes no sense to call this method on unconnected objects.
@@ -499,7 +489,7 @@ If the 'on' field is set to true, the system will block the process on the close
 		 * @returns the value 1 on success, or undefined in case of error.
 		 * @returns the error message, or undefined if no error occurred.
 		 */
-		setoption(option: TCPOption, value?: any): SuccessOrFailure<1>;
+		setoption(option: UDPOptions, value?: any): SuccessOrFailure<1>;
 
 		/**
 		 * Changes the peer of a UDP object. This method turns an unconnected UDP object into a connected UDP object or vice versa. For connected objects, outgoing datagrams will be sent to the specified peer, and datagrams received from other peers will be discarded by the OS. Connected UDP objects must use the send and receive methods instead of sendto and receivefrom. Since the address of the peer does not have to be passed to and from the OS, the use of connected UDP objects is recommended when the same peer is used for several transmissions and can result in up to 30% performance gains.
@@ -517,59 +507,278 @@ If the 'on' field is set to true, the system will block the process on the close
 	}
 
 	class TCPMaster {
-		bind(port: number, address: string): void;
+		/**
+		 * Binds a master object to address and port on the local host.
+		 * @param address an IP address or a host name. If address is "*", the system binds to all local interfaces using the INADDR_ANY constant.
+		 * @param port the port to commect to, in the range [0..64K). If port is 0, the system automatically chooses an ephemeral port.
+		 */
+		bind(address: string, port: number): SuccessOrFailure<1>;
+
+		/**
+		 * Closes the TCP object. The internal socket used by the object is closed and the local address to which the object was bound is made available to other applications. No further operations (except for further calls to the close method) are allowed on a closed socket. It is important to close all used sockets once they are not needed, since, in many systems, each socket uses a file descriptor, which are limited system resources. Garbage-collected objects are automatically closed before destruction, though.
+		 */
 		close(): void;
-		connect(address: string, port: number): LuaMultiReturn<[number, string]>;
-		dirty(): unknown; //WIP
-		getfd(): unknown;
-		getsockname(): LuaMultiReturn<[string, number]>;
-		getstats(): LuaMultiReturn<[number, number, number]>;
-		listen(port: number): LuaMultiReturn<[number, string]>;
-		setfd(): unknown;
-		setstats(rx: number, tx: number, err: number): number;
-		settimeout(timeout: number, mode: TCPTimeoutMode): void;
+
+		/**
+		 * Attempts to connect a master object to a remote host, transforming it into a client object. Client objects support methods send, receive, getsockname, getpeername, settimeout, and close. Note that the function socket.connect is available and is a shortcut for the creation of client sockets.
+		 * @param address an IP address or a host name. If address is "*", the system binds to all local interfaces using the INADDR_ANY constant.
+		 * @param port the port to commect to, in the range [0..64K). If port is 0, the system automatically chooses an ephemeral port.
+		 */
+		connect(address: string, port: number): SuccessOrFailure<1>;
+
+		/**
+		 * Check the read buffer status. This is an internal method, any use is unlikely to be portable.
+		 * @returns true if there is any data in the read buffer, false otherwise.
+		 */
+		dirty(): boolean;
+
+		/**
+		 * Returns the underlying socket descriptor or handle associated to the object. This is an internal method, any use is unlikely to be portable.
+		 * @returns the descriptor or handle. In case the object has been closed, the return will be -1.
+		 */
+		getfd(): number;
+
+		/**
+		 * Returns the local address information associated to the object.
+		 * @returns a string with local IP address, the local port number, and the family ("inet" or "inet6"). In case of error, the method returns undefined.
+		 */
+		getsockname(): string | undefined;
+
+		/**
+		 * Returns accounting information on the socket, useful for throttling of bandwidth.
+		 * @returns a string with the number of bytes received, the number of bytes sent, and the age of the socket object in seconds.
+		 */
+		getstats(): string;
+
+		/**
+		 * Specifies the socket is willing to receive connections, transforming the object into a server object. Server objects support the accept, getsockname, setoption, settimeout, and close methods.
+		 * @param backlog the number of client connections that can be queued waiting for service. If the queue is full and another client attempts connection, the connection is refused.
+		 */
+		listen(backlog: number): SuccessOrFailure<1>;
+
+		/**
+		 * Sets the underling socket descriptor or handle associated to the object. The current one is simply replaced, not closed, and no other change to the object state is made
+		 * @param handle the descriptor or handle to set.
+		 */
+		setfd(handle: number): void;
+
+		/**
+		 * Resets accounting information on the socket, useful for throttling of bandwidth.
+		 * @param received the new number of bytes received.
+		 * @param sent the new number of bytes sent.
+		 * @param age the new age in seconds.
+		 */
+		setstats(received: number, sent: number, age: number): 1 | undefined;
+
+		/**
+		 * Changes the timeout values for the object. By default, all I/O operations are blocking. That is, any call to the methods send, receive, and accept will block indefinitely, until the operation completes. The settimeout method defines a limit on the amount of time the I/O methods can block. When a timeout is set and the specified amount of time has elapsed, the affected methods give up and fail with an error code. There are two timeout modes and both can be used together for fine tuning. Although timeout values have millisecond precision in LuaSocket, large blocks can cause I/O functions not to respect timeout values due to the time the library takes to transfer blocks to and from the OS and to and from the Lua interpreter. Also, function that accept host names and perform automatic name resolution might be blocked by the resolver for longer than the specified timeout value.
+		 * @param value the amount of time to wait, in seconds. The undefined timeout value allows operations to block indefinitely. Negative timeout values have the same effect.
+		 * @param mode optional timeout mode to set:
+
+"b"
+    block timeout. Specifies the upper limit on the amount of time LuaSocket can be blocked by the operating system while waiting for completion of any single I/O operation. This is the default mode;
+"t"
+    total timeout. Specifies the upper limit on the amount of time LuaSocket can block a Lua script before returning from a call. 
+		 */
+		settimeout(value: number, mode?: TCPTimeoutMode): void;
 	}
+
 	class TCPServer {
-		accept(): LuaMultiReturn<[TCPClient, string]>;
+		/**
+		 * Waits for a remote connection on the server object and returns a client object representing that connection. Calling socket.select with a server object in the recvt parameter before a call to accept does not guarantee accept will return immediately. Use the settimeout method or accept might block until another client shows up.
+		 */
+		accept(): SuccessOrFailure<TCPClient>;
+
+		/**
+		 * Closes the TCP object. The internal socket used by the object is closed and the local address to which the object was bound is made available to other applications. No further operations (except for further calls to the close method) are allowed on a closed socket. It is important to close all used sockets once they are not needed, since, in many systems, each socket uses a file descriptor, which are limited system resources. Garbage-collected objects are automatically closed before destruction, though.
+		 */
 		close(): void;
-		dirty(): unknown;
-		getfd(): unknown;
-		getoption(): unknown;
-		getsockname(): LuaMultiReturn<[string, number]>;
-		getstats(): LuaMultiReturn<[number, number, number]>;
-		setfd(): unknown;
-		setoption(
-			option: UDPOptions,
-			value: boolean,
-		): LuaMultiReturn<[number, string]>;
-		setstats(rx: number, tx: number, err: number): number;
-		settimeout(timeout: number, mode: TCPTimeoutMode): void;
+
+		/**
+		 * Check the read buffer status. This is an internal method, any use is unlikely to be portable.
+		 * @returns true if there is any data in the read buffer, false otherwise.
+		 */
+		dirty(): boolean;
+
+		/**
+		 * Returns the underlying socket descriptor or handle associated to the object. This is an internal method, any use is unlikely to be portable.
+		 * @returns the descriptor or handle. In case the object has been closed, the return will be -1.
+		 */
+		getfd(): number;
+
+		/**
+		 * Gets options for the TCP object. See server:setoption for description of the option names and values.
+		 * @param option the name of the option to get:
+
+    "keepalive"
+    "linger"
+    "reuseaddr"
+    "tcp-nodelay"
+
+		 */
+		getoption(option: TCPOptions): SuccessOrFailure<unknown>;
+
+		/**
+		 * Returns the local address information associated to the object.
+		 * @returns a string with local IP address, the local port number, and the family ("inet" or "inet6"). In case of error, the method returns undefined.
+		 */
+		getsockname(): string | undefined;
+
+		/**
+		 * Returns accounting information on the socket, useful for throttling of bandwidth.
+		 * @returns a string with the number of bytes received, the number of bytes sent, and the age of the socket object in seconds.
+		 */
+		getstats(): string;
+
+		/**
+		 * Sets the underling socket descriptor or handle associated to the object. The current one is simply replaced, not closed, and no other change to the object state is made
+		 * @param handle the descriptor or handle to set.
+		 */
+		setfd(handle: number): void;
+
+		/**
+		 * Sets options for the TCP object. Options are only needed by low-level or time-critical applications. You should only modify an option if you are sure you need it.
+		 * @param option  	the name of the option to set. The value is provided in the value parameter:
+
+"keepalive"
+    Setting this option to true enables the periodic transmission of messages on a connected socket. Should the connected party fail to respond to these messages, the connection is considered broken and processes using the socket are notified;
+"linger"
+    Controls the action taken when unsent data are queued on a socket and a close is performed. The value is a table with the following keys:
+
+    boolean on
+    number timeout (seconds)
+
+If the 'on' field is set to true, the system will block the process on the close attempt until it is able to transmit the data or until timeout has passed. If 'on' is false and a close is issued, the system will process the close in a manner that allows the process to continue as quickly as possible. It is not advised to set this to anything other than zero;
+
+"reuseaddr"
+    Setting this option indicates that the rules used in validating addresses supplied in a call to bind should allow reuse of local addresses;
+"tcp-nodelay"
+    Setting this option to true disables the Nagle's algorithm for the connection;
+"ipv6-v6only"
+    Setting this option to true restricts an inet6 socket to sending and receiving only IPv6 packets. 
+		 * @param value the value to set for the specified option.
+		 */
+		setoption(option: TCPOptions, value?: any): SuccessOrFailure<1>;
+
+		/**
+		 * Resets accounting information on the socket, useful for throttling of bandwidth.
+		 * @param received the new number of bytes received.
+		 * @param sent the new number of bytes sent.
+		 * @param age the new age in seconds.
+		 */
+		setstats(received: number, sent: number, age: number): SuccessOrFailure<1>;
+
+		/**
+		 * Changes the timeout values for the object. By default, all I/O operations are blocking. That is, any call to the methods send, receive, and accept will block indefinitely, until the operation completes. The settimeout method defines a limit on the amount of time the I/O methods can block. When a timeout is set and the specified amount of time has elapsed, the affected methods give up and fail with an error code. There are two timeout modes and both can be used together for fine tuning. Although timeout values have millisecond precision in LuaSocket, large blocks can cause I/O functions not to respect timeout values due to the time the library takes to transfer blocks to and from the OS and to and from the Lua interpreter. Also, function that accept host names and perform automatic name resolution might be blocked by the resolver for longer than the specified timeout value.
+		 * @param timeout the amount of time to wait, in seconds. The undefined timeout value allows operations to block indefinitely. Negative timeout values have the same effect.
+		 * @param mode optional timeout mode to set:
+
+"b"
+    block timeout. Specifies the upper limit on the amount of time LuaSocket can be blocked by the operating system while waiting for completion of any single I/O operation. This is the default mode;
+"t"
+    total timeout. Specifies the upper limit on the amount of time LuaSocket can block a Lua script before returning from a call. 
+		 */
+		settimeout(timeout: number, mode?: TCPTimeoutMode): void;
 	}
+
 	class UDPUnconnected {
+		/**
+		 * Closes a UDP object. The internal socket used by the object is closed and the local address to which the object was bound is made available to other applications. No further operations (except for further calls to the close method) are allowed on a closed socket. It is important to close all used sockets once they are not needed, since, in many systems, each socket uses a file descriptor, which are limited system resources. Garbage-collected objects are automatically closed before destruction, though.
+		 */
 		close(): void;
-		getoption(): unknown;
-		getsockname(): LuaMultiReturn<[string, number]>;
-		receive(bufferSize: number): LuaMultiReturn<[string, UDPTimeout]>;
+
+		/**
+		 * Gets an option value from the UDP object. See unconnected:setoption for description of the option names and values.
+		 */
+		getoption(option: UDPOptions): SuccessOrFailure<unknown>;
+
+		/**
+		 * Returns the local address information associated to the object. UDP sockets are not bound to any address until the setsockname or the sendto method is called for the first time (in which case it is bound to an ephemeral port and the wild-card address).
+		 * @returns a string with local IP address, a number with the local port, and the family ("inet" or "inet6"). In case of error, the method returns undefined.
+		 */
+		getsockname(): string | undefined;
+
+		/**
+		 * Receives a datagram from the UDP object. If the UDP object is connected, only datagrams coming from the peer are accepted. Otherwise, the returned datagram can come from any host.
+		 * @param size optional maximum size of the datagram to be retrieved. If there are more than size bytes available in the datagram, the excess bytes are discarded. If there are less then size bytes available in the current datagram, the available bytes are returned. If size is omitted, the maximum datagram size is used (which is currently limited by the implementation to 8192 bytes).
+		 * @returns the received datagram, or undefined in case of error.
+		 * @returns the error message, or undefined if no error occurred.
+		 */
+		receive(size?: number): SuccessOrFailure<string>;
+
+		/**
+		 * Works exactly as the receive method, except it returns the IP address and port as extra return values (and is therefore slightly less efficient).
+		 * @param size optional maximum size of the datagram to be retrieved.
+		 * @returns the received datagram, or undefined in case of error.
+		 * @returns the IP address, or the error message in case of error.
+		 * @returns the port number, or undefined in case of error.
+		 */
 		receivefrom(
-			bufferSize: number,
-		): LuaMultiReturn<[string, string, number, UDPTimeout]>;
-		sendto(
-			buffer: string,
-			address: string,
-			port: number,
-		): LuaMultiReturn<[number, string]>;
-		setoption(
-			option: UDPOptions,
-			value: boolean,
-		): LuaMultiReturn<[number, string]>;
-		setpeername(
-			address: string,
-			port: number,
-		): LuaMultiReturn<[number, string]>;
-		setsockname(
-			address: string,
-			port: number,
-		): LuaMultiReturn<[number, string]>;
-		settimeout(timeout: number): void;
+			size?: number,
+		): LuaMultiReturn<[string | undefined, string, number | undefined]>;
+
+		/**
+		 * Sends a datagram to the specified IP address and port number. In UDP, the send method never blocks and the only way it can fail is if the underlying transport layer refuses to send a message to the specified address (i.e. no interface accepts the address).
+		 * @param datagram a string with the datagram contents. The maximum datagram size for UDP is 64K minus IP layer overhead. However datagrams larger than the link layer packet size will be fragmented, which may deteriorate performance and/or reliability.
+		 * @param ip the IP address of the recipient. Host names are not allowed for performance reasons.
+		 * @param port the port number at the recipient.
+		 */
+		sendto(datagram: string, ip: string, port: number): SuccessOrFailure<1>;
+
+		/**
+		 * Sets options for the UDP object. Options are only needed by low-level or time-critical applications. You should only modify an option if you are sure you need it.
+		 * @param option the name of the option to set. The value is provided in the value parameter:
+
+"dontroute"
+    Indicates that outgoing messages should bypass the standard routing facilities. Receives a boolean value;
+"broadcast"
+    Requests permission to send broadcast datagrams on the socket. Receives a boolean value;
+"reuseaddr"
+    Indicates that the rules used in validating addresses supplied in a bind call should allow reuse of local addresses. Receives a boolean value;
+"reuseport"
+    Allows completely duplicate bindings by multiple processes if they all set "reuseport" before binding the port. Receives a boolean value;
+"ip-multicast-loop"
+    Specifies whether or not a copy of an outgoing multicast datagram is delivered to the sending host as long as it is a member of the multicast group. Receives a boolean value;
+"ipv6-v6only"
+    Specifies whether to restrict inet6 sockets to sending and receiving only IPv6 packets. Receive a boolean value;
+"ip-multicast-if"
+    Sets the interface over which outgoing multicast datagrams are sent. Receives an IP address;
+"ip-multicast-ttl"
+    Sets the Time To Live in the IP header for outgoing multicast datagrams. Receives a number;
+
+"ip-add-membership": Joins the multicast group specified. Receives a table with fields:
+
+    string multiaddr (IP address)
+    string interface (IP address)
+
+"'ip-drop-membership"`
+    Leaves the multicast group specified. Receives a table with fields:
+
+    string multiaddr (IP address)
+    string interface (IP address)
+
+		 * @param value the value to set for the specified option.
+		 */
+		setoption(option: UDPOptions, value?: any): SuccessOrFailure<1>;
+
+		/**
+		 * Changes the peer of a UDP object. This method turns an unconnected UDP object into a connected UDP object or vice versa. For connected objects, outgoing datagrams will be sent to the specified peer, and datagrams received from other peers will be discarded by the OS. Connected UDP objects must use the send and receive methods instead of sendto and receivefrom. Since the address of the peer does not have to be passed to and from the OS, the use of connected UDP objects is recommended when the same peer is used for several transmissions and can result in up to 30% performance gains.
+		 * @param address an IP address or a host name.
+		 * @param port the port number.
+		 */
+		setpeername(address: string, port: number): SuccessOrFailure<1>;
+
+		/**
+		 * Binds the UDP object to a local address. This method can only be called before any datagram is sent through the UDP object, and only once. Otherwise, the system automatically binds the object to all local interfaces and chooses an ephemeral port as soon as the first datagram is sent. After the local address is set, either automatically by the system or explicitly by setsockname, it cannot be changed.
+		 * @param address an IP address or a host name. If address is "*" the system binds to all local interfaces using the constant INADDR_ANY.
+		 * @param port the port number. If port is 0, the system chooses an ephemeral port.
+		 */
+		setsockname(address: string, port: number): SuccessOrFailure<1>;
+
+		/**
+		 * Changes the timeout values for the object. By default, the receive and receivefrom operations are blocking. That is, any call to the methods will block indefinitely, until data arrives. The settimeout function defines a limit on the amount of time the functions can block. When a timeout is set and the specified amount of time has elapsed, the affected methods give up and fail with an error code. In UDP, the send and sendto methods never block (the datagram is just passed to the OS and the call returns immediately). Therefore, the settimeout method has no effect on them.
+		 * @param value the amount of time to wait, in seconds. The undefined timeout value allows operations to block indefinitely. Negative timeout values have the same effect.
+		 */
+		settimeout(value: number): void;
 	}
 }
