@@ -5,15 +5,15 @@
 // https://github.com/elMuso/defold-annotations-typescript/
 
 declare namespace socket {
-	type Family = 'inet' | 'inet6';
 	type Table = unknown[] | object;
 	type SuccessOrFailure<T> = LuaMultiReturn<
 		[T | undefined, string | undefined]
 	>;
-	interface TCPLingerOption {
-		on: boolean;
-		timeout: number;
-	}
+	type Family = 'inet' | 'inet6';
+
+	type TCP = TCPClient & TCPMaster & TCPServer;
+	type UDP = UDPConnected & UDPUnconnected;
+
 	type TCPReceivePattern = number | '*a' | '*l';
 	type TCPReceiveError = 'closed' | 'timeout';
 	type TCPShutdownMode = 'both' | 'receive' | 'send';
@@ -23,9 +23,25 @@ declare namespace socket {
 		| 'linger'
 		| 'reuseaddr'
 		| 'tcp-nodelay';
-	type TCPLinger = 'linger';
 	type TCPTimeoutMode = 'b' | 't';
-	type UDPOptions = 'broadcast' | 'dontroute';
+
+	interface TCPLingerOption {
+		on: boolean;
+		timeout: number;
+	}
+	type TCPLinger = 'linger';
+
+	type UDPOptions =
+		| 'broadcast'
+		| 'dontroute'
+		| 'ip-add-membership'
+		| 'ip-drop-membership'
+		| 'ip-multicast-if'
+		| 'ip-multicast-loop'
+		| 'ip-multicast-ttl'
+		| 'ipv6-v6only'
+		| 'reuseaddr'
+		| 'reuseport';
 	type UDPTimeout = 'timeout';
 
 	/**
@@ -60,7 +76,7 @@ declare namespace socket {
 		locaddr?: string,
 		locport?: number,
 		family?: Family,
-	): SuccessOrFailure<Client>;
+	): SuccessOrFailure<TCP>;
 
 	/** @noSelf */
 	export interface dns {
@@ -248,7 +264,7 @@ declare namespace socket {
 	 * @returns a new IPv4 TCP master object, or undefined in case of error.
 	 * @returns the error message, or undefined if no error occurred.
 	 */
-	export function tcp(this: void): SuccessOrFailure<Master>;
+	export function tcp(this: void): SuccessOrFailure<TCP>;
 
 	/**
 	 * Creates and returns an IPv6 TCP master object. A master object can be transformed into a server object with the method listen (after a call to bind) or into a client object with the method connect. The only other method supported by a master object is the close method.
@@ -256,14 +272,14 @@ declare namespace socket {
 	 * @returns a new IPv6 TCP master object, or undefined in case of error.
 	 * @returns the error message, or undefined if no error occurred.
 	 */
-	export function tcp6(this: void): SuccessOrFailure<Master>;
+	export function tcp6(this: void): SuccessOrFailure<TCP>;
 
 	/**
 	 * Creates and returns an unconnected IPv4 UDP object. Unconnected objects support the sendto, receive, receivefrom, getoption, getsockname, setoption, settimeout, setpeername, setsockname, and close methods. The setpeername method is used to connect the object.
 	 * @returns a new unconnected IPv4 UDP object, or undefined in case of error.
 	 * @returns the error message, or undefined if no error occurred.
 	 */
-	export function udp(this: void): SuccessOrFailure<Unconnected>;
+	export function udp(this: void): SuccessOrFailure<UDP>;
 
 	/**
 	 * Creates and returns an unconnected IPv6 UDP object. Unconnected objects support the sendto, receive, receivefrom, getoption, getsockname, setoption, settimeout, setpeername, setsockname, and close methods. The setpeername method is used to connect the object.
@@ -271,9 +287,9 @@ declare namespace socket {
 	 * @returns a new unconnected IPv6 UDP object, or undefined in case of error.
 	 * @returns the error message, or undefined if no error occurred.
 	 */
-	export function udp6(this: void): SuccessOrFailure<Unconnected>;
+	export function udp6(this: void): SuccessOrFailure<UDP>;
 
-	class Client {
+	class TCPClient {
 		/**
 		 * Closes the TCP object. The internal socket used by the object is closed and the local address to which the object was bound is made available to other applications. No further operations (except for further calls to the close method) are allowed on a closed socket. It is important to close all used sockets once they are not needed, since, in many systems, each socket uses a file descriptor, which are limited system resources. Garbage-collected objects are automatically closed before destruction, though.
 		 */
@@ -295,9 +311,7 @@ declare namespace socket {
 		 * Gets options for the TCP object. See client:setoption for description of the option names and values.
 		 * @param option the name of the option to get
 		 */
-		getoption(
-			option: 'keepalive' | 'linger' | 'reuseaddr' | 'tcp-nodelay',
-		): SuccessOrFailure<unknown>;
+		getoption(option: TCPOption): SuccessOrFailure<unknown>;
 
 		/**
 		 * Returns information about the remote side of a connected client object. It makes no sense to call this method on server objects.
@@ -423,26 +437,86 @@ If the 'on' field is set to true, the system will block the process on the close
 		 */
 		shutdown(mode: TCPShutdownMode): 1;
 	}
-	class Connected {
+
+	class UDPConnected {
+		/**
+		 * Closes a UDP object. The internal socket used by the object is closed and the local address to which the object was bound is made available to other applications. No further operations (except for further calls to the close method) are allowed on a closed socket. It is important to close all used sockets once they are not needed, since, in many systems, each socket uses a file descriptor, which are limited system resources. Garbage-collected objects are automatically closed before destruction, though.
+		 */
 		close(): void;
-		getoption(): unknown;
-		getpeername(): LuaMultiReturn<[string, number]>;
-		getsockname(): LuaMultiReturn<[string, number]>;
-		receive(
-			pattern: TCPReceivePattern,
-			buffer: string,
-		): LuaMultiReturn<[string, TCPReceiveError]>;
-		send(
-			buffer: string,
-			offset: number,
-			length: number,
-		): LuaMultiReturn<[number, string, number]>;
-		setoption(option: TCPOption): number;
-		setoption(option: TCPLinger, value: TCPLingerOption): number;
-		setpeername(): unknown;
-		settimeout(): unknown;
+
+		/**
+		 * Gets an option value from the UDP object. See connected:setoption for description of the option names and values.
+		 * @param option the name of the option to get:
+
+    "dontroute"
+    "broadcast"
+    "reuseaddr"
+    "reuseport"
+    "ip-multicast-loop"
+    "ipv6-v6only"
+    "ip-multicast-if"
+    "ip-multicast-ttl"
+    "ip-add-membership"
+    "ip-drop-membership"
+
+		 * @returns the option value, or undefined in case of error.
+		 * @returns the error message, or undefined if no error occurred.
+		 */
+		getoption(option: TCPOption): SuccessOrFailure<unknown>;
+
+		/**
+		 * Retrieves information about the peer associated with a connected UDP object. It makes no sense to call this method on unconnected objects.
+		 * @returns a string with the IP address of the peer, the port number that peer is using for the connection, and the family ("inet" or "inet6"). In case of error, the method returns undefined.
+		 */
+		getpeername(): string | undefined;
+
+		/**
+		 * Returns the local address information associated to the object. UDP sockets are not bound to any address until the setsockname or the sendto method is called for the first time (in which case it is bound to an ephemeral port and the wild-card address).
+		 * @returns a string with local IP address, a number with the local port, and the family ("inet" or "inet6"). In case of error, the method returns undefined.
+		 */
+		getsockname(): string | undefined;
+
+		/**
+		 * Receives a datagram from the UDP object. If the UDP object is connected, only datagrams coming from the peer are accepted. Otherwise, the returned datagram can come from any host.
+		 * @param size optional maximum size of the datagram to be retrieved. If there are more than size bytes available in the datagram, the excess bytes are discarded. If there are less then size bytes available in the current datagram, the available bytes are returned. If size is omitted, the maximum datagram size is used (which is currently limited by the implementation to 8192 bytes).
+		 * @returns the received datagram, or undefined in case of error.
+		 * @returns the error message, or undefined if no error occurred.
+		 */
+		receive(size?: number): SuccessOrFailure<string>;
+
+		/**
+		 * Sends a datagram to the UDP peer of a connected object. In UDP, the send method never blocks and the only way it can fail is if the underlying transport layer refuses to send a message to the specified address (i.e. no interface accepts the address).
+		 * @param datagram a string with the datagram contents. The maximum datagram size for UDP is 64K minus IP layer overhead. However datagrams larger than the link layer packet size will be fragmented, which may deteriorate performance and/or reliability.
+		 * @returns the value 1 on success, or undefined in case of error.
+		 * @returns the error message, or undefined if no error occurred.
+		 */
+		send(datagram: string): SuccessOrFailure<1>;
+
+		/**
+		 * Sets options for the UDP object. Options are only needed by low-level or time-critical applications. You should only modify an option if you are sure you need it.
+		 * @param option
+		 * @param value the value to set for the specified option.
+		 * @returns the value 1 on success, or undefined in case of error.
+		 * @returns the error message, or undefined if no error occurred.
+		 */
+		setoption(option: TCPOption, value?: any): SuccessOrFailure<1>;
+
+		/**
+		 * Changes the peer of a UDP object. This method turns an unconnected UDP object into a connected UDP object or vice versa. For connected objects, outgoing datagrams will be sent to the specified peer, and datagrams received from other peers will be discarded by the OS. Connected UDP objects must use the send and receive methods instead of sendto and receivefrom. Since the address of the peer does not have to be passed to and from the OS, the use of connected UDP objects is recommended when the same peer is used for several transmissions and can result in up to 30% performance gains.
+		 * @param address if address is "*" and the object is connected, the peer association is removed and the object becomes an unconnected object again.
+		 * @returns the value 1 on success, or undefined in case of error.
+		 * @returns the error message, or undefined if no error occurred.
+		 */
+		setpeername(address: '*'): SuccessOrFailure<1>;
+
+		/**
+		 * Changes the timeout values for the object. By default, the receive and receivefrom operations are blocking. That is, any call to the methods will block indefinitely, until data arrives. The settimeout function defines a limit on the amount of time the functions can block. When a timeout is set and the specified amount of time has elapsed, the affected methods give up and fail with an error code. In UDP, the send and sendto methods never block (the datagram is just passed to the OS and the call returns immediately). Therefore, the settimeout method has no effect on them.
+		 * @param value the amount of time to wait, in seconds. The undefined timeout value allows operations to block indefinitely. Negative timeout values have the same effect.
+		 */
+		settimeout(value: number): void;
 	}
-	class Master {
+
+	class TCPMaster {
 		bind(port: number, address: string): void;
 		close(): void;
 		connect(address: string, port: number): LuaMultiReturn<[number, string]>;
@@ -455,8 +529,8 @@ If the 'on' field is set to true, the system will block the process on the close
 		setstats(rx: number, tx: number, err: number): number;
 		settimeout(timeout: number, mode: TCPTimeoutMode): void;
 	}
-	class Server {
-		accept(): LuaMultiReturn<[Client, string]>;
+	class TCPServer {
+		accept(): LuaMultiReturn<[TCPClient, string]>;
 		close(): void;
 		dirty(): unknown;
 		getfd(): unknown;
@@ -471,7 +545,7 @@ If the 'on' field is set to true, the system will block the process on the close
 		setstats(rx: number, tx: number, err: number): number;
 		settimeout(timeout: number, mode: TCPTimeoutMode): void;
 	}
-	class Unconnected {
+	class UDPUnconnected {
 		close(): void;
 		getoption(): unknown;
 		getsockname(): LuaMultiReturn<[string, number]>;
