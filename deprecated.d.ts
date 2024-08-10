@@ -571,3 +571,54 @@ declare namespace resource {
 		readonly __brand: 'resource.TEXTURE';
 	};
 }
+
+declare namespace camera {
+	/**
+	 * makes camera active
+	 * @param url  url of camera component
+	 * @deprecated since v1.8.1
+	 */
+	export function acquire_focus(url: hash | url | string): void;
+
+	/**
+	 * deactivate camera
+	 * @param url  url of camera component
+	 * @deprecated since v1.8.1
+	 */
+	export function release_focus(url: hash | url | string): void;
+
+	/**
+	 * Post this message to a camera-component to activate it.
+	 * Several cameras can be active at the same time, but only the camera that was last activated will be used for rendering.
+	 * When the camera is deactivated (see `release_camera_focus`), the previously activated camera will again be used for rendering automatically.
+	 * The reason it is called "camera focus" is the similarity to how acquiring input focus works (see `acquire_input_focus`).
+	 * @deprecated since v1.8.1
+	 */
+	export type acquire_camera_focus = 'acquire_camera_focus';
+
+	/**
+	 * Post this message to a camera-component to deactivate it. The camera is then removed from the active cameras.
+	 * See `acquire_camera_focus` for more information how the active cameras are used in rendering.
+	 * @deprecated since v1.8.1
+	 */
+	export type release_camera_focus = 'release_camera_focus';
+}
+
+declare namespace gui {
+	/**
+	* Get the text metrics from a text node.
+	* @deprecated since v1.2.189
+	* @param node  text node to measure text from
+	* @return metrics  a table with the following fields:
+	- width
+	- height
+	- max_ascent
+	- max_descent
+	*/
+	export function get_text_metrics_from_node(node: node): {
+		width: number;
+		height: number;
+		max_ascent: number;
+		max_descent: number;
+	};
+}
