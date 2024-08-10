@@ -76,13 +76,6 @@ export const earlyChanges = [
 			{
 				readonly __rendertarget__: unique symbol;
 			}>;
-
-			/**
-			 * Socket objects.
-			 */
-			declare type socketclient = object;
-			declare type socketmaster = object;
-			declare type socketunconnected = object;
 			`,
 	],
 	// Remove {}
