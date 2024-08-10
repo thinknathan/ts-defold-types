@@ -17,7 +17,7 @@ export const collectionProxy = [
 	],
 	[
 		'function set_collection(url?: string | hash | url, prototype?: any): LuaMultiReturn<[boolean, number]>',
-		'function set_collection(url?: string | hash | url, prototype?: string | undefined): LuaMultiReturn<[boolean, typeof collectionproxy.RESULT_ALREADY_LOADED]>',
+		'function set_collection(url?: string | hash | url, prototype?: string | undefined): LuaMultiReturn<[boolean, undefined | typeof collectionproxy.RESULT_ALREADY_LOADED]>',
 	],
 	// Describe message
 	[
