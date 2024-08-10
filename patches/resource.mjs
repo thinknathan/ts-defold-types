@@ -5,16 +5,6 @@ export const resource = [
 	// Create Constant type
 	[
 		'',
-		'type CompressionConstant = number & { readonly __brand: "resource.COMPRESSION" };',
-	],
-	// Create Constant type
-	[
-		'',
-		'type TextureConstant = number & { readonly __brand: "resource.TEXTURE" };',
-	],
-	// Create Constant type
-	[
-		'',
 		`type BufferTypeConstant = number & { readonly __brand: "resource.BUFFER_TYPE" };
 		export const BUFFER_TYPE_COLOR0: BufferTypeConstant;
 		export const BUFFER_TYPE_COLOR1: BufferTypeConstant;
@@ -24,13 +14,9 @@ export const resource = [
 		export const BUFFER_TYPE_STENCIL: BufferTypeConstant;
 		`,
 	],
-	// (greedy)
-	[/let (COMPRESSION_.+): any/g, 'const $1: CompressionConstant'],
-	// (greedy)
-	[/let (TEXTURE_.+): any/g, 'const $1: TextureConstant'],
 	[
 		'function get_render_target_info(path: any): any',
-		`function get_render_target_info(path: string): { handle: unknown, attachments: { handle: unknown, width: number, height: number, depth: number, mipmaps: number, type: TextureConstant, buffer_type: BufferTypeConstant }[] };`,
+		`function get_render_target_info(path: string): { handle: unknown, attachments: { handle: unknown, width: number, height: number, depth: number, mipmaps: number, type: graphics.TextureConstant, buffer_type: BufferTypeConstant }[] };`,
 	],
 	[
 		'function create_atlas(path: string, table: any)',
@@ -46,7 +32,7 @@ export const resource = [
 	],
 	[
 		'function get_texture_info(path: any): any',
-		'function get_texture_info(path: hash | string): { handle: hash, width: number, height: number, depth: number, mipmaps: number, type: TextureConstant }',
+		'function get_texture_info(path: hash | string): { handle: hash, width: number, height: number, depth: number, mipmaps: number, type: graphics.TextureConstant }',
 	],
 	[
 		'function create_buffer(path: string, table?: any)',
@@ -54,7 +40,7 @@ export const resource = [
 	],
 	[
 		'function create_texture(path: string, table: any, buffer?: buffer): hash',
-		'function create_texture(path: string, table: { type: TextureConstant, width: number, height: number, format: TextureConstant, max_mipmaps?: number, compression_type?: CompressionConstant }, buffer?: buffer): hash',
+		'function create_texture(path: string, table: { type: graphics.TextureConstant, width: number, height: number, format: graphics.TextureConstant, max_mipmaps?: number, compression_type?: graphics.CompressionConstant }, buffer?: buffer): hash',
 	],
 	[
 		'function set_atlas(path: hash | string, table: any)',
@@ -66,6 +52,6 @@ export const resource = [
 	],
 	[
 		'function set_texture(path: hash | string, table: any, buffer: buffer)',
-		'function set_texture(path: hash | string, table: { type: TextureConstant, width: number, height: number, format: TextureConstant, x?: number, y?: number, mipmap?: number, compression_type?: CompressionConstant }, buffer: buffer)',
+		'function set_texture(path: hash | string, table: { type: graphics.TextureConstant, width: number, height: number, format: graphics.TextureConstant, x?: number, y?: number, mipmap?: number, compression_type?: graphics.CompressionConstant }, buffer: buffer)',
 	],
 ];

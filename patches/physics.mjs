@@ -13,7 +13,7 @@ export const physics = [
 	],
 	[
 		'function get_shape(url: string | hash | url, shape: string | hash): any',
-		`function get_shape(url: hash | url | string, shape: hash | string): { type: SHAPE_TYPE_SPHERE | SHAPE_TYPE_BOX | SHAPE_TYPE_CAPSULE | SHAPE_TYPE_HULL, diameter?: number, dimensions?: vmath.vector3, height?: number };
+		`function get_shape(url: hash | url | string, shape: hash | string): { type: ShapeTypeConstant, diameter?: number, dimensions?: vmath.vector3, height?: number };
 		export type SHAPE_TYPE_SPHERE = ShapeTypeConstant;
 		export type SHAPE_TYPE_BOX = ShapeTypeConstant;
 		/** 3D Physics Only */
