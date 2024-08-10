@@ -1,222 +1,3 @@
-declare namespace resource {
-	/**
-	 * BASIS_UASTC compression type
-	 */
-	export const COMPRESSION_TYPE_BASIS_UASTC: number & {
-		readonly __brand: 'resource.COMPRESSION';
-	};
-
-	/**
-	 * COMPRESSION_TYPE_DEFAULT compression type
-	 */
-	export const COMPRESSION_TYPE_DEFAULT: number & {
-		readonly __brand: 'resource.COMPRESSION';
-	};
-
-	/**
-	 * luminance type texture format
-	 */
-	export const TEXTURE_FORMAT_LUMINANCE: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * R16F type texture format
-	 */
-	export const TEXTURE_FORMAT_R16F: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * R32F type texture format
-	 */
-	export const TEXTURE_FORMAT_R32F: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RG16F type texture format
-	 */
-	export const TEXTURE_FORMAT_RG16F: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RG32F type texture format
-	 */
-	export const TEXTURE_FORMAT_RG32F: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RGB type texture format
-	 */
-	export const TEXTURE_FORMAT_RGB: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RGB16F type texture format
-	 */
-	export const TEXTURE_FORMAT_RGB16F: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RGB32F type texture format
-	 */
-	export const TEXTURE_FORMAT_RGB32F: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RGBA type texture format
-	 */
-	export const TEXTURE_FORMAT_RGBA: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RGBA16F type texture format
-	 */
-	export const TEXTURE_FORMAT_RGBA16F: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RGBA32F type texture format
-	 */
-	export const TEXTURE_FORMAT_RGBA32F: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RGBA_ASTC_4x4 type texture format
-	 */
-	export const TEXTURE_FORMAT_RGBA_ASTC_4x4: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RGBA_BC3 type texture format
-	 */
-	export const TEXTURE_FORMAT_RGBA_BC3: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RGBA_BC7 type texture format
-	 */
-	export const TEXTURE_FORMAT_RGBA_BC7: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RGBA_ETC2 type texture format
-	 */
-	export const TEXTURE_FORMAT_RGBA_ETC2: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RGBA_PVRTC_2BPPV1 type texture format
-	 */
-	export const TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RGBA_PVRTC_4BPPV1 type texture format
-	 */
-	export const TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RGB_BC1 type texture format
-	 */
-	export const TEXTURE_FORMAT_RGB_BC1: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RGB_ETC1 type texture format
-	 */
-	export const TEXTURE_FORMAT_RGB_ETC1: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RGB_PVRTC_2BPPV1 type texture format
-	 */
-	export const TEXTURE_FORMAT_RGB_PVRTC_2BPPV1: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RGB_PVRTC_4BPPV1 type texture format
-	 */
-	export const TEXTURE_FORMAT_RGB_PVRTC_4BPPV1: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RG_BC5 type texture format
-	 */
-	export const TEXTURE_FORMAT_RG_BC5: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * R_BC4 type texture format
-	 */
-	export const TEXTURE_FORMAT_R_BC4: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * 2D texture type
-	 */
-	export const TEXTURE_TYPE_2D: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * 2D Array texture type
-	 */
-	export const TEXTURE_TYPE_2D_ARRAY: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * Cube map texture type
-	 */
-	export const TEXTURE_TYPE_CUBE_MAP: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * Usage hint for creating textures that uses temporary memory
-	 */
-	export const TEXTURE_USAGE_FLAG_MEMORYLESS: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * Usage hint for creating textures that can be sampled in a shader
-	 */
-	export const TEXTURE_USAGE_FLAG_SAMPLE: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * Usage hint for creating textures that can be used for writing in a shader
-	 */
-	export const TEXTURE_USAGE_FLAG_STORAGE: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-}
-
 declare namespace render {
 	/**
 	 *
@@ -620,4 +401,248 @@ declare namespace render {
 	 *
 	 */
 	export const FORMAT_STENCIL: number & { readonly __brand: 'render.FORMAT' };
+}
+
+declare namespace resource {
+	/** @deprecated since v1.9.2 */
+	export const BUFFER_TYPE_COLOR0: number & {
+		readonly __brand: 'resource.BUFFER_TYPE';
+	};
+	/** @deprecated since v1.9.2 */
+	export const BUFFER_TYPE_COLOR1: number & {
+		readonly __brand: 'resource.BUFFER_TYPE';
+	};
+	/** @deprecated since v1.9.2 */
+	export const BUFFER_TYPE_COLOR2: number & {
+		readonly __brand: 'resource.BUFFER_TYPE';
+	};
+	/** @deprecated since v1.9.2 */
+	export const BUFFER_TYPE_COLOR3: number & {
+		readonly __brand: 'resource.BUFFER_TYPE';
+	};
+	/** @deprecated since v1.9.2 */
+	export const BUFFER_TYPE_DEPTH: number & {
+		readonly __brand: 'resource.BUFFER_TYPE';
+	};
+	/** @deprecated since v1.9.2 */
+	export const BUFFER_TYPE_STENCIL: number & {
+		readonly __brand: 'resource.BUFFER_TYPE';
+	};
+
+	/**
+	 * BASIS_UASTC compression type
+	 */
+	export const COMPRESSION_TYPE_BASIS_UASTC: number & {
+		readonly __brand: 'resource.COMPRESSION';
+	};
+
+	/**
+	 * COMPRESSION_TYPE_DEFAULT compression type
+	 */
+	export const COMPRESSION_TYPE_DEFAULT: number & {
+		readonly __brand: 'resource.COMPRESSION';
+	};
+
+	/**
+	 * luminance type texture format
+	 */
+	export const TEXTURE_FORMAT_LUMINANCE: number & {
+		readonly __brand: 'resource.TEXTURE';
+	};
+
+	/**
+	 * R16F type texture format
+	 */
+	export const TEXTURE_FORMAT_R16F: number & {
+		readonly __brand: 'resource.TEXTURE';
+	};
+
+	/**
+	 * R32F type texture format
+	 */
+	export const TEXTURE_FORMAT_R32F: number & {
+		readonly __brand: 'resource.TEXTURE';
+	};
+
+	/**
+	 * RG16F type texture format
+	 */
+	export const TEXTURE_FORMAT_RG16F: number & {
+		readonly __brand: 'resource.TEXTURE';
+	};
+
+	/**
+	 * RG32F type texture format
+	 */
+	export const TEXTURE_FORMAT_RG32F: number & {
+		readonly __brand: 'resource.TEXTURE';
+	};
+
+	/**
+	 * RGB type texture format
+	 */
+	export const TEXTURE_FORMAT_RGB: number & {
+		readonly __brand: 'resource.TEXTURE';
+	};
+
+	/**
+	 * RGB16F type texture format
+	 */
+	export const TEXTURE_FORMAT_RGB16F: number & {
+		readonly __brand: 'resource.TEXTURE';
+	};
+
+	/**
+	 * RGB32F type texture format
+	 */
+	export const TEXTURE_FORMAT_RGB32F: number & {
+		readonly __brand: 'resource.TEXTURE';
+	};
+
+	/**
+	 * RGBA type texture format
+	 */
+	export const TEXTURE_FORMAT_RGBA: number & {
+		readonly __brand: 'resource.TEXTURE';
+	};
+
+	/**
+	 * RGBA16F type texture format
+	 */
+	export const TEXTURE_FORMAT_RGBA16F: number & {
+		readonly __brand: 'resource.TEXTURE';
+	};
+
+	/**
+	 * RGBA32F type texture format
+	 */
+	export const TEXTURE_FORMAT_RGBA32F: number & {
+		readonly __brand: 'resource.TEXTURE';
+	};
+
+	/**
+	 * RGBA_ASTC_4x4 type texture format
+	 */
+	export const TEXTURE_FORMAT_RGBA_ASTC_4x4: number & {
+		readonly __brand: 'resource.TEXTURE';
+	};
+
+	/**
+	 * RGBA_BC3 type texture format
+	 */
+	export const TEXTURE_FORMAT_RGBA_BC3: number & {
+		readonly __brand: 'resource.TEXTURE';
+	};
+
+	/**
+	 * RGBA_BC7 type texture format
+	 */
+	export const TEXTURE_FORMAT_RGBA_BC7: number & {
+		readonly __brand: 'resource.TEXTURE';
+	};
+
+	/**
+	 * RGBA_ETC2 type texture format
+	 */
+	export const TEXTURE_FORMAT_RGBA_ETC2: number & {
+		readonly __brand: 'resource.TEXTURE';
+	};
+
+	/**
+	 * RGBA_PVRTC_2BPPV1 type texture format
+	 */
+	export const TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1: number & {
+		readonly __brand: 'resource.TEXTURE';
+	};
+
+	/**
+	 * RGBA_PVRTC_4BPPV1 type texture format
+	 */
+	export const TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1: number & {
+		readonly __brand: 'resource.TEXTURE';
+	};
+
+	/**
+	 * RGB_BC1 type texture format
+	 */
+	export const TEXTURE_FORMAT_RGB_BC1: number & {
+		readonly __brand: 'resource.TEXTURE';
+	};
+
+	/**
+	 * RGB_ETC1 type texture format
+	 */
+	export const TEXTURE_FORMAT_RGB_ETC1: number & {
+		readonly __brand: 'resource.TEXTURE';
+	};
+
+	/**
+	 * RGB_PVRTC_2BPPV1 type texture format
+	 */
+	export const TEXTURE_FORMAT_RGB_PVRTC_2BPPV1: number & {
+		readonly __brand: 'resource.TEXTURE';
+	};
+
+	/**
+	 * RGB_PVRTC_4BPPV1 type texture format
+	 */
+	export const TEXTURE_FORMAT_RGB_PVRTC_4BPPV1: number & {
+		readonly __brand: 'resource.TEXTURE';
+	};
+
+	/**
+	 * RG_BC5 type texture format
+	 */
+	export const TEXTURE_FORMAT_RG_BC5: number & {
+		readonly __brand: 'resource.TEXTURE';
+	};
+
+	/**
+	 * R_BC4 type texture format
+	 */
+	export const TEXTURE_FORMAT_R_BC4: number & {
+		readonly __brand: 'resource.TEXTURE';
+	};
+
+	/**
+	 * 2D texture type
+	 */
+	export const TEXTURE_TYPE_2D: number & {
+		readonly __brand: 'resource.TEXTURE';
+	};
+
+	/**
+	 * 2D Array texture type
+	 */
+	export const TEXTURE_TYPE_2D_ARRAY: number & {
+		readonly __brand: 'resource.TEXTURE';
+	};
+
+	/**
+	 * Cube map texture type
+	 */
+	export const TEXTURE_TYPE_CUBE_MAP: number & {
+		readonly __brand: 'resource.TEXTURE';
+	};
+
+	/**
+	 * Usage hint for creating textures that uses temporary memory
+	 */
+	export const TEXTURE_USAGE_FLAG_MEMORYLESS: number & {
+		readonly __brand: 'resource.TEXTURE';
+	};
+
+	/**
+	 * Usage hint for creating textures that can be sampled in a shader
+	 */
+	export const TEXTURE_USAGE_FLAG_SAMPLE: number & {
+		readonly __brand: 'resource.TEXTURE';
+	};
+
+	/**
+	 * Usage hint for creating textures that can be used for writing in a shader
+	 */
+	export const TEXTURE_USAGE_FLAG_STORAGE: number & {
+		readonly __brand: 'resource.TEXTURE';
+	};
 }
