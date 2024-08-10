@@ -24,13 +24,12 @@ export const b2dBody = [
 	],
 	[
 		'function set_type(body: any, type: any)',
-		'function set_type(body: typeof b2d.body, type: typeof b2d.body.B2_DYNAMIC_BODY | typeof b2d.body.B2_KINEMATIC_BODY | typeof b2d.body.B2_STATIC_BODY)',
+		'function set_type(body: typeof b2d.body, type: Constant)',
 	],
+	// Create Constant type
+	['', 'type Constant = number & { readonly __brand: "b2d.body.B2" };'],
 	// (greedy)
-	[
-		/let (B2_.+): any/g,
-		'const $1: number & { readonly __brand: "b2d.body.B2" }',
-	],
+	[/let (B2_.+): any/g, 'const $1: Constant'],
 	// (greedy)
 	[/body: any/g, 'body: typeof b2d.body'],
 ];

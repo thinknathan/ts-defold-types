@@ -2,23 +2,24 @@
 
 /** profiler namespace @satisfies {(string | RegExp)[][]} */
 export const profiler = [
-	// (greedy)
+	// Create Constant type
 	[
-		/let (MODE_.+): any/g,
-		'const $1: number & { readonly __brand: "profiler.MODE" }',
+		'',
+		'export type ModeConstant = number & { readonly __brand: "profiler.MODE" };',
+	],
+	// Create Constant type
+	[
+		'',
+		'export type ViewModeConstant = number & { readonly __brand: "profiler.VIEW_MODE" };',
 	],
 	// (greedy)
-	[
-		/let (VIEW_MODE_.+): any/g,
-		'const $1: number & { readonly __brand: "profiler.VIEW_MODE" }',
-	],
-	[
-		'function set_ui_mode(mode: any',
-		'function set_ui_mode(mode: typeof profiler.MODE_RUN | typeof profiler.MODE_PAUSE | typeof profiler.MODE_SHOW_PEAK_FRAME | typeof profiler.MODE_RECORD',
-	],
+	[/let (MODE_.+): any/g, 'const $1: ModeConstant'],
+	// (greedy)
+	[/let (VIEW_MODE_.+): any/g, 'const $1: ViewModeConstant'],
+	['function set_ui_mode(mode: any', 'function set_ui_mode(mode: ModeConstant'],
 	[
 		'function set_ui_view_mode(mode: any',
-		'function set_ui_view_mode(mode: typeof profiler.VIEW_MODE_FULL | typeof profiler.VIEW_MODE_MINIMIZED',
+		'function set_ui_view_mode(mode: ViewModeConstant',
 	],
 	[
 		'function view_recorded_frame(frame_index: any)',

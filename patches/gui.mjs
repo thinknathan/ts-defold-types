@@ -4,126 +4,123 @@
 export const gui = [
 	['let material: any', 'let material: hash'],
 	['let fonts: any', 'let fonts: hash'],
-	// (greedy)
+	// Create Constant type
+	['', 'type EasingConstant = number & { readonly __brand: "gui.EASING" };'],
+	// Create Constant type
 	[
-		/let (EASING_.+): any/g,
-		'const $1: number & { readonly __brand: "gui.EASING" }',
+		'',
+		'type PlaybackConstant = number & { readonly __brand: "gui.PLAYBACK" };',
+	],
+	// Create Constant type
+	['', 'type AdjustConstant = number & { readonly __brand: "gui.ADJUST" };'],
+	// Create Constant type
+	['', 'type AnchorConstant = number & { readonly __brand: "gui.ANCHOR" };'],
+	// Create Constant type
+	['', 'type BlendConstant = number & { readonly __brand: "gui.BLEND" };'],
+	// Create Constant type
+	[
+		'',
+		'type ClippingModeConstant = number & { readonly __brand: "gui.CLIPPING_MODE" };',
+	],
+	// Create Constant type
+	[
+		'',
+		'type KeyboardTypeConstant = number & { readonly __brand: "gui.KEYBOARD_TYPE" };',
+	],
+	// Create Constant type
+	[
+		'',
+		'type PieBoundsConstant = number & { readonly __brand: "gui.PIEBOUNDS" };',
+	],
+	// Create Constant type
+	['', 'type PivotConstant = number & { readonly __brand: "gui.PIVOT" };'],
+	// Create Constant type
+	['', 'type PropConstant = string & { readonly __brand: "gui.PROP" };'],
+	// Create Constant type
+	['', 'type ResultConstant = number & { readonly __brand: "gui.RESULT" };'],
+	// Create Constant type
+	[
+		'',
+		'type SizeModeConstant = number & { readonly __brand: "gui.SIZE_MODE" };',
 	],
 	// (greedy)
-	[
-		/let (PLAYBACK_.+): any/g,
-		'const $1: number & { readonly __brand: "gui.PLAYBACK" }',
-	],
+	[/let (EASING_.+): any/g, 'const $1: EasingConstant'],
 	// (greedy)
-	[
-		/let (ADJUST_.+): any/g,
-		'const $1: number & { readonly __brand: "gui.ADJUST" }',
-	],
+	[/let (PLAYBACK_.+): any/g, 'const $1: PlaybackConstant'],
 	// (greedy)
-	[
-		/let (ANCHOR_.+): any/g,
-		'const $1: number & { readonly __brand: "gui.ANCHOR" }',
-	],
+	[/let (ADJUST_.+): any/g, 'const $1: AdjustConstant'],
 	// (greedy)
-	[
-		/let (BLEND_.+): any/g,
-		'const $1: number & { readonly __brand: "gui.BLEND" }',
-	],
+	[/let (ANCHOR_.+): any/g, 'const $1: AnchorConstant'],
 	// (greedy)
-	[
-		/let (CLIPPING_MODE_.+): any/g,
-		'const $1: number & { readonly __brand: "gui.CLIPPING_MODE" }',
-	],
+	[/let (BLEND_.+): any/g, 'const $1: BlendConstant'],
 	// (greedy)
-	[
-		/let (KEYBOARD_TYPE_.+): any/g,
-		'const $1: number & { readonly __brand: "gui.KEYBOARD_TYPE" }',
-	],
+	[/let (CLIPPING_MODE_.+): any/g, 'const $1: ClippingModeConstant'],
 	// (greedy)
-	[
-		/let (PIEBOUNDS_.+): any/g,
-		'const $1: number & { readonly __brand: "gui.PIEBOUNDS" }',
-	],
+	[/let (KEYBOARD_TYPE_.+): any/g, 'const $1: KeyboardTypeConstant'],
 	// (greedy)
-	[
-		/let (PIVOT_.+): any/g,
-		'const $1: number & { readonly __brand: "gui.PIVOT" }',
-	],
+	[/let (PIEBOUNDS_.+): any/g, 'const $1: PieBoundsConstant'],
 	// (greedy)
-	[
-		/let (PROP_.+): any/g,
-		'const $1: string & { readonly __brand: "gui.PROP" }',
-	],
+	[/let (PIVOT_.+): any/g, 'const $1: PivotConstant'],
 	// (greedy)
-	[
-		/let (RESULT_.+): any/g,
-		'const $1: number & { readonly __brand: "gui.RESULT" }',
-	],
+	[/let (PROP_.+): any/g, 'const $1: PropConstant'],
 	// (greedy)
-	[
-		/let (SIZE_MODE_.+): any/g,
-		'const $1: number & { readonly __brand: "gui.SIZE_MODE" }',
-	],
+	[/let (RESULT_.+): any/g, 'const $1: ResultConstant'],
+	// (greedy)
+	[/let (SIZE_MODE_.+): any/g, 'const $1: SizeModeConstant'],
 	// function animate
-	[
-		'property: any',
-		'property: string | typeof gui.PROP_POSITION | typeof gui.PROP_ROTATION | typeof gui.PROP_SCALE | typeof gui.PROP_COLOR | typeof gui.PROP_OUTLINE | typeof gui.PROP_SHADOW | typeof gui.PROP_SIZE | typeof gui.PROP_FILL_ANGLE | typeof gui.PROP_INNER_RADIUS | typeof gui.PROP_SLICE9',
-	],
+	['property: any', 'property: string | PropConstant'],
 	[
 		'easing: any',
-		'easing: number|vmath.vector3|vmath.vector4|vmath.quaternion|typeof gui.EASING_INBACK|typeof gui.EASING_INBOUNCE|typeof gui.EASING_INCIRC|typeof gui.EASING_INCUBIC|typeof gui.EASING_INELASTIC|typeof gui.EASING_INEXPO|typeof gui.EASING_INOUTBACK|typeof gui.EASING_INOUTBOUNCE|typeof gui.EASING_INOUTCIRC|typeof gui.EASING_INOUTCUBIC|typeof gui.EASING_INOUTELASTIC|typeof gui.EASING_INOUTEXPO|typeof gui.EASING_INOUTQUAD|typeof gui.EASING_INOUTQUART|typeof gui.EASING_INOUTQUINT|typeof gui.EASING_INOUTSINE|typeof gui.EASING_INQUAD|typeof gui.EASING_INQUART|typeof gui.EASING_INQUINT|typeof gui.EASING_INSINE|typeof gui.EASING_LINEAR|typeof gui.EASING_OUTBACK|typeof gui.EASING_OUTBOUNCE|typeof gui.EASING_OUTCIRC|typeof gui.EASING_OUTCUBIC|typeof gui.EASING_OUTELASTIC|typeof gui.EASING_OUTEXPO|typeof gui.EASING_OUTINBACK|typeof gui.EASING_OUTINBOUNCE|typeof gui.EASING_OUTINCIRC|typeof gui.EASING_OUTINCUBIC|typeof gui.EASING_OUTINELASTIC|typeof gui.EASING_OUTINEXPO|typeof gui.EASING_OUTINQUAD|typeof gui.EASING_OUTINQUART|typeof gui.EASING_OUTINQUINT|typeof gui.EASING_OUTINSINE|typeof gui.EASING_OUTQUAD|typeof gui.EASING_OUTQUART|typeof gui.EASING_OUTQUINT|typeof gui.EASING_OUTSINE',
+		'easing: number|vmath.vector3|vmath.vector4|vmath.quaternion|EasingConstant',
 	],
 	[
 		'complete_function?: any',
 		'complete_function?: (this: any, node: node) => void',
 	],
-	[
-		'playback?: any',
-		'playback?: typeof gui.PLAYBACK_ONCE_FORWARD | typeof gui.PLAYBACK_ONCE_BACKWARD | typeof gui.PLAYBACK_ONCE_PINGPONG | typeof gui.PLAYBACK_LOOP_FORWARD | typeof gui.PLAYBACK_LOOP_BACKWARD | typeof gui.PLAYBACK_LOOP_PINGPONG',
-	],
+	['playback?: any', 'playback?: PlaybackConstant'],
 	[
 		'function get_adjust_mode(node: node): any',
-		'function get_adjust_mode(node: node): typeof gui.ADJUST_FIT | typeof gui.ADJUST_ZOOM | typeof gui.ADJUST_STRETCH',
+		'function get_adjust_mode(node: node): AdjustConstant',
 	],
 	[
 		'function get_blend_mode(node: node): any',
-		'function get_blend_mode(node: node): typeof gui.BLEND_ALPHA | typeof gui.BLEND_ADD | typeof gui.BLEND_ADD_ALPHA | typeof gui.BLEND_MULT | typeof gui.BLEND_SCREEN ',
+		'function get_blend_mode(node: node): BlendConstant',
 	],
 	[
 		'function get_clipping_mode(node: node): any',
-		'function get_clipping_mode(node: node): typeof gui.CLIPPING_MODE_NONE | typeof gui.CLIPPING_MODE_STENCIL',
+		'function get_clipping_mode(node: node): ClippingModeConstant',
 	],
 	[
 		'function get_outer_bounds(node: node): any',
-		'function get_outer_bounds(node: node): typeof gui.PIEBOUNDS_RECTANGLE | typeof gui.PIEBOUNDS_ELLIPSE',
+		'function get_outer_bounds(node: node): PieBoundsConstant',
 	],
 	[
 		'function get_pivot(node: node): any',
-		'function get_pivot(node: node): typeof gui.PIVOT_CENTER | typeof gui.PIVOT_N | typeof gui.PIVOT_NE | typeof gui.PIVOT_E | typeof gui.PIVOT_SE | typeof gui.PIVOT_S | typeof gui.PIVOT_SW | typeof gui.PIVOT_W | typeof gui.PIVOT_NW',
+		'function get_pivot(node: node): PivotConstant',
 	],
 	[
 		'function get_size_mode(node: node): any',
-		'function get_size_mode(node: node): typeof gui.SIZE_MODE_MANUAL | typeof gui.SIZE_MODE_AUTO',
+		'function get_size_mode(node: node): SizeModeConstant',
 	],
 	[
 		'function get_xanchor(node: node): any',
-		'function get_xanchor(node: node): typeof gui.ANCHOR_NONE | typeof gui.ANCHOR_LEFT | typeof gui.ANCHOR_RIGHT',
+		'function get_xanchor(node: node): AnchorConstant',
 	],
 	[
 		'function get_yanchor(node: node): any',
-		'function get_yanchor(node: node): typeof gui.ANCHOR_NONE | typeof gui.ANCHOR_LEFT | typeof gui.ANCHOR_RIGHT',
+		'function get_yanchor(node: node): AnchorConstant',
 	],
 	[
 		'function set_xanchor(node: node, anchor: any)',
-		'function set_xanchor(node: node, anchor: typeof gui.ANCHOR_NONE | typeof gui.ANCHOR_LEFT | typeof gui.ANCHOR_RIGHT)',
+		'function set_xanchor(node: node, anchor: AnchorConstant)',
 	],
 	[
 		'function set_yanchor(node: node, anchor: any)',
-		'function set_yanchor(node: node, anchor: typeof gui.ANCHOR_NONE | typeof gui.ANCHOR_LEFT | typeof gui.ANCHOR_RIGHT)',
+		'function set_yanchor(node: node, anchor: AnchorConstant)',
 	],
 	[
 		'function show_keyboard(type: any',
-		'function show_keyboard(type: typeof gui.KEYBOARD_TYPE_DEFAULT | typeof gui.KEYBOARD_TYPE_EMAIL | typeof gui.KEYBOARD_TYPE_NUMBER_PAD | typeof gui.KEYBOARD_TYPE_PASSWORD',
+		'function show_keyboard(type: KeyboardTypeConstant',
 	],
 	[
 		'function move_below(node: node, reference: any)',
@@ -137,32 +134,32 @@ export const gui = [
 	['let textures: any', 'let textures: hash'],
 	[
 		'function set_adjust_mode(node: node, adjust_mode: any)',
-		'function set_adjust_mode(node: node, adjust_mode: typeof gui.ADJUST_FIT | typeof gui.ADJUST_ZOOM | typeof gui.ADJUST_STRETCH)',
+		'function set_adjust_mode(node: node, adjust_mode: AdjustConstant)',
 	],
 	[
 		'function set_blend_mode(node: node, blend_mode: any)',
-		'function set_blend_mode(node: node, blend_mode: typeof gui.BLEND_ALPHA | typeof gui.BLEND_ADD | typeof gui.BLEND_ADD_ALPHA | typeof gui.BLEND_MULT | typeof gui.BLEND_SCREEN)',
+		'function set_blend_mode(node: node, blend_mode: BlendConstant)',
 	],
 	[
 		'function set_clipping_mode(node: node, clipping_mode: any)',
-		'function set_clipping_mode(node: node, clipping_mode: typeof gui.CLIPPING_MODE_NONE | typeof gui.CLIPPING_MODE_STENCIL)',
+		'function set_clipping_mode(node: node, clipping_mode: ClippingModeConstant)',
 	],
 	[
 		'function set_outer_bounds(node: node, bounds_mode: any)',
-		'function set_outer_bounds(node: node, bounds_mode: typeof gui.PIEBOUNDS_RECTANGLE | typeof gui.PIEBOUNDS_ELLIPSE)',
+		'function set_outer_bounds(node: node, bounds_mode: PieBoundsConstant)',
 	],
 	[
 		'function set_pivot(node: node, pivot: any)',
-		'function set_pivot(node: node, pivot: typeof gui.PIVOT_CENTER | typeof gui.PIVOT_N | typeof gui.PIVOT_NE | typeof gui.PIVOT_E | typeof gui.PIVOT_SE | typeof gui.PIVOT_S | typeof gui.PIVOT_SW | typeof gui.PIVOT_W | typeof gui.PIVOT_NW)',
+		'function set_pivot(node: node, pivot: PivotConstant)',
 	],
 	[
 		'function set_size_mode(node: node, size_mode: any)',
-		'function set_size_mode(node: node, size_mode: typeof gui.SIZE_MODE_MANUAL | typeof gui.SIZE_MODE_AUTO)',
+		'function set_size_mode(node: node, size_mode: SizeModeConstant)',
 	],
 	// function play_particlefx
 	[
 		'emitter_state_function?: any',
-		'emitter_state_function?: (this: any, node: node | undefined, emitter: hash, state: typeof particlefx.EMITTER_STATE_SLEEPING | typeof particlefx.EMITTER_STATE_PRESPAWN | typeof particlefx.EMITTER_STATE_SPAWNING | typeof particlefx.EMITTER_STATE_POSTSPAWN) => void',
+		'emitter_state_function?: (this: any, node: node | undefined, emitter: hash, state: particlefx.EmitterStateConstant) => void',
 	],
 	// function play_flipbook
 	[
@@ -175,7 +172,7 @@ export const gui = [
 	],
 	[
 		'function new_texture(texture_id: string | hash, width: number, height: number, type: any, buffer: string, flip: boolean): LuaMultiReturn<[boolean, number]>',
-		'function new_texture(texture_id: string | hash, width: number, height: number, type: "rgb" | "rgba" | "l", buffer: string, flip: boolean): LuaMultiReturn<[boolean, undefined | typeof gui.RESULT_TEXTURE_ALREADY_EXISTS | typeof gui.RESULT_DATA_ERROR | typeof gui.RESULT_OUT_OF_RESOURCES]>',
+		'function new_texture(texture_id: string | hash, width: number, height: number, type: "rgb" | "rgba" | "l", buffer: string, flip: boolean): LuaMultiReturn<[boolean, undefined | ResultConstant]>',
 	],
 	[
 		'function cancel_animation(node: node, property: any)',

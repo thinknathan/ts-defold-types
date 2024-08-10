@@ -2,11 +2,13 @@
 
 /** collectionproxy namespace @satisfies {(string | RegExp)[][]} */
 export const collectionProxy = [
-	// (greedy)
+	// Create Constant type
 	[
-		/let (RESULT_.+): any/g,
-		'const $1: number & { readonly __brand: "collectionproxy.RESULT" }',
+		'',
+		'type ResultConstant = number & { readonly __brand: "collectionproxy.RESULT" };',
 	],
+	// (greedy)
+	[/let (RESULT_.+): any/g, 'const $1: ResultConstant'],
 	[
 		'function missing_resources(collectionproxy: url): any',
 		'function missing_resources(collectionproxy: url): string[]',
@@ -17,7 +19,7 @@ export const collectionProxy = [
 	],
 	[
 		'function set_collection(url?: string | hash | url, prototype?: any): LuaMultiReturn<[boolean, number]>',
-		'function set_collection(url?: string | hash | url, prototype?: string | undefined): LuaMultiReturn<[boolean, undefined | typeof collectionproxy.RESULT_ALREADY_LOADED]>',
+		'function set_collection(url?: string | hash | url, prototype?: string | undefined): LuaMultiReturn<[boolean, undefined | ResultConstant]>',
 	],
 	// Describe message
 	[

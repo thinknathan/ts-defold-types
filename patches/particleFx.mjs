@@ -2,15 +2,17 @@
 
 /** particlefx namespace @satisfies {(string | RegExp)[][]} */
 export const particleFx = [
-	// (greedy)
+	// Create Constant type
 	[
-		/let (EMITTER_STATE_.+): any/g,
-		'const $1: number & { readonly __brand: "particlefx.EMITTER_STATE" }',
+		'',
+		'export type EmitterStateConstant = number & { readonly __brand: "particlefx.EMITTER_STATE" };',
 	],
+	// (greedy)
+	[/let (EMITTER_STATE_.+): any/g, 'const $1: EmitterStateConstant'],
 	// function play
 	[
 		'emitter_state_function?: any',
-		'emitter_state_function?: (this: any, id: hash, emitter: hash, state: typeof particlefx.EMITTER_STATE_SLEEPING | typeof particlefx.EMITTER_STATE_PRESPAWN | typeof particlefx.EMITTER_STATE_SPAWNING | typeof particlefx.EMITTER_STATE_POSTSPAWN) => void',
+		'emitter_state_function?: (this: any, id: hash, emitter: hash, state: EmitterStateConstant) => void',
 	],
 	[
 		'function stop(url: string | hash | url, options?: any)',

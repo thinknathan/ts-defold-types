@@ -2,19 +2,23 @@
 
 /** sys namespace @satisfies {(string | RegExp)[][]} */
 export const sys = [
+	// Create Constant type
+	[
+		'',
+		'export type NetworkConstant = number & { readonly __brand: "sys.NETWORK" };',
+	],
+	// Create Constant type
+	[
+		'',
+		'export type RequestConstant = number & { readonly __brand: "sys.REQUEST" };',
+	],
 	// (greedy)
-	[
-		/let (NETWORK_.+): any/g,
-		'const $1: number & { readonly __brand: "sys.NETWORK" }',
-	],
+	[/let (NETWORK_.+): any/g, 'const $1: NetworkConstant'],
 	// greedy
-	[
-		/let (REQUEST_.+): any/g,
-		'const $1: number & { readonly __brand: "sys.REQUEST" }',
-	],
+	[/let (REQUEST_.+): any/g, 'const $1: RequestConstant'],
 	[
 		'function load_buffer_async(path: string, status_callback: any)',
-		'function load_buffer_async(path: string, status_callback: (this: any, request_id: unknown, result: { status: typeof REQUEST_STATUS_FINISHED | typeof REQUEST_STATUS_ERROR_IO_ERROR | typeof REQUEST_STATUS_ERROR_NOT_FOUND, buffer: buffer | undefined }) => void)',
+		'function load_buffer_async(path: string, status_callback: (this: any, request_id: unknown, result: { status: RequestConstant, buffer: buffer | undefined }) => void)',
 	],
 	[
 		'function exists(path: string): any',
@@ -26,7 +30,7 @@ export const sys = [
 	],
 	[
 		'function get_connectivity(): any',
-		'function get_connectivity(): typeof sys.NETWORK_DISCONNECTED | typeof sys.NETWORK_CONNECTED_CELLULAR | typeof sys.NETWORK_CONNECTED',
+		'function get_connectivity(): NetworkConstant',
 	],
 	[
 		'function get_engine_info(): any',

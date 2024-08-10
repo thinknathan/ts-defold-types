@@ -2,16 +2,20 @@
 
 /** crash namespace @satisfies {(string | RegExp)[][]} */
 export const crash = [
-	// (greedy)
+	// Create Constant type
 	[
-		/let (SYSFIELD_.+): any/g,
-		'const $1: number & { readonly __brand: "crash.SYSFIELD" }',
+		'',
+		'type SysFieldConstant = number & { readonly __brand: "crash.SYSFIELD" };',
+	],
+	// Create Constant type
+	[
+		'',
+		'type UserFieldConstant = number & { readonly __brand: "crash.USERFIELD" };',
 	],
 	// (greedy)
-	[
-		/let (USERFIELD_.+): any/g,
-		'const $1: number & { readonly __brand: "crash.USERFIELD" }',
-	],
+	[/let (SYSFIELD_.+): any/g, 'const $1: SysFieldConstant'],
+	// (greedy)
+	[/let (USERFIELD_.+): any/g, 'const $1: UserFieldConstant'],
 	[
 		'get_sys_field(handle: number, index: number): LuaMultiReturn<[string, any]>',
 		'get_sys_field(handle: number, index: number): undefined | string',

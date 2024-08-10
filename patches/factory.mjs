@@ -2,14 +2,16 @@
 
 /** factory namespace @satisfies {(string | RegExp)[][]} */
 export const factory = [
-	// (greedy)
+	// Create Constant type
 	[
-		/let (STATUS_.+): any/g,
-		'const $1: number & { readonly __brand: "factory.STATUS" }',
+		'',
+		'type StatusConstant = number & { readonly __brand: "factory.STATUS" };',
 	],
+	// (greedy)
+	[/let (STATUS_.+): any/g, 'const $1: StatusConstant'],
 	[
 		'function get_status(url?: string | hash | url): any',
-		'function get_status(url?: string | hash | url): typeof factory.STATUS_UNLOADED | typeof factory.STATUS_LOADING | typeof factory.STATUS_LOADED',
+		'function get_status(url?: string | hash | url): StatusConstant',
 	],
 	// function load
 	[

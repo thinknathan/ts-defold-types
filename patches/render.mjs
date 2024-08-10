@@ -2,101 +2,87 @@
 
 /** render namespace @satisfies {(string | RegExp)[][]} */
 export const render = [
-	// (greedy)
+	// Create Constant type
 	[
-		/let (BLEND_.+): any/g,
-		'const $1: number & { readonly __brand: "render.BLEND" }',
+		'',
+		'type RenderTargetConstant = number & { readonly __brand: "render.RENDER_TARGET" };',
 	],
-	// (greedy)
+	// Create Constant type
+	['', 'type BlendConstant = number & { readonly __brand: "render.BLEND" };'],
+	// Create Constant type
+	['', 'type BufferConstant = number & { readonly __brand: "render.BUFFER" };'],
+	// Create Constant type
 	[
-		/let (BUFFER_.+): any/g,
-		'const $1: number & { readonly __brand: "render.BUFFER" }',
+		'',
+		'type CompareFuncConstant = number & { readonly __brand: "render.COMPARE_FUNC" };',
 	],
-	// (greedy)
+	// Create Constant type
+	['', 'type FaceConstant = number & { readonly __brand: "render.FACE" };'],
+	// Create Constant type
+	['', 'type FilterConstant = number & { readonly __brand: "render.FILTER" };'],
+	// Create Constant type
+	['', 'type FormatConstant = number & { readonly __brand: "render.FORMAT" };'],
+	// Create Constant type
 	[
-		/let (COMPARE_FUNC_.+): any/g,
-		'const $1: number & { readonly __brand: "render.COMPARE_FUNC" }',
+		'',
+		'type FrustumPlanesConstant = number & { readonly __brand: "render.FRUSTUM_PLANES" };',
 	],
-	// (greedy)
+	// Create Constant type
+	['', 'type StateConstant = number & { readonly __brand: "render.STATE" };'],
+	// Create Constant type
 	[
-		/let (FACE_.+): any/g,
-		'const $1: number & { readonly __brand: "render.FACE" }',
+		'',
+		'type StencilConstant = number & { readonly __brand: "render.STENCIL" };',
 	],
+	// Create Constant type
+	['', 'type WrapConstant = number & { readonly __brand: "render.WRAP" };'],
 	// (greedy)
-	[
-		/let (FILTER_.+): any/g,
-		'const $1: number & { readonly __brand: "render.FILTER" }',
-	],
+	[/let (BLEND_.+): any/g, 'const $1: BlendConstant'],
+	// (greedy)
+	[/let (BUFFER_.+): any/g, 'const $1: BufferConstant'],
+	// (greedy)
+	[/let (COMPARE_FUNC_.+): any/g, 'const $1: CompareFuncConstant'],
+	// (greedy)
+	[/let (FACE_.+): any/g, 'const $1: FaceConstant'],
+	// (greedy)
+	[/let (FILTER_.+): any/g, 'const $1: FilterConstant'],
 	// (greedy)
 	[/(render_target): any/g, '$1: rendertarget'],
-	[
-		'let FORMAT_R16F: any',
-		'const FORMAT_R16F: number & { readonly __brand: "render.FORMAT" } | undefined',
-	],
-	[
-		'let FORMAT_R32F: any',
-		'const FORMAT_R32F: number & { readonly __brand: "render.FORMAT" } | undefined',
-	],
-	[
-		'let FORMAT_RG16F: any',
-		'const FORMAT_RG16F: number & { readonly __brand: "render.FORMAT" } | undefined',
-	],
-	[
-		'let FORMAT_RG32F: any',
-		'const FORMAT_RG32F: number & { readonly __brand: "render.FORMAT" } | undefined',
-	],
-	[
-		'let FORMAT_RGB16F: any',
-		'const FORMAT_RGB16F: number & { readonly __brand: "render.FORMAT" } | undefined',
-	],
-	[
-		'let FORMAT_RGB32F: any',
-		'const FORMAT_RGB32F: number & { readonly __brand: "render.FORMAT" } | undefined',
-	],
+	['let FORMAT_R16F: any', 'const FORMAT_R16F: FormatConstant | undefined'],
+	['let FORMAT_R32F: any', 'const FORMAT_R32F: FormatConstant | undefined'],
+	['let FORMAT_RG16F: any', 'const FORMAT_RG16F: FormatConstant | undefined'],
+	['let FORMAT_RG32F: any', 'const FORMAT_RG32F: FormatConstant | undefined'],
+	['let FORMAT_RGB16F: any', 'const FORMAT_RGB16F: FormatConstant | undefined'],
+	['let FORMAT_RGB32F: any', 'const FORMAT_RGB32F: FormatConstant | undefined'],
 	[
 		'let FORMAT_RGBA16F: any',
-		'const FORMAT_RGBA16F: number & { readonly __brand: "render.FORMAT" } | undefined',
+		'const FORMAT_RGBA16F: FormatConstant | undefined',
 	],
 	[
 		'let FORMAT_RGBA32F: any',
-		'const FORMAT_RGBA32F: number & { readonly __brand: "render.FORMAT" } | undefined',
+		'const FORMAT_RGBA32F: FormatConstant | undefined',
 	],
 	// (greedy)
-	[
-		/let (FORMAT_.+): any/g,
-		'const $1: number & { readonly __brand: "render.FORMAT" }',
-	],
+	[/let (FORMAT_.+): any/g, 'const $1: FormatConstant'],
 	// (greedy)
-	[
-		/let (FRUSTUM_PLANES_.+): any/g,
-		'const $1: number & { readonly __brand: "render.FRUSTUM_PLANES" }',
-	],
+	[/let (FRUSTUM_PLANES_.+): any/g, 'const $1: FrustumPlanesConstant'],
 	[
 		'let RENDER_TARGET_DEFAULT: any',
-		'const RENDER_TARGET_DEFAULT: number & { readonly __brand: "render.RENDER_TARGET" }',
+		'const RENDER_TARGET_DEFAULT: RenderTargetConstant',
 	],
 	// (greedy)
-	[
-		/let (STATE_.+): any/g,
-		'const $1: number & { readonly __brand: "render.STATE" }',
-	],
+	[/let (STATE_.+): any/g, 'const $1: StateConstant'],
 	// (greedy)
-	[
-		/let (STENCIL_.+): any/g,
-		'const $1: number & { readonly __brand: "render.STENCIL" }',
-	],
+	[/let (STENCIL_.+): any/g, 'const $1: StencilConstant'],
 	// (greedy)
-	[
-		/let (WRAP_.+): any/g,
-		'const $1: number & { readonly __brand: "render.WRAP" }',
-	],
+	[/let (WRAP_.+): any/g, 'const $1: WrapConstant'],
 	[
 		'function disable_state(state: any',
-		'function disable_state(state: typeof render.STATE_DEPTH_TEST | typeof render.STATE_STENCIL_TEST | typeof render.STATE_BLEND | typeof render.STATE_CULL_FACE | typeof render.STATE_POLYGON_OFFSET_FILL',
+		'function disable_state(state: StateConstant',
 	],
 	[
 		'function enable_state(state: any',
-		'function enable_state(state: typeof render.STATE_DEPTH_TEST | typeof render.STATE_STENCIL_TEST | typeof render.STATE_BLEND | typeof render.STATE_CULL_FACE | typeof render.STATE_POLYGON_OFFSET_FILL',
+		'function enable_state(state: StateConstant',
 	],
 	[
 		'function predicate(tags: any): any',
@@ -104,60 +90,48 @@ export const render = [
 	],
 	[
 		'function set_cull_face(face_type: any',
-		'function set_cull_face(face_type: typeof render.FACE_FRONT | typeof render.FACE_BACK | typeof render.FACE_FRONT_AND_BACK',
+		'function set_cull_face(face_type: FaceConstant',
 	],
 	[
 		'function set_depth_func(func: any',
-		'function set_depth_func(func: typeof render.COMPARE_FUNC_NEVER | typeof render.COMPARE_FUNC_LESS | typeof render.COMPARE_FUNC_LEQUAL | typeof render.COMPARE_FUNC_GREATER | typeof render.COMPARE_FUNC_GEQUAL | typeof render.COMPARE_FUNC_EQUAL | typeof render.COMPARE_FUNC_NOTEQUAL | typeof render.COMPARE_FUNC_ALWAYS',
+		'function set_depth_func(func: CompareFuncConstant',
 	],
 	// function enable_texture
-	[
-		'buffer_type?: any',
-		'buffer_type?: typeof render.BUFFER_COLOR_BIT | typeof render.BUFFER_DEPTH_BIT | typeof render.BUFFER_STENCIL_BIT | typeof render.BUFFER_COLOR0_BIT | typeof render.BUFFER_COLOR1_BIT | typeof render.BUFFER_COLOR2_BIT | typeof render.BUFFER_COLOR3_BIT',
-	],
+	['buffer_type?: any', 'buffer_type?: BufferConstant'],
 	// function get_render_target_height
-	[
-		'buffer_type: any',
-		'buffer_type: typeof render.BUFFER_COLOR_BIT | typeof render.BUFFER_DEPTH_BIT | typeof render.BUFFER_STENCIL_BIT',
-	],
+	['buffer_type: any', 'buffer_type: BufferConstant'],
 	// function get_render_target_width
-	[
-		'buffer_type: any',
-		'buffer_type: typeof render.BUFFER_COLOR_BIT | typeof render.BUFFER_COLOR0_BIT | typeof render.BUFFER_COLOR1_BIT | typeof render.BUFFER_COLOR2_BIT | typeof render.BUFFER_COLOR3_BIT | typeof render.BUFFER_DEPTH_BIT | typeof render.BUFFER_STENCIL_BIT',
-	],
+	['buffer_type: any', 'buffer_type: BufferConstant'],
 	// function set_stencil_func
-	[
-		'func: any',
-		'func: typeof render.COMPARE_FUNC_NEVER | typeof render.COMPARE_FUNC_LESS | typeof render.COMPARE_FUNC_LEQUAL | typeof render.COMPARE_FUNC_GREATER | typeof render.COMPARE_FUNC_GEQUAL | typeof render.COMPARE_FUNC_EQUAL | typeof render.COMPARE_FUNC_NOTEQUAL | typeof render.COMPARE_FUNC_ALWAYS',
-	],
+	['func: any', 'func: CompareFuncConstant'],
 	['function constant_buffer(): any', 'function constant_buffer(): buffer'],
 	[
 		'function clear(buffers: any)',
-		'function clear(buffers: { [key: typeof render.BUFFER_COLOR_BIT | typeof render.BUFFER_DEPTH_BIT | typeof render.BUFFER_STENCIL_BIT]: number | vmath.vector4 })',
+		'function clear(buffers: { [key: BufferConstant]: number | vmath.vector4 })',
 	],
 	[
 		'function draw(predicate: any, options?: any)',
-		'function draw(predicate: predicate, options?: { frustum?: vmath.matrix4, frustum_planes?: typeof render.FRUSTUM_PLANES_SIDES | typeof render.FRUSTUM_PLANES_ALL, constants?: buffer })',
+		'function draw(predicate: predicate, options?: { frustum?: vmath.matrix4, frustum_planes?: FrustumPlanesConstant, constants?: buffer })',
 	],
 	[
 		'function draw_debug3d(options?: any)',
-		'function draw_debug3d(options?: { frustum?: vmath.matrix4, frustum_planes?: typeof render.FRUSTUM_PLANES_SIDES | typeof render.FRUSTUM_PLANES_ALL })',
+		'function draw_debug3d(options?: { frustum?: vmath.matrix4, frustum_planes?: FrustumPlanesConstant })',
 	],
 	[
 		'function render_target(name: string, parameters: any): any',
-		'function render_target(name: string, parameters: { [key: typeof render.BUFFER_COLOR_BIT | typeof render.BUFFER_COLOR0_BIT | typeof render.BUFFER_COLOR1_BIT | typeof render.BUFFER_COLOR2_BIT | typeof render.BUFFER_COLOR3_BIT | typeof render.BUFFER_DEPTH_BIT | typeof render.BUFFER_STENCIL_BIT ]: {	format: typeof render.FORMAT_LUMINANCE | typeof render.FORMAT_RGB | typeof render.FORMAT_RGBA | typeof render.FORMAT_DEPTH | typeof render.FORMAT_STENCIL | typeof render.FORMAT_RGBA32F | typeof render.FORMAT_RGBA16F; width: number; height: number; min_filter?: typeof render.FILTER_LINEAR | typeof render.FILTER_NEAREST; mag_filter?: typeof render.FILTER_LINEAR | typeof render.FILTER_NEAREST; u_wrap?: typeof render.WRAP_CLAMP_TO_BORDER | typeof render.WRAP_CLAMP_TO_EDGE | typeof render.WRAP_MIRRORED_REPEAT | typeof render.WRAP_REPEAT; v_wrap?: typeof render.WRAP_CLAMP_TO_BORDER | typeof render.WRAP_CLAMP_TO_EDGE | typeof render.WRAP_MIRRORED_REPEAT | typeof render.WRAP_REPEAT; flags?: unknown } }): rendertarget',
+		'function render_target(name: string, parameters: { [key: BufferConstant ]: {	format: FormatConstant; width: number; height: number; min_filter?: FilterConstant; mag_filter?: FilterConstant; u_wrap?: WrapConstant; v_wrap?: WrapConstant; flags?: unknown } }): rendertarget',
 	],
 	[
 		'function set_stencil_op(sfail: any, dpfail: any, dppass: any)',
-		'function set_stencil_op(sfail: typeof render.STENCIL_OP_KEEP | typeof render.STENCIL_OP_ZERO | typeof render.STENCIL_OP_REPLACE | typeof render.STENCIL_OP_INCR | typeof render.STENCIL_OP_INCR_WRAP | typeof render.STENCIL_OP_DECR | typeof render.STENCIL_OP_DECR_WRAP | typeof render.STENCIL_OP_INVERT, dpfail: typeof render.STENCIL_OP_KEEP | typeof render.STENCIL_OP_ZERO | typeof render.STENCIL_OP_REPLACE | typeof render.STENCIL_OP_INCR | typeof render.STENCIL_OP_INCR_WRAP | typeof render.STENCIL_OP_DECR | typeof render.STENCIL_OP_DECR_WRAP | typeof render.STENCIL_OP_INVERT, dppass: typeof render.STENCIL_OP_KEEP | typeof render.STENCIL_OP_ZERO | typeof render.STENCIL_OP_REPLACE | typeof render.STENCIL_OP_INCR | typeof render.STENCIL_OP_INCR_WRAP | typeof render.STENCIL_OP_DECR | typeof render.STENCIL_OP_DECR_WRAP | typeof render.STENCIL_OP_INVERT)',
+		'function set_stencil_op(sfail: StencilConstant, dpfail: StencilConstant, dppass: StencilConstant)',
 	],
 	[
 		'function set_render_target(render_target: rendertarget, options?: any)',
-		'function set_render_target(render_target: rendertarget, options?: Array<typeof render.BUFFER_COLOR_BIT | typeof  render.BUFFER_DEPTH_BIT | typeof render.BUFFER_STENCIL_BIT>)',
+		'function set_render_target(render_target: rendertarget, options?: Array<BufferConstant>)',
 	],
 	[
 		'function set_blend_func(source_factor: any, destination_factor: any)',
-		'function set_blend_func(source_factor: typeof render.BLEND_ZERO | typeof render.BLEND_ONE | typeof render.BLEND_SRC_COLOR | typeof render.BLEND_ONE_MINUS_SRC_COLOR | typeof render.BLEND_DST_COLOR | typeof render.BLEND_ONE_MINUS_DST_COLOR | typeof render.BLEND_SRC_ALPHA | typeof render.BLEND_ONE_MINUS_SRC_ALPHA | typeof render.BLEND_DST_ALPHA | typeof render.BLEND_ONE_MINUS_DST_ALPHA | typeof render.BLEND_CONSTANT_COLOR | typeof render.BLEND_ONE_MINUS_CONSTANT_COLOR | typeof render.BLEND_CONSTANT_ALPHA | typeof render.BLEND_ONE_MINUS_CONSTANT_ALPHA | typeof render.BLEND_SRC_ALPHA_SATURATE	, destination_factor: typeof render.BLEND_ZERO | typeof render.BLEND_ONE | typeof render.BLEND_SRC_COLOR | typeof render.BLEND_ONE_MINUS_SRC_COLOR | typeof render.BLEND_DST_COLOR | typeof render.BLEND_ONE_MINUS_DST_COLOR | typeof render.BLEND_SRC_ALPHA | typeof render.BLEND_ONE_MINUS_SRC_ALPHA | typeof render.BLEND_DST_ALPHA | typeof render.BLEND_ONE_MINUS_DST_ALPHA | typeof render.BLEND_CONSTANT_COLOR | typeof render.BLEND_ONE_MINUS_CONSTANT_COLOR | typeof render.BLEND_CONSTANT_ALPHA | typeof render.BLEND_ONE_MINUS_CONSTANT_ALPHA | typeof render.BLEND_SRC_ALPHA_SATURATE	)',
+		'function set_blend_func(source_factor: BlendConstant, destination_factor: BlendConstant)',
 	],
 	// Describe clear color message
 	[

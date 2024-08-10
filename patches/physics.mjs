@@ -14,22 +14,26 @@ export const physics = [
 	[
 		'function get_shape(url: string | hash | url, shape: string | hash): any',
 		`function get_shape(url: hash | url | string, shape: hash | string): { type: SHAPE_TYPE_SPHERE | SHAPE_TYPE_BOX | SHAPE_TYPE_CAPSULE | SHAPE_TYPE_HULL, diameter?: number, dimensions?: vmath.vector3, height?: number };
-		export type SHAPE_TYPE_SPHERE = number & { readonly __brand: "physics.SHAPE_TYPE" };
-		export type SHAPE_TYPE_BOX = number & { readonly __brand: "physics.SHAPE_TYPE" };
+		export type SHAPE_TYPE_SPHERE = ShapeTypeConstant;
+		export type SHAPE_TYPE_BOX = ShapeTypeConstant;
 		/** 3D Physics Only */
-		export type SHAPE_TYPE_CAPSULE = number & { readonly __brand: "physics.SHAPE_TYPE" };
-		export type SHAPE_TYPE_HULL = number & { readonly __brand: "physics.SHAPE_TYPE" };`,
+		export type SHAPE_TYPE_CAPSULE = ShapeTypeConstant;
+		export type SHAPE_TYPE_HULL = ShapeTypeConstant;`,
+	],
+	// Create Constant type
+	[
+		'',
+		'export type JointTypeConstant = number & { readonly __brand: "physics.JOINT_TYPE" };',
+	],
+	// Create Constant type
+	[
+		'',
+		'export type ShapeTypeConstant = number & { readonly __brand: "physics.SHAPE_TYPE" };',
 	],
 	// (greedy)
-	[
-		/let (JOINT_TYPE.+): any/g,
-		'const $1: number & { readonly __brand: "physics.JOINT_TYPE" }',
-	],
+	[/let (JOINT_TYPE.+): any/g, 'const $1: JointTypeConstant'],
 	// (greedy)
-	[
-		/let (SHAPE_TYPE.+): any/g,
-		'const $1: number & { readonly __brand: "physics.SHAPE_TYPE" }',
-	],
+	[/let (SHAPE_TYPE.+): any/g, 'const $1: ShapeTypeConstant'],
 	[
 		// function create_joint
 		'properties?: any',
