@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.9.2 (Upcoming)
+
+- Update for latest Defold
+- Move deprecated constants into their own file
+- Better `socket` types
+- Better `jit` types
+
 ## v1.9.1
 
 - Update for latest Defold
