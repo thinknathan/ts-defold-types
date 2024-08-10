@@ -38,6 +38,7 @@ import { model } from './patches/model.mjs';
 import { particleFx } from './patches/particleFx.mjs';
 import { sound } from './patches/sound.mjs';
 import { sprite } from './patches/sprite.mjs';
+import { graphics } from './patches/graphics.mjs';
 import { tilemap } from './patches/tilemap.mjs';
 import { finalChanges } from './patches/_finalChanges.mjs';
 import { getApiDocLinks } from './patches/_getApiDocLinks.mjs';
@@ -45,136 +46,131 @@ import { getApiDocLinks } from './patches/_getApiDocLinks.mjs';
 const patches = [
 	// The following are in order of appearance in the final definitions file
 	{
-		regex: /(declare namespace socket {)([\s\S]*?)(declare namespace b2d {)/s,
+		regex: /(declare namespace socket {)([\s\S]*?)(declare namespace)/s,
 		replacements: socket,
 	},
 	{
-		regex: /(declare namespace b2d {)([\s\S]*?)(declare namespace b2d.body {)/s,
+		regex: /(declare namespace b2d {)([\s\S]*?)(declare namespace)/s,
 		replacements: b2d,
 	},
 	{
-		regex:
-			/(declare namespace b2d.body {)([\s\S]*?)(declare namespace crash {)/s,
+		regex: /(declare namespace b2d.body {)([\s\S]*?)(declare namespace)/s,
 		replacements: b2dBody,
 	},
 	{
-		regex: /(declare namespace crash {)([\s\S]*?)(declare namespace go {)/s,
+		regex: /(declare namespace crash {)([\s\S]*?)(declare namespace)/s,
 		replacements: crash,
 	},
 	{
-		regex: /(declare namespace go {)([\s\S]*?)(declare namespace gui {)/s,
+		regex: /(declare namespace go {)([\s\S]*?)(declare namespace)/s,
 		replacements: go,
 	},
 	{
-		regex: /(declare namespace gui {)([\s\S]*?)(declare namespace physics {)/s,
+		regex: /(declare namespace gui {)([\s\S]*?)(declare namespace)/s,
 		replacements: gui,
 	},
 	{
-		regex:
-			/(declare namespace physics {)([\s\S]*?)(declare namespace profiler {)/s,
+		regex: /(declare namespace physics {)([\s\S]*?)(declare namespace)/s,
 		replacements: physics,
 	},
 	{
-		regex:
-			/(declare namespace profiler {)([\s\S]*?)(declare namespace render {)/s,
+		regex: /(declare namespace profiler {)([\s\S]*?)(declare namespace)/s,
 		replacements: profiler,
 	},
 	{
-		regex:
-			/(declare namespace render {)([\s\S]*?)(declare namespace resource {)/s,
+		regex: /(declare namespace render {)([\s\S]*?)(declare namespace)/s,
 		replacements: render,
 	},
 	{
-		regex: /(declare namespace resource {)([\s\S]*?)(declare namespace sys {)/s,
+		regex: /(declare namespace resource {)([\s\S]*?)(declare namespace)/s,
 		replacements: resource,
 	},
 	{
-		regex: /(declare namespace sys {)([\s\S]*?)(declare namespace window {)/s,
+		regex: /(declare namespace sys {)([\s\S]*?)(declare namespace)/s,
 		replacements: sys,
 	},
 	{
-		regex:
-			/(declare namespace window {)([\s\S]*?)(declare namespace buffer {)/s,
+		regex: /(declare namespace window {)([\s\S]*?)(declare namespace)/s,
 		replacements: windowChanges,
 	},
 	{
-		regex: /(declare namespace buffer {)([\s\S]*?)(declare namespace html5 {)/s,
+		regex: /(declare namespace buffer {)([\s\S]*?)(declare namespace)/s,
 		replacements: bufferChanges,
 	},
 	{
-		regex: /(declare namespace html5 {)([\s\S]*?)(declare namespace http {)/s,
+		regex: /(declare namespace html5 {)([\s\S]*?)(declare namespace)/s,
 		replacements: html5,
 	},
 	{
-		regex: /(declare namespace http {)([\s\S]*?)(declare namespace image {)/s,
+		regex: /(declare namespace http {)([\s\S]*?)(declare namespace)/s,
 		replacements: http,
 	},
 	{
-		regex: /(declare namespace image {)([\s\S]*?)(declare namespace json {)/s,
+		regex: /(declare namespace image {)([\s\S]*?)(declare namespace)/s,
 		replacements: image,
 	},
 	{
-		regex: /(declare namespace json {)([\s\S]*?)(declare namespace msg {)/s,
+		regex: /(declare namespace json {)([\s\S]*?)(declare namespace)/s,
 		replacements: jsonChanges,
 	},
 	{
-		regex: /(declare namespace msg {)([\s\S]*?)(declare namespace timer {)/s,
+		regex: /(declare namespace msg {)([\s\S]*?)(declare namespace)/s,
 		replacements: msg,
 	},
 	{
-		regex: /(declare namespace timer {)([\s\S]*?)(declare namespace vmath {)/s,
+		regex: /(declare namespace timer {)([\s\S]*?)(declare namespace)/s,
 		replacements: timer,
 	},
 	{
-		regex: /(declare namespace vmath {)([\s\S]*?)(declare namespace zlib {)/s,
+		// greedy because there are two instances of namespace vmath
+		regex: /(declare namespace vmath {)([\s\S]*?)(declare namespace)/gs,
 		replacements: vmathChanges,
 	},
 	{
-		regex: /(declare namespace zlib {)([\s\S]*?)(declare namespace camera {)/s,
+		regex: /(declare namespace zlib {)([\s\S]*?)(declare namespace)/s,
 		replacements: zlib,
 	},
 	{
-		regex:
-			/(declare namespace camera {)([\s\S]*?)(declare namespace collectionfactory {)/s,
+		regex: /(declare namespace camera {)([\s\S]*?)(declare namespace)/s,
 		replacements: camera,
 	},
 	{
 		regex:
-			/(declare namespace collectionfactory {)([\s\S]*?)(declare namespace collectionproxy {)/s,
+			/(declare namespace collectionfactory {)([\s\S]*?)(declare namespace)/s,
 		replacements: collectionFactory,
 	},
 	{
 		regex:
-			/(declare namespace collectionproxy {)([\s\S]*?)(declare namespace factory {)/s,
+			/(declare namespace collectionproxy {)([\s\S]*?)(declare namespace)/s,
 		replacements: collectionProxy,
 	},
 	{
-		regex:
-			/(declare namespace factory {)([\s\S]*?)(declare namespace label {)/s,
+		regex: /(declare namespace factory {)([\s\S]*?)(declare namespace)/s,
 		replacements: factory,
 	},
 	{
-		regex: /(declare namespace label {)([\s\S]*?)(declare namespace model {)/s,
+		regex: /(declare namespace label {)([\s\S]*?)(declare namespace)/s,
 		replacements: label,
 	},
 	{
-		regex:
-			/(declare namespace model {)([\s\S]*?)(declare namespace particlefx {)/s,
+		regex: /(declare namespace model {)([\s\S]*?)(declare namespace)/s,
 		replacements: model,
 	},
 	{
-		regex:
-			/(declare namespace particlefx {)([\s\S]*?)(declare namespace sound {)/s,
+		regex: /(declare namespace particlefx {)([\s\S]*?)(declare namespace)/s,
 		replacements: particleFx,
 	},
 	{
-		regex: /(declare namespace sound {)([\s\S]*?)(declare namespace sprite {)/s,
+		regex: /(declare namespace sound {)([\s\S]*?)(declare namespace)/s,
 		replacements: sound,
 	},
 	{
-		regex:
-			/(declare namespace sprite {)([\s\S]*?)(declare namespace tilemap {)/s,
+		regex: /(declare namespace sprite {)([\s\S]*?)(declare namespace)/s,
 		replacements: sprite,
+	},
+	{
+		regex: /(declare namespace graphics {)([\s\S]*?)(declare namespace)/s,
+		replacements: graphics,
 	},
 	{
 		regex: /(declare namespace tilemap {)([\s\S]*?)(})/s,
