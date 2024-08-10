@@ -14,13 +14,7 @@ export const resource = [
 	],
 	[
 		'function get_render_target_info(path: any): any',
-		`function get_render_target_info(path: string): { handle: unknown, attachments: { handle: unknown, width: number, height: number, depth: number, mipmaps: number, type: typeof TEXTURE_TYPE_2D | typeof TEXTURE_TYPE_CUBE_MAP | typeof TEXTURE_TYPE_2D_ARRAY, buffer_type: typeof BUFFER_TYPE_COLOR0 | typeof BUFFER_TYPE_COLOR1 | typeof BUFFER_TYPE_COLOR2 | typeof BUFFER_TYPE_COLOR3 | typeof BUFFER_TYPE_DEPTH | typeof BUFFER_TYPE_STENCIL }[] };
-		export const BUFFER_TYPE_COLOR0: number & { readonly __brand: "resource.BUFFER_TYPE" };
-		export const BUFFER_TYPE_COLOR1: number & { readonly __brand: "resource.BUFFER_TYPE" };
-		export const BUFFER_TYPE_COLOR2: number & { readonly __brand: "resource.BUFFER_TYPE" };
-		export const BUFFER_TYPE_COLOR3: number & { readonly __brand: "resource.BUFFER_TYPE" };
-		export const BUFFER_TYPE_DEPTH: number & { readonly __brand: "resource.BUFFER_TYPE" };
-		export const BUFFER_TYPE_STENCIL: number & { readonly __brand: "resource.BUFFER_TYPE" };`,
+		`function get_render_target_info(path: string): { handle: unknown, attachments: { handle: unknown, width: number, height: number, depth: number, mipmaps: number, type: typeof TEXTURE_TYPE_2D | typeof TEXTURE_TYPE_CUBE_MAP | typeof TEXTURE_TYPE_2D_ARRAY, buffer_type: typeof BUFFER_TYPE_COLOR0 | typeof BUFFER_TYPE_COLOR1 | typeof BUFFER_TYPE_COLOR2 | typeof BUFFER_TYPE_COLOR3 | typeof BUFFER_TYPE_DEPTH | typeof BUFFER_TYPE_STENCIL }[] };`,
 	],
 	[
 		'function create_atlas(path: string, table: any)',
