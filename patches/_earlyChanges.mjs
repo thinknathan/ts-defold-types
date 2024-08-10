@@ -7,6 +7,11 @@ export const earlyChanges = [
 		`/// <reference types="lua-types/5.1" />
 		/// <reference types="lua-types/special/jit-only" />`,
 	],
+	[
+		'/// <reference types="@typescript-to-lua/language-extensions" />',
+		`/// <reference types="@typescript-to-lua/language-extensions" />
+		/// <reference types="./deprecated.d.ts" />`,
+	],
 	// Describe `url`
 	[
 		'declare type url = {\n}',

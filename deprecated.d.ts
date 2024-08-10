@@ -325,6 +325,7 @@ declare namespace resource {
 
 	/**
 	 * BASIS_UASTC compression type
+	 * @deprecated since v1.9.2
 	 */
 	export const COMPRESSION_TYPE_BASIS_UASTC: number & {
 		readonly __brand: 'resource.COMPRESSION';
@@ -332,6 +333,7 @@ declare namespace resource {
 
 	/**
 	 * COMPRESSION_TYPE_DEFAULT compression type
+	 * @deprecated since v1.9.2
 	 */
 	export const COMPRESSION_TYPE_DEFAULT: number & {
 		readonly __brand: 'resource.COMPRESSION';
@@ -339,6 +341,7 @@ declare namespace resource {
 
 	/**
 	 * luminance type texture format
+	 * @deprecated since v1.9.2
 	 */
 	export const TEXTURE_FORMAT_LUMINANCE: number & {
 		readonly __brand: 'resource.TEXTURE';
@@ -346,6 +349,7 @@ declare namespace resource {
 
 	/**
 	 * R16F type texture format
+	 * @deprecated since v1.9.2
 	 */
 	export const TEXTURE_FORMAT_R16F: number & {
 		readonly __brand: 'resource.TEXTURE';
@@ -353,6 +357,7 @@ declare namespace resource {
 
 	/**
 	 * R32F type texture format
+	 * @deprecated since v1.9.2
 	 */
 	export const TEXTURE_FORMAT_R32F: number & {
 		readonly __brand: 'resource.TEXTURE';
@@ -360,6 +365,7 @@ declare namespace resource {
 
 	/**
 	 * RG16F type texture format
+	 * @deprecated since v1.9.2
 	 */
 	export const TEXTURE_FORMAT_RG16F: number & {
 		readonly __brand: 'resource.TEXTURE';
@@ -367,6 +373,7 @@ declare namespace resource {
 
 	/**
 	 * RG32F type texture format
+	 * @deprecated since v1.9.2
 	 */
 	export const TEXTURE_FORMAT_RG32F: number & {
 		readonly __brand: 'resource.TEXTURE';
@@ -374,6 +381,7 @@ declare namespace resource {
 
 	/**
 	 * RGB type texture format
+	 * @deprecated since v1.9.2
 	 */
 	export const TEXTURE_FORMAT_RGB: number & {
 		readonly __brand: 'resource.TEXTURE';
@@ -381,6 +389,7 @@ declare namespace resource {
 
 	/**
 	 * RGB16F type texture format
+	 * @deprecated since v1.9.2
 	 */
 	export const TEXTURE_FORMAT_RGB16F: number & {
 		readonly __brand: 'resource.TEXTURE';
@@ -388,6 +397,7 @@ declare namespace resource {
 
 	/**
 	 * RGB32F type texture format
+	 * @deprecated since v1.9.2
 	 */
 	export const TEXTURE_FORMAT_RGB32F: number & {
 		readonly __brand: 'resource.TEXTURE';
@@ -395,6 +405,7 @@ declare namespace resource {
 
 	/**
 	 * RGBA type texture format
+	 * @deprecated since v1.9.2
 	 */
 	export const TEXTURE_FORMAT_RGBA: number & {
 		readonly __brand: 'resource.TEXTURE';
@@ -402,6 +413,7 @@ declare namespace resource {
 
 	/**
 	 * RGBA16F type texture format
+	 * @deprecated since v1.9.2
 	 */
 	export const TEXTURE_FORMAT_RGBA16F: number & {
 		readonly __brand: 'resource.TEXTURE';
@@ -409,6 +421,7 @@ declare namespace resource {
 
 	/**
 	 * RGBA32F type texture format
+	 * @deprecated since v1.9.2
 	 */
 	export const TEXTURE_FORMAT_RGBA32F: number & {
 		readonly __brand: 'resource.TEXTURE';
@@ -416,6 +429,7 @@ declare namespace resource {
 
 	/**
 	 * RGBA_ASTC_4x4 type texture format
+	 * @deprecated since v1.9.2
 	 */
 	export const TEXTURE_FORMAT_RGBA_ASTC_4x4: number & {
 		readonly __brand: 'resource.TEXTURE';
@@ -423,6 +437,7 @@ declare namespace resource {
 
 	/**
 	 * RGBA_BC3 type texture format
+	 * @deprecated since v1.9.2
 	 */
 	export const TEXTURE_FORMAT_RGBA_BC3: number & {
 		readonly __brand: 'resource.TEXTURE';
@@ -430,6 +445,7 @@ declare namespace resource {
 
 	/**
 	 * RGBA_BC7 type texture format
+	 * @deprecated since v1.9.2
 	 */
 	export const TEXTURE_FORMAT_RGBA_BC7: number & {
 		readonly __brand: 'resource.TEXTURE';
@@ -437,6 +453,7 @@ declare namespace resource {
 
 	/**
 	 * RGBA_ETC2 type texture format
+	 * @deprecated since v1.9.2
 	 */
 	export const TEXTURE_FORMAT_RGBA_ETC2: number & {
 		readonly __brand: 'resource.TEXTURE';
@@ -444,6 +461,7 @@ declare namespace resource {
 
 	/**
 	 * RGBA_PVRTC_2BPPV1 type texture format
+	 * @deprecated since v1.9.2
 	 */
 	export const TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1: number & {
 		readonly __brand: 'resource.TEXTURE';
@@ -451,6 +469,7 @@ declare namespace resource {
 
 	/**
 	 * RGBA_PVRTC_4BPPV1 type texture format
+	 * @deprecated since v1.9.2
 	 */
 	export const TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1: number & {
 		readonly __brand: 'resource.TEXTURE';
@@ -458,6 +477,7 @@ declare namespace resource {
 
 	/**
 	 * RGB_BC1 type texture format
+	 * @deprecated since v1.9.2
 	 */
 	export const TEXTURE_FORMAT_RGB_BC1: number & {
 		readonly __brand: 'resource.TEXTURE';
@@ -465,6 +485,7 @@ declare namespace resource {
 
 	/**
 	 * RGB_ETC1 type texture format
+	 * @deprecated since v1.9.2
 	 */
 	export const TEXTURE_FORMAT_RGB_ETC1: number & {
 		readonly __brand: 'resource.TEXTURE';
@@ -472,6 +493,7 @@ declare namespace resource {
 
 	/**
 	 * RGB_PVRTC_2BPPV1 type texture format
+	 * @deprecated since v1.9.2
 	 */
 	export const TEXTURE_FORMAT_RGB_PVRTC_2BPPV1: number & {
 		readonly __brand: 'resource.TEXTURE';
@@ -479,6 +501,7 @@ declare namespace resource {
 
 	/**
 	 * RGB_PVRTC_4BPPV1 type texture format
+	 * @deprecated since v1.9.2
 	 */
 	export const TEXTURE_FORMAT_RGB_PVRTC_4BPPV1: number & {
 		readonly __brand: 'resource.TEXTURE';
@@ -486,6 +509,7 @@ declare namespace resource {
 
 	/**
 	 * RG_BC5 type texture format
+	 * @deprecated since v1.9.2
 	 */
 	export const TEXTURE_FORMAT_RG_BC5: number & {
 		readonly __brand: 'resource.TEXTURE';
@@ -493,6 +517,7 @@ declare namespace resource {
 
 	/**
 	 * R_BC4 type texture format
+	 * @deprecated since v1.9.2
 	 */
 	export const TEXTURE_FORMAT_R_BC4: number & {
 		readonly __brand: 'resource.TEXTURE';
@@ -500,6 +525,7 @@ declare namespace resource {
 
 	/**
 	 * 2D texture type
+	 * @deprecated since v1.9.2
 	 */
 	export const TEXTURE_TYPE_2D: number & {
 		readonly __brand: 'resource.TEXTURE';
@@ -507,6 +533,7 @@ declare namespace resource {
 
 	/**
 	 * 2D Array texture type
+	 * @deprecated since v1.9.2
 	 */
 	export const TEXTURE_TYPE_2D_ARRAY: number & {
 		readonly __brand: 'resource.TEXTURE';
@@ -514,6 +541,7 @@ declare namespace resource {
 
 	/**
 	 * Cube map texture type
+	 * @deprecated since v1.9.2
 	 */
 	export const TEXTURE_TYPE_CUBE_MAP: number & {
 		readonly __brand: 'resource.TEXTURE';
@@ -521,6 +549,7 @@ declare namespace resource {
 
 	/**
 	 * Usage hint for creating textures that uses temporary memory
+	 * @deprecated since v1.9.2
 	 */
 	export const TEXTURE_USAGE_FLAG_MEMORYLESS: number & {
 		readonly __brand: 'resource.TEXTURE';
@@ -528,6 +557,7 @@ declare namespace resource {
 
 	/**
 	 * Usage hint for creating textures that can be sampled in a shader
+	 * @deprecated since v1.9.2
 	 */
 	export const TEXTURE_USAGE_FLAG_SAMPLE: number & {
 		readonly __brand: 'resource.TEXTURE';
@@ -535,6 +565,7 @@ declare namespace resource {
 
 	/**
 	 * Usage hint for creating textures that can be used for writing in a shader
+	 * @deprecated since v1.9.2
 	 */
 	export const TEXTURE_USAGE_FLAG_STORAGE: number & {
 		readonly __brand: 'resource.TEXTURE';
