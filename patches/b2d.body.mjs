@@ -24,12 +24,12 @@ export const b2dBody = [
 	],
 	[
 		'function set_type(body: any, type: any)',
-		'function set_type(body: typeof b2d.body, type: Constant)',
+		'function set_type(body: typeof b2d.body, type: BodyConstant)',
 	],
 	// Create Constant type
-	['', 'type Constant = number & { readonly __brand: "b2d.body.B2" };'],
+	['', 'type BodyConstant = number & { readonly __brand: "b2d.body.B2" };'],
 	// (greedy)
-	[/let (B2_.+): any/g, 'const $1: Constant'],
+	[/let (B2_.+): any/g, 'const $1: BodyConstant'],
 	// (greedy)
 	[/body: any/g, 'body: typeof b2d.body'],
 ];
