@@ -15,6 +15,19 @@ declare namespace graphics {
 	export type StateConstant = number & { __brand: 'graphics.STATE' };
 	export type StencilConstant = number & { __brand: 'graphics.STENCIL' };
 	export type WrapConstant = number & { __brand: 'graphics.WRAP' };
+	export type BufferTypeConstant = number & {
+		readonly __brand: 'graphics.BUFFER_TYPE';
+	};
+	export const BUFFER_TYPE_COLOR0: BufferTypeConstant;
+	export const BUFFER_TYPE_COLOR1: BufferTypeConstant | undefined;
+	export const BUFFER_TYPE_COLOR2: BufferTypeConstant | undefined;
+	export const BUFFER_TYPE_COLOR3: BufferTypeConstant | undefined;
+	export const BUFFER_TYPE_DEPTH: BufferTypeConstant;
+	export const BUFFER_TYPE_STENCIL: BufferTypeConstant;
+	export const BUFFER_TYPE_COLOR0_BIT: BufferTypeConstant;
+	export const BUFFER_TYPE_COLOR1_BIT: BufferTypeConstant | undefined;
+	export const BUFFER_TYPE_COLOR2_BIT: BufferTypeConstant | undefined;
+	export const BUFFER_TYPE_COLOR3_BIT: BufferTypeConstant | undefined;
 }
 
 declare namespace render {

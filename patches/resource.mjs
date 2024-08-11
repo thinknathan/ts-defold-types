@@ -2,21 +2,9 @@
 
 /** resource namespace @satisfies {(string | RegExp)[][]} */
 export const resource = [
-	// Create Constant type
-	[
-		'',
-		`type BufferTypeConstant = number & { readonly __brand: "resource.BUFFER_TYPE" };
-		export const BUFFER_TYPE_COLOR0: BufferTypeConstant;
-		export const BUFFER_TYPE_COLOR1: BufferTypeConstant;
-		export const BUFFER_TYPE_COLOR2: BufferTypeConstant;
-		export const BUFFER_TYPE_COLOR3: BufferTypeConstant;
-		export const BUFFER_TYPE_DEPTH: BufferTypeConstant;
-		export const BUFFER_TYPE_STENCIL: BufferTypeConstant;
-		`,
-	],
 	[
 		'function get_render_target_info(path: any): any',
-		`function get_render_target_info(path: string): { handle: unknown, attachments: { handle: unknown, width: number, height: number, depth: number, mipmaps: number, type: graphics.TextureConstant, buffer_type: BufferTypeConstant }[] };`,
+		`function get_render_target_info(path: string): { handle: unknown, attachments: { handle: unknown, width: number, height: number, depth: number, mipmaps: number, type: graphics.TextureConstant, buffer_type: graphics.BufferTypeConstant }[] };`,
 	],
 	[
 		'function create_atlas(path: string, table: any)',
