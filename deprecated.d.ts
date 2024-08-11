@@ -1,3 +1,5 @@
+/** @noSelfInFile */
+
 declare namespace graphics {
 	// TO-DO: Move from deprecated to `graphics` module when it gets added to the API
 	export type CompressionConstant = number & {
