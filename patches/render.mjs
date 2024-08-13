@@ -71,7 +71,7 @@ export const render = [
 	],
 	[
 		'function set_render_target(render_target: rendertarget, options?: any)',
-		'function set_render_target(render_target: rendertarget, options?: Array<graphics.BufferConstant>)',
+		'function set_render_target(render_target: rendertarget, options?: graphics.BufferConstant[])',
 	],
 	[
 		'function set_blend_func(source_factor: any, destination_factor: any)',

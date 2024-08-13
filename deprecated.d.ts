@@ -1,37 +1,6 @@
 /** @noSelfInFile */
 
-declare namespace graphics {
-	// TO-DO: Move from deprecated to `graphics` module when it gets added to the API
-	export type CompressionConstant = number & {
-		__brand: 'graphics.COMPRESSION';
-	};
-	export type TextureConstant = number & { __brand: 'graphics.TEXTURE' };
-	export type BlendConstant = number & { __brand: 'graphics.BLEND' };
-	export type BufferConstant = number & { __brand: 'graphics.BUFFER' };
-	export type CompareFuncConstant = number & {
-		__brand: 'graphics.COMPARE_FUNC';
-	};
-	export type FaceConstant = number & { __brand: 'graphics.FACE' };
-	export type FilterConstant = number & { __brand: 'graphics.FILTER' };
-	export type FormatConstant = number & { __brand: 'graphics.FORMAT' };
-	export type StateConstant = number & { __brand: 'graphics.STATE' };
-	export type StencilConstant = number & { __brand: 'graphics.STENCIL' };
-	export type WrapConstant = number & { __brand: 'graphics.WRAP' };
-	export type BufferTypeConstant = number & {
-		readonly __brand: 'graphics.BUFFER_TYPE';
-	};
-	export const BUFFER_TYPE_COLOR0: BufferTypeConstant;
-	export const BUFFER_TYPE_COLOR1: BufferTypeConstant | undefined;
-	export const BUFFER_TYPE_COLOR2: BufferTypeConstant | undefined;
-	export const BUFFER_TYPE_COLOR3: BufferTypeConstant | undefined;
-	export const BUFFER_TYPE_DEPTH: BufferTypeConstant;
-	export const BUFFER_TYPE_STENCIL: BufferTypeConstant;
-	export const BUFFER_TYPE_COLOR0_BIT: BufferTypeConstant;
-	export const BUFFER_TYPE_COLOR1_BIT: BufferTypeConstant | undefined;
-	export const BUFFER_TYPE_COLOR2_BIT: BufferTypeConstant | undefined;
-	export const BUFFER_TYPE_COLOR3_BIT: BufferTypeConstant | undefined;
-}
-
+/** */
 declare namespace render {
 	/**
 	 * @deprecated since v1.9.2

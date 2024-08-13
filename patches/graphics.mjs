@@ -5,18 +5,7 @@ export const graphics = [
 	// Create Constant type
 	[
 		'',
-		`export type BufferTypeConstant = number & { readonly __brand: "graphics.BUFFER_TYPE" };
-		export const BUFFER_TYPE_COLOR0: BufferTypeConstant;
-		export const BUFFER_TYPE_COLOR1: BufferTypeConstant | undefined;
-		export const BUFFER_TYPE_COLOR2: BufferTypeConstant | undefined;
-		export const BUFFER_TYPE_COLOR3: BufferTypeConstant | undefined;
-		export const BUFFER_TYPE_DEPTH: BufferTypeConstant;
-		export const BUFFER_TYPE_STENCIL: BufferTypeConstant;
-		export const BUFFER_TYPE_COLOR0_BIT: BufferTypeConstant;
-		export const BUFFER_TYPE_COLOR1_BIT: BufferTypeConstant | undefined;
-		export const BUFFER_TYPE_COLOR2_BIT: BufferTypeConstant | undefined;
-		export const BUFFER_TYPE_COLOR3_BIT: BufferTypeConstant | undefined;
-		`,
+		'export type BufferTypeConstant = number & { readonly __brand: "graphics.BUFFER_TYPE" };',
 	],
 	// Create Constant type
 	[
@@ -109,4 +98,8 @@ export const graphics = [
 	[/let (COMPRESSION_.+): any/g, 'const $1: CompressionConstant'],
 	// (greedy)
 	[/let (TEXTURE_.+): any/g, 'const $1: TextureConstant'],
+	// Fix typo?
+	['`resource.BUFFER_TYPE_DEPTH`', '`resource.BUFFER_TYPE_DEPTH_BIT`'],
+	// Fix typo?
+	['`resource.BUFFER_TYPE_STENCIL`', '`resource.BUFFER_TYPE_STENCIL_BIT`'],
 ];

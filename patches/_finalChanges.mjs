@@ -24,6 +24,10 @@ export const finalChanges = [
 		'/** @see {@link https://defold.com/ref/stable/go/|API Documentation} */\ndeclare namespace go',
 	],
 	[
+		'declare namespace graphics',
+		'/** @see {@link https://defold.com/ref/stable/graphics/|API Documentation} */\ndeclare namespace graphics',
+	],
+	[
 		'declare namespace gui',
 		'/** @see {@link https://defold.com/ref/stable/gui/|API Documentation} */\ndeclare namespace gui',
 	],
