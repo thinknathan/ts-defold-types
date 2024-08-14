@@ -1,3 +1,5 @@
+// @ts-check
+
 /**
  * Insert API links
  * @param {string} data
