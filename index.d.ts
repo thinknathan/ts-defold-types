@@ -1,8 +1,11 @@
 /** @noSelfInFile */
 /// <reference types="lua-types/5.1" />
+/// <reference types="lua-types/special/jit-only" />
 /// <reference types="@typescript-to-lua/language-extensions" />
+/// <reference types="./deprecated.d.ts" />
+/// <reference types="./socket.d.ts" />
 
-// DEFOLD. stable version 1.9.1 (3be87d89fd5a93a63f527351fbedb84f8a875812)
+// DEFOLD. stable version 1.9.2 (3251ca82359cf238a1074e383281e3126547d50b)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 /**
@@ -60,54 +63,6 @@ declare type rendertarget = Readonly<
 		readonly __rendertarget__: unique symbol;
 	}
 >;
-
-/**
- * Socket objects.
- */
-declare type socketclient = object;
-declare type socketmaster = object;
-declare type socketunconnected = object;
-
-/**
- * Not available in HTML5, iOS, Switch builds
- * @see {@link https://luajit.org/ext_jit.html|Documentation}
- */
-declare namespace jit {
-	/** Turns the JIT engine on.  */
-	export function on(): void;
-	/** Turns the JIT engine off. */
-	export function off(): void;
-	/** Enable JIT compilation for a Lua function. */
-	export function on(
-		fn: (...args: any[]) => unknown,
-		recursive?: boolean,
-	): void;
-	/** Disable JIT compilation for a Lua function. */
-	export function off(
-		fn: (...args: any[]) => unknown,
-		recursive?: boolean,
-	): void;
-	/** Enable JIT compilation for a module. */
-	export function on(arg1: true, recursive?: boolean): void;
-	/** Disable JIT compilation for a module. */
-	export function off(arg1: true, recursive?: boolean): void;
-	/**
-	 * Attach a handler to the compiler pipeline with the given priority.
-	 * The handler is detached if no priority is given.
-	 */
-	export function attach(
-		handler: (...args: any[]) => unknown,
-		priority?: number,
-	): void;
-	export function security(): void;
-	export function flush(): void;
-	export const arch: string;
-	/** Contains the version number of the LuaJIT core.  */
-	export const version_num: number;
-	/** Contains the LuaJIT version string. */
-	export const version: string;
-	export const os: string;
-}
 
 /**
  * A data stream derived from a buffer.
@@ -257,155 +212,8 @@ declare function pprint(...v: any[]): void;
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 /** @see {@link https://defold.com/ref/stable/socket/|API Documentation} */
-declare namespace socket {
-	/**
-	 * max numbers of sockets the select function can handle
-	 */
-	export const _SETSIZE: number;
+declare namespace socket {}
 
-	/**
-	 * the current LuaSocket version
-	 */
-	export const _VERSION: string;
-
-	/**
-	 * This function is a shortcut that creates and returns a TCP client object connected to a remote
-	 * address at a given port. Optionally, the user can also specify the local address and port to
-	 * bind (`locaddr` and `locport`), or restrict the socket family to `"inet"` or `"inet6"`.
-	 * Without specifying family to connect, whether a tcp or tcp6 connection is created depends on
-	 * your system configuration.
-	 * @param address  the address to connect to.
-	 * @param port  the port to connect to.
-	 * @param locaddr  optional local address to bind to.
-	 * @param locport  optional local port to bind to.
-	 * @param family  optional socket family to use, `"inet"` or `"inet6"`.
-	 * @returns tcp_client  a new IPv6 TCP client object, or `undefined` in case of error.
-	 * @returns error  the error message, or `undefined` if no error occurred.
-	 */
-	export function connect(
-		address: string,
-		port: number,
-		locaddr?: string,
-		locport?: number,
-		family?: 'inet' | 'inet6',
-	): LuaMultiReturn<[socketclient | undefined, string | undefined]>;
-
-	/**
-	 * Returns the time in seconds, relative to the system epoch (Unix epoch time since January 1, 1970 (UTC) or Windows file time since January 1, 1601 (UTC)).
-	 * You should use the values returned by this function for relative measurements only.
-	 * @returns seconds  the number of seconds elapsed.
-	 */
-	export function gettime(): number;
-
-	/**
-	 * This function creates and returns a clean try function that allows for cleanup before the exception is raised.
-	 * The `finalizer` function will be called in protected mode (see protect).
-	 * @param finalizer  a function that will be called before the try throws the exception.
-	 * @returns try  the customized try function.
-	 */
-	export function newtry(
-		finalizer: (...args: any[]) => unknown,
-	): (...args: any[]) => unknown;
-
-	/**
-	 * Converts a function that throws exceptions into a safe function. This function only catches exceptions thrown by try functions. It does not catch normal Lua errors.
-	 * ⚠ Beware that if your function performs some illegal operation that raises an error, the protected function will catch the error and return it as a string. This is because try functions uses errors as the mechanism to throw exceptions.
-	 * @param func  a function that calls a try function (or assert, or error) to throw exceptions.
-	 * @returns safe_func  an equivalent function that instead of throwing exceptions, returns `undefined` followed by an error message.
-	 */
-	export function protect(
-		func: (...args: any[]) => unknown,
-	): (...args: any[]) => unknown;
-
-	/**
-	 * The function returns a list with the sockets ready for reading, a list with the sockets ready for writing and an error message. The error message is "timeout" if a timeout condition was met and undefined otherwise. The returned tables are doubly keyed both by integers and also by the sockets themselves, to simplify the test if a specific socket has changed status.
-	 * `Recvt` and `sendt` parameters can be empty tables or `undefined`. Non-socket values (or values with non-numeric indices) in these arrays will be silently ignored.
-	 * The returned tables are doubly keyed both by integers and also by the sockets themselves, to simplify the test if a specific socket has changed status.
-	 * ⚠ This function can monitor a limited number of sockets, as defined by the constant socket._SETSIZE. This number may be as high as 1024 or as low as 64 by default, depending on the system. It is usually possible to change this at compile time. Invoking select with a larger number of sockets will raise an error.
-	 * ⚠ A known bug in WinSock causes select to fail on non-blocking TCP sockets. The function may return a socket as writable even though the socket is not ready for sending.
-	 * ⚠ Calling select with a server socket in the receive parameter before a call to accept does not guarantee accept will return immediately. Use the settimeout method or accept might block forever.
-	 * ⚠ If you close a socket and pass it to select, it will be ignored.
-	 * (Using select with non-socket objects: Any object that implements `getfd` and `dirty` can be used with select, allowing objects from other libraries to be used within a socket.select driven loop.)
-	 * @param recvt  array with the sockets to test for characters available for reading.
-	 * @param sendt  array with sockets that are watched to see if it is OK to immediately write on them.
-	 * @param timeout  the maximum amount of time (in seconds) to wait for a change in status. Undefined, negative or omitted timeout value allows the function to block indefinitely.
-	 * @returns sockets_r  a list with the sockets ready for reading.
-	 * @returns sockets_w  a list with the sockets ready for writing.
-	 * @returns error  an error message. "timeout" if a timeout condition was met, otherwise `undefined`.
-	 */
-	export function select(
-		recvt: any[],
-		sendt: any[],
-		timeout?: number,
-	): LuaMultiReturn<[unknown[], unknown[], string | undefined]>;
-
-	/**
-	 * This function drops a number of arguments and returns the remaining.
-	 * It is useful to avoid creation of dummy variables:
-	 * `D` is the number of arguments to drop. `Ret1` to `retN` are the arguments.
-	 * The function returns `retD+1` to `retN`.
-	 * @param d  the number of arguments to drop.
-	 * @param ret1  argument 1.
-	 * @param ret2  argument 2.
-	 * @param retN  argument N.
-	 * @returns retD_1  argument D+1.
-	 * @returns retD_2  argument D+2.
-	 * @returns retN  argument N.
-	 */
-
-	export function skip(
-		d: number,
-		ret1?: unknown,
-		ret2?: unknown,
-		retN?: unknown,
-	): LuaMultiReturn<
-		[AnyNotNil | undefined, AnyNotNil | undefined, AnyNotNil | undefined]
-	>;
-
-	/**
-	 * Freezes the program execution during a given amount of time.
-	 * @param time  the number of seconds to sleep for.
-	 */
-	export function sleep(time: number): void;
-
-	/**
-	 * Creates and returns an IPv4 TCP master object. A master object can be transformed into a server object with the method `listen` (after a call to `bind`) or into a client object with the method `connect`. The only other method supported by a master object is the `close` method.
-	 * @returns tcp_master  a new IPv4 TCP master object, or `undefined` in case of error.
-	 * @returns error  the error message, or `undefined` if no error occurred.
-	 */
-	export function tcp(): LuaMultiReturn<
-		[socketmaster | undefined, string | undefined]
-	>;
-
-	/**
-	 * Creates and returns an IPv6 TCP master object. A master object can be transformed into a server object with the method `listen` (after a call to `bind`) or into a client object with the method connect. The only other method supported by a master object is the close method.
-	 * Note: The TCP object returned will have the option "ipv6-v6only" set to true.
-	 * @returns tcp_master  a new IPv6 TCP master object, or `undefined` in case of error.
-	 * @returns error  the error message, or `undefined` if no error occurred.
-	 */
-	export function tcp6(): LuaMultiReturn<
-		[socketmaster | undefined, string | undefined]
-	>;
-
-	/**
-	 * Creates and returns an unconnected IPv4 UDP object. Unconnected objects support the `sendto`, `receive`, `receivefrom`, `getoption`, `getsockname`, `setoption`, `settimeout`, `setpeername`, `setsockname`, and `close` methods. The `setpeername` method is used to connect the object.
-	 * @returns udp_unconnected  a new unconnected IPv4 UDP object, or `undefined` in case of error.
-	 * @returns error  the error message, or `undefined` if no error occurred.
-	 */
-	export function udp(): LuaMultiReturn<
-		[socketunconnected | undefined, string | undefined]
-	>;
-
-	/**
-	 * Creates and returns an unconnected IPv6 UDP object. Unconnected objects support the `sendto`, `receive`, `receivefrom`, `getoption`, `getsockname`, `setoption`, `settimeout`, `setpeername`, `setsockname`, and `close` methods. The `setpeername` method is used to connect the object.
-	 * Note: The UDP object returned will have the option "ipv6-v6only" set to true.
-	 * @returns udp_unconnected  a new unconnected IPv6 UDP object, or `undefined` in case of error.
-	 * @returns error  the error message, or `undefined` if no error occurred.
-	 */
-	export function udp6(): LuaMultiReturn<
-		[socketunconnected | undefined, string | undefined]
-	>;
-}
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 /** @see {@link https://defold.com/ref/stable/b2d/|Box2D Documentation} @since 1.8.0 */
@@ -431,20 +239,22 @@ declare namespace b2d {
 
 /** @see {@link https://defold.com/ref/stable/b2d.body/|Box2D b2Body Documentation} */
 declare namespace b2d.body {
+	type BodyConstant = number & { readonly __brand: 'b2d.body.B2' };
+
 	/**
 	 * Dynamic body
 	 */
-	export const B2_DYNAMIC_BODY: number & { readonly __brand: 'b2d.body.B2' };
+	export const B2_DYNAMIC_BODY: BodyConstant;
 
 	/**
 	 * Kinematic body
 	 */
-	export const B2_KINEMATIC_BODY: number & { readonly __brand: 'b2d.body.B2' };
+	export const B2_KINEMATIC_BODY: BodyConstant;
 
 	/**
 	 * Static (immovable) body
 	 */
-	export const B2_STATIC_BODY: number & { readonly __brand: 'b2d.body.B2' };
+	export const B2_STATIC_BODY: BodyConstant;
 
 	/**
 	 * Apply an angular impulse.
@@ -882,102 +692,79 @@ declare namespace b2d.body {
 	 * @param type  the body type
 	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.set_type|API Documentation}
 	 */
-	export function set_type(
-		body: typeof b2d.body,
-		type:
-			| typeof b2d.body.B2_DYNAMIC_BODY
-			| typeof b2d.body.B2_KINEMATIC_BODY
-			| typeof b2d.body.B2_STATIC_BODY,
-	): void;
+	export function set_type(body: typeof b2d.body, type: BodyConstant): void;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 /** @see {@link https://defold.com/ref/stable/crash/|API Documentation} */
 declare namespace crash {
+	type UserFieldConstant = number & { readonly __brand: 'crash.USERFIELD' };
+	type SysFieldConstant = number & { readonly __brand: 'crash.SYSFIELD' };
+
 	/**
 	 * android build fingerprint
 	 */
-	export const SYSFIELD_ANDROID_BUILD_FINGERPRINT: number & {
-		readonly __brand: 'crash.SYSFIELD';
-	};
+	export const SYSFIELD_ANDROID_BUILD_FINGERPRINT: SysFieldConstant;
 
 	/**
 	 * system device language as reported by sys.get_sys_info
 	 */
-	export const SYSFIELD_DEVICE_LANGUAGE: number & {
-		readonly __brand: 'crash.SYSFIELD';
-	};
+	export const SYSFIELD_DEVICE_LANGUAGE: SysFieldConstant;
 
 	/**
 	 * device model as reported by sys.get_sys_info
 	 */
-	export const SYSFIELD_DEVICE_MODEL: number & {
-		readonly __brand: 'crash.SYSFIELD';
-	};
+	export const SYSFIELD_DEVICE_MODEL: SysFieldConstant;
 
 	/**
 	 * engine version as hash
 	 */
-	export const SYSFIELD_ENGINE_HASH: number & {
-		readonly __brand: 'crash.SYSFIELD';
-	};
+	export const SYSFIELD_ENGINE_HASH: SysFieldConstant;
 
 	/**
 	 * engine version as release number
 	 */
-	export const SYSFIELD_ENGINE_VERSION: number & {
-		readonly __brand: 'crash.SYSFIELD';
-	};
+	export const SYSFIELD_ENGINE_VERSION: SysFieldConstant;
 
 	/**
 	 * system language as reported by sys.get_sys_info
 	 */
-	export const SYSFIELD_LANGUAGE: number & {
-		readonly __brand: 'crash.SYSFIELD';
-	};
+	export const SYSFIELD_LANGUAGE: SysFieldConstant;
 
 	/**
 	 * device manufacturer as reported by sys.get_sys_info
 	 */
-	export const SYSFIELD_MANUFACTURER: number & {
-		readonly __brand: 'crash.SYSFIELD';
-	};
+	export const SYSFIELD_MANUFACTURER: SysFieldConstant;
 
 	/**
 	 * The max number of sysfields.
 	 */
-	export const SYSFIELD_MAX: number & { readonly __brand: 'crash.SYSFIELD' };
+	export const SYSFIELD_MAX: SysFieldConstant;
 
 	/**
 	 * system name as reported by sys.get_sys_info
 	 */
-	export const SYSFIELD_SYSTEM_NAME: number & {
-		readonly __brand: 'crash.SYSFIELD';
-	};
+	export const SYSFIELD_SYSTEM_NAME: SysFieldConstant;
 
 	/**
 	 * system version as reported by sys.get_sys_info
 	 */
-	export const SYSFIELD_SYSTEM_VERSION: number & {
-		readonly __brand: 'crash.SYSFIELD';
-	};
+	export const SYSFIELD_SYSTEM_VERSION: SysFieldConstant;
 
 	/**
 	 * system territory as reported by sys.get_sys_info
 	 */
-	export const SYSFIELD_TERRITORY: number & {
-		readonly __brand: 'crash.SYSFIELD';
-	};
+	export const SYSFIELD_TERRITORY: SysFieldConstant;
 
 	/**
 	 * The max number of user fields.
 	 */
-	export const USERFIELD_MAX: number & { readonly __brand: 'crash.USERFIELD' };
+	export const USERFIELD_MAX: UserFieldConstant;
 
 	/**
 	 * The max size of a single user field.
 	 */
-	export const USERFIELD_SIZE: number & { readonly __brand: 'crash.USERFIELD' };
+	export const USERFIELD_SIZE: UserFieldConstant;
 
 	/**
 	 * A table is returned containing the addresses of the call stack.
@@ -1081,6 +868,9 @@ declare namespace crash {
 
 /** @see {@link https://defold.com/ref/stable/go/|API Documentation} */
 declare namespace go {
+	export type PlaybackConstant = number & { readonly __brand: 'go.PLAYBACK' };
+	type EasingConstant = number & { readonly __brand: 'go.EASING' };
+
 	/**
 	 * Post this message to a game object instance to make that instance acquire the user input focus.
 	 * User input is distributed by the engine to every instance that has
@@ -1184,254 +974,242 @@ declare namespace go {
 	/**
 	 * in-back
 	 */
-	export const EASING_INBACK: number & { readonly __brand: 'go.EASING' };
+	export const EASING_INBACK: EasingConstant;
 
 	/**
 	 * in-bounce
 	 */
-	export const EASING_INBOUNCE: number & { readonly __brand: 'go.EASING' };
+	export const EASING_INBOUNCE: EasingConstant;
 
 	/**
 	 * in-circlic
 	 */
-	export const EASING_INCIRC: number & { readonly __brand: 'go.EASING' };
+	export const EASING_INCIRC: EasingConstant;
 
 	/**
 	 * in-cubic
 	 */
-	export const EASING_INCUBIC: number & { readonly __brand: 'go.EASING' };
+	export const EASING_INCUBIC: EasingConstant;
 
 	/**
 	 * in-elastic
 	 */
-	export const EASING_INELASTIC: number & { readonly __brand: 'go.EASING' };
+	export const EASING_INELASTIC: EasingConstant;
 
 	/**
 	 * in-exponential
 	 */
-	export const EASING_INEXPO: number & { readonly __brand: 'go.EASING' };
+	export const EASING_INEXPO: EasingConstant;
 
 	/**
 	 * in-out-back
 	 */
-	export const EASING_INOUTBACK: number & { readonly __brand: 'go.EASING' };
+	export const EASING_INOUTBACK: EasingConstant;
 
 	/**
 	 * in-out-bounce
 	 */
-	export const EASING_INOUTBOUNCE: number & { readonly __brand: 'go.EASING' };
+	export const EASING_INOUTBOUNCE: EasingConstant;
 
 	/**
 	 * in-out-circlic
 	 */
-	export const EASING_INOUTCIRC: number & { readonly __brand: 'go.EASING' };
+	export const EASING_INOUTCIRC: EasingConstant;
 
 	/**
 	 * in-out-cubic
 	 */
-	export const EASING_INOUTCUBIC: number & { readonly __brand: 'go.EASING' };
+	export const EASING_INOUTCUBIC: EasingConstant;
 
 	/**
 	 * in-out-elastic
 	 */
-	export const EASING_INOUTELASTIC: number & { readonly __brand: 'go.EASING' };
+	export const EASING_INOUTELASTIC: EasingConstant;
 
 	/**
 	 * in-out-exponential
 	 */
-	export const EASING_INOUTEXPO: number & { readonly __brand: 'go.EASING' };
+	export const EASING_INOUTEXPO: EasingConstant;
 
 	/**
 	 * in-out-quadratic
 	 */
-	export const EASING_INOUTQUAD: number & { readonly __brand: 'go.EASING' };
+	export const EASING_INOUTQUAD: EasingConstant;
 
 	/**
 	 * in-out-quartic
 	 */
-	export const EASING_INOUTQUART: number & { readonly __brand: 'go.EASING' };
+	export const EASING_INOUTQUART: EasingConstant;
 
 	/**
 	 * in-out-quintic
 	 */
-	export const EASING_INOUTQUINT: number & { readonly __brand: 'go.EASING' };
+	export const EASING_INOUTQUINT: EasingConstant;
 
 	/**
 	 * in-out-sine
 	 */
-	export const EASING_INOUTSINE: number & { readonly __brand: 'go.EASING' };
+	export const EASING_INOUTSINE: EasingConstant;
 
 	/**
 	 * in-quadratic
 	 */
-	export const EASING_INQUAD: number & { readonly __brand: 'go.EASING' };
+	export const EASING_INQUAD: EasingConstant;
 
 	/**
 	 * in-quartic
 	 */
-	export const EASING_INQUART: number & { readonly __brand: 'go.EASING' };
+	export const EASING_INQUART: EasingConstant;
 
 	/**
 	 * in-quintic
 	 */
-	export const EASING_INQUINT: number & { readonly __brand: 'go.EASING' };
+	export const EASING_INQUINT: EasingConstant;
 
 	/**
 	 * in-sine
 	 */
-	export const EASING_INSINE: number & { readonly __brand: 'go.EASING' };
+	export const EASING_INSINE: EasingConstant;
 
 	/**
 	 * linear interpolation
 	 */
-	export const EASING_LINEAR: number & { readonly __brand: 'go.EASING' };
+	export const EASING_LINEAR: EasingConstant;
 
 	/**
 	 * out-back
 	 */
-	export const EASING_OUTBACK: number & { readonly __brand: 'go.EASING' };
+	export const EASING_OUTBACK: EasingConstant;
 
 	/**
 	 * out-bounce
 	 */
-	export const EASING_OUTBOUNCE: number & { readonly __brand: 'go.EASING' };
+	export const EASING_OUTBOUNCE: EasingConstant;
 
 	/**
 	 * out-circlic
 	 */
-	export const EASING_OUTCIRC: number & { readonly __brand: 'go.EASING' };
+	export const EASING_OUTCIRC: EasingConstant;
 
 	/**
 	 * out-cubic
 	 */
-	export const EASING_OUTCUBIC: number & { readonly __brand: 'go.EASING' };
+	export const EASING_OUTCUBIC: EasingConstant;
 
 	/**
 	 * out-elastic
 	 */
-	export const EASING_OUTELASTIC: number & { readonly __brand: 'go.EASING' };
+	export const EASING_OUTELASTIC: EasingConstant;
 
 	/**
 	 * out-exponential
 	 */
-	export const EASING_OUTEXPO: number & { readonly __brand: 'go.EASING' };
+	export const EASING_OUTEXPO: EasingConstant;
 
 	/**
 	 * out-in-back
 	 */
-	export const EASING_OUTINBACK: number & { readonly __brand: 'go.EASING' };
+	export const EASING_OUTINBACK: EasingConstant;
 
 	/**
 	 * out-in-bounce
 	 */
-	export const EASING_OUTINBOUNCE: number & { readonly __brand: 'go.EASING' };
+	export const EASING_OUTINBOUNCE: EasingConstant;
 
 	/**
 	 * out-in-circlic
 	 */
-	export const EASING_OUTINCIRC: number & { readonly __brand: 'go.EASING' };
+	export const EASING_OUTINCIRC: EasingConstant;
 
 	/**
 	 * out-in-cubic
 	 */
-	export const EASING_OUTINCUBIC: number & { readonly __brand: 'go.EASING' };
+	export const EASING_OUTINCUBIC: EasingConstant;
 
 	/**
 	 * out-in-elastic
 	 */
-	export const EASING_OUTINELASTIC: number & { readonly __brand: 'go.EASING' };
+	export const EASING_OUTINELASTIC: EasingConstant;
 
 	/**
 	 * out-in-exponential
 	 */
-	export const EASING_OUTINEXPO: number & { readonly __brand: 'go.EASING' };
+	export const EASING_OUTINEXPO: EasingConstant;
 
 	/**
 	 * out-in-quadratic
 	 */
-	export const EASING_OUTINQUAD: number & { readonly __brand: 'go.EASING' };
+	export const EASING_OUTINQUAD: EasingConstant;
 
 	/**
 	 * out-in-quartic
 	 */
-	export const EASING_OUTINQUART: number & { readonly __brand: 'go.EASING' };
+	export const EASING_OUTINQUART: EasingConstant;
 
 	/**
 	 * out-in-quintic
 	 */
-	export const EASING_OUTINQUINT: number & { readonly __brand: 'go.EASING' };
+	export const EASING_OUTINQUINT: EasingConstant;
 
 	/**
 	 * out-in-sine
 	 */
-	export const EASING_OUTINSINE: number & { readonly __brand: 'go.EASING' };
+	export const EASING_OUTINSINE: EasingConstant;
 
 	/**
 	 * out-quadratic
 	 */
-	export const EASING_OUTQUAD: number & { readonly __brand: 'go.EASING' };
+	export const EASING_OUTQUAD: EasingConstant;
 
 	/**
 	 * out-quartic
 	 */
-	export const EASING_OUTQUART: number & { readonly __brand: 'go.EASING' };
+	export const EASING_OUTQUART: EasingConstant;
 
 	/**
 	 * out-quintic
 	 */
-	export const EASING_OUTQUINT: number & { readonly __brand: 'go.EASING' };
+	export const EASING_OUTQUINT: EasingConstant;
 
 	/**
 	 * out-sine
 	 */
-	export const EASING_OUTSINE: number & { readonly __brand: 'go.EASING' };
+	export const EASING_OUTSINE: EasingConstant;
 
 	/**
 	 * loop backward
 	 */
-	export const PLAYBACK_LOOP_BACKWARD: number & {
-		readonly __brand: 'go.PLAYBACK';
-	};
+	export const PLAYBACK_LOOP_BACKWARD: PlaybackConstant;
 
 	/**
 	 * loop forward
 	 */
-	export const PLAYBACK_LOOP_FORWARD: number & {
-		readonly __brand: 'go.PLAYBACK';
-	};
+	export const PLAYBACK_LOOP_FORWARD: PlaybackConstant;
 
 	/**
 	 * ping pong loop
 	 */
-	export const PLAYBACK_LOOP_PINGPONG: number & {
-		readonly __brand: 'go.PLAYBACK';
-	};
+	export const PLAYBACK_LOOP_PINGPONG: PlaybackConstant;
 
 	/**
 	 * no playback
 	 */
-	export const PLAYBACK_NONE: number & { readonly __brand: 'go.PLAYBACK' };
+	export const PLAYBACK_NONE: PlaybackConstant;
 
 	/**
 	 * once backward
 	 */
-	export const PLAYBACK_ONCE_BACKWARD: number & {
-		readonly __brand: 'go.PLAYBACK';
-	};
+	export const PLAYBACK_ONCE_BACKWARD: PlaybackConstant;
 
 	/**
 	 * once forward
 	 */
-	export const PLAYBACK_ONCE_FORWARD: number & {
-		readonly __brand: 'go.PLAYBACK';
-	};
+	export const PLAYBACK_ONCE_FORWARD: PlaybackConstant;
 
 	/**
 	 * once ping pong
 	 */
-	export const PLAYBACK_ONCE_PINGPONG: number & {
-		readonly __brand: 'go.PLAYBACK';
-	};
+	export const PLAYBACK_ONCE_PINGPONG: PlaybackConstant;
 
 	/**
 	* This is only supported for numerical properties. If the node property is already being
@@ -1477,52 +1255,9 @@ The id of the animated property.
 	export function animate(
 		url: hash | url | string,
 		property: hash | string,
-		playback:
-			typeof go.PLAYBACK_LOOP_BACKWARD | typeof go.PLAYBACK_LOOP_FORWARD | typeof go.PLAYBACK_LOOP_PINGPONG | typeof go.PLAYBACK_ONCE_BACKWARD | typeof go.PLAYBACK_ONCE_FORWARD | typeof go.PLAYBACK_ONCE_PINGPONG,
+		playback: PlaybackConstant,
 		to: vmath.quaternion | vmath.vector3 | vmath.vector4 | number,
-		easing:
-			| vmath.vector3
-			| typeof go.EASING_INBACK
-			| typeof go.EASING_INBOUNCE
-			| typeof go.EASING_INCIRC
-			| typeof go.EASING_INCUBIC
-			| typeof go.EASING_INELASTIC
-			| typeof go.EASING_INEXPO
-			| typeof go.EASING_INOUTBACK
-			| typeof go.EASING_INOUTBOUNCE
-			| typeof go.EASING_INOUTCIRC
-			| typeof go.EASING_INOUTCUBIC
-			| typeof go.EASING_INOUTELASTIC
-			| typeof go.EASING_INOUTEXPO
-			| typeof go.EASING_INOUTQUAD
-			| typeof go.EASING_INOUTQUART
-			| typeof go.EASING_INOUTQUINT
-			| typeof go.EASING_INOUTSINE
-			| typeof go.EASING_INQUAD
-			| typeof go.EASING_INQUART
-			| typeof go.EASING_INQUINT
-			| typeof go.EASING_INSINE
-			| typeof go.EASING_LINEAR
-			| typeof go.EASING_OUTBACK
-			| typeof go.EASING_OUTBOUNCE
-			| typeof go.EASING_OUTCIRC
-			| typeof go.EASING_OUTCUBIC
-			| typeof go.EASING_OUTELASTIC
-			| typeof go.EASING_OUTEXPO
-			| typeof go.EASING_OUTINBACK
-			| typeof go.EASING_OUTINBOUNCE
-			| typeof go.EASING_OUTINCIRC
-			| typeof go.EASING_OUTINCUBIC
-			| typeof go.EASING_OUTINELASTIC
-			| typeof go.EASING_OUTINEXPO
-			| typeof go.EASING_OUTINQUAD
-			| typeof go.EASING_OUTINQUART
-			| typeof go.EASING_OUTINQUINT
-			| typeof go.EASING_OUTINSINE
-			| typeof go.EASING_OUTQUAD
-			| typeof go.EASING_OUTQUART
-			| typeof go.EASING_OUTQUINT
-			| typeof go.EASING_OUTSINE,
+		easing: EasingConstant | vmath.vector3,
 		duration: number,
 		delay?: number,
 		complete_function?: (this: any, url: url, property: hash) => void,
@@ -1822,8 +1557,582 @@ name of internal property
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
+/** @see {@link https://defold.com/ref/stable/graphics/|API Documentation} */
+declare namespace graphics {
+	export type TextureConstant = number & {
+		readonly __brand: 'graphics.TEXTURE';
+	};
+	export type CompressionConstant = number & {
+		readonly __brand: 'graphics.COMPRESSION';
+	};
+	export type WrapConstant = number & { readonly __brand: 'graphics.WRAP' };
+	export type StencilConstant = number & {
+		readonly __brand: 'graphics.STENCIL';
+	};
+	export type StateConstant = number & { readonly __brand: 'graphics.STATE' };
+	export type FormatConstant = number & { readonly __brand: 'graphics.FORMAT' };
+	export type FilterConstant = number & { readonly __brand: 'graphics.FILTER' };
+	export type FaceConstant = number & { readonly __brand: 'graphics.FACE' };
+	export type CompareFuncConstant = number & {
+		readonly __brand: 'graphics.COMPARE_FUNC';
+	};
+	export type BufferConstant = number & { readonly __brand: 'graphics.BUFFER' };
+	export type BlendConstant = number & { readonly __brand: 'graphics.BLEND' };
+	export type BufferTypeConstant = number & {
+		readonly __brand: 'graphics.BUFFER_TYPE';
+	};
+
+	/**
+	 *
+	 */
+	export const BLEND_FACTOR_CONSTANT_ALPHA: BlendConstant;
+
+	/**
+	 *
+	 */
+	export const BLEND_FACTOR_CONSTANT_COLOR: BlendConstant;
+
+	/**
+	 *
+	 */
+	export const BLEND_FACTOR_DST_ALPHA: BlendConstant;
+
+	/**
+	 *
+	 */
+	export const BLEND_FACTOR_DST_COLOR: BlendConstant;
+
+	/**
+	 *
+	 */
+	export const BLEND_FACTOR_ONE: BlendConstant;
+
+	/**
+	 *
+	 */
+	export const BLEND_FACTOR_ONE_MINUS_CONSTANT_ALPHA: BlendConstant;
+
+	/**
+	 *
+	 */
+	export const BLEND_FACTOR_ONE_MINUS_CONSTANT_COLOR: BlendConstant;
+
+	/**
+	 *
+	 */
+	export const BLEND_FACTOR_ONE_MINUS_DST_ALPHA: BlendConstant;
+
+	/**
+	 *
+	 */
+	export const BLEND_FACTOR_ONE_MINUS_DST_COLOR: BlendConstant;
+
+	/**
+	 *
+	 */
+	export const BLEND_FACTOR_ONE_MINUS_SRC_ALPHA: BlendConstant;
+
+	/**
+	 *
+	 */
+	export const BLEND_FACTOR_ONE_MINUS_SRC_COLOR: BlendConstant;
+
+	/**
+	 *
+	 */
+	export const BLEND_FACTOR_SRC_ALPHA: BlendConstant;
+
+	/**
+	 *
+	 */
+	export const BLEND_FACTOR_SRC_ALPHA_SATURATE: BlendConstant;
+
+	/**
+	 *
+	 */
+	export const BLEND_FACTOR_SRC_COLOR: BlendConstant;
+
+	/**
+	 *
+	 */
+	export const BLEND_FACTOR_ZERO: BlendConstant;
+
+	/**
+	 *
+	 */
+	export const BUFFER_TYPE_COLOR0_BIT: BufferConstant;
+
+	/**
+	 * May be undefined if multitarget rendering isn't supporte...
+	 */
+	export const BUFFER_TYPE_COLOR1_BIT: BufferConstant;
+
+	/**
+	 * May be undefined if multitarget rendering isn't supporte...
+	 */
+	export const BUFFER_TYPE_COLOR2_BIT: BufferConstant;
+
+	/**
+	 * May be undefined if multitarget rendering isn't supporte...
+	 */
+	export const BUFFER_TYPE_COLOR3_BIT: BufferConstant;
+
+	/**
+	 *
+	 */
+	export const BUFFER_TYPE_DEPTH_BIT: BufferConstant;
+
+	/**
+	 *
+	 */
+	export const BUFFER_TYPE_STENCIL_BIT: BufferConstant;
+
+	/**
+	 *
+	 */
+	export const COMPARE_FUNC_ALWAYS: CompareFuncConstant;
+
+	/**
+	 *
+	 */
+	export const COMPARE_FUNC_EQUAL: CompareFuncConstant;
+
+	/**
+	 *
+	 */
+	export const COMPARE_FUNC_GEQUAL: CompareFuncConstant;
+
+	/**
+	 *
+	 */
+	export const COMPARE_FUNC_GREATER: CompareFuncConstant;
+
+	/**
+	 *
+	 */
+	export const COMPARE_FUNC_LEQUAL: CompareFuncConstant;
+
+	/**
+	 *
+	 */
+	export const COMPARE_FUNC_LESS: CompareFuncConstant;
+
+	/**
+	 *
+	 */
+	export const COMPARE_FUNC_NEVER: CompareFuncConstant;
+
+	/**
+	 *
+	 */
+	export const COMPARE_FUNC_NOTEQUAL: CompareFuncConstant;
+
+	/**
+	 *
+	 */
+	export const COMPRESSION_TYPE_BASIS_ETC1S: CompressionConstant;
+
+	/**
+	 *
+	 */
+	export const COMPRESSION_TYPE_BASIS_UASTC: CompressionConstant;
+
+	/**
+	 *
+	 */
+	export const COMPRESSION_TYPE_DEFAULT: CompressionConstant;
+
+	/**
+	 *
+	 */
+	export const COMPRESSION_TYPE_WEBP: CompressionConstant;
+
+	/**
+	 *
+	 */
+	export const COMPRESSION_TYPE_WEBP_LOSSY: CompressionConstant;
+
+	/**
+	 *
+	 */
+	export const FACE_TYPE_BACK: FaceConstant;
+
+	/**
+	 *
+	 */
+	export const FACE_TYPE_FRONT: FaceConstant;
+
+	/**
+	 *
+	 */
+	export const FACE_TYPE_FRONT_AND_BACK: FaceConstant;
+
+	/**
+	 *
+	 */
+	export const STATE_ALPHA_TEST: StateConstant;
+
+	/**
+	 *
+	 */
+	export const STATE_ALPHA_TEST_SUPPORTED: StateConstant;
+
+	/**
+	 *
+	 */
+	export const STATE_BLEND: StateConstant;
+
+	/**
+	 *
+	 */
+	export const STATE_CULL_FACE: StateConstant;
+
+	/**
+	 *
+	 */
+	export const STATE_DEPTH_TEST: StateConstant;
+
+	/**
+	 *
+	 */
+	export const STATE_POLYGON_OFFSET_FILL: StateConstant;
+
+	/**
+	 *
+	 */
+	export const STATE_SCISSOR_TEST: StateConstant;
+
+	/**
+	 *
+	 */
+	export const STATE_STENCIL_TEST: StateConstant;
+
+	/**
+	 *
+	 */
+	export const STENCIL_OP_DECR: StencilConstant;
+
+	/**
+	 *
+	 */
+	export const STENCIL_OP_DECR_WRAP: StencilConstant;
+
+	/**
+	 *
+	 */
+	export const STENCIL_OP_INCR: StencilConstant;
+
+	/**
+	 *
+	 */
+	export const STENCIL_OP_INCR_WRAP: StencilConstant;
+
+	/**
+	 *
+	 */
+	export const STENCIL_OP_INVERT: StencilConstant;
+
+	/**
+	 *
+	 */
+	export const STENCIL_OP_KEEP: StencilConstant;
+
+	/**
+	 *
+	 */
+	export const STENCIL_OP_REPLACE: StencilConstant;
+
+	/**
+	 *
+	 */
+	export const STENCIL_OP_ZERO: StencilConstant;
+
+	/**
+	 *
+	 */
+	export const TEXTURE_FILTER_DEFAULT: TextureConstant;
+
+	/**
+	 *
+	 */
+	export const TEXTURE_FILTER_LINEAR: TextureConstant;
+
+	/**
+	 *
+	 */
+	export const TEXTURE_FILTER_LINEAR_MIPMAP_LINEAR: TextureConstant;
+
+	/**
+	 *
+	 */
+	export const TEXTURE_FILTER_LINEAR_MIPMAP_NEAREST: TextureConstant;
+
+	/**
+	 *
+	 */
+	export const TEXTURE_FILTER_NEAREST: TextureConstant;
+
+	/**
+	 *
+	 */
+	export const TEXTURE_FILTER_NEAREST_MIPMAP_LINEAR: TextureConstant;
+
+	/**
+	 *
+	 */
+	export const TEXTURE_FILTER_NEAREST_MIPMAP_NEAREST: TextureConstant;
+
+	/**
+	 * May be undefined if the graphics driver doesn't support ...
+	 */
+	export const TEXTURE_FORMAT_BGRA8U: TextureConstant;
+
+	/**
+	 *
+	 */
+	export const TEXTURE_FORMAT_DEPTH: TextureConstant;
+
+	/**
+	 * May be undefined if the graphics driver doesn't support ...
+	 */
+	export const TEXTURE_FORMAT_LUMINANCE: TextureConstant;
+
+	/**
+	 * May be undefined if the graphics driver doesn't support ...
+	 */
+	export const TEXTURE_FORMAT_LUMINANCE_ALPHA: TextureConstant;
+
+	/**
+	 * May be undefined if the graphics driver doesn't support ...
+	 */
+	export const TEXTURE_FORMAT_R16F: TextureConstant;
+
+	/**
+	 * May be undefined if the graphics driver doesn't support ...
+	 */
+	export const TEXTURE_FORMAT_R32F: TextureConstant;
+
+	/**
+	 * May be undefined if the graphics driver doesn't support ...
+	 */
+	export const TEXTURE_FORMAT_R32UI: TextureConstant;
+
+	/**
+	 * May be undefined if the graphics driver doesn't support ...
+	 */
+	export const TEXTURE_FORMAT_RG16F: TextureConstant;
+
+	/**
+	 * May be undefined if the graphics driver doesn't support ...
+	 */
+	export const TEXTURE_FORMAT_RG32F: TextureConstant;
+
+	/**
+	 * May be undefined if the graphics driver doesn't support ...
+	 */
+	export const TEXTURE_FORMAT_RGB: TextureConstant;
+
+	/**
+	 * May be undefined if the graphics driver doesn't support ...
+	 */
+	export const TEXTURE_FORMAT_RGB16F: TextureConstant;
+
+	/**
+	 * May be undefined if the graphics driver doesn't support ...
+	 */
+	export const TEXTURE_FORMAT_RGB32F: TextureConstant;
+
+	/**
+	 * May be undefined if the graphics driver doesn't support ...
+	 */
+	export const TEXTURE_FORMAT_RGBA: TextureConstant;
+
+	/**
+	 * May be undefined if the graphics driver doesn't support ...
+	 */
+	export const TEXTURE_FORMAT_RGBA16F: TextureConstant;
+
+	/**
+	 * May be undefined if the graphics driver doesn't support ...
+	 */
+	export const TEXTURE_FORMAT_RGBA32F: TextureConstant;
+
+	/**
+	 * May be undefined if the graphics driver doesn't support ...
+	 */
+	export const TEXTURE_FORMAT_RGBA32UI: TextureConstant;
+
+	/**
+	 * May be undefined if the graphics driver doesn't support ...
+	 */
+	export const TEXTURE_FORMAT_RGBA_16BPP: TextureConstant;
+
+	/**
+	 * May be undefined if the graphics driver doesn't support ...
+	 */
+	export const TEXTURE_FORMAT_RGBA_ASTC_4x4: TextureConstant;
+
+	/**
+	 * May be undefined if the graphics driver doesn't support ...
+	 */
+	export const TEXTURE_FORMAT_RGBA_BC3: TextureConstant;
+
+	/**
+	 * May be undefined if the graphics driver doesn't support ...
+	 */
+	export const TEXTURE_FORMAT_RGBA_BC7: TextureConstant;
+
+	/**
+	 * May be undefined if the graphics driver doesn't support ...
+	 */
+	export const TEXTURE_FORMAT_RGBA_ETC2: TextureConstant;
+
+	/**
+	 * May be undefined if the graphics driver doesn't support ...
+	 */
+	export const TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1: TextureConstant;
+
+	/**
+	 * May be undefined if the graphics driver doesn't support ...
+	 */
+	export const TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1: TextureConstant;
+
+	/**
+	 * May be undefined if the graphics driver doesn't support ...
+	 */
+	export const TEXTURE_FORMAT_RGB_16BPP: TextureConstant;
+
+	/**
+	 * May be undefined if the graphics driver doesn't support ...
+	 */
+	export const TEXTURE_FORMAT_RGB_BC1: TextureConstant;
+
+	/**
+	 * May be undefined if the graphics driver doesn't support ...
+	 */
+	export const TEXTURE_FORMAT_RGB_ETC1: TextureConstant;
+
+	/**
+	 * May be undefined if the graphics driver doesn't support ...
+	 */
+	export const TEXTURE_FORMAT_RGB_PVRTC_2BPPV1: TextureConstant;
+
+	/**
+	 * May be undefined if the graphics driver doesn't support ...
+	 */
+	export const TEXTURE_FORMAT_RGB_PVRTC_4BPPV1: TextureConstant;
+
+	/**
+	 * May be undefined if the graphics driver doesn't support ...
+	 */
+	export const TEXTURE_FORMAT_RG_BC5: TextureConstant;
+
+	/**
+	 * May be undefined if the graphics driver doesn't support ...
+	 */
+	export const TEXTURE_FORMAT_RG_ETC2: TextureConstant;
+
+	/**
+	 * May be undefined if the graphics driver doesn't support ...
+	 */
+	export const TEXTURE_FORMAT_R_BC4: TextureConstant;
+
+	/**
+	 * May be undefined if the graphics driver doesn't support ...
+	 */
+	export const TEXTURE_FORMAT_R_ETC2: TextureConstant;
+
+	/**
+	 *
+	 */
+	export const TEXTURE_FORMAT_STENCIL: TextureConstant;
+
+	/**
+	 *
+	 */
+	export const TEXTURE_TYPE_2D: TextureConstant;
+
+	/**
+	 *
+	 */
+	export const TEXTURE_TYPE_2D_ARRAY: TextureConstant;
+
+	/**
+	 *
+	 */
+	export const TEXTURE_TYPE_CUBE_MAP: TextureConstant;
+
+	/**
+	 *
+	 */
+	export const TEXTURE_TYPE_IMAGE_2D: TextureConstant;
+
+	/**
+	 *
+	 */
+	export const TEXTURE_USAGE_FLAG_COLOR: TextureConstant;
+
+	/**
+	 *
+	 */
+	export const TEXTURE_USAGE_FLAG_INPUT: TextureConstant;
+
+	/**
+	 *
+	 */
+	export const TEXTURE_USAGE_FLAG_MEMORYLESS: TextureConstant;
+
+	/**
+	 *
+	 */
+	export const TEXTURE_USAGE_FLAG_SAMPLE: TextureConstant;
+
+	/**
+	 *
+	 */
+	export const TEXTURE_USAGE_FLAG_STORAGE: TextureConstant;
+
+	/**
+	 *
+	 */
+	export const TEXTURE_WRAP_CLAMP_TO_BORDER: TextureConstant;
+
+	/**
+	 *
+	 */
+	export const TEXTURE_WRAP_CLAMP_TO_EDGE: TextureConstant;
+
+	/**
+	 *
+	 */
+	export const TEXTURE_WRAP_MIRRORED_REPEAT: TextureConstant;
+
+	/**
+	 *
+	 */
+	export const TEXTURE_WRAP_REPEAT: TextureConstant;
+}
+// =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
+
 /** @see {@link https://defold.com/ref/stable/gui/|API Documentation} */
 declare namespace gui {
+	type SizeModeConstant = number & { readonly __brand: 'gui.SIZE_MODE' };
+	type ResultConstant = number & { readonly __brand: 'gui.RESULT' };
+	type PropConstant = string & { readonly __brand: 'gui.PROP' };
+	type PivotConstant = number & { readonly __brand: 'gui.PIVOT' };
+	type PieBoundsConstant = number & { readonly __brand: 'gui.PIEBOUNDS' };
+	type KeyboardTypeConstant = number & {
+		readonly __brand: 'gui.KEYBOARD_TYPE';
+	};
+	type ClippingModeConstant = number & {
+		readonly __brand: 'gui.CLIPPING_MODE';
+	};
+	type BlendConstant = number & { readonly __brand: 'gui.BLEND' };
+	type AnchorConstant = number & { readonly __brand: 'gui.ANCHOR' };
+	type AdjustConstant = number & { readonly __brand: 'gui.ADJUST' };
+	type PlaybackConstant = number & { readonly __brand: 'gui.PLAYBACK' };
+	type EasingConstant = number & { readonly __brand: 'gui.EASING' };
+
 	/**
 	 * The fonts used in the gui. The type of the property is hash.
 	 * Key must be specified in options table.
@@ -1833,509 +2142,477 @@ declare namespace gui {
 	/**
 	 * fit adjust mode
 	 */
-	export const ADJUST_FIT: number & { readonly __brand: 'gui.ADJUST' };
+	export const ADJUST_FIT: AdjustConstant;
 
 	/**
 	 * stretch adjust mode
 	 */
-	export const ADJUST_STRETCH: number & { readonly __brand: 'gui.ADJUST' };
+	export const ADJUST_STRETCH: AdjustConstant;
 
 	/**
 	 * zoom adjust mode
 	 */
-	export const ADJUST_ZOOM: number & { readonly __brand: 'gui.ADJUST' };
+	export const ADJUST_ZOOM: AdjustConstant;
 
 	/**
 	 * bottom y-anchor
 	 */
-	export const ANCHOR_BOTTOM: number & { readonly __brand: 'gui.ANCHOR' };
+	export const ANCHOR_BOTTOM: AnchorConstant;
 
 	/**
 	 * left x-anchor
 	 */
-	export const ANCHOR_LEFT: number & { readonly __brand: 'gui.ANCHOR' };
+	export const ANCHOR_LEFT: AnchorConstant;
 
 	/**
 	 * no anchor
 	 */
-	export const ANCHOR_NONE: number & { readonly __brand: 'gui.ANCHOR' };
+	export const ANCHOR_NONE: AnchorConstant;
 
 	/**
 	 * right x-anchor
 	 */
-	export const ANCHOR_RIGHT: number & { readonly __brand: 'gui.ANCHOR' };
+	export const ANCHOR_RIGHT: AnchorConstant;
 
 	/**
 	 * top y-anchor
 	 */
-	export const ANCHOR_TOP: number & { readonly __brand: 'gui.ANCHOR' };
+	export const ANCHOR_TOP: AnchorConstant;
 
 	/**
 	 * additive blending
 	 */
-	export const BLEND_ADD: number & { readonly __brand: 'gui.BLEND' };
+	export const BLEND_ADD: BlendConstant;
 
 	/**
 	 * additive alpha blending
 	 */
-	export const BLEND_ADD_ALPHA: number & { readonly __brand: 'gui.BLEND' };
+	export const BLEND_ADD_ALPHA: BlendConstant;
 
 	/**
 	 * alpha blending
 	 */
-	export const BLEND_ALPHA: number & { readonly __brand: 'gui.BLEND' };
+	export const BLEND_ALPHA: BlendConstant;
 
 	/**
 	 * multiply blending
 	 */
-	export const BLEND_MULT: number & { readonly __brand: 'gui.BLEND' };
+	export const BLEND_MULT: BlendConstant;
 
 	/**
 	 * screen blending
 	 */
-	export const BLEND_SCREEN: number & { readonly __brand: 'gui.BLEND' };
+	export const BLEND_SCREEN: BlendConstant;
 
 	/**
 	 * clipping mode none
 	 */
-	export const CLIPPING_MODE_NONE: number & {
-		readonly __brand: 'gui.CLIPPING_MODE';
-	};
+	export const CLIPPING_MODE_NONE: ClippingModeConstant;
 
 	/**
 	 * clipping mode stencil
 	 */
-	export const CLIPPING_MODE_STENCIL: number & {
-		readonly __brand: 'gui.CLIPPING_MODE';
-	};
+	export const CLIPPING_MODE_STENCIL: ClippingModeConstant;
 
 	/**
 	 * in-back
 	 */
-	export const EASING_INBACK: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_INBACK: EasingConstant;
 
 	/**
 	 * in-bounce
 	 */
-	export const EASING_INBOUNCE: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_INBOUNCE: EasingConstant;
 
 	/**
 	 * in-circlic
 	 */
-	export const EASING_INCIRC: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_INCIRC: EasingConstant;
 
 	/**
 	 * in-cubic
 	 */
-	export const EASING_INCUBIC: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_INCUBIC: EasingConstant;
 
 	/**
 	 * in-elastic
 	 */
-	export const EASING_INELASTIC: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_INELASTIC: EasingConstant;
 
 	/**
 	 * in-exponential
 	 */
-	export const EASING_INEXPO: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_INEXPO: EasingConstant;
 
 	/**
 	 * in-out-back
 	 */
-	export const EASING_INOUTBACK: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_INOUTBACK: EasingConstant;
 
 	/**
 	 * in-out-bounce
 	 */
-	export const EASING_INOUTBOUNCE: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_INOUTBOUNCE: EasingConstant;
 
 	/**
 	 * in-out-circlic
 	 */
-	export const EASING_INOUTCIRC: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_INOUTCIRC: EasingConstant;
 
 	/**
 	 * in-out-cubic
 	 */
-	export const EASING_INOUTCUBIC: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_INOUTCUBIC: EasingConstant;
 
 	/**
 	 * in-out-elastic
 	 */
-	export const EASING_INOUTELASTIC: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_INOUTELASTIC: EasingConstant;
 
 	/**
 	 * in-out-exponential
 	 */
-	export const EASING_INOUTEXPO: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_INOUTEXPO: EasingConstant;
 
 	/**
 	 * in-out-quadratic
 	 */
-	export const EASING_INOUTQUAD: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_INOUTQUAD: EasingConstant;
 
 	/**
 	 * in-out-quartic
 	 */
-	export const EASING_INOUTQUART: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_INOUTQUART: EasingConstant;
 
 	/**
 	 * in-out-quintic
 	 */
-	export const EASING_INOUTQUINT: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_INOUTQUINT: EasingConstant;
 
 	/**
 	 * in-out-sine
 	 */
-	export const EASING_INOUTSINE: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_INOUTSINE: EasingConstant;
 
 	/**
 	 * in-quadratic
 	 */
-	export const EASING_INQUAD: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_INQUAD: EasingConstant;
 
 	/**
 	 * in-quartic
 	 */
-	export const EASING_INQUART: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_INQUART: EasingConstant;
 
 	/**
 	 * in-quintic
 	 */
-	export const EASING_INQUINT: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_INQUINT: EasingConstant;
 
 	/**
 	 * in-sine
 	 */
-	export const EASING_INSINE: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_INSINE: EasingConstant;
 
 	/**
 	 * linear interpolation
 	 */
-	export const EASING_LINEAR: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_LINEAR: EasingConstant;
 
 	/**
 	 * out-back
 	 */
-	export const EASING_OUTBACK: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_OUTBACK: EasingConstant;
 
 	/**
 	 * out-bounce
 	 */
-	export const EASING_OUTBOUNCE: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_OUTBOUNCE: EasingConstant;
 
 	/**
 	 * out-circlic
 	 */
-	export const EASING_OUTCIRC: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_OUTCIRC: EasingConstant;
 
 	/**
 	 * out-cubic
 	 */
-	export const EASING_OUTCUBIC: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_OUTCUBIC: EasingConstant;
 
 	/**
 	 * out-elastic
 	 */
-	export const EASING_OUTELASTIC: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_OUTELASTIC: EasingConstant;
 
 	/**
 	 * out-exponential
 	 */
-	export const EASING_OUTEXPO: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_OUTEXPO: EasingConstant;
 
 	/**
 	 * out-in-back
 	 */
-	export const EASING_OUTINBACK: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_OUTINBACK: EasingConstant;
 
 	/**
 	 * out-in-bounce
 	 */
-	export const EASING_OUTINBOUNCE: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_OUTINBOUNCE: EasingConstant;
 
 	/**
 	 * out-in-circlic
 	 */
-	export const EASING_OUTINCIRC: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_OUTINCIRC: EasingConstant;
 
 	/**
 	 * out-in-cubic
 	 */
-	export const EASING_OUTINCUBIC: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_OUTINCUBIC: EasingConstant;
 
 	/**
 	 * out-in-elastic
 	 */
-	export const EASING_OUTINELASTIC: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_OUTINELASTIC: EasingConstant;
 
 	/**
 	 * out-in-exponential
 	 */
-	export const EASING_OUTINEXPO: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_OUTINEXPO: EasingConstant;
 
 	/**
 	 * out-in-quadratic
 	 */
-	export const EASING_OUTINQUAD: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_OUTINQUAD: EasingConstant;
 
 	/**
 	 * out-in-quartic
 	 */
-	export const EASING_OUTINQUART: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_OUTINQUART: EasingConstant;
 
 	/**
 	 * out-in-quintic
 	 */
-	export const EASING_OUTINQUINT: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_OUTINQUINT: EasingConstant;
 
 	/**
 	 * out-in-sine
 	 */
-	export const EASING_OUTINSINE: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_OUTINSINE: EasingConstant;
 
 	/**
 	 * out-quadratic
 	 */
-	export const EASING_OUTQUAD: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_OUTQUAD: EasingConstant;
 
 	/**
 	 * out-quartic
 	 */
-	export const EASING_OUTQUART: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_OUTQUART: EasingConstant;
 
 	/**
 	 * out-quintic
 	 */
-	export const EASING_OUTQUINT: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_OUTQUINT: EasingConstant;
 
 	/**
 	 * out-sine
 	 */
-	export const EASING_OUTSINE: number & { readonly __brand: 'gui.EASING' };
+	export const EASING_OUTSINE: EasingConstant;
 
 	/**
 	 * default keyboard
 	 */
-	export const KEYBOARD_TYPE_DEFAULT: number & {
-		readonly __brand: 'gui.KEYBOARD_TYPE';
-	};
+	export const KEYBOARD_TYPE_DEFAULT: KeyboardTypeConstant;
 
 	/**
 	 * email keyboard
 	 */
-	export const KEYBOARD_TYPE_EMAIL: number & {
-		readonly __brand: 'gui.KEYBOARD_TYPE';
-	};
+	export const KEYBOARD_TYPE_EMAIL: KeyboardTypeConstant;
 
 	/**
 	 * number input keyboard
 	 */
-	export const KEYBOARD_TYPE_NUMBER_PAD: number & {
-		readonly __brand: 'gui.KEYBOARD_TYPE';
-	};
+	export const KEYBOARD_TYPE_NUMBER_PAD: KeyboardTypeConstant;
 
 	/**
 	 * password keyboard
 	 */
-	export const KEYBOARD_TYPE_PASSWORD: number & {
-		readonly __brand: 'gui.KEYBOARD_TYPE';
-	};
+	export const KEYBOARD_TYPE_PASSWORD: KeyboardTypeConstant;
 
 	/**
 	 * elliptical pie node bounds
 	 */
-	export const PIEBOUNDS_ELLIPSE: number & {
-		readonly __brand: 'gui.PIEBOUNDS';
-	};
+	export const PIEBOUNDS_ELLIPSE: PieBoundsConstant;
 
 	/**
 	 * rectangular pie node bounds
 	 */
-	export const PIEBOUNDS_RECTANGLE: number & {
-		readonly __brand: 'gui.PIEBOUNDS';
-	};
+	export const PIEBOUNDS_RECTANGLE: PieBoundsConstant;
 
 	/**
 	 * center pivot
 	 */
-	export const PIVOT_CENTER: number & { readonly __brand: 'gui.PIVOT' };
+	export const PIVOT_CENTER: PivotConstant;
 
 	/**
 	 * east pivot
 	 */
-	export const PIVOT_E: number & { readonly __brand: 'gui.PIVOT' };
+	export const PIVOT_E: PivotConstant;
 
 	/**
 	 * north pivot
 	 */
-	export const PIVOT_N: number & { readonly __brand: 'gui.PIVOT' };
+	export const PIVOT_N: PivotConstant;
 
 	/**
 	 * north-east pivot
 	 */
-	export const PIVOT_NE: number & { readonly __brand: 'gui.PIVOT' };
+	export const PIVOT_NE: PivotConstant;
 
 	/**
 	 * north-west pivot
 	 */
-	export const PIVOT_NW: number & { readonly __brand: 'gui.PIVOT' };
+	export const PIVOT_NW: PivotConstant;
 
 	/**
 	 * south pivot
 	 */
-	export const PIVOT_S: number & { readonly __brand: 'gui.PIVOT' };
+	export const PIVOT_S: PivotConstant;
 
 	/**
 	 * south-east pivot
 	 */
-	export const PIVOT_SE: number & { readonly __brand: 'gui.PIVOT' };
+	export const PIVOT_SE: PivotConstant;
 
 	/**
 	 * south-west pivot
 	 */
-	export const PIVOT_SW: number & { readonly __brand: 'gui.PIVOT' };
+	export const PIVOT_SW: PivotConstant;
 
 	/**
 	 * west pivot
 	 */
-	export const PIVOT_W: number & { readonly __brand: 'gui.PIVOT' };
+	export const PIVOT_W: PivotConstant;
 
 	/**
 	 * loop backward
 	 */
-	export const PLAYBACK_LOOP_BACKWARD: number & {
-		readonly __brand: 'gui.PLAYBACK';
-	};
+	export const PLAYBACK_LOOP_BACKWARD: PlaybackConstant;
 
 	/**
 	 * loop forward
 	 */
-	export const PLAYBACK_LOOP_FORWARD: number & {
-		readonly __brand: 'gui.PLAYBACK';
-	};
+	export const PLAYBACK_LOOP_FORWARD: PlaybackConstant;
 
 	/**
 	 * ping pong loop
 	 */
-	export const PLAYBACK_LOOP_PINGPONG: number & {
-		readonly __brand: 'gui.PLAYBACK';
-	};
+	export const PLAYBACK_LOOP_PINGPONG: PlaybackConstant;
 
 	/**
 	 * once backward
 	 */
-	export const PLAYBACK_ONCE_BACKWARD: number & {
-		readonly __brand: 'gui.PLAYBACK';
-	};
+	export const PLAYBACK_ONCE_BACKWARD: PlaybackConstant;
 
 	/**
 	 * once forward
 	 */
-	export const PLAYBACK_ONCE_FORWARD: number & {
-		readonly __brand: 'gui.PLAYBACK';
-	};
+	export const PLAYBACK_ONCE_FORWARD: PlaybackConstant;
 
 	/**
 	 * once forward and then backward
 	 */
-	export const PLAYBACK_ONCE_PINGPONG: number & {
-		readonly __brand: 'gui.PLAYBACK';
-	};
+	export const PLAYBACK_ONCE_PINGPONG: PlaybackConstant;
 
 	/**
 	 * color property
 	 */
-	export const PROP_COLOR: string & { readonly __brand: 'gui.PROP' };
+	export const PROP_COLOR: PropConstant;
 
 	/**
 	 * euler property
 	 */
-	export const PROP_EULER: string & { readonly __brand: 'gui.PROP' };
+	export const PROP_EULER: PropConstant;
 
 	/**
 	 * fill_angle property
 	 */
-	export const PROP_FILL_ANGLE: string & { readonly __brand: 'gui.PROP' };
+	export const PROP_FILL_ANGLE: PropConstant;
 
 	/**
 	 * inner_radius property
 	 */
-	export const PROP_INNER_RADIUS: string & { readonly __brand: 'gui.PROP' };
+	export const PROP_INNER_RADIUS: PropConstant;
 
 	/**
 	 * leading property
 	 */
-	export const PROP_LEADING: string & { readonly __brand: 'gui.PROP' };
+	export const PROP_LEADING: PropConstant;
 
 	/**
 	 * outline color property
 	 */
-	export const PROP_OUTLINE: string & { readonly __brand: 'gui.PROP' };
+	export const PROP_OUTLINE: PropConstant;
 
 	/**
 	 * position property
 	 */
-	export const PROP_POSITION: string & { readonly __brand: 'gui.PROP' };
+	export const PROP_POSITION: PropConstant;
 
 	/**
 	 * rotation property
 	 */
-	export const PROP_ROTATION: string & { readonly __brand: 'gui.PROP' };
+	export const PROP_ROTATION: PropConstant;
 
 	/**
 	 * scale property
 	 */
-	export const PROP_SCALE: string & { readonly __brand: 'gui.PROP' };
+	export const PROP_SCALE: PropConstant;
 
 	/**
 	 * shadow color property
 	 */
-	export const PROP_SHADOW: string & { readonly __brand: 'gui.PROP' };
+	export const PROP_SHADOW: PropConstant;
 
 	/**
 	 * size property
 	 */
-	export const PROP_SIZE: string & { readonly __brand: 'gui.PROP' };
+	export const PROP_SIZE: PropConstant;
 
 	/**
 	 * slice9 property
 	 */
-	export const PROP_SLICE9: string & { readonly __brand: 'gui.PROP' };
+	export const PROP_SLICE9: PropConstant;
 
 	/**
 	 * tracking property
 	 */
-	export const PROP_TRACKING: string & { readonly __brand: 'gui.PROP' };
+	export const PROP_TRACKING: PropConstant;
 
 	/**
 	 * data error
 	 */
-	export const RESULT_DATA_ERROR: number & { readonly __brand: 'gui.RESULT' };
+	export const RESULT_DATA_ERROR: ResultConstant;
 
 	/**
 	 * out of resource
 	 */
-	export const RESULT_OUT_OF_RESOURCES: number & {
-		readonly __brand: 'gui.RESULT';
-	};
+	export const RESULT_OUT_OF_RESOURCES: ResultConstant;
 
 	/**
 	 * texture already exists
 	 */
-	export const RESULT_TEXTURE_ALREADY_EXISTS: number & {
-		readonly __brand: 'gui.RESULT';
-	};
+	export const RESULT_TEXTURE_ALREADY_EXISTS: ResultConstant;
 
 	/**
 	 * automatic size mode
 	 */
-	export const SIZE_MODE_AUTO: number & { readonly __brand: 'gui.SIZE_MODE' };
+	export const SIZE_MODE_AUTO: SizeModeConstant;
 
 	/**
 	 * manual size mode
 	 */
-	export const SIZE_MODE_MANUAL: number & { readonly __brand: 'gui.SIZE_MODE' };
+	export const SIZE_MODE_MANUAL: SizeModeConstant;
 
 	/**
 	* This starts an animation of a node property according to the specified parameters.
@@ -2407,16 +2684,14 @@ with a custom curve. See the animation guide for more information.
 	*/
 	export function animate(
 		node: node,
-		property:
-			string | typeof gui.PROP_COLOR | typeof gui.PROP_FILL_ANGLE | typeof gui.PROP_INNER_RADIUS | typeof gui.PROP_OUTLINE | typeof gui.PROP_POSITION | typeof gui.PROP_ROTATION | typeof gui.PROP_SCALE | typeof gui.PROP_SHADOW | typeof gui.PROP_SIZE | typeof gui.PROP_SLICE9,
+		property: PropConstant | string,
 		to: vmath.quaternion | vmath.vector3 | vmath.vector4 | number,
 		easing:
-			vmath.quaternion | vmath.vector3 | vmath.vector4 | number | typeof gui.EASING_INBACK | typeof gui.EASING_INBOUNCE | typeof gui.EASING_INCIRC | typeof gui.EASING_INCUBIC | typeof gui.EASING_INELASTIC | typeof gui.EASING_INEXPO | typeof gui.EASING_INOUTBACK | typeof gui.EASING_INOUTBOUNCE | typeof gui.EASING_INOUTCIRC | typeof gui.EASING_INOUTCUBIC | typeof gui.EASING_INOUTELASTIC | typeof gui.EASING_INOUTEXPO | typeof gui.EASING_INOUTQUAD | typeof gui.EASING_INOUTQUART | typeof gui.EASING_INOUTQUINT | typeof gui.EASING_INOUTSINE | typeof gui.EASING_INQUAD | typeof gui.EASING_INQUART | typeof gui.EASING_INQUINT | typeof gui.EASING_INSINE | typeof gui.EASING_LINEAR | typeof gui.EASING_OUTBACK | typeof gui.EASING_OUTBOUNCE | typeof gui.EASING_OUTCIRC | typeof gui.EASING_OUTCUBIC | typeof gui.EASING_OUTELASTIC | typeof gui.EASING_OUTEXPO | typeof gui.EASING_OUTINBACK | typeof gui.EASING_OUTINBOUNCE | typeof gui.EASING_OUTINCIRC | typeof gui.EASING_OUTINCUBIC | typeof gui.EASING_OUTINELASTIC | typeof gui.EASING_OUTINEXPO | typeof gui.EASING_OUTINQUAD | typeof gui.EASING_OUTINQUART | typeof gui.EASING_OUTINQUINT | typeof gui.EASING_OUTINSINE | typeof gui.EASING_OUTQUAD | typeof gui.EASING_OUTQUART | typeof gui.EASING_OUTQUINT | typeof gui.EASING_OUTSINE,
+			EasingConstant | vmath.quaternion | vmath.vector3 | vmath.vector4 | number,
 		duration: number,
 		delay?: number,
 		complete_function?: (this: any, node: node) => void,
-		playback?:
-			typeof gui.PLAYBACK_LOOP_BACKWARD | typeof gui.PLAYBACK_LOOP_FORWARD | typeof gui.PLAYBACK_LOOP_PINGPONG | typeof gui.PLAYBACK_ONCE_BACKWARD | typeof gui.PLAYBACK_ONCE_FORWARD | typeof gui.PLAYBACK_ONCE_PINGPONG,
+		playback?: PlaybackConstant,
 	): void;
 
 	/**
@@ -2533,9 +2808,7 @@ index into array property (1 based)
 * @see {@link https://defold.com/ref/stable/gui/#gui.get_adjust_mode|API Documentation}
 
 	*/
-	export function get_adjust_mode(
-		node: node,
-	): typeof gui.ADJUST_FIT | typeof gui.ADJUST_STRETCH | typeof gui.ADJUST_ZOOM;
+	export function get_adjust_mode(node: node): AdjustConstant;
 
 	/**
 	 * gets the node alpha
@@ -2559,10 +2832,7 @@ index into array property (1 based)
 * @see {@link https://defold.com/ref/stable/gui/#gui.get_blend_mode|API Documentation}
 
 	*/
-	export function get_blend_mode(
-		node: node,
-	):
-		typeof gui.BLEND_ADD | typeof gui.BLEND_ADD_ALPHA | typeof gui.BLEND_ALPHA | typeof gui.BLEND_MULT | typeof gui.BLEND_SCREEN;
+	export function get_blend_mode(node: node): BlendConstant;
 
 	/**
 	 * If node is set as an inverted clipping node, it will clip anything inside as opposed to outside.
@@ -2582,9 +2852,7 @@ index into array property (1 based)
 * @see {@link https://defold.com/ref/stable/gui/#gui.get_clipping_mode|API Documentation}
 
 	*/
-	export function get_clipping_mode(
-		node: node,
-	): typeof gui.CLIPPING_MODE_NONE | typeof gui.CLIPPING_MODE_STENCIL;
+	export function get_clipping_mode(node: node): ClippingModeConstant;
 
 	/**
 	 * If node is set as visible clipping node, it will be shown as well as clipping. Otherwise, it will only clip but not show visually.
@@ -2787,9 +3055,7 @@ index into array property (1 based)
 * @see {@link https://defold.com/ref/stable/gui/#gui.get_outer_bounds|API Documentation}
 
 	*/
-	export function get_outer_bounds(
-		node: node,
-	): typeof gui.PIEBOUNDS_ELLIPSE | typeof gui.PIEBOUNDS_RECTANGLE;
+	export function get_outer_bounds(node: node): PieBoundsConstant;
 
 	/**
 	 * Returns the outline color of the supplied node.
@@ -2843,10 +3109,7 @@ index into array property (1 based)
 * @see {@link https://defold.com/ref/stable/gui/#gui.get_pivot|API Documentation}
 
 	*/
-	export function get_pivot(
-		node: node,
-	):
-		typeof gui.PIVOT_CENTER | typeof gui.PIVOT_E | typeof gui.PIVOT_N | typeof gui.PIVOT_NE | typeof gui.PIVOT_NW | typeof gui.PIVOT_S | typeof gui.PIVOT_SE | typeof gui.PIVOT_SW | typeof gui.PIVOT_W;
+	export function get_pivot(node: node): PivotConstant;
 
 	/**
 	 * Returns the position of the supplied node.
@@ -2915,9 +3178,7 @@ index into array property (1 based)
 * @see {@link https://defold.com/ref/stable/gui/#gui.get_size_mode|API Documentation}
 
 	*/
-	export function get_size_mode(
-		node: node,
-	): typeof gui.SIZE_MODE_AUTO | typeof gui.SIZE_MODE_MANUAL;
+	export function get_size_mode(node: node): SizeModeConstant;
 
 	/**
 	 * Returns the slice9 configuration values for the node.
@@ -2988,9 +3249,7 @@ index into array property (1 based)
 * @see {@link https://defold.com/ref/stable/gui/#gui.get_xanchor|API Documentation}
 
 	*/
-	export function get_xanchor(
-		node: node,
-	): typeof gui.ANCHOR_LEFT | typeof gui.ANCHOR_NONE | typeof gui.ANCHOR_RIGHT;
+	export function get_xanchor(node: node): AnchorConstant;
 
 	/**
 	* The y-anchor specifies how the node is moved when the game is run in a different resolution.
@@ -3003,9 +3262,7 @@ index into array property (1 based)
 * @see {@link https://defold.com/ref/stable/gui/#gui.get_yanchor|API Documentation}
 
 	*/
-	export function get_yanchor(
-		node: node,
-	): typeof gui.ANCHOR_LEFT | typeof gui.ANCHOR_NONE | typeof gui.ANCHOR_RIGHT;
+	export function get_yanchor(node: node): AnchorConstant;
 
 	/**
 	 * Hides the on-display touch keyboard on the device.
@@ -3115,14 +3372,7 @@ index into array property (1 based)
 		type: 'l' | 'rgb' | 'rgba',
 		buffer: string,
 		flip: boolean,
-	): LuaMultiReturn<
-		[
-			boolean,
-			(
-				typeof gui.RESULT_DATA_ERROR | typeof gui.RESULT_OUT_OF_RESOURCES | typeof gui.RESULT_TEXTURE_ALREADY_EXISTS | undefined
-			),
-		]
-	>;
+	): LuaMultiReturn<[boolean, ResultConstant | undefined]>;
 
 	/**
 	 * Tests whether a coordinate is within the bounding box of a
@@ -3196,8 +3446,7 @@ the new state of the emitter:
 			this: any,
 			node: node | undefined,
 			emitter: hash,
-			state:
-				typeof particlefx.EMITTER_STATE_POSTSPAWN | typeof particlefx.EMITTER_STATE_PRESPAWN | typeof particlefx.EMITTER_STATE_SLEEPING | typeof particlefx.EMITTER_STATE_SPAWNING,
+			state: particlefx.EmitterStateConstant,
 		) => void,
 	): void;
 
@@ -3293,8 +3542,7 @@ index into array property (1 based)
 	*/
 	export function set_adjust_mode(
 		node: node,
-		adjust_mode:
-			typeof gui.ADJUST_FIT | typeof gui.ADJUST_STRETCH | typeof gui.ADJUST_ZOOM,
+		adjust_mode: AdjustConstant,
 	): void;
 
 	/**
@@ -3319,11 +3567,7 @@ index into array property (1 based)
 * @see {@link https://defold.com/ref/stable/gui/#gui.set_blend_mode|API Documentation}
 
 	*/
-	export function set_blend_mode(
-		node: node,
-		blend_mode:
-			typeof gui.BLEND_ADD | typeof gui.BLEND_ADD_ALPHA | typeof gui.BLEND_ALPHA | typeof gui.BLEND_MULT | typeof gui.BLEND_SCREEN,
-	): void;
+	export function set_blend_mode(node: node, blend_mode: BlendConstant): void;
 
 	/**
 	 * If node is set as an inverted clipping node, it will clip anything inside as opposed to outside.
@@ -3345,9 +3589,7 @@ index into array property (1 based)
 	*/
 	export function set_clipping_mode(
 		node: node,
-		clipping_mode:
-			| typeof gui.CLIPPING_MODE_NONE
-			| typeof gui.CLIPPING_MODE_STENCIL,
+		clipping_mode: ClippingModeConstant,
 	): void;
 
 	/**
@@ -3531,7 +3773,7 @@ index into array property (1 based)
 	*/
 	export function set_outer_bounds(
 		node: node,
-		bounds_mode: typeof gui.PIEBOUNDS_ELLIPSE | typeof gui.PIEBOUNDS_RECTANGLE,
+		bounds_mode: PieBoundsConstant,
 	): void;
 
 	/**
@@ -3592,11 +3834,7 @@ index into array property (1 based)
 * @see {@link https://defold.com/ref/stable/gui/#gui.set_pivot|API Documentation}
 
 	*/
-	export function set_pivot(
-		node: node,
-		pivot:
-			typeof gui.PIVOT_CENTER | typeof gui.PIVOT_E | typeof gui.PIVOT_N | typeof gui.PIVOT_NE | typeof gui.PIVOT_NW | typeof gui.PIVOT_S | typeof gui.PIVOT_SE | typeof gui.PIVOT_SW | typeof gui.PIVOT_W,
-	): void;
+	export function set_pivot(node: node, pivot: PivotConstant): void;
 
 	/**
 	 * Sets the position of the supplied node.
@@ -3693,10 +3931,7 @@ index into array property (1 based)
 * @see {@link https://defold.com/ref/stable/gui/#gui.set_size_mode|API Documentation}
 
 	*/
-	export function set_size_mode(
-		node: node,
-		size_mode: typeof gui.SIZE_MODE_AUTO | typeof gui.SIZE_MODE_MANUAL,
-	): void;
+	export function set_size_mode(node: node, size_mode: SizeModeConstant): void;
 
 	/**
 	 * Set the slice9 configuration values for the node.
@@ -3780,11 +4015,7 @@ index into array property (1 based)
 * @see {@link https://defold.com/ref/stable/gui/#gui.set_xanchor|API Documentation}
 
 	*/
-	export function set_xanchor(
-		node: node,
-		anchor:
-			typeof gui.ANCHOR_LEFT | typeof gui.ANCHOR_NONE | typeof gui.ANCHOR_RIGHT,
-	): void;
+	export function set_xanchor(node: node, anchor: AnchorConstant): void;
 
 	/**
 	* The y-anchor specifies how the node is moved when the game is run in a different resolution.
@@ -3797,11 +4028,7 @@ index into array property (1 based)
 * @see {@link https://defold.com/ref/stable/gui/#gui.set_yanchor|API Documentation}
 
 	*/
-	export function set_yanchor(
-		node: node,
-		anchor:
-			typeof gui.ANCHOR_LEFT | typeof gui.ANCHOR_NONE | typeof gui.ANCHOR_RIGHT,
-	): void;
+	export function set_yanchor(node: node, anchor: AnchorConstant): void;
 
 	/**
 	* Shows the on-display touch keyboard.
@@ -3819,11 +4046,7 @@ index into array property (1 based)
 * @see {@link https://defold.com/ref/stable/gui/#gui.show_keyboard|API Documentation}
 	*/
 	export function show_keyboard(
-		type:
-			| typeof gui.KEYBOARD_TYPE_DEFAULT
-			| typeof gui.KEYBOARD_TYPE_EMAIL
-			| typeof gui.KEYBOARD_TYPE_NUMBER_PAD
-			| typeof gui.KEYBOARD_TYPE_PASSWORD,
+		type: KeyboardTypeConstant,
 		autoclose: boolean,
 	): void;
 
@@ -3869,6 +4092,13 @@ index into array property (1 based)
 
 /** @see {@link https://defold.com/ref/stable/physics/|API Documentation} */
 declare namespace physics {
+	export type ShapeTypeConstant = number & {
+		readonly __brand: 'physics.SHAPE_TYPE';
+	};
+	export type JointTypeConstant = number & {
+		readonly __brand: 'physics.JOINT_TYPE';
+	};
+
 	/**
 	 * The angular damping value for the collision object. Setting this value alters the damping of
 	 * angular motion of the object (rotation). Valid values are between 0 (no damping) and 1 (full damping).
@@ -3973,72 +4203,52 @@ declare namespace physics {
 	/**
 	 * fixed joint type
 	 */
-	export const JOINT_TYPE_FIXED: number & {
-		readonly __brand: 'physics.JOINT_TYPE';
-	};
+	export const JOINT_TYPE_FIXED: JointTypeConstant;
 
 	/**
 	 * hinge joint type
 	 */
-	export const JOINT_TYPE_HINGE: number & {
-		readonly __brand: 'physics.JOINT_TYPE';
-	};
+	export const JOINT_TYPE_HINGE: JointTypeConstant;
 
 	/**
 	 * slider joint type
 	 */
-	export const JOINT_TYPE_SLIDER: number & {
-		readonly __brand: 'physics.JOINT_TYPE';
-	};
+	export const JOINT_TYPE_SLIDER: JointTypeConstant;
 
 	/**
 	 * spring joint type
 	 */
-	export const JOINT_TYPE_SPRING: number & {
-		readonly __brand: 'physics.JOINT_TYPE';
-	};
+	export const JOINT_TYPE_SPRING: JointTypeConstant;
 
 	/**
 	 * weld joint type
 	 */
-	export const JOINT_TYPE_WELD: number & {
-		readonly __brand: 'physics.JOINT_TYPE';
-	};
+	export const JOINT_TYPE_WELD: JointTypeConstant;
 
 	/**
 	 * wheel joint type
 	 */
-	export const JOINT_TYPE_WHEEL: number & {
-		readonly __brand: 'physics.JOINT_TYPE';
-	};
+	export const JOINT_TYPE_WHEEL: JointTypeConstant;
 
 	/**
 	 *
 	 */
-	export const SHAPE_TYPE_BOX: number & {
-		readonly __brand: 'physics.SHAPE_TYPE';
-	};
+	export const SHAPE_TYPE_BOX: ShapeTypeConstant;
 
 	/**
 	 *
 	 */
-	export const SHAPE_TYPE_CAPSULE: number & {
-		readonly __brand: 'physics.SHAPE_TYPE';
-	};
+	export const SHAPE_TYPE_CAPSULE: ShapeTypeConstant;
 
 	/**
 	 *
 	 */
-	export const SHAPE_TYPE_HULL: number & {
-		readonly __brand: 'physics.SHAPE_TYPE';
-	};
+	export const SHAPE_TYPE_HULL: ShapeTypeConstant;
 
 	/**
 	 *
 	 */
-	export const SHAPE_TYPE_SPHERE: number & {
-		readonly __brand: 'physics.SHAPE_TYPE';
-	};
+	export const SHAPE_TYPE_SPHERE: ShapeTypeConstant;
 
 	/**
 	* Create a physics joint between two collision object components.
@@ -4205,25 +4415,16 @@ end
 		url: hash | url | string,
 		shape: hash | string,
 	): {
-		type:
-			SHAPE_TYPE_BOX | SHAPE_TYPE_CAPSULE | SHAPE_TYPE_HULL | SHAPE_TYPE_SPHERE;
+		type: ShapeTypeConstant;
 		diameter?: number;
 		dimensions?: vmath.vector3;
 		height?: number;
 	};
-	export type SHAPE_TYPE_SPHERE = number & {
-		readonly __brand: 'physics.SHAPE_TYPE';
-	};
-	export type SHAPE_TYPE_BOX = number & {
-		readonly __brand: 'physics.SHAPE_TYPE';
-	};
+	export type SHAPE_TYPE_SPHERE = ShapeTypeConstant;
+	export type SHAPE_TYPE_BOX = ShapeTypeConstant;
 	/** 3D Physics Only */
-	export type SHAPE_TYPE_CAPSULE = number & {
-		readonly __brand: 'physics.SHAPE_TYPE';
-	};
-	export type SHAPE_TYPE_HULL = number & {
-		readonly __brand: 'physics.SHAPE_TYPE';
-	};
+	export type SHAPE_TYPE_CAPSULE = ShapeTypeConstant;
+	export type SHAPE_TYPE_HULL = ShapeTypeConstant;
 
 	/**
 	* Ray casts are used to test for intersections against collision objects in the physics world.
@@ -4496,41 +4697,40 @@ end
 
 /** @see {@link https://defold.com/ref/stable/profiler/|API Documentation} */
 declare namespace profiler {
+	export type ViewModeConstant = number & {
+		readonly __brand: 'profiler.VIEW_MODE';
+	};
+	export type ModeConstant = number & { readonly __brand: 'profiler.MODE' };
+
 	/**
 	 * pause on current frame
 	 */
-	export const MODE_PAUSE: number & { readonly __brand: 'profiler.MODE' };
+	export const MODE_PAUSE: ModeConstant;
 
 	/**
 	 * start recording
 	 */
-	export const MODE_RECORD: number & { readonly __brand: 'profiler.MODE' };
+	export const MODE_RECORD: ModeConstant;
 
 	/**
 	 * continously show latest frame
 	 */
-	export const MODE_RUN: number & { readonly __brand: 'profiler.MODE' };
+	export const MODE_RUN: ModeConstant;
 
 	/**
 	 * pause at peak frame
 	 */
-	export const MODE_SHOW_PEAK_FRAME: number & {
-		readonly __brand: 'profiler.MODE';
-	};
+	export const MODE_SHOW_PEAK_FRAME: ModeConstant;
 
 	/**
 	 * show full profiler ui
 	 */
-	export const VIEW_MODE_FULL: number & {
-		readonly __brand: 'profiler.VIEW_MODE';
-	};
+	export const VIEW_MODE_FULL: ViewModeConstant;
 
 	/**
 	 * show mimimal profiler ui
 	 */
-	export const VIEW_MODE_MINIMIZED: number & {
-		readonly __brand: 'profiler.VIEW_MODE';
-	};
+	export const VIEW_MODE_MINIMIZED: ViewModeConstant;
 
 	/**
 	 * Creates and shows or hides and destroys the on-sceen profiler ui
@@ -4627,10 +4827,7 @@ Every time you switch to recording mode the recording buffer is cleared.
 The recording buffer is also cleared when setting the `MODE_SHOW_PEAK_FRAME` mode.
 * @see {@link https://defold.com/ref/stable/profiler/#profiler.set_ui_mode|API Documentation}
 	*/
-	export function set_ui_mode(
-		mode:
-			typeof profiler.MODE_PAUSE | typeof profiler.MODE_RECORD | typeof profiler.MODE_RUN | typeof profiler.MODE_SHOW_PEAK_FRAME,
-	): void;
+	export function set_ui_mode(mode: ModeConstant): void;
 
 	/**
 	* Set the on-screen profile view mode - minimized or expanded
@@ -4641,9 +4838,7 @@ The recording buffer is also cleared when setting the `MODE_SHOW_PEAK_FRAME` mod
 * @see {@link https://defold.com/ref/stable/profiler/#profiler.set_ui_view_mode|API Documentation}
 
 	*/
-	export function set_ui_view_mode(
-		mode: typeof profiler.VIEW_MODE_FULL | typeof profiler.VIEW_MODE_MINIMIZED,
-	): void;
+	export function set_ui_view_mode(mode: ViewModeConstant): void;
 
 	/**
 	 * Shows or hides the time the engine waits for vsync in the on-screen profiler
@@ -4680,6 +4875,13 @@ The recording buffer is also cleared when setting the `MODE_SHOW_PEAK_FRAME` mod
 
 /** @see {@link https://defold.com/ref/stable/render/|API Documentation} */
 declare namespace render {
+	type FrustumPlanesConstant = number & {
+		readonly __brand: 'render.FRUSTUM_PLANES';
+	};
+	type RenderTargetConstant = number & {
+		readonly __brand: 'render.RENDER_TARGET';
+	};
+
 	/**
 	 * Set render clear color. This is the color that appears on the screen where nothing is rendered, i.e. background.
 	 */
@@ -4709,444 +4911,30 @@ declare namespace render {
 	/**
 	 *
 	 */
-	export const BLEND_CONSTANT_ALPHA: number & {
-		readonly __brand: 'render.BLEND';
-	};
+	export const FRUSTUM_PLANES_ALL: FrustumPlanesConstant;
 
 	/**
 	 *
 	 */
-	export const BLEND_CONSTANT_COLOR: number & {
-		readonly __brand: 'render.BLEND';
-	};
+	export const FRUSTUM_PLANES_SIDES: FrustumPlanesConstant;
 
 	/**
 	 *
 	 */
-	export const BLEND_DST_ALPHA: number & { readonly __brand: 'render.BLEND' };
-
-	/**
-	 *
-	 */
-	export const BLEND_DST_COLOR: number & { readonly __brand: 'render.BLEND' };
-
-	/**
-	 *
-	 */
-	export const BLEND_ONE: number & { readonly __brand: 'render.BLEND' };
-
-	/**
-	 *
-	 */
-	export const BLEND_ONE_MINUS_CONSTANT_ALPHA: number & {
-		readonly __brand: 'render.BLEND';
-	};
-
-	/**
-	 *
-	 */
-	export const BLEND_ONE_MINUS_CONSTANT_COLOR: number & {
-		readonly __brand: 'render.BLEND';
-	};
-
-	/**
-	 *
-	 */
-	export const BLEND_ONE_MINUS_DST_ALPHA: number & {
-		readonly __brand: 'render.BLEND';
-	};
-
-	/**
-	 *
-	 */
-	export const BLEND_ONE_MINUS_DST_COLOR: number & {
-		readonly __brand: 'render.BLEND';
-	};
-
-	/**
-	 *
-	 */
-	export const BLEND_ONE_MINUS_SRC_ALPHA: number & {
-		readonly __brand: 'render.BLEND';
-	};
-
-	/**
-	 *
-	 */
-	export const BLEND_ONE_MINUS_SRC_COLOR: number & {
-		readonly __brand: 'render.BLEND';
-	};
-
-	/**
-	 *
-	 */
-	export const BLEND_SRC_ALPHA: number & { readonly __brand: 'render.BLEND' };
-
-	/**
-	 *
-	 */
-	export const BLEND_SRC_ALPHA_SATURATE: number & {
-		readonly __brand: 'render.BLEND';
-	};
-
-	/**
-	 *
-	 */
-	export const BLEND_SRC_COLOR: number & { readonly __brand: 'render.BLEND' };
-
-	/**
-	 *
-	 */
-	export const BLEND_ZERO: number & { readonly __brand: 'render.BLEND' };
-
-	/**
-	 *
-	 */
-	export const BUFFER_COLOR0_BIT: number & {
-		readonly __brand: 'render.BUFFER';
-	};
-
-	/**
-	 *
-	 */
-	export const BUFFER_COLOR1_BIT: number & {
-		readonly __brand: 'render.BUFFER';
-	};
-
-	/**
-	 *
-	 */
-	export const BUFFER_COLOR2_BIT: number & {
-		readonly __brand: 'render.BUFFER';
-	};
-
-	/**
-	 *
-	 */
-	export const BUFFER_COLOR3_BIT: number & {
-		readonly __brand: 'render.BUFFER';
-	};
-
-	/**
-	 *
-	 */
-	export const BUFFER_COLOR_BIT: number & { readonly __brand: 'render.BUFFER' };
-
-	/**
-	 *
-	 */
-	export const BUFFER_DEPTH_BIT: number & { readonly __brand: 'render.BUFFER' };
-
-	/**
-	 *
-	 */
-	export const BUFFER_STENCIL_BIT: number & {
-		readonly __brand: 'render.BUFFER';
-	};
-
-	/**
-	 *
-	 */
-	export const COMPARE_FUNC_ALWAYS: number & {
-		readonly __brand: 'render.COMPARE_FUNC';
-	};
-
-	/**
-	 *
-	 */
-	export const COMPARE_FUNC_EQUAL: number & {
-		readonly __brand: 'render.COMPARE_FUNC';
-	};
-
-	/**
-	 *
-	 */
-	export const COMPARE_FUNC_GEQUAL: number & {
-		readonly __brand: 'render.COMPARE_FUNC';
-	};
-
-	/**
-	 *
-	 */
-	export const COMPARE_FUNC_GREATER: number & {
-		readonly __brand: 'render.COMPARE_FUNC';
-	};
-
-	/**
-	 *
-	 */
-	export const COMPARE_FUNC_LEQUAL: number & {
-		readonly __brand: 'render.COMPARE_FUNC';
-	};
-
-	/**
-	 *
-	 */
-	export const COMPARE_FUNC_LESS: number & {
-		readonly __brand: 'render.COMPARE_FUNC';
-	};
-
-	/**
-	 *
-	 */
-	export const COMPARE_FUNC_NEVER: number & {
-		readonly __brand: 'render.COMPARE_FUNC';
-	};
-
-	/**
-	 *
-	 */
-	export const COMPARE_FUNC_NOTEQUAL: number & {
-		readonly __brand: 'render.COMPARE_FUNC';
-	};
-
-	/**
-	 *
-	 */
-	export const FACE_BACK: number & { readonly __brand: 'render.FACE' };
-
-	/**
-	 *
-	 */
-	export const FACE_FRONT: number & { readonly __brand: 'render.FACE' };
-
-	/**
-	 *
-	 */
-	export const FACE_FRONT_AND_BACK: number & {
-		readonly __brand: 'render.FACE';
-	};
-
-	/**
-	 *
-	 */
-	export const FILTER_LINEAR: number & { readonly __brand: 'render.FILTER' };
-
-	/**
-	 *
-	 */
-	export const FILTER_NEAREST: number & { readonly __brand: 'render.FILTER' };
-
-	/**
-	 *
-	 */
-	export const FORMAT_DEPTH: number & { readonly __brand: 'render.FORMAT' };
-
-	/**
-	 *
-	 */
-	export const FORMAT_LUMINANCE: number & { readonly __brand: 'render.FORMAT' };
-
-	/**
-	 * May be undefined if the format isn't supported
-	 */
-	export const FORMAT_R16F:
-		| (number & { readonly __brand: 'render.FORMAT' })
-		| undefined;
-
-	/**
-	 * May be undefined if the format isn't supported
-	 */
-	export const FORMAT_R32F:
-		| (number & { readonly __brand: 'render.FORMAT' })
-		| undefined;
-
-	/**
-	 * May be undefined if the format isn't supported
-	 */
-	export const FORMAT_RG16F:
-		| (number & { readonly __brand: 'render.FORMAT' })
-		| undefined;
-
-	/**
-	 * May be undefined if the format isn't supported
-	 */
-	export const FORMAT_RG32F:
-		| (number & { readonly __brand: 'render.FORMAT' })
-		| undefined;
-
-	/**
-	 *
-	 */
-	export const FORMAT_RGB: number & { readonly __brand: 'render.FORMAT' };
-
-	/**
-	 * May be undefined if the format isn't supported
-	 */
-	export const FORMAT_RGB16F:
-		| (number & { readonly __brand: 'render.FORMAT' })
-		| undefined;
-
-	/**
-	 * May be undefined if the format isn't supported
-	 */
-	export const FORMAT_RGB32F:
-		| (number & { readonly __brand: 'render.FORMAT' })
-		| undefined;
-
-	/**
-	 *
-	 */
-	export const FORMAT_RGBA: number & { readonly __brand: 'render.FORMAT' };
-
-	/**
-	 * May be undefined if the format isn't supported
-	 */
-	export const FORMAT_RGBA16F:
-		| (number & { readonly __brand: 'render.FORMAT' })
-		| undefined;
-
-	/**
-	 * May be undefined if the format isn't supported
-	 */
-	export const FORMAT_RGBA32F:
-		| (number & { readonly __brand: 'render.FORMAT' })
-		| undefined;
-
-	/**
-	 *
-	 */
-	export const FORMAT_STENCIL: number & { readonly __brand: 'render.FORMAT' };
-
-	/**
-	 *
-	 */
-	export const FRUSTUM_PLANES_ALL: number & {
-		readonly __brand: 'render.FRUSTUM_PLANES';
-	};
-
-	/**
-	 *
-	 */
-	export const FRUSTUM_PLANES_SIDES: number & {
-		readonly __brand: 'render.FRUSTUM_PLANES';
-	};
-
-	/**
-	 *
-	 */
-	export const RENDER_TARGET_DEFAULT: number & {
-		readonly __brand: 'render.RENDER_TARGET';
-	};
-
-	/**
-	 *
-	 */
-	export const STATE_BLEND: number & { readonly __brand: 'render.STATE' };
-
-	/**
-	 *
-	 */
-	export const STATE_CULL_FACE: number & { readonly __brand: 'render.STATE' };
-
-	/**
-	 *
-	 */
-	export const STATE_DEPTH_TEST: number & { readonly __brand: 'render.STATE' };
-
-	/**
-	 *
-	 */
-	export const STATE_POLYGON_OFFSET_FILL: number & {
-		readonly __brand: 'render.STATE';
-	};
-
-	/**
-	 *
-	 */
-	export const STATE_STENCIL_TEST: number & {
-		readonly __brand: 'render.STATE';
-	};
-
-	/**
-	 *
-	 */
-	export const STENCIL_OP_DECR: number & { readonly __brand: 'render.STENCIL' };
-
-	/**
-	 *
-	 */
-	export const STENCIL_OP_DECR_WRAP: number & {
-		readonly __brand: 'render.STENCIL';
-	};
-
-	/**
-	 *
-	 */
-	export const STENCIL_OP_INCR: number & { readonly __brand: 'render.STENCIL' };
-
-	/**
-	 *
-	 */
-	export const STENCIL_OP_INCR_WRAP: number & {
-		readonly __brand: 'render.STENCIL';
-	};
-
-	/**
-	 *
-	 */
-	export const STENCIL_OP_INVERT: number & {
-		readonly __brand: 'render.STENCIL';
-	};
-
-	/**
-	 *
-	 */
-	export const STENCIL_OP_KEEP: number & { readonly __brand: 'render.STENCIL' };
-
-	/**
-	 *
-	 */
-	export const STENCIL_OP_REPLACE: number & {
-		readonly __brand: 'render.STENCIL';
-	};
-
-	/**
-	 *
-	 */
-	export const STENCIL_OP_ZERO: number & { readonly __brand: 'render.STENCIL' };
-
-	/**
-	 *
-	 */
-	export const WRAP_CLAMP_TO_BORDER: number & {
-		readonly __brand: 'render.WRAP';
-	};
-
-	/**
-	 *
-	 */
-	export const WRAP_CLAMP_TO_EDGE: number & { readonly __brand: 'render.WRAP' };
-
-	/**
-	 *
-	 */
-	export const WRAP_MIRRORED_REPEAT: number & {
-		readonly __brand: 'render.WRAP';
-	};
-
-	/**
-	 *
-	 */
-	export const WRAP_REPEAT: number & { readonly __brand: 'render.WRAP' };
+	export const RENDER_TARGET_DEFAULT: RenderTargetConstant;
 
 	/**
 	* Clear buffers in the currently enabled render target with specified value. If the render target has been created with multiple
 	* color attachments, all buffers will be cleared with the same value.
 	* @param buffers  table with keys specifying which buffers to clear and values set to clear values. Available keys are:
 
-- `render.BUFFER_COLOR_BIT`
-- `render.BUFFER_DEPTH_BIT`
-- `render.BUFFER_STENCIL_BIT`
+- `graphics.BUFFER_TYPE_COLOR0_BIT`
+- `graphics.BUFFER_TYPE_DEPTH_BIT`
+- `graphics.BUFFER_TYPE_STENCIL_BIT`
 
 	*/
 	export function clear(buffers: {
-		[
-			key:
-				| typeof render.BUFFER_COLOR_BIT
-				| typeof render.BUFFER_DEPTH_BIT
-				| typeof render.BUFFER_STENCIL_BIT
-		]: vmath.vector4 | number;
+		[key: graphics.BufferConstant]: vmath.vector4 | number;
 	}): void;
 
 	/**
@@ -5174,18 +4962,15 @@ declare namespace render {
 	* Disables a render state.
 	* @param state  state to disable
 
-- `render.STATE_DEPTH_TEST`
-- `render.STATE_STENCIL_TEST`
-- `render.STATE_BLEND`
+- `graphics.STATE_DEPTH_TEST`
+- `graphics.STATE_STENCIL_TEST`
+- `graphics.STATE_BLEND`
 🤖 not available on iOS and Android)
-- `render.STATE_CULL_FACE`
-- `render.STATE_POLYGON_OFFSET_FILL`
+- `graphics.STATE_CULL_FACE`
+- `graphics.STATE_POLYGON_OFFSET_FILL`
 
 	*/
-	export function disable_state(
-		state:
-			typeof render.STATE_BLEND | typeof render.STATE_CULL_FACE | typeof render.STATE_DEPTH_TEST | typeof render.STATE_POLYGON_OFFSET_FILL | typeof render.STATE_STENCIL_TEST,
-	): void;
+	export function disable_state(state: graphics.StateConstant): void;
 
 	/**
 	 * Disables a texture that has previourly been enabled.
@@ -5241,8 +5026,7 @@ optional constants to use while rendering
 		predicate: predicate,
 		options?: {
 			frustum?: vmath.matrix4;
-			frustum_planes?:
-				typeof render.FRUSTUM_PLANES_ALL | typeof render.FRUSTUM_PLANES_SIDES;
+			frustum_planes?: FrustumPlanesConstant;
 			constants?: buffer;
 		},
 	): void;
@@ -5263,8 +5047,7 @@ Determines which sides of the frustum will be used. Default is render.FRUSTUM_PL
 	*/
 	export function draw_debug3d(options?: {
 		frustum?: vmath.matrix4;
-		frustum_planes?:
-			typeof render.FRUSTUM_PLANES_ALL | typeof render.FRUSTUM_PLANES_SIDES;
+		frustum_planes?: FrustumPlanesConstant;
 	}): void;
 
 	/**
@@ -5280,18 +5063,15 @@ Determines which sides of the frustum will be used. Default is render.FRUSTUM_PL
 	* Enables a particular render state. The state will be enabled until disabled.
 	* @param state  state to enable
 
-- `render.STATE_DEPTH_TEST`
-- `render.STATE_STENCIL_TEST`
-- `render.STATE_BLEND`
+- `graphics.STATE_DEPTH_TEST`
+- `graphics.STATE_STENCIL_TEST`
+- `graphics.STATE_BLEND`
 🤖 not available on iOS and Android)
-- `render.STATE_CULL_FACE`
-- `render.STATE_POLYGON_OFFSET_FILL`
+- `graphics.STATE_CULL_FACE`
+- `graphics.STATE_POLYGON_OFFSET_FILL`
 
 	*/
-	export function enable_state(
-		state:
-			typeof render.STATE_BLEND | typeof render.STATE_CULL_FACE | typeof render.STATE_DEPTH_TEST | typeof render.STATE_POLYGON_OFFSET_FILL | typeof render.STATE_STENCIL_TEST,
-	): void;
+	export function enable_state(state: graphics.StateConstant): void;
 
 	/**
 	* Sets the specified texture handle for a render target attachment or a regular texture
@@ -5307,29 +5087,28 @@ Determines which sides of the frustum will be used. Default is render.FRUSTUM_PL
 	* everywhere for the textures that should be shared across different materials.
 	* @param binding  texture binding, either by texture unit, string or hash for the sampler name that the texture should be bound to
 	* @param handle_or_name  render target or texture handle that should be bound, or a named resource in the "Render Resource" table in the currently assigned .render file
-	* @param buffer_type  optional buffer type from which to enable the texture. Note that this argument only applies to render targets. Defaults to `render.BUFFER_COLOR_BIT`. These values are supported:
+	* @param buffer_type  optional buffer type from which to enable the texture. Note that this argument only applies to render targets. Defaults to `graphics.BUFFER_TYPE_COLOR0_BIT`. These values are supported:
 
-- `render.BUFFER_COLOR_BIT`
+- `graphics.BUFFER_TYPE_COLOR0_BIT`
 
 If The render target has been created as depth and/or stencil textures, these buffer types can be used:
 
-- `render.BUFFER_DEPTH_BIT`
-- `render.BUFFER_STENCIL_BIT`
+- `graphics.BUFFER_TYPE_DEPTH_BIT`
+- `graphics.BUFFER_TYPE_STENCIL_BIT`
 
 If the render target has been created with multiple color attachments, these buffer types can be used
 to enable those textures as well. Currently 4 color attachments are supported:
 
-- `render.BUFFER_COLOR0_BIT`
-- `render.BUFFER_COLOR1_BIT`
-- `render.BUFFER_COLOR2_BIT`
-- `render.BUFFER_COLOR3_BIT`
+- `graphics.BUFFER_TYPE_COLOR0_BIT`
+- `graphics.BUFFER_TYPE_COLOR1_BIT`
+- `graphics.BUFFER_TYPE_COLOR2_BIT`
+- `graphics.BUFFER_TYPE_COLOR3_BIT`
 
 	*/
 	export function enable_texture(
 		binding: hash | number | string,
 		handle_or_name: any,
-		buffer_type?:
-			typeof render.BUFFER_COLOR_BIT | typeof render.BUFFER_COLOR0_BIT | typeof render.BUFFER_COLOR1_BIT | typeof render.BUFFER_COLOR2_BIT | typeof render.BUFFER_COLOR3_BIT | typeof render.BUFFER_DEPTH_BIT | typeof render.BUFFER_STENCIL_BIT,
+		buffer_type?: graphics.BufferConstant,
 	): void;
 
 	/**
@@ -5345,18 +5124,15 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	* @param render_target  render target from which to retrieve the buffer height
 	* @param buffer_type  which type of buffer to retrieve the height from
 
-- `render.BUFFER_COLOR_BIT`
-- `render.BUFFER_DEPTH_BIT`
-- `render.BUFFER_STENCIL_BIT`
+- `graphics.BUFFER_TYPE_COLOR0_BIT`
+- `graphics.BUFFER_TYPE_DEPTH_BIT`
+- `graphics.BUFFER_TYPE_STENCIL_BIT`
 
 	* @returns height  the height of the render target buffer texture
 	*/
 	export function get_render_target_height(
 		render_target: rendertarget,
-		buffer_type:
-			| typeof render.BUFFER_COLOR_BIT
-			| typeof render.BUFFER_DEPTH_BIT
-			| typeof render.BUFFER_STENCIL_BIT,
+		buffer_type: graphics.BufferConstant,
 	): number;
 
 	/**
@@ -5364,23 +5140,16 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	* @param render_target  render target from which to retrieve the buffer width
 	* @param buffer_type  which type of buffer to retrieve the width from
 
-- `render.BUFFER_COLOR_BIT`
-- `render.BUFFER_COLOR[x]_BIT` (x: [0..3], if supported!)
-- `render.BUFFER_DEPTH_BIT`
-- `render.BUFFER_STENCIL_BIT`
+- `graphics.BUFFER_TYPE_COLOR0_BIT`
+- `graphics.BUFFER_TYPE_COLOR[x]_BIT` (x: [0..3], if supported!)
+- `graphics.BUFFER_TYPE_DEPTH_BIT`
+- `graphics.BUFFER_TYPE_STENCIL_BIT`
 
 	* @returns width  the width of the render target buffer texture
 	*/
 	export function get_render_target_width(
 		render_target: rendertarget,
-		buffer_type:
-			| typeof render.BUFFER_COLOR_BIT
-			| typeof render.BUFFER_COLOR0_BIT
-			| typeof render.BUFFER_COLOR1_BIT
-			| typeof render.BUFFER_COLOR2_BIT
-			| typeof render.BUFFER_COLOR3_BIT
-			| typeof render.BUFFER_DEPTH_BIT
-			| typeof render.BUFFER_STENCIL_BIT,
+		buffer_type: graphics.BufferConstant,
 	): number;
 
 	/**
@@ -5436,7 +5205,7 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	 *
 	 *
 	 * `format`
-	 * `render.FORMAT_LUMINANCE``render.FORMAT_RGB``render.FORMAT_RGBA``render.FORMAT_DEPTH``render.FORMAT_STENCIL``render.FORMAT_RGBA32F``render.FORMAT_RGBA16F`
+	 * `graphics.TEXTURE_FORMAT_LUMINANCE``graphics.TEXTURE_FORMAT_RGB``graphics.TEXTURE_FORMAT_RGBA``graphics.TEXTURE_FORMAT_DEPTH``graphics.TEXTURE_FORMAT_STENCIL``graphics.TEXTURE_FORMAT_RGBA32F``graphics.TEXTURE_FORMAT_RGBA16F`
 	 *
 	 *
 	 * `width`
@@ -5448,19 +5217,19 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	 *
 	 *
 	 * `min_filter` (optional)
-	 * `render.FILTER_LINEAR``render.FILTER_NEAREST`
+	 * `graphics.TEXTURE_FILTER_LINEAR``graphics.TEXTURE_FILTER_NEAREST`
 	 *
 	 *
 	 * `mag_filter` (optional)
-	 * `render.FILTER_LINEAR``render.FILTER_NEAREST`
+	 * `graphics.TEXTURE_FILTER_LINEAR``graphics.TEXTURE_FILTER_NEAREST`
 	 *
 	 *
 	 * `u_wrap`     (optional)
-	 * `render.WRAP_CLAMP_TO_BORDER``render.WRAP_CLAMP_TO_EDGE``render.WRAP_MIRRORED_REPEAT``render.WRAP_REPEAT`
+	 * `graphics.TEXTURE_WRAP_CLAMP_TO_BORDER``graphics.TEXTURE_WRAP_CLAMP_TO_EDGE``graphics.TEXTURE_WRAP_MIRRORED_REPEAT``graphics.TEXTURE_WRAP_REPEAT`
 	 *
 	 *
 	 * `v_wrap`     (optional)
-	 * `render.WRAP_CLAMP_TO_BORDER``render.WRAP_CLAMP_TO_EDGE``render.WRAP_MIRRORED_REPEAT``render.WRAP_REPEAT`
+	 * `graphics.TEXTURE_WRAP_CLAMP_TO_BORDER``graphics.TEXTURE_WRAP_CLAMP_TO_EDGE``graphics.TEXTURE_WRAP_MIRRORED_REPEAT``graphics.TEXTURE_WRAP_REPEAT`
 	 *
 	 *
 	 * `flags`      (optional)
@@ -5470,11 +5239,11 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	 *
 	 * The render target can be created to support multiple color attachments. Each attachment can have different format settings and texture filters,
 	 * but attachments must be added in sequence, meaning you cannot create a render target at slot 0 and 3.
-	 * Instead it has to be created with all four buffer types ranging from [0..3] (as denoted by render.BUFFER_COLORX_BIT where 'X' is the attachment you want to create).
+	 * Instead it has to be created with all four buffer types ranging from [0..3] (as denoted by graphics.BUFFER_TYPE_COLORX_BIT where 'X' is the attachment you want to create).
 	 * It is not guaranteed that the device running the script can support creating render targets with multiple color attachments. To check if the device can support multiple attachments,
-	 * you can check if the `render` table contains any of the `BUFFER_COLOR1_BIT`, `BUFFER_COLOR2_BIT` or `BUFFER_COLOR3_BIT` constants:
+	 * you can check if the `render` table contains any of the `BUFFER_TYPE_COLOR1_BIT`, `BUFFER_TYPE_COLOR2_BIT` or `BUFFER_TYPE_COLOR3_BIT` constants:
 	 * `function init(self)
-	 *     if render.BUFFER_COLOR1_BIT == undefined then
+	 *     if graphics.BUFFER_TYPE_COLOR1_BIT == undefined then
 	 *         -- this devices does not support multiple color attachments
 	 *     end
 	 * end
@@ -5486,32 +5255,14 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	export function render_target(
 		name: string,
 		parameters: {
-			[
-				key:
-					| typeof render.BUFFER_COLOR_BIT
-					| typeof render.BUFFER_COLOR0_BIT
-					| typeof render.BUFFER_COLOR1_BIT
-					| typeof render.BUFFER_COLOR2_BIT
-					| typeof render.BUFFER_COLOR3_BIT
-					| typeof render.BUFFER_DEPTH_BIT
-					| typeof render.BUFFER_STENCIL_BIT
-			]: {
-				format:
-					typeof render.FORMAT_DEPTH | typeof render.FORMAT_LUMINANCE | typeof render.FORMAT_RGB | typeof render.FORMAT_RGBA | typeof render.FORMAT_RGBA16F | typeof render.FORMAT_RGBA32F | typeof render.FORMAT_STENCIL;
+			[key: graphics.BufferConstant]: {
+				format: graphics.FormatConstant;
 				width: number;
 				height: number;
-				min_filter?: typeof render.FILTER_LINEAR | typeof render.FILTER_NEAREST;
-				mag_filter?: typeof render.FILTER_LINEAR | typeof render.FILTER_NEAREST;
-				u_wrap?:
-					| typeof render.WRAP_CLAMP_TO_BORDER
-					| typeof render.WRAP_CLAMP_TO_EDGE
-					| typeof render.WRAP_MIRRORED_REPEAT
-					| typeof render.WRAP_REPEAT;
-				v_wrap?:
-					| typeof render.WRAP_CLAMP_TO_BORDER
-					| typeof render.WRAP_CLAMP_TO_EDGE
-					| typeof render.WRAP_MIRRORED_REPEAT
-					| typeof render.WRAP_REPEAT;
+				min_filter?: graphics.FilterConstant;
+				mag_filter?: graphics.FilterConstant;
+				u_wrap?: graphics.WrapConstant;
+				v_wrap?: graphics.WrapConstant;
 				flags?: unknown;
 			};
 		},
@@ -5541,63 +5292,63 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	 *
 	 *
 	 *
-	 * `render.BLEND_ZERO`
+	 * `graphics.BLEND_FACTOR_ZERO`
 	 * (0,0,0,0)
 	 *
 	 *
-	 * `render.BLEND_ONE`
+	 * `graphics.BLEND_FACTOR_ONE`
 	 * (1,1,1,1)
 	 *
 	 *
-	 * `render.BLEND_SRC_COLOR`
+	 * `graphics.BLEND_FACTOR_SRC_COLOR`
 	 * (Rs/kR,Gs/kG,Bs/kB,As/kA)
 	 *
 	 *
-	 * `render.BLEND_ONE_MINUS_SRC_COLOR`
+	 * `graphics.BLEND_FACTOR_ONE_MINUS_SRC_COLOR`
 	 * (1,1,1,1) - (Rs/kR,Gs/kG,Bs/kB,As/kA)
 	 *
 	 *
-	 * `render.BLEND_DST_COLOR`
+	 * `graphics.BLEND_FACTOR_DST_COLOR`
 	 * (Rd/kR,Gd/kG,Bd/kB,Ad/kA)
 	 *
 	 *
-	 * `render.BLEND_ONE_MINUS_DST_COLOR`
+	 * `graphics.BLEND_FACTOR_ONE_MINUS_DST_COLOR`
 	 * (1,1,1,1) - (Rd/kR,Gd/kG,Bd/kB,Ad/kA)
 	 *
 	 *
-	 * `render.BLEND_SRC_ALPHA`
+	 * `graphics.BLEND_FACTOR_SRC_ALPHA`
 	 * (As/kA,As/kA,As/kA,As/kA)
 	 *
 	 *
-	 * `render.BLEND_ONE_MINUS_SRC_ALPHA`
+	 * `graphics.BLEND_FACTOR_ONE_MINUS_SRC_ALPHA`
 	 * (1,1,1,1) - (As/kA,As/kA,As/kA,As/kA)
 	 *
 	 *
-	 * `render.BLEND_DST_ALPHA`
+	 * `graphics.BLEND_FACTOR_DST_ALPHA`
 	 * (Ad/kA,Ad/kA,Ad/kA,Ad/kA)
 	 *
 	 *
-	 * `render.BLEND_ONE_MINUS_DST_ALPHA`
+	 * `graphics.BLEND_FACTOR_ONE_MINUS_DST_ALPHA`
 	 * (1,1,1,1) - (Ad/kA,Ad/kA,Ad/kA,Ad/kA)
 	 *
 	 *
-	 * `render.BLEND_CONSTANT_COLOR`
+	 * `graphics.BLEND_FACTOR_CONSTANT_COLOR`
 	 * (Rc,Gc,Bc,Ac)
 	 *
 	 *
-	 * `render.BLEND_ONE_MINUS_CONSTANT_COLOR`
+	 * `graphics.BLEND_FACTOR_ONE_MINUS_CONSTANT_COLOR`
 	 * (1,1,1,1) - (Rc,Gc,Bc,Ac)
 	 *
 	 *
-	 * `render.BLEND_CONSTANT_ALPHA`
+	 * `graphics.BLEND_FACTOR_CONSTANT_ALPHA`
 	 * (Ac,Ac,Ac,Ac)
 	 *
 	 *
-	 * `render.BLEND_ONE_MINUS_CONSTANT_ALPHA`
+	 * `graphics.BLEND_FACTOR_ONE_MINUS_CONSTANT_ALPHA`
 	 * (1,1,1,1) - (Ac,Ac,Ac,Ac)
 	 *
 	 *
-	 * `render.BLEND_SRC_ALPHA_SATURATE`
+	 * `graphics.BLEND_FACTOR_SRC_ALPHA_SATURATE`
 	 * (i,i,i,1) where i = min(As, kA - Ad) /kA
 	 *
 	 *
@@ -5609,17 +5360,15 @@ to enable those textures as well. Currently 4 color attachments are supported:
 	 * - Bd = min(kB, Bs * sB + Bd * dB)
 	 * - Ad = min(kA, As * sA + Ad * dA)
 	 *
-	 * Blend function `(render.BLEND_SRC_ALPHA, render.BLEND_ONE_MINUS_SRC_ALPHA)` is useful for
+	 * Blend function `(graphics.BLEND_FACTOR_SRC_ALPHA, graphics.BLEND_FACTOR_ONE_MINUS_SRC_ALPHA)` is useful for
 	 * drawing with transparency when the drawn objects are sorted from farthest to nearest.
 	 * It is also useful for drawing antialiased points and lines in arbitrary order.
 	 * @param source_factor  source factor
 	 * @param destination_factor  destination factor
 	 */
 	export function set_blend_func(
-		source_factor:
-			typeof render.BLEND_CONSTANT_ALPHA | typeof render.BLEND_CONSTANT_COLOR | typeof render.BLEND_DST_ALPHA | typeof render.BLEND_DST_COLOR | typeof render.BLEND_ONE | typeof render.BLEND_ONE_MINUS_CONSTANT_ALPHA | typeof render.BLEND_ONE_MINUS_CONSTANT_COLOR | typeof render.BLEND_ONE_MINUS_DST_ALPHA | typeof render.BLEND_ONE_MINUS_DST_COLOR | typeof render.BLEND_ONE_MINUS_SRC_ALPHA | typeof render.BLEND_ONE_MINUS_SRC_COLOR | typeof render.BLEND_SRC_ALPHA | typeof render.BLEND_SRC_ALPHA_SATURATE | typeof render.BLEND_SRC_COLOR | typeof render.BLEND_ZERO,
-		destination_factor:
-			typeof render.BLEND_CONSTANT_ALPHA | typeof render.BLEND_CONSTANT_COLOR | typeof render.BLEND_DST_ALPHA | typeof render.BLEND_DST_COLOR | typeof render.BLEND_ONE | typeof render.BLEND_ONE_MINUS_CONSTANT_ALPHA | typeof render.BLEND_ONE_MINUS_CONSTANT_COLOR | typeof render.BLEND_ONE_MINUS_DST_ALPHA | typeof render.BLEND_ONE_MINUS_DST_COLOR | typeof render.BLEND_ONE_MINUS_SRC_ALPHA | typeof render.BLEND_ONE_MINUS_SRC_COLOR | typeof render.BLEND_SRC_ALPHA | typeof render.BLEND_SRC_ALPHA_SATURATE | typeof render.BLEND_SRC_COLOR | typeof render.BLEND_ZERO,
+		source_factor: graphics.BlendConstant,
+		destination_factor: graphics.BlendConstant,
 	): void;
 
 	/**
@@ -5668,20 +5417,17 @@ If true, the renderer will use the cameras view-projection matrix for frustum cu
 	/**
 	* Specifies whether front- or back-facing polygons can be culled
 	* when polygon culling is enabled. Polygon culling is initially disabled.
-	* If mode is `render.FACE_FRONT_AND_BACK`, no polygons are drawn, but other
+	* If mode is `graphics.FACE_TYPE_FRONT_AND_BACK`, no polygons are drawn, but other
 	* primitives such as points and lines are drawn. The initial value for
-	* `face_type` is `render.FACE_BACK`.
+	* `face_type` is `graphics.FACE_TYPE_BACK`.
 	* @param face_type  face type
 
-- `render.FACE_FRONT`
-- `render.FACE_BACK`
-- `render.FACE_FRONT_AND_BACK`
+- `graphics.FACE_TYPE_FRONT`
+- `graphics.FACE_TYPE_BACK`
+- `graphics.FACE_TYPE_FRONT_AND_BACK`
 
 	*/
-	export function set_cull_face(
-		face_type:
-			typeof render.FACE_BACK | typeof render.FACE_FRONT | typeof render.FACE_FRONT_AND_BACK,
-	): void;
+	export function set_cull_face(face_type: graphics.FaceConstant): void;
 
 	/**
 	 * Specifies the function that should be used to compare each incoming pixel
@@ -5690,22 +5436,19 @@ If true, the renderer will use the cameras view-projection matrix for frustum cu
 	 * the conditions under which a pixel will be drawn.
 	 * Function constants:
 	 *
-	 * - `render.COMPARE_FUNC_NEVER` (never passes)
-	 * - `render.COMPARE_FUNC_LESS` (passes if the incoming depth value is less than the stored value)
-	 * - `render.COMPARE_FUNC_LEQUAL` (passes if the incoming depth value is less than or equal to the stored value)
-	 * - `render.COMPARE_FUNC_GREATER` (passes if the incoming depth value is greater than the stored value)
-	 * - `render.COMPARE_FUNC_GEQUAL` (passes if the incoming depth value is greater than or equal to the stored value)
-	 * - `render.COMPARE_FUNC_EQUAL` (passes if the incoming depth value is equal to the stored value)
-	 * - `render.COMPARE_FUNC_NOTEQUAL` (passes if the incoming depth value is not equal to the stored value)
-	 * - `render.COMPARE_FUNC_ALWAYS` (always passes)
+	 * - `graphics.COMPARE_FUNC_NEVER` (never passes)
+	 * - `graphics.COMPARE_FUNC_LESS` (passes if the incoming depth value is less than the stored value)
+	 * - `graphics.COMPARE_FUNC_LEQUAL` (passes if the incoming depth value is less than or equal to the stored value)
+	 * - `graphics.COMPARE_FUNC_GREATER` (passes if the incoming depth value is greater than the stored value)
+	 * - `graphics.COMPARE_FUNC_GEQUAL` (passes if the incoming depth value is greater than or equal to the stored value)
+	 * - `graphics.COMPARE_FUNC_EQUAL` (passes if the incoming depth value is equal to the stored value)
+	 * - `graphics.COMPARE_FUNC_NOTEQUAL` (passes if the incoming depth value is not equal to the stored value)
+	 * - `graphics.COMPARE_FUNC_ALWAYS` (always passes)
 	 *
-	 * The depth function is initially set to `render.COMPARE_FUNC_LESS`.
+	 * The depth function is initially set to `graphics.COMPARE_FUNC_LESS`.
 	 * @param func  depth test function, see the description for available values
 	 */
-	export function set_depth_func(
-		func:
-			typeof render.COMPARE_FUNC_ALWAYS | typeof render.COMPARE_FUNC_EQUAL | typeof render.COMPARE_FUNC_GEQUAL | typeof render.COMPARE_FUNC_GREATER | typeof render.COMPARE_FUNC_LEQUAL | typeof render.COMPARE_FUNC_LESS | typeof render.COMPARE_FUNC_NEVER | typeof render.COMPARE_FUNC_NOTEQUAL,
-	): void;
+	export function set_depth_func(func: graphics.CompareFuncConstant): void;
 
 	/**
 	 * Specifies whether the depth buffer is enabled for writing. The supplied mask governs
@@ -5717,7 +5460,7 @@ If true, the renderer will use the cameras view-projection matrix for frustum cu
 
 	/**
 	 * Sets the scale and units used to calculate depth values.
-	 * If `render.STATE_POLYGON_OFFSET_FILL` is enabled, each fragment's depth value
+	 * If `graphics.STATE_POLYGON_OFFSET_FILL` is enabled, each fragment's depth value
 	 * is offset from its interpolated value (depending on the depth value of the
 	 * appropriate vertices). Polygon offset can be used when drawing decals, rendering
 	 * hidden-line images etc.
@@ -5757,18 +5500,14 @@ Transient frame buffer types are only valid while the render target is active, i
  A buffer type defined that doesn't exist in the render target is silently ignored.
 
 
-- `render.BUFFER_COLOR_BIT`
-- `render.BUFFER_DEPTH_BIT`
-- `render.BUFFER_STENCIL_BIT`
+- `graphics.BUFFER_TYPE_COLOR0_BIT`
+- `graphics.BUFFER_TYPE_DEPTH_BIT`
+- `graphics.BUFFER_TYPE_STENCIL_BIT`
 
 	*/
 	export function set_render_target(
 		render_target: rendertarget,
-		options?: Array<
-			| typeof render.BUFFER_COLOR_BIT
-			| typeof render.BUFFER_DEPTH_BIT
-			| typeof render.BUFFER_STENCIL_BIT
-		>,
+		options?: graphics.BufferConstant[],
 	): void;
 
 	/**
@@ -5792,7 +5531,7 @@ Transient frame buffer types are only valid while the render target is active, i
 	 * The stencil test discards a pixel based on the outcome of a comparison between the
 	 * reference value `ref` and the corresponding value in the stencil buffer.
 	 * `func` specifies the comparison function. See the table below for values.
-	 * The initial value is `render.COMPARE_FUNC_ALWAYS`.
+	 * The initial value is `graphics.COMPARE_FUNC_ALWAYS`.
 	 * `ref` specifies the reference value for the stencil test. The value is clamped to
 	 * the range [0, 2n-1], where n is the number of bitplanes in the stencil buffer.
 	 * The initial value is `0`.
@@ -5800,22 +5539,21 @@ Transient frame buffer types are only valid while the render target is active, i
 	 * is done. The initial value is all `1`'s.
 	 * Function constant:
 	 *
-	 * - `render.COMPARE_FUNC_NEVER` (never passes)
-	 * - `render.COMPARE_FUNC_LESS` (passes if (ref &amp; mask) &lt; (stencil &amp; mask))
-	 * - `render.COMPARE_FUNC_LEQUAL` (passes if (ref &amp; mask) &lt;= (stencil &amp; mask))
-	 * - `render.COMPARE_FUNC_GREATER` (passes if (ref &amp; mask) &gt; (stencil &amp; mask))
-	 * - `render.COMPARE_FUNC_GEQUAL` (passes if (ref &amp; mask) &gt;= (stencil &amp; mask))
-	 * - `render.COMPARE_FUNC_EQUAL` (passes if (ref &amp; mask) = (stencil &amp; mask))
-	 * - `render.COMPARE_FUNC_NOTEQUAL` (passes if (ref &amp; mask) != (stencil &amp; mask))
-	 * - `render.COMPARE_FUNC_ALWAYS` (always passes)
+	 * - `graphics.COMPARE_FUNC_NEVER` (never passes)
+	 * - `graphics.COMPARE_FUNC_LESS` (passes if (ref &amp; mask) &lt; (stencil &amp; mask))
+	 * - `graphics.COMPARE_FUNC_LEQUAL` (passes if (ref &amp; mask) &lt;= (stencil &amp; mask))
+	 * - `graphics.COMPARE_FUNC_GREATER` (passes if (ref &amp; mask) &gt; (stencil &amp; mask))
+	 * - `graphics.COMPARE_FUNC_GEQUAL` (passes if (ref &amp; mask) &gt;= (stencil &amp; mask))
+	 * - `graphics.COMPARE_FUNC_EQUAL` (passes if (ref &amp; mask) = (stencil &amp; mask))
+	 * - `graphics.COMPARE_FUNC_NOTEQUAL` (passes if (ref &amp; mask) != (stencil &amp; mask))
+	 * - `graphics.COMPARE_FUNC_ALWAYS` (always passes)
 	 *
 	 * @param func  stencil test function, see the description for available values
 	 * @param ref  reference value for the stencil test
 	 * @param mask  mask that is ANDed with both the reference value and the stored stencil value when the test is done
 	 */
 	export function set_stencil_func(
-		func:
-			typeof render.COMPARE_FUNC_ALWAYS | typeof render.COMPARE_FUNC_EQUAL | typeof render.COMPARE_FUNC_GEQUAL | typeof render.COMPARE_FUNC_GREATER | typeof render.COMPARE_FUNC_LEQUAL | typeof render.COMPARE_FUNC_LESS | typeof render.COMPARE_FUNC_NEVER | typeof render.COMPARE_FUNC_NOTEQUAL,
+		func: graphics.CompareFuncConstant,
 		ref: number,
 		mask: number,
 	): void;
@@ -5842,29 +5580,26 @@ Transient frame buffer types are only valid while the render target is active, i
 	 * contents.
 	 * Operator constants:
 	 *
-	 * - `render.STENCIL_OP_KEEP` (keeps the current value)
-	 * - `render.STENCIL_OP_ZERO` (sets the stencil buffer value to 0)
-	 * - `render.STENCIL_OP_REPLACE` (sets the stencil buffer value to `ref`, as specified by render.set_stencil_func)
-	 * - `render.STENCIL_OP_INCR` (increments the stencil buffer value and clamp to the maximum representable unsigned value)
-	 * - `render.STENCIL_OP_INCR_WRAP` (increments the stencil buffer value and wrap to zero when incrementing the maximum representable unsigned value)
-	 * - `render.STENCIL_OP_DECR` (decrements the current stencil buffer value and clamp to 0)
-	 * - `render.STENCIL_OP_DECR_WRAP` (decrements the current stencil buffer value and wrap to the maximum representable unsigned value when decrementing zero)
-	 * - `render.STENCIL_OP_INVERT` (bitwise inverts the current stencil buffer value)
+	 * - `graphics.STENCIL_OP_KEEP` (keeps the current value)
+	 * - `graphics.STENCIL_OP_ZERO` (sets the stencil buffer value to 0)
+	 * - `graphics.STENCIL_OP_REPLACE` (sets the stencil buffer value to `ref`, as specified by render.set_stencil_func)
+	 * - `graphics.STENCIL_OP_INCR` (increments the stencil buffer value and clamp to the maximum representable unsigned value)
+	 * - `graphics.STENCIL_OP_INCR_WRAP` (increments the stencil buffer value and wrap to zero when incrementing the maximum representable unsigned value)
+	 * - `graphics.STENCIL_OP_DECR` (decrements the current stencil buffer value and clamp to 0)
+	 * - `graphics.STENCIL_OP_DECR_WRAP` (decrements the current stencil buffer value and wrap to the maximum representable unsigned value when decrementing zero)
+	 * - `graphics.STENCIL_OP_INVERT` (bitwise inverts the current stencil buffer value)
 	 *
 	 * `dppass` and `dpfail` specify the stencil buffer actions depending on whether subsequent
 	 * depth buffer tests succeed (dppass) or fail (dpfail).
-	 * The initial value for all operators is `render.STENCIL_OP_KEEP`.
+	 * The initial value for all operators is `graphics.STENCIL_OP_KEEP`.
 	 * @param sfail  action to take when the stencil test fails
 	 * @param dpfail  the stencil action when the stencil test passes
 	 * @param dppass  the stencil action when both the stencil test and the depth test pass, or when the stencil test passes and either there is no depth buffer or depth testing is not enabled
 	 */
 	export function set_stencil_op(
-		sfail:
-			typeof render.STENCIL_OP_DECR | typeof render.STENCIL_OP_DECR_WRAP | typeof render.STENCIL_OP_INCR | typeof render.STENCIL_OP_INCR_WRAP | typeof render.STENCIL_OP_INVERT | typeof render.STENCIL_OP_KEEP | typeof render.STENCIL_OP_REPLACE | typeof render.STENCIL_OP_ZERO,
-		dpfail:
-			typeof render.STENCIL_OP_DECR | typeof render.STENCIL_OP_DECR_WRAP | typeof render.STENCIL_OP_INCR | typeof render.STENCIL_OP_INCR_WRAP | typeof render.STENCIL_OP_INVERT | typeof render.STENCIL_OP_KEEP | typeof render.STENCIL_OP_REPLACE | typeof render.STENCIL_OP_ZERO,
-		dppass:
-			typeof render.STENCIL_OP_DECR | typeof render.STENCIL_OP_DECR_WRAP | typeof render.STENCIL_OP_INCR | typeof render.STENCIL_OP_INCR_WRAP | typeof render.STENCIL_OP_INVERT | typeof render.STENCIL_OP_KEEP | typeof render.STENCIL_OP_REPLACE | typeof render.STENCIL_OP_ZERO,
+		sfail: graphics.StencilConstant,
+		dpfail: graphics.StencilConstant,
+		dppass: graphics.StencilConstant,
 	): void;
 
 	/**
@@ -5904,223 +5639,6 @@ Transient frame buffer types are only valid while the render target is active, i
 
 /** @see {@link https://defold.com/ref/stable/resource/|API Documentation} */
 declare namespace resource {
-	/**
-	 * BASIS_UASTC compression type
-	 */
-	export const COMPRESSION_TYPE_BASIS_UASTC: number & {
-		readonly __brand: 'resource.COMPRESSION';
-	};
-
-	/**
-	 * COMPRESSION_TYPE_DEFAULT compression type
-	 */
-	export const COMPRESSION_TYPE_DEFAULT: number & {
-		readonly __brand: 'resource.COMPRESSION';
-	};
-
-	/**
-	 * luminance type texture format
-	 */
-	export const TEXTURE_FORMAT_LUMINANCE: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * R16F type texture format
-	 */
-	export const TEXTURE_FORMAT_R16F: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * R32F type texture format
-	 */
-	export const TEXTURE_FORMAT_R32F: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RG16F type texture format
-	 */
-	export const TEXTURE_FORMAT_RG16F: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RG32F type texture format
-	 */
-	export const TEXTURE_FORMAT_RG32F: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RGB type texture format
-	 */
-	export const TEXTURE_FORMAT_RGB: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RGB16F type texture format
-	 */
-	export const TEXTURE_FORMAT_RGB16F: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RGB32F type texture format
-	 */
-	export const TEXTURE_FORMAT_RGB32F: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RGBA type texture format
-	 */
-	export const TEXTURE_FORMAT_RGBA: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RGBA16F type texture format
-	 */
-	export const TEXTURE_FORMAT_RGBA16F: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RGBA32F type texture format
-	 */
-	export const TEXTURE_FORMAT_RGBA32F: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RGBA_ASTC_4x4 type texture format
-	 */
-	export const TEXTURE_FORMAT_RGBA_ASTC_4x4: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RGBA_BC3 type texture format
-	 */
-	export const TEXTURE_FORMAT_RGBA_BC3: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RGBA_BC7 type texture format
-	 */
-	export const TEXTURE_FORMAT_RGBA_BC7: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RGBA_ETC2 type texture format
-	 */
-	export const TEXTURE_FORMAT_RGBA_ETC2: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RGBA_PVRTC_2BPPV1 type texture format
-	 */
-	export const TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RGBA_PVRTC_4BPPV1 type texture format
-	 */
-	export const TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RGB_BC1 type texture format
-	 */
-	export const TEXTURE_FORMAT_RGB_BC1: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RGB_ETC1 type texture format
-	 */
-	export const TEXTURE_FORMAT_RGB_ETC1: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RGB_PVRTC_2BPPV1 type texture format
-	 */
-	export const TEXTURE_FORMAT_RGB_PVRTC_2BPPV1: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RGB_PVRTC_4BPPV1 type texture format
-	 */
-	export const TEXTURE_FORMAT_RGB_PVRTC_4BPPV1: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * RG_BC5 type texture format
-	 */
-	export const TEXTURE_FORMAT_RG_BC5: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * R_BC4 type texture format
-	 */
-	export const TEXTURE_FORMAT_R_BC4: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * 2D texture type
-	 */
-	export const TEXTURE_TYPE_2D: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * 2D Array texture type
-	 */
-	export const TEXTURE_TYPE_2D_ARRAY: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * Cube map texture type
-	 */
-	export const TEXTURE_TYPE_CUBE_MAP: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * Usage hint for creating textures that uses temporary memory
-	 */
-	export const TEXTURE_USAGE_FLAG_MEMORYLESS: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * Usage hint for creating textures that can be sampled in a shader
-	 */
-	export const TEXTURE_USAGE_FLAG_SAMPLE: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
-	/**
-	 * Usage hint for creating textures that can be used for writing in a shader
-	 */
-	export const TEXTURE_USAGE_FLAG_STORAGE: number & {
-		readonly __brand: 'resource.TEXTURE';
-	};
-
 	/**
 	 * Constructor-like function with two purposes:
 	 *
@@ -6269,8 +5787,7 @@ a list of the indices of the geometry in the form {i0, i1, i2, ..., in}. Each tr
 					height: number;
 					frame_start: number;
 					frame_end: number;
-					playback?:
-						typeof go.PLAYBACK_LOOP_BACKWARD | typeof go.PLAYBACK_LOOP_FORWARD | typeof go.PLAYBACK_LOOP_PINGPONG | typeof go.PLAYBACK_ONCE_BACKWARD | typeof go.PLAYBACK_ONCE_FORWARD | typeof go.PLAYBACK_ONCE_PINGPONG;
+					playback?: go.PlaybackConstant;
 					fps?: number;
 					flip_vertical?: boolean;
 					flip_horizontal?: boolean;
@@ -6331,9 +5848,9 @@ optional flag to determine wether or not the resource should take over ownership
 The texture type. Supported values:
 
 
-- `resource.TEXTURE_TYPE_2D`
-- `resource.TEXTURE_TYPE_CUBE_MAP`
-- `resource.TEXTURE_TYPE_IMAGE_2D`
+- `graphics.TEXTURE_TYPE_2D`
+- `graphics.TEXTURE_TYPE_CUBE_MAP`
+- `graphics.TEXTURE_TYPE_IMAGE_2D`
 
 
 `width`
@@ -6344,55 +5861,55 @@ The width of the texture (in pixels). Must be larger than 0.
 The texture format, note that some of these formats might not be supported by the running device. Supported values:
 
 
-- `resource.TEXTURE_FORMAT_LUMINANCE`
-- `resource.TEXTURE_FORMAT_RGB`
-- `resource.TEXTURE_FORMAT_RGBA`
+- `graphics.TEXTURE_FORMAT_LUMINANCE`
+- `graphics.TEXTURE_FORMAT_RGB`
+- `graphics.TEXTURE_FORMAT_RGBA`
 
 These constants might not be available on the device:
 
-- `resource.TEXTURE_FORMAT_RGB_PVRTC_2BPPV1`
-- `resource.TEXTURE_FORMAT_RGB_PVRTC_4BPPV1`
-- `resource.TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1`
-- `resource.TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1`
-- `resource.TEXTURE_FORMAT_RGB_ETC1`
-- `resource.TEXTURE_FORMAT_RGBA_ETC2`
-- `resource.TEXTURE_FORMAT_RGBA_ASTC_4x4`
-- `resource.TEXTURE_FORMAT_RGB_BC1`
-- `resource.TEXTURE_FORMAT_RGBA_BC3`
-- `resource.TEXTURE_FORMAT_R_BC4`
-- `resource.TEXTURE_FORMAT_RG_BC5`
-- `resource.TEXTURE_FORMAT_RGBA_BC7`
-- `resource.TEXTURE_FORMAT_RGB16F`
-- `resource.TEXTURE_FORMAT_RGB32F`
-- `resource.TEXTURE_FORMAT_RGBA16F`
-- `resource.TEXTURE_FORMAT_RGBA32F`
-- `resource.TEXTURE_FORMAT_R16F`
-- `resource.TEXTURE_FORMAT_RG16F`
-- `resource.TEXTURE_FORMAT_R32F`
-- `resource.TEXTURE_FORMAT_RG32F`
+- `graphics.TEXTURE_FORMAT_RGB_PVRTC_2BPPV1`
+- `graphics.TEXTURE_FORMAT_RGB_PVRTC_4BPPV1`
+- `graphics.TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1`
+- `graphics.TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1`
+- `graphics.TEXTURE_FORMAT_RGB_ETC1`
+- `graphics.TEXTURE_FORMAT_RGBA_ETC2`
+- `graphics.TEXTURE_FORMAT_RGBA_ASTC_4x4`
+- `graphics.TEXTURE_FORMAT_RGB_BC1`
+- `graphics.TEXTURE_FORMAT_RGBA_BC3`
+- `graphics.TEXTURE_FORMAT_R_BC4`
+- `graphics.TEXTURE_FORMAT_RG_BC5`
+- `graphics.TEXTURE_FORMAT_RGBA_BC7`
+- `graphics.TEXTURE_FORMAT_RGB16F`
+- `graphics.TEXTURE_FORMAT_RGB32F`
+- `graphics.TEXTURE_FORMAT_RGBA16F`
+- `graphics.TEXTURE_FORMAT_RGBA32F`
+- `graphics.TEXTURE_FORMAT_R16F`
+- `graphics.TEXTURE_FORMAT_RG16F`
+- `graphics.TEXTURE_FORMAT_R32F`
+- `graphics.TEXTURE_FORMAT_RG32F`
 
 You can test if the device supports these values by checking if a specific enum is undefined or not:
-`if resource.TEXTURE_FORMAT_RGBA16F !== undefined then
+`if graphics.TEXTURE_FORMAT_RGBA16F !== undefined then
     -- it is safe to use this format
 end
 `
 
 
 `flags`
-Texture creation flags that can be used to dictate how the texture is created. The default value is resource.TEXTURE_USAGE_FLAG_SAMPLE, which means that the texture can be sampled from a shader.
+Texture creation flags that can be used to dictate how the texture is created. The default value is graphics.TEXTURE_USAGE_FLAG_SAMPLE, which means that the texture can be sampled from a shader.
 These flags may or may not be supported on the running device and/or the underlying graphics API and is simply used internally as a 'hint' when creating the texture. There is no guarantee that any of these will have any effect. Supported values:
 
 
-- `resource.TEXTURE_USAGE_FLAG_SAMPLE` - The texture can be sampled from a shader (default)
-- `resource.TEXTURE_USAGE_FLAG_MEMORYLESS` - The texture can be used as a memoryless texture, i.e only transient memory for the texture is used during rendering
-- `resource.TEXTURE_USAGE_FLAG_STORAGE` - The texture can be used as a storage texture, which is required for a shader to write to the texture
+- `graphics.TEXTURE_USAGE_FLAG_SAMPLE` - The texture can be sampled from a shader (default)
+- `graphics.TEXTURE_USAGE_FLAG_MEMORYLESS` - The texture can be used as a memoryless texture, i.e only transient memory for the texture is used during rendering
+- `graphics.TEXTURE_USAGE_FLAG_STORAGE` - The texture can be used as a storage texture, which is required for a shader to write to the texture
 
 
 `max_mipmaps`
 optional max number of mipmaps. Defaults to zero, i.e no mipmap support
 `compression_type`
 optional specify the compression type for the data in the buffer object that holds the texture data. Will only be used when a compressed buffer has been passed into the function.
-Creating an empty texture with no buffer data is not supported as a core feature. Defaults to resource.COMPRESSION_TYPE_DEFAULT, i.e no compression. Supported values:
+Creating an empty texture with no buffer data is not supported as a core feature. Defaults to graphics.COMPRESSION_TYPE_DEFAULT, i.e no compression. Supported values:
 
 
 - `COMPRESSION_TYPE_DEFAULT`
@@ -6404,16 +5921,12 @@ Creating an empty texture with no buffer data is not supported as a core feature
 	export function create_texture(
 		path: string,
 		table: {
-			type:
-				| typeof resource.TEXTURE_TYPE_2D
-				| typeof resource.TEXTURE_TYPE_CUBE_MAP;
+			type: graphics.TextureConstant;
 			width: number;
 			height: number;
-			format:
-				typeof resource.TEXTURE_FORMAT_LUMINANCE | typeof resource.TEXTURE_FORMAT_R_BC4 | typeof resource.TEXTURE_FORMAT_R16F | typeof resource.TEXTURE_FORMAT_R32F | typeof resource.TEXTURE_FORMAT_RG_BC5 | typeof resource.TEXTURE_FORMAT_RG16F | typeof resource.TEXTURE_FORMAT_RG32F | typeof resource.TEXTURE_FORMAT_RGB | typeof resource.TEXTURE_FORMAT_RGB_BC1 | typeof resource.TEXTURE_FORMAT_RGB_ETC1 | typeof resource.TEXTURE_FORMAT_RGB_PVRTC_2BPPV1 | typeof resource.TEXTURE_FORMAT_RGB_PVRTC_4BPPV1 | typeof resource.TEXTURE_FORMAT_RGB16F | typeof resource.TEXTURE_FORMAT_RGB32F | typeof resource.TEXTURE_FORMAT_RGBA | typeof resource.TEXTURE_FORMAT_RGBA_ASTC_4x4 | typeof resource.TEXTURE_FORMAT_RGBA_BC3 | typeof resource.TEXTURE_FORMAT_RGBA_BC7 | typeof resource.TEXTURE_FORMAT_RGBA_ETC2 | typeof resource.TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1 | typeof resource.TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1 | typeof resource.TEXTURE_FORMAT_RGBA16F | typeof resource.TEXTURE_FORMAT_RGBA32F;
+			format: graphics.TextureConstant;
 			max_mipmaps?: number;
-			compression_type?:
-				typeof resource.COMPRESSION_TYPE_BASIS_UASTC | typeof resource.COMPRESSION_TYPE_DEFAULT;
+			compression_type?: graphics.CompressionConstant;
 		},
 		buffer?: buffer,
 	): hash;
@@ -6436,8 +5949,8 @@ A table containing info about how to create the texture. Supported entries:
 The texture type. Supported values:
 
 
-- `resource.TEXTURE_TYPE_2D`
-- `resource.TEXTURE_TYPE_CUBE_MAP`
+- `graphics.TEXTURE_TYPE_2D`
+- `graphics.TEXTURE_TYPE_CUBE_MAP`
 
 
 `width`
@@ -6448,44 +5961,44 @@ The width of the texture (in pixels). Must be larger than 0.
 The texture format, note that some of these formats might not be supported by the running device. Supported values:
 
 
-- `resource.TEXTURE_FORMAT_LUMINANCE`
-- `resource.TEXTURE_FORMAT_RGB`
-- `resource.TEXTURE_FORMAT_RGBA`
+- `graphics.TEXTURE_FORMAT_LUMINANCE`
+- `graphics.TEXTURE_FORMAT_RGB`
+- `graphics.TEXTURE_FORMAT_RGBA`
 
 These constants might not be available on the device:
 
-- `resource.TEXTURE_FORMAT_RGB_PVRTC_2BPPV1`
-- `resource.TEXTURE_FORMAT_RGB_PVRTC_4BPPV1`
-- `resource.TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1`
-- `resource.TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1`
-- `resource.TEXTURE_FORMAT_RGB_ETC1`
-- `resource.TEXTURE_FORMAT_RGBA_ETC2`
-- `resource.TEXTURE_FORMAT_RGBA_ASTC_4x4`
-- `resource.TEXTURE_FORMAT_RGB_BC1`
-- `resource.TEXTURE_FORMAT_RGBA_BC3`
-- `resource.TEXTURE_FORMAT_R_BC4`
-- `resource.TEXTURE_FORMAT_RG_BC5`
-- `resource.TEXTURE_FORMAT_RGBA_BC7`
-- `resource.TEXTURE_FORMAT_RGB16F`
-- `resource.TEXTURE_FORMAT_RGB32F`
-- `resource.TEXTURE_FORMAT_RGBA16F`
-- `resource.TEXTURE_FORMAT_RGBA32F`
-- `resource.TEXTURE_FORMAT_R16F`
-- `resource.TEXTURE_FORMAT_RG16F`
-- `resource.TEXTURE_FORMAT_R32F`
-- `resource.TEXTURE_FORMAT_RG32F`
+- `graphics.TEXTURE_FORMAT_RGB_PVRTC_2BPPV1`
+- `graphics.TEXTURE_FORMAT_RGB_PVRTC_4BPPV1`
+- `graphics.TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1`
+- `graphics.TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1`
+- `graphics.TEXTURE_FORMAT_RGB_ETC1`
+- `graphics.TEXTURE_FORMAT_RGBA_ETC2`
+- `graphics.TEXTURE_FORMAT_RGBA_ASTC_4x4`
+- `graphics.TEXTURE_FORMAT_RGB_BC1`
+- `graphics.TEXTURE_FORMAT_RGBA_BC3`
+- `graphics.TEXTURE_FORMAT_R_BC4`
+- `graphics.TEXTURE_FORMAT_RG_BC5`
+- `graphics.TEXTURE_FORMAT_RGBA_BC7`
+- `graphics.TEXTURE_FORMAT_RGB16F`
+- `graphics.TEXTURE_FORMAT_RGB32F`
+- `graphics.TEXTURE_FORMAT_RGBA16F`
+- `graphics.TEXTURE_FORMAT_RGBA32F`
+- `graphics.TEXTURE_FORMAT_R16F`
+- `graphics.TEXTURE_FORMAT_RG16F`
+- `graphics.TEXTURE_FORMAT_R32F`
+- `graphics.TEXTURE_FORMAT_RG32F`
 
 
 `flags`
 Texture creation flags that can be used to dictate how the texture is created. Supported values:
 
 
-- `resource.TEXTURE_USAGE_FLAG_SAMPLE` - The texture can be sampled from a shader (default)
-- `resource.TEXTURE_USAGE_FLAG_MEMORYLESS` - The texture can be used as a memoryless texture, i.e only transient memory for the texture is used during rendering
-- `resource.TEXTURE_USAGE_FLAG_STORAGE` - The texture can be used as a storage texture, which is required for a shader to write to the texture
+- `graphics.TEXTURE_USAGE_FLAG_SAMPLE` - The texture can be sampled from a shader (default)
+- `graphics.TEXTURE_USAGE_FLAG_MEMORYLESS` - The texture can be used as a memoryless texture, i.e only transient memory for the texture is used during rendering
+- `graphics.TEXTURE_USAGE_FLAG_STORAGE` - The texture can be used as a storage texture, which is required for a shader to write to the texture
 
 You can test if the device supports these values by checking if a specific enum is undefined or not:
-`if resource.TEXTURE_FORMAT_RGBA16F !== undefined then
+`if graphics.TEXTURE_FORMAT_RGBA16F !== undefined then
     -- it is safe to use this format
 end
 `
@@ -6495,7 +6008,7 @@ end
 optional max number of mipmaps. Defaults to zero, i.e no mipmap support
 `compression_type`
 optional specify the compression type for the data in the buffer object that holds the texture data. Will only be used when a compressed buffer has been passed into the function.
-Creating an empty texture with no buffer data is not supported as a core feature. Defaults to resource.COMPRESSION_TYPE_DEFAULT, i.e no compression. Supported values:
+Creating an empty texture with no buffer data is not supported as a core feature. Defaults to graphics.COMPRESSION_TYPE_DEFAULT, i.e no compression. Supported values:
 
 
 - `COMPRESSION_TYPE_DEFAULT`
@@ -6543,8 +6056,7 @@ See resource.set_atlas for a detailed description of each field
 				height: number;
 				frame_start: number;
 				frame_end: number;
-				playback?:
-					typeof go.PLAYBACK_LOOP_BACKWARD | typeof go.PLAYBACK_LOOP_FORWARD | typeof go.PLAYBACK_LOOP_PINGPONG | typeof go.PLAYBACK_ONCE_BACKWARD | typeof go.PLAYBACK_ONCE_FORWARD | typeof go.PLAYBACK_ONCE_PINGPONG;
+				playback?: go.PlaybackConstant;
 				fps?: number;
 				flip_vertical?: boolean;
 				flip_horizontal?: boolean;
@@ -6583,9 +6095,9 @@ number of mipmaps of the texture
 The texture type. Supported values:
 
 
-- `resource.TEXTURE_TYPE_2D`
-- `resource.TEXTURE_TYPE_CUBE_MAP`
-- `resource.TEXTURE_TYPE_2D_ARRAY`
+- `graphics.TEXTURE_TYPE_2D`
+- `graphics.TEXTURE_TYPE_CUBE_MAP`
+- `graphics.TEXTURE_TYPE_2D_ARRAY`
 
 
 `buffer_type`
@@ -6616,34 +6128,9 @@ The hashed path to the attachment texture resource. This field is only available
 			height: number;
 			depth: number;
 			mipmaps: number;
-			type:
-				typeof TEXTURE_TYPE_2D | typeof TEXTURE_TYPE_2D_ARRAY | typeof TEXTURE_TYPE_CUBE_MAP;
-			buffer_type:
-				| typeof BUFFER_TYPE_COLOR0
-				| typeof BUFFER_TYPE_COLOR1
-				| typeof BUFFER_TYPE_COLOR2
-				| typeof BUFFER_TYPE_COLOR3
-				| typeof BUFFER_TYPE_DEPTH
-				| typeof BUFFER_TYPE_STENCIL;
+			type: graphics.TextureConstant;
+			buffer_type: graphics.BufferTypeConstant;
 		}[];
-	};
-	export const BUFFER_TYPE_COLOR0: number & {
-		readonly __brand: 'resource.BUFFER_TYPE';
-	};
-	export const BUFFER_TYPE_COLOR1: number & {
-		readonly __brand: 'resource.BUFFER_TYPE';
-	};
-	export const BUFFER_TYPE_COLOR2: number & {
-		readonly __brand: 'resource.BUFFER_TYPE';
-	};
-	export const BUFFER_TYPE_COLOR3: number & {
-		readonly __brand: 'resource.BUFFER_TYPE';
-	};
-	export const BUFFER_TYPE_DEPTH: number & {
-		readonly __brand: 'resource.BUFFER_TYPE';
-	};
-	export const BUFFER_TYPE_STENCIL: number & {
-		readonly __brand: 'resource.BUFFER_TYPE';
 	};
 
 	/**
@@ -6701,10 +6188,10 @@ usage hints of the texture.
 The texture type. Supported values:
 
 
-- `resource.TEXTURE_TYPE_2D`
-- `resource.TEXTURE_TYPE_IMAGE_2D`
-- `resource.TEXTURE_TYPE_CUBE_MAP`
-- `resource.TEXTURE_TYPE_2D_ARRAY`
+- `graphics.TEXTURE_TYPE_2D`
+- `graphics.TEXTURE_TYPE_IMAGE_2D`
+- `graphics.TEXTURE_TYPE_CUBE_MAP`
+- `graphics.TEXTURE_TYPE_2D_ARRAY`
 
 	*/
 	export function get_texture_info(path: hash | string): {
@@ -6713,8 +6200,7 @@ The texture type. Supported values:
 		height: number;
 		depth: number;
 		mipmaps: number;
-		type:
-			typeof resource.TEXTURE_TYPE_2D | typeof resource.TEXTURE_TYPE_2D_ARRAY | typeof resource.TEXTURE_TYPE_CUBE_MAP;
+		type: graphics.TextureConstant;
 	};
 
 	/**
@@ -6880,8 +6366,7 @@ a list of the indices of the geometry in the form {i0, i1, i2, ..., in}. Each tr
 					height: number;
 					frame_start: number;
 					frame_end: number;
-					playback?:
-						typeof go.PLAYBACK_LOOP_BACKWARD | typeof go.PLAYBACK_LOOP_FORWARD | typeof go.PLAYBACK_LOOP_PINGPONG | typeof go.PLAYBACK_ONCE_BACKWARD | typeof go.PLAYBACK_ONCE_FORWARD | typeof go.PLAYBACK_ONCE_PINGPONG;
+					playback?: go.PlaybackConstant;
 					fps?: number;
 					flip_vertical?: boolean;
 					flip_horizontal?: boolean;
@@ -6933,8 +6418,8 @@ optional flag to determine wether or not the resource should take over ownership
 The texture type. Supported values:
 
 
-- `resource.TEXTURE_TYPE_2D`
-- `resource.TEXTURE_TYPE_CUBE_MAP`
+- `graphics.TEXTURE_TYPE_2D`
+- `graphics.TEXTURE_TYPE_CUBE_MAP`
 
 
 `width`
@@ -6945,33 +6430,33 @@ The width of the texture (in pixels)
 The texture format, note that some of these formats are platform specific. Supported values:
 
 
-- `resource.TEXTURE_FORMAT_LUMINANCE`
-- `resource.TEXTURE_FORMAT_RGB`
-- `resource.TEXTURE_FORMAT_RGBA`
+- `graphics.TEXTURE_FORMAT_LUMINANCE`
+- `graphics.TEXTURE_FORMAT_RGB`
+- `graphics.TEXTURE_FORMAT_RGBA`
 
 These constants might not be available on the device:
-- `resource.TEXTURE_FORMAT_RGB_PVRTC_2BPPV1`
-- `resource.TEXTURE_FORMAT_RGB_PVRTC_4BPPV1`
-- `resource.TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1`
-- `resource.TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1`
-- `resource.TEXTURE_FORMAT_RGB_ETC1`
-- `resource.TEXTURE_FORMAT_RGBA_ETC2`
-- `resource.TEXTURE_FORMAT_RGBA_ASTC_4x4`
-- `resource.TEXTURE_FORMAT_RGB_BC1`
-- `resource.TEXTURE_FORMAT_RGBA_BC3`
-- `resource.TEXTURE_FORMAT_R_BC4`
-- `resource.TEXTURE_FORMAT_RG_BC5`
-- `resource.TEXTURE_FORMAT_RGBA_BC7`
-- `resource.TEXTURE_FORMAT_RGB16F`
-- `resource.TEXTURE_FORMAT_RGB32F`
-- `resource.TEXTURE_FORMAT_RGBA16F`
-- `resource.TEXTURE_FORMAT_RGBA32F`
-- `resource.TEXTURE_FORMAT_R16F`
-- `resource.TEXTURE_FORMAT_RG16F`
-- `resource.TEXTURE_FORMAT_R32F`
-- `resource.TEXTURE_FORMAT_RG32F`
+- `graphics.TEXTURE_FORMAT_RGB_PVRTC_2BPPV1`
+- `graphics.TEXTURE_FORMAT_RGB_PVRTC_4BPPV1`
+- `graphics.TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1`
+- `graphics.TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1`
+- `graphics.TEXTURE_FORMAT_RGB_ETC1`
+- `graphics.TEXTURE_FORMAT_RGBA_ETC2`
+- `graphics.TEXTURE_FORMAT_RGBA_ASTC_4x4`
+- `graphics.TEXTURE_FORMAT_RGB_BC1`
+- `graphics.TEXTURE_FORMAT_RGBA_BC3`
+- `graphics.TEXTURE_FORMAT_R_BC4`
+- `graphics.TEXTURE_FORMAT_RG_BC5`
+- `graphics.TEXTURE_FORMAT_RGBA_BC7`
+- `graphics.TEXTURE_FORMAT_RGB16F`
+- `graphics.TEXTURE_FORMAT_RGB32F`
+- `graphics.TEXTURE_FORMAT_RGBA16F`
+- `graphics.TEXTURE_FORMAT_RGBA32F`
+- `graphics.TEXTURE_FORMAT_R16F`
+- `graphics.TEXTURE_FORMAT_RG16F`
+- `graphics.TEXTURE_FORMAT_R32F`
+- `graphics.TEXTURE_FORMAT_RG32F`
 You can test if the device supports these values by checking if a specific enum is undefined or not:
-`if resource.TEXTURE_FORMAT_RGBA16F !== undefined then
+`if graphics.TEXTURE_FORMAT_RGBA16F !== undefined then
     -- it is safe to use this format
 end
 `
@@ -6984,7 +6469,7 @@ optional y offset of the texture (in pixels)
 `mipmap`
 optional mipmap to upload the data to
 `compression_type`
-optional specify the compression type for the data in the buffer object that holds the texture data. Defaults to resource.COMPRESSION_TYPE_DEFAULT, i.e no compression. Supported values:
+optional specify the compression type for the data in the buffer object that holds the texture data. Defaults to graphics.COMPRESSION_TYPE_DEFAULT, i.e no compression. Supported values:
 
 
 - `COMPRESSION_TYPE_DEFAULT`
@@ -6996,18 +6481,14 @@ optional specify the compression type for the data in the buffer object that hol
 	export function set_texture(
 		path: hash | string,
 		table: {
-			type:
-				| typeof resource.TEXTURE_TYPE_2D
-				| typeof resource.TEXTURE_TYPE_CUBE_MAP;
+			type: graphics.TextureConstant;
 			width: number;
 			height: number;
-			format:
-				typeof resource.TEXTURE_FORMAT_LUMINANCE | typeof resource.TEXTURE_FORMAT_R_BC4 | typeof resource.TEXTURE_FORMAT_R16F | typeof resource.TEXTURE_FORMAT_R32F | typeof resource.TEXTURE_FORMAT_RG_BC5 | typeof resource.TEXTURE_FORMAT_RG16F | typeof resource.TEXTURE_FORMAT_RG32F | typeof resource.TEXTURE_FORMAT_RGB | typeof resource.TEXTURE_FORMAT_RGB_BC1 | typeof resource.TEXTURE_FORMAT_RGB_ETC1 | typeof resource.TEXTURE_FORMAT_RGB_PVRTC_2BPPV1 | typeof resource.TEXTURE_FORMAT_RGB_PVRTC_4BPPV1 | typeof resource.TEXTURE_FORMAT_RGB16F | typeof resource.TEXTURE_FORMAT_RGB32F | typeof resource.TEXTURE_FORMAT_RGBA | typeof resource.TEXTURE_FORMAT_RGBA_ASTC_4x4 | typeof resource.TEXTURE_FORMAT_RGBA_BC3 | typeof resource.TEXTURE_FORMAT_RGBA_BC7 | typeof resource.TEXTURE_FORMAT_RGBA_ETC2 | typeof resource.TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1 | typeof resource.TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1 | typeof resource.TEXTURE_FORMAT_RGBA16F | typeof resource.TEXTURE_FORMAT_RGBA32F;
+			format: graphics.TextureConstant;
 			x?: number;
 			y?: number;
 			mipmap?: number;
-			compression_type?:
-				typeof resource.COMPRESSION_TYPE_BASIS_UASTC | typeof resource.COMPRESSION_TYPE_DEFAULT;
+			compression_type?: graphics.CompressionConstant;
 		},
 		buffer: buffer,
 	): void;
@@ -7040,6 +6521,9 @@ optional specify the compression type for the data in the buffer object that hol
 
 /** @see {@link https://defold.com/ref/stable/sys/|API Documentation} */
 declare namespace sys {
+	export type RequestConstant = number & { readonly __brand: 'sys.REQUEST' };
+	export type NetworkConstant = number & { readonly __brand: 'sys.NETWORK' };
+
 	/**
 	 * Terminates the game application and reports the specified `code` to the OS.
 	 * This message can only be sent to the designated `@system` socket.
@@ -7119,42 +6603,32 @@ declare namespace sys {
 	/**
 	 * network connected through other, non cellular, connection
 	 */
-	export const NETWORK_CONNECTED: number & { readonly __brand: 'sys.NETWORK' };
+	export const NETWORK_CONNECTED: NetworkConstant;
 
 	/**
 	 * network connected through mobile cellular
 	 */
-	export const NETWORK_CONNECTED_CELLULAR: number & {
-		readonly __brand: 'sys.NETWORK';
-	};
+	export const NETWORK_CONNECTED_CELLULAR: NetworkConstant;
 
 	/**
 	 * no network connection found
 	 */
-	export const NETWORK_DISCONNECTED: number & {
-		readonly __brand: 'sys.NETWORK';
-	};
+	export const NETWORK_DISCONNECTED: NetworkConstant;
 
 	/**
 	 * an asyncronous request is unable to read the resource
 	 */
-	export const REQUEST_STATUS_ERROR_IO_ERROR: number & {
-		readonly __brand: 'sys.REQUEST';
-	};
+	export const REQUEST_STATUS_ERROR_IO_ERROR: RequestConstant;
 
 	/**
 	 * an asyncronous request is unable to locate the resource
 	 */
-	export const REQUEST_STATUS_ERROR_NOT_FOUND: number & {
-		readonly __brand: 'sys.REQUEST';
-	};
+	export const REQUEST_STATUS_ERROR_NOT_FOUND: RequestConstant;
 
 	/**
 	 * an asyncronous request has finished successfully
 	 */
-	export const REQUEST_STATUS_FINISHED: number & {
-		readonly __brand: 'sys.REQUEST';
-	};
+	export const REQUEST_STATUS_FINISHED: RequestConstant;
 
 	/**
 	 * deserializes buffer into a lua table
@@ -7250,8 +6724,7 @@ declare namespace sys {
 * @see {@link https://defold.com/ref/stable/sys/#sys.get_connectivity|API Documentation}
 
 	*/
-	export function get_connectivity():
-		typeof sys.NETWORK_CONNECTED | typeof sys.NETWORK_CONNECTED_CELLULAR | typeof sys.NETWORK_DISCONNECTED;
+	export function get_connectivity(): NetworkConstant;
 
 	/**
 	* Returns a table with engine information.
@@ -7425,11 +6898,7 @@ If the request was successfull, this will contain the request payload in a buffe
 		status_callback: (
 			this: any,
 			request_id: unknown,
-			result: {
-				status:
-					typeof REQUEST_STATUS_ERROR_IO_ERROR | typeof REQUEST_STATUS_ERROR_NOT_FOUND | typeof REQUEST_STATUS_FINISHED;
-				buffer: buffer | undefined;
-			},
+			result: { status: RequestConstant; buffer: buffer | undefined },
 		) => void,
 	): AnyNotNil | undefined;
 
@@ -7597,55 +7066,50 @@ The stack traceback.
 
 /** @see {@link https://defold.com/ref/stable/window/|API Documentation} */
 declare namespace window {
+	export type WindowEventConstant = number & {
+		readonly __brand: 'window.WINDOW_EVENT';
+	};
+	export type DimmingConstant = number & { readonly __brand: 'window.DIMMING' };
+
 	/**
 	 * dimming mode off
 	 */
-	export const DIMMING_OFF: number & { readonly __brand: 'window.DIMMING' };
+	export const DIMMING_OFF: DimmingConstant;
 
 	/**
 	 * dimming mode on
 	 */
-	export const DIMMING_ON: number & { readonly __brand: 'window.DIMMING' };
+	export const DIMMING_ON: DimmingConstant;
 
 	/**
 	 * dimming mode unknown
 	 */
-	export const DIMMING_UNKNOWN: number & { readonly __brand: 'window.DIMMING' };
+	export const DIMMING_UNKNOWN: DimmingConstant;
 
 	/**
 	 * deiconified window event
 	 */
-	export const WINDOW_EVENT_DEICONIFIED: number & {
-		readonly __brand: 'window.WINDOW_EVENT';
-	};
+	export const WINDOW_EVENT_DEICONIFIED: WindowEventConstant;
 
 	/**
 	 * focus gained window event
 	 */
-	export const WINDOW_EVENT_FOCUS_GAINED: number & {
-		readonly __brand: 'window.WINDOW_EVENT';
-	};
+	export const WINDOW_EVENT_FOCUS_GAINED: WindowEventConstant;
 
 	/**
 	 * focus lost window event
 	 */
-	export const WINDOW_EVENT_FOCUS_LOST: number & {
-		readonly __brand: 'window.WINDOW_EVENT';
-	};
+	export const WINDOW_EVENT_FOCUS_LOST: WindowEventConstant;
 
 	/**
 	 * iconify window event
 	 */
-	export const WINDOW_EVENT_ICONFIED: number & {
-		readonly __brand: 'window.WINDOW_EVENT';
-	};
+	export const WINDOW_EVENT_ICONFIED: WindowEventConstant;
 
 	/**
 	 * resized window event
 	 */
-	export const WINDOW_EVENT_RESIZED: number & {
-		readonly __brand: 'window.WINDOW_EVENT';
-	};
+	export const WINDOW_EVENT_RESIZED: WindowEventConstant;
 
 	/**
 	* 🤖 Returns the current dimming mode set on a mobile device.
@@ -7659,8 +7123,7 @@ declare namespace window {
 * @see {@link https://defold.com/ref/stable/window/#window.get_dim_mode|API Documentation}
 
 	*/
-	export function get_dim_mode():
-		typeof window.DIMMING_OFF | typeof window.DIMMING_ON | typeof window.DIMMING_UNKNOWN;
+	export function get_dim_mode(): DimmingConstant;
 
 	/**
 	 * This returns the current lock state of the mouse cursor
@@ -7688,9 +7151,7 @@ declare namespace window {
 * @see {@link https://defold.com/ref/stable/window/#window.set_dim_mode|API Documentation}
 
 	*/
-	export function set_dim_mode(
-		mode: typeof window.DIMMING_OFF | typeof window.DIMMING_ON,
-	): void;
+	export function set_dim_mode(mode: DimmingConstant): void;
 
 	/**
 	* Sets a window event listener.
@@ -7722,8 +7183,7 @@ The callback value `data` is a table which currently holds these values
 		callback:
 			((
 					this: any,
-					event:
-						typeof window.WINDOW_EVENT_DEICONIFIED | typeof window.WINDOW_EVENT_FOCUS_GAINED | typeof window.WINDOW_EVENT_FOCUS_LOST | typeof window.WINDOW_EVENT_ICONFIED | typeof window.WINDOW_EVENT_RESIZED,
+					event: WindowEventConstant,
 					data: { width: number | undefined; height: number | undefined },
 			  ) => void) | undefined,
 	): void;
@@ -7741,68 +7201,52 @@ The callback value `data` is a table which currently holds these values
 
 /** @see {@link https://defold.com/ref/stable/buffer/|API Documentation} */
 declare namespace buffer {
+	type ValueConstant = number & { readonly __brand: 'buffer.VALUE_TYPE' };
+
 	/**
 	 * float32
 	 */
-	export const VALUE_TYPE_FLOAT32: number & {
-		readonly __brand: 'buffer.VALUE_TYPE';
-	};
+	export const VALUE_TYPE_FLOAT32: ValueConstant;
 
 	/**
 	 * int16
 	 */
-	export const VALUE_TYPE_INT16: number & {
-		readonly __brand: 'buffer.VALUE_TYPE';
-	};
+	export const VALUE_TYPE_INT16: ValueConstant;
 
 	/**
 	 * int32
 	 */
-	export const VALUE_TYPE_INT32: number & {
-		readonly __brand: 'buffer.VALUE_TYPE';
-	};
+	export const VALUE_TYPE_INT32: ValueConstant;
 
 	/**
 	 * int64
 	 */
-	export const VALUE_TYPE_INT64: number & {
-		readonly __brand: 'buffer.VALUE_TYPE';
-	};
+	export const VALUE_TYPE_INT64: ValueConstant;
 
 	/**
 	 * int8
 	 */
-	export const VALUE_TYPE_INT8: number & {
-		readonly __brand: 'buffer.VALUE_TYPE';
-	};
+	export const VALUE_TYPE_INT8: ValueConstant;
 
 	/**
 	 * uint16
 	 */
-	export const VALUE_TYPE_UINT16: number & {
-		readonly __brand: 'buffer.VALUE_TYPE';
-	};
+	export const VALUE_TYPE_UINT16: ValueConstant;
 
 	/**
 	 * uint32
 	 */
-	export const VALUE_TYPE_UINT32: number & {
-		readonly __brand: 'buffer.VALUE_TYPE';
-	};
+	export const VALUE_TYPE_UINT32: ValueConstant;
 
 	/**
 	 * uint64
 	 */
-	export const VALUE_TYPE_UINT64: number & {
-		readonly __brand: 'buffer.VALUE_TYPE';
-	};
+	export const VALUE_TYPE_UINT64: ValueConstant;
 
 	/**
 	 * uint8
 	 */
-	export const VALUE_TYPE_UINT8: number & {
-		readonly __brand: 'buffer.VALUE_TYPE';
-	};
+	export const VALUE_TYPE_UINT8: ValueConstant;
 
 	/**
 	 * Copy all data streams from one buffer to another, element wise.
@@ -7860,12 +7304,7 @@ declare namespace buffer {
 	*/
 	export function create(
 		element_count: number,
-		declaration: {
-			hash: hash | string;
-			type:
-				typeof buffer.VALUE_TYPE_FLOAT32 | typeof buffer.VALUE_TYPE_INT8 | typeof buffer.VALUE_TYPE_INT16 | typeof buffer.VALUE_TYPE_INT32 | typeof buffer.VALUE_TYPE_INT64 | typeof buffer.VALUE_TYPE_UINT8 | typeof buffer.VALUE_TYPE_UINT16 | typeof buffer.VALUE_TYPE_UINT32 | typeof buffer.VALUE_TYPE_UINT64;
-			count: number;
-		},
+		declaration: { hash: hash | string; type: ValueConstant; count: number },
 	): buffer;
 
 	/**
@@ -7888,14 +7327,7 @@ declare namespace buffer {
 	export function get_metadata(
 		buf: buffer,
 		metadata_name: hash | string,
-	): LuaMultiReturn<
-		[
-			unknown[] | undefined,
-			(
-				typeof buffer.VALUE_TYPE_FLOAT32 | typeof buffer.VALUE_TYPE_INT8 | typeof buffer.VALUE_TYPE_INT16 | typeof buffer.VALUE_TYPE_INT32 | typeof buffer.VALUE_TYPE_INT64 | typeof buffer.VALUE_TYPE_UINT8 | typeof buffer.VALUE_TYPE_UINT16 | typeof buffer.VALUE_TYPE_UINT32 | typeof buffer.VALUE_TYPE_UINT64 | undefined
-			),
-		]
-	>;
+	): LuaMultiReturn<[unknown[] | undefined, ValueConstant | undefined]>;
 
 	/**
 	 * Get a specified stream from a buffer.
@@ -7922,8 +7354,7 @@ declare namespace buffer {
 		buf: buffer,
 		metadata_name: hash | string,
 		values: number[],
-		value_type:
-			typeof buffer.VALUE_TYPE_FLOAT32 | typeof buffer.VALUE_TYPE_INT8 | typeof buffer.VALUE_TYPE_INT16 | typeof buffer.VALUE_TYPE_INT32 | typeof buffer.VALUE_TYPE_INT64 | typeof buffer.VALUE_TYPE_UINT8 | typeof buffer.VALUE_TYPE_UINT16 | typeof buffer.VALUE_TYPE_UINT32 | typeof buffer.VALUE_TYPE_UINT64,
+		value_type: ValueConstant,
 	): void;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
@@ -8228,12 +7659,12 @@ declare namespace msg {
 
 /** @see {@link https://defold.com/ref/stable/timer/|API Documentation} */
 declare namespace timer {
+	export type HandleConstant = number & { readonly __brand: 'timer.HANDLE' };
+
 	/**
 	 * Indicates an invalid timer handle
 	 */
-	export const INVALID_TIMER_HANDLE: number & {
-		readonly __brand: 'timer.INVALID_TIMER_HANDLE';
-	};
+	export const INVALID_TIMER_HANDLE: HandleConstant;
 
 	/**
 	 * You may cancel a timer from inside a timer callback.
@@ -8269,7 +7700,7 @@ The elapsed time - on first trigger it is time since timer.delay call, otherwise
 		delay: number,
 		repeat: boolean,
 		callback: (this: any, handle: number, time_elapsed: number) => void,
-	): hash | typeof timer.INVALID_TIMER_HANDLE;
+	): HandleConstant | hash;
 
 	/**
 	* Get information about timer.
@@ -9090,26 +8521,24 @@ declare namespace camera {
 
 /** @see {@link https://defold.com/ref/stable/collectionfactory/|API Documentation} */
 declare namespace collectionfactory {
+	type StatusConstant = number & {
+		readonly __brand: 'collectionFactory.STATUS';
+	};
+
 	/**
 	 * loaded
 	 */
-	export const STATUS_LOADED: number & {
-		readonly __brand: 'collectionFactory.STATUS';
-	};
+	export const STATUS_LOADED: StatusConstant;
 
 	/**
 	 * loading
 	 */
-	export const STATUS_LOADING: number & {
-		readonly __brand: 'collectionFactory.STATUS';
-	};
+	export const STATUS_LOADING: StatusConstant;
 
 	/**
 	 * unloaded
 	 */
-	export const STATUS_UNLOADED: number & {
-		readonly __brand: 'collectionFactory.STATUS';
-	};
+	export const STATUS_UNLOADED: StatusConstant;
 
 	/**
 	 * The URL identifies the collectionfactory component that should do the spawning.
@@ -9154,10 +8583,7 @@ declare namespace collectionfactory {
 * @see {@link https://defold.com/ref/stable/collectionfactory/#collectionfactory.get_status|API Documentation}
 
 	*/
-	export function get_status(
-		url?: hash | url | string,
-	):
-		typeof collectionfactory.STATUS_LOADED | typeof collectionfactory.STATUS_LOADING | typeof collectionfactory.STATUS_UNLOADED;
+	export function get_status(url?: hash | url | string): StatusConstant;
 
 	/**
 	* Resources loaded are referenced by the collection factory component until the existing (parent) collection is destroyed or collectionfactory.unload is called.
@@ -9203,12 +8629,29 @@ True if resource were loaded successfully
 
 /** @see {@link https://defold.com/ref/stable/collectionproxy/|API Documentation} */
 declare namespace collectionproxy {
+	type ResultConstant = number & { readonly __brand: 'collectionproxy.RESULT' };
+
 	/**
 	 * Post this message to a collection-proxy-component to start background loading of the referenced collection.
 	 * When the loading has completed, the message proxy_loaded will be sent back to the script.
 	 * A loaded collection must be initialized (message init) and enabled (message enable) in order to be simulated and drawn.
 	 */
 	export type async_load = 'async_load';
+
+	/**
+	 * collection proxy is already loaded
+	 */
+	export const RESULT_ALREADY_LOADED: ResultConstant;
+
+	/**
+	 * collection proxy is loading now
+	 */
+	export const RESULT_LOADING: ResultConstant;
+
+	/**
+	 * collection proxy isn't excluded
+	 */
+	export const RESULT_NOT_EXCLUDED: ResultConstant;
 
 	/**
 	* return an indexed table of resources for a collection proxy where the
@@ -9238,6 +8681,22 @@ resources.
 * @see {@link https://defold.com/ref/stable/collectionproxy/#collectionproxy.missing_resources|API Documentation}
 	*/
 	export function missing_resources(collectionproxy: url): string[];
+
+	/**
+	 * The collection should be loaded by the collection proxy.
+	 * Setting the collection to "undefined" will revert it back to the original collection.
+	 * The collection proxy shouldn't be loaded and should have the 'Exclude' checkbox checked.
+	 * This functionality is designed to simplify the management of Live Update resources.
+	 * @param url  the collection proxy component
+	 * @param prototype  the path to the new collection, or `undefined`
+	 * @returns success  collection change was successful
+	 * @returns code  one of the collectionproxy.RESULT_* codes if unsuccessful
+	 * @see {@link https://defold.com/ref/stable/collectionproxy/#collectionproxy.set_collection|API Documentation}
+	 */
+	export function set_collection(
+		url?: hash | url | string,
+		prototype?: string | undefined,
+	): LuaMultiReturn<[boolean, ResultConstant | undefined]>;
 
 	/**
 	 * Post this message to a collection-proxy-component to disable the referenced collection, which in turn disables the contained game objects and components.
@@ -9304,20 +8763,22 @@ resources.
 
 /** @see {@link https://defold.com/ref/stable/factory/|API Documentation} */
 declare namespace factory {
+	type StatusConstant = number & { readonly __brand: 'factory.STATUS' };
+
 	/**
 	 * loaded
 	 */
-	export const STATUS_LOADED: number & { readonly __brand: 'factory.STATUS' };
+	export const STATUS_LOADED: StatusConstant;
 
 	/**
 	 * loading
 	 */
-	export const STATUS_LOADING: number & { readonly __brand: 'factory.STATUS' };
+	export const STATUS_LOADING: StatusConstant;
 
 	/**
 	 * unloaded
 	 */
-	export const STATUS_UNLOADED: number & { readonly __brand: 'factory.STATUS' };
+	export const STATUS_UNLOADED: StatusConstant;
 
 	/**
 	 * The URL identifies which factory should create the game object.
@@ -9355,10 +8816,7 @@ declare namespace factory {
 * @see {@link https://defold.com/ref/stable/factory/#factory.get_status|API Documentation}
 
 	*/
-	export function get_status(
-		url?: hash | url | string,
-	):
-		typeof factory.STATUS_LOADED | typeof factory.STATUS_LOADING | typeof factory.STATUS_UNLOADED;
+	export function get_status(url?: hash | url | string): StatusConstant;
 
 	/**
 	* Resources are referenced by the factory component until the existing (parent) collection is destroyed or factory.unload is called.
@@ -9589,8 +9047,7 @@ The invoker of the callback: the model component.
 	export function play_anim(
 		url: hash | url | string,
 		anim_id: hash | string,
-		playback:
-			typeof go.PLAYBACK_LOOP_BACKWARD | typeof go.PLAYBACK_LOOP_FORWARD | typeof go.PLAYBACK_LOOP_PINGPONG | typeof go.PLAYBACK_ONCE_BACKWARD | typeof go.PLAYBACK_ONCE_FORWARD | typeof go.PLAYBACK_ONCE_PINGPONG,
+		playback: go.PlaybackConstant,
 		play_properties?: {
 			blend_duration?: number;
 			offset?: number;
@@ -9599,11 +9056,7 @@ The invoker of the callback: the model component.
 		complete_function?: (
 			this: any,
 			message_id: hash,
-			message: {
-				animation_id: hash;
-				playback:
-					typeof go.PLAYBACK_LOOP_BACKWARD | typeof go.PLAYBACK_LOOP_FORWARD | typeof go.PLAYBACK_LOOP_PINGPONG | typeof go.PLAYBACK_ONCE_BACKWARD | typeof go.PLAYBACK_ONCE_FORWARD | typeof go.PLAYBACK_ONCE_PINGPONG;
-			},
+			message: { animation_id: hash; playback: go.PlaybackConstant },
 			sender: url,
 		) => void,
 	): void;
@@ -9637,8 +9090,7 @@ The invoker of the callback: the model component.
 	export type model_animation_done = 'model_animation_done';
 	export type model_animation_done_message = {
 		animation_id: hash;
-		playback:
-			typeof go.PLAYBACK_ONCE_BACKWARD | typeof go.PLAYBACK_ONCE_FORWARD | typeof go.PLAYBACK_ONCE_PINGPONG;
+		playback: go.PlaybackConstant;
 	};
 
 	/**
@@ -9655,33 +9107,29 @@ The invoker of the callback: the model component.
 
 /** @see {@link https://defold.com/ref/stable/particlefx/|API Documentation} */
 declare namespace particlefx {
+	export type EmitterStateConstant = number & {
+		readonly __brand: 'particlefx.EMITTER_STATE';
+	};
+
 	/**
 	 * postspawn state
 	 */
-	export const EMITTER_STATE_POSTSPAWN: number & {
-		readonly __brand: 'particlefx.EMITTER_STATE';
-	};
+	export const EMITTER_STATE_POSTSPAWN: EmitterStateConstant;
 
 	/**
 	 * prespawn state
 	 */
-	export const EMITTER_STATE_PRESPAWN: number & {
-		readonly __brand: 'particlefx.EMITTER_STATE';
-	};
+	export const EMITTER_STATE_PRESPAWN: EmitterStateConstant;
 
 	/**
 	 * sleeping state
 	 */
-	export const EMITTER_STATE_SLEEPING: number & {
-		readonly __brand: 'particlefx.EMITTER_STATE';
-	};
+	export const EMITTER_STATE_SLEEPING: EmitterStateConstant;
 
 	/**
 	 * spawning state
 	 */
-	export const EMITTER_STATE_SPAWNING: number & {
-		readonly __brand: 'particlefx.EMITTER_STATE';
-	};
+	export const EMITTER_STATE_SPAWNING: EmitterStateConstant;
 
 	/**
 	* Starts playing a particle FX component.
@@ -9714,8 +9162,7 @@ the new state of the emitter:
 			this: any,
 			id: hash,
 			emitter: hash,
-			state:
-				typeof particlefx.EMITTER_STATE_POSTSPAWN | typeof particlefx.EMITTER_STATE_PRESPAWN | typeof particlefx.EMITTER_STATE_SLEEPING | typeof particlefx.EMITTER_STATE_SPAWNING,
+			state: EmitterStateConstant,
 		) => void,
 	): void;
 
@@ -10195,6 +9642,9 @@ the rate with which the animation will be played. Must be positive.
 
 /** @see {@link https://defold.com/ref/stable/tilemap/|API Documentation} */
 declare namespace tilemap {
+	export type RotateConstant = number & { readonly __brand: 'tilemap.FLIP' };
+	export type FlipConstant = number & { readonly __brand: 'tilemap.ROTATE' };
+
 	/**
 	 * The material used when rendering the tile map. The type of the property is hash.
 	 */
@@ -10208,27 +9658,27 @@ declare namespace tilemap {
 	/**
 	 * flip tile horizontally
 	 */
-	export const H_FLIP: number & { readonly __brand: 'tilemap.H_FLIP' };
+	export const H_FLIP: FlipConstant;
 
 	/**
 	 * rotate tile 180 degrees clockwise
 	 */
-	export const ROTATE_180: number & { readonly __brand: 'tilemap.ROTATE' };
+	export const ROTATE_180: RotateConstant;
 
 	/**
 	 * rotate tile 270 degrees clockwise
 	 */
-	export const ROTATE_270: number & { readonly __brand: 'tilemap.ROTATE' };
+	export const ROTATE_270: RotateConstant;
 
 	/**
 	 * rotate tile 90 degrees clockwise
 	 */
-	export const ROTATE_90: number & { readonly __brand: 'tilemap.ROTATE' };
+	export const ROTATE_90: RotateConstant;
 
 	/**
 	 * flip tile vertically
 	 */
-	export const V_FLIP: number & { readonly __brand: 'tilemap.V_FLIP' };
+	export const V_FLIP: FlipConstant;
 
 	/**
 	 * Get the bounds for a tile map. This function returns multiple values:
