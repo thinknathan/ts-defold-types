@@ -38,6 +38,7 @@ import { model } from './patches/model.mjs';
 import { particleFx } from './patches/particleFx.mjs';
 import { sound } from './patches/sound.mjs';
 import { sprite } from './patches/sprite.mjs';
+import { types } from './patches/types.mjs';
 import { graphics } from './patches/graphics.mjs';
 import { tilemap } from './patches/tilemap.mjs';
 import { finalChanges } from './patches/_finalChanges.mjs';
@@ -167,6 +168,10 @@ const patches = [
 	{
 		regex: /(declare namespace sprite {)([\s\S]*?)(declare namespace)/s,
 		replacements: sprite,
+	},
+	{
+		regex: /(declare namespace types {)([\s\S]*?)(declare namespace)/s,
+		replacements: types,
 	},
 	{
 		regex: /(declare namespace graphics {)([\s\S]*?)(declare namespace)/s,
