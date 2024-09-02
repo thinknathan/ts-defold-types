@@ -11,13 +11,14 @@ export const timer = [
 		'let INVALID_TIMER_HANDLE: any',
 		'const INVALID_TIMER_HANDLE: HandleConstant',
 	],
-	// function delay
 	[
-		'function delay(delay: number, repeat: boolean, callback: any): hash',
-		'function delay(delay: number, repeat: boolean, callback: (this: any, handle: number, time_elapsed: number) => void): hash | HandleConstant',
+		'function delay(delay: number, repeat: boolean, callback: any): any',
+		'function delay(delay: number, repeat: boolean, callback: (this: any, handle: HandleConstant, time_elapsed: number) => void): HandleConstant',
 	],
 	[
-		'function get_info(handle: hash): LuaMultiReturn<[any, any]>',
-		'function get_info(handle: hash): undefined | { time_remaining: number, delay: number, repeating: boolean }',
+		'function get_info(handle: any): LuaMultiReturn<[any, any]>',
+		'function get_info(handle: HandleConstant): undefined | { time_remaining: number, delay: number, repeating: boolean }',
 	],
+	['function cancel(handle: any)', 'function cancel(handle: HandleConstant)'],
+	['function trigger(handle: any)', 'function trigger(handle: HandleConstant)'],
 ];
