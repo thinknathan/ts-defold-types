@@ -5,7 +5,7 @@
 /// <reference types="./deprecated.d.ts" />
 /// <reference types="./socket.d.ts" />
 
-// DEFOLD. stable version 1.9.2 (3251ca82359cf238a1074e383281e3126547d50b)
+// DEFOLD. stable version 1.9.3 (e4aaff11f49c941fde1dd93883cf69c6b8abebe4)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 /**
@@ -7064,6 +7064,65 @@ The stack traceback.
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
+declare namespace types {
+	/**
+	 * Check if passed type is hash.
+	 * @param var  Variable to check type
+	 * @returns result  True if passed type is hash
+	 * @see {@link https://defold.com/ref/stable/types/#types.is_hash|API Documentation}
+	 */
+	export function is_hash(v: any): v is hash;
+
+	/**
+	 * Check if passed type is matrix4.
+	 * @param var  Variable to check type
+	 * @returns result  True if passed type is matrix4
+	 * @see {@link https://defold.com/ref/stable/types/#types.is_matrix4|API Documentation}
+	 */
+	export function is_matrix4(v: any): v is vmath.matrix4;
+
+	/**
+	 * Check if passed type is quaternion.
+	 * @param var  Variable to check type
+	 * @returns result  True if passed type is quaternion
+	 * @see {@link https://defold.com/ref/stable/types/#types.is_quat|API Documentation}
+	 */
+	export function is_quat(v: any): v is vmath.quaternion;
+
+	/**
+	 * Check if passed type is URL.
+	 * @param var  Variable to check type
+	 * @returns result  True if passed type is URL
+	 * @see {@link https://defold.com/ref/stable/types/#types.is_url|API Documentation}
+	 */
+	export function is_url(v: any): v is url;
+
+	/**
+	 * Check if passed type is vector.
+	 * @param var  Variable to check type
+	 * @returns result  True if passed type is vector
+	 * @see {@link https://defold.com/ref/stable/types/#types.is_vector|API Documentation}
+	 */
+	export function is_vector(v: any): v is ReturnType<typeof vmath.vector>;
+
+	/**
+	 * Check if passed type is vector3.
+	 * @param var  Variable to check type
+	 * @returns result  True if passed type is vector3
+	 * @see {@link https://defold.com/ref/stable/types/#types.is_vector3|API Documentation}
+	 */
+	export function is_vector3(v: any): v is vmath.vector3;
+
+	/**
+	 * Check if passed type is vector4.
+	 * @param var  Variable to check type
+	 * @returns result  True if passed type is vector4
+	 * @see {@link https://defold.com/ref/stable/types/#types.is_vector4|API Documentation}
+	 */
+	export function is_vector4(v: any): v is vmath.vector4;
+}
+// =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
+
 /** @see {@link https://defold.com/ref/stable/window/|API Documentation} */
 declare namespace window {
 	export type WindowEventConstant = number & {
@@ -7411,6 +7470,8 @@ The response data. Contains the fields:
 `headers`: all the returned headers
 `path`: the stored path (if saved to disc)
 `error`: if any unforeseen errors occurred (e.g. file I/O)
+`bytes_received`: the amount of bytes received/sent for a request, only if option `report_progress` is true
+`bytes_total`: the total amount of bytes for a request, only if option `report_progress` is true
 
 	* @param headers  optional table with custom headers
 	* @param post_data  optional data to send
@@ -7420,6 +7481,7 @@ The response data. Contains the fields:
 Path should be absolute
 Not available in HTML5 build
 Not available in HTML5 build
+`report_progress`: when it is true, the amount of bytes sent and/or received for a request will be passed into the callback function
 
 	*/
 	export function request(
@@ -7673,7 +7735,7 @@ declare namespace timer {
 	 * @returns true  if the timer was active, false if the timer is already cancelled / complete
 	 * @see {@link https://defold.com/ref/stable/timer/#timer.cancel|API Documentation}
 	 */
-	export function cancel(handle: hash): boolean;
+	export function cancel(handle: HandleConstant): boolean;
 
 	/**
 	* Adds a timer and returns a unique handle.
@@ -7699,8 +7761,8 @@ The elapsed time - on first trigger it is time since timer.delay call, otherwise
 	export function delay(
 		delay: number,
 		repeat: boolean,
-		callback: (this: any, handle: number, time_elapsed: number) => void,
-	): HandleConstant | hash;
+		callback: (this: any, handle: HandleConstant, time_elapsed: number) => void,
+	): HandleConstant;
 
 	/**
 	* Get information about timer.
@@ -7717,7 +7779,7 @@ true = repeat timer until cancel, false = one-shot timer.
 
 	*/
 	export function get_info(
-		handle: hash,
+		handle: HandleConstant,
 	): { time_remaining: number; delay: number; repeating: boolean } | undefined;
 
 	/**
@@ -7726,7 +7788,7 @@ true = repeat timer until cancel, false = one-shot timer.
 	 * @returns true  if the timer was active, false if the timer is already cancelled / complete
 	 * @see {@link https://defold.com/ref/stable/timer/#timer.trigger|API Documentation}
 	 */
-	export function trigger(handle: hash): boolean;
+	export function trigger(handle: HandleConstant): boolean;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
