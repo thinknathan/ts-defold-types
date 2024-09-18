@@ -15,17 +15,14 @@ export const earlyChanges = [
 	],
 	// Describe `url`
 	[
-		'declare type url = {\n}',
+		'declare type url = {',
 		`/**
 			* A reference to game resources, such as game objects, components, and assets.
 			* @see {@link https://defold.com/manuals/addressing/|Addressing Manual}
 			*/
-			declare type url = {
-				socket: hash;
-				path: hash;
-				fragment: hash | undefined;
-			};`,
+			declare type url = {`,
 	],
+	['fragment: hash', 'fragment: hash | undefined'],
 	// Describe `hash`
 	[
 		'declare type hash = {\n}',

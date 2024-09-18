@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.9.3 (Upcoming)
+## v1.9.3
 
 - Update for latest Defold
 - Support for type narrowing functions in `types` namespace

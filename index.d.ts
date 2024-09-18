@@ -7067,7 +7067,7 @@ The stack traceback.
 declare namespace types {
 	/**
 	 * Check if passed type is hash.
-	 * @param var  Variable to check type
+	 * @param v  Variable to check type
 	 * @returns result  True if passed type is hash
 	 * @see {@link https://defold.com/ref/stable/types/#types.is_hash|API Documentation}
 	 */
@@ -7075,7 +7075,7 @@ declare namespace types {
 
 	/**
 	 * Check if passed type is matrix4.
-	 * @param var  Variable to check type
+	 * @param v  Variable to check type
 	 * @returns result  True if passed type is matrix4
 	 * @see {@link https://defold.com/ref/stable/types/#types.is_matrix4|API Documentation}
 	 */
@@ -7083,7 +7083,7 @@ declare namespace types {
 
 	/**
 	 * Check if passed type is quaternion.
-	 * @param var  Variable to check type
+	 * @param v  Variable to check type
 	 * @returns result  True if passed type is quaternion
 	 * @see {@link https://defold.com/ref/stable/types/#types.is_quat|API Documentation}
 	 */
@@ -7091,7 +7091,7 @@ declare namespace types {
 
 	/**
 	 * Check if passed type is URL.
-	 * @param var  Variable to check type
+	 * @param v  Variable to check type
 	 * @returns result  True if passed type is URL
 	 * @see {@link https://defold.com/ref/stable/types/#types.is_url|API Documentation}
 	 */
@@ -7099,7 +7099,7 @@ declare namespace types {
 
 	/**
 	 * Check if passed type is vector.
-	 * @param var  Variable to check type
+	 * @param v  Variable to check type
 	 * @returns result  True if passed type is vector
 	 * @see {@link https://defold.com/ref/stable/types/#types.is_vector|API Documentation}
 	 */
@@ -7107,7 +7107,7 @@ declare namespace types {
 
 	/**
 	 * Check if passed type is vector3.
-	 * @param var  Variable to check type
+	 * @param v  Variable to check type
 	 * @returns result  True if passed type is vector3
 	 * @see {@link https://defold.com/ref/stable/types/#types.is_vector3|API Documentation}
 	 */
@@ -7115,7 +7115,7 @@ declare namespace types {
 
 	/**
 	 * Check if passed type is vector4.
-	 * @param var  Variable to check type
+	 * @param v  Variable to check type
 	 * @returns result  True if passed type is vector4
 	 * @see {@link https://defold.com/ref/stable/types/#types.is_vector4|API Documentation}
 	 */
