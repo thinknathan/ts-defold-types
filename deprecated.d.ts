@@ -574,3 +574,14 @@ declare namespace gui {
 		max_descent: number;
 	};
 }
+
+declare namespace vmath {
+	/**
+	 * The resulting matrix describes the same rotation as the quaternion, but does not have any translation (also like the quaternion).
+	 * @param q  quaternion to create matrix from
+	 * @returns m  matrix represented by quaternion
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.matrix4_from_quat|API Documentation}
+	 * @deprecated since v1.9.4
+	 */
+	export function matrix4_from_quat(q: vmath.quaternion): vmath.matrix4;
+}

@@ -87,4 +87,8 @@ export const vmathChanges = [
 			mul: LuaMultiplicationMethod<vmath.quaternion, vmath.quaternion>;
 			`,
 	],
+	[
+		'export function matrix4_compose(translation: any',
+		'export function matrix4_compose(translation: vmath.vector3 | vmath.vector4',
+	],
 ];

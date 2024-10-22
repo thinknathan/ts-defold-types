@@ -12,8 +12,8 @@ export const timer = [
 		'const INVALID_TIMER_HANDLE: HandleConstant',
 	],
 	[
-		'function delay(delay: number, repeat: boolean, callback: any): any',
-		'function delay(delay: number, repeat: boolean, callback: (this: any, handle: HandleConstant, time_elapsed: number) => void): HandleConstant',
+		'function delay(delay: number, repeating: boolean, callback: any): any',
+		'function delay(delay: number, repeating: boolean, callback: (this: any, handle: HandleConstant, time_elapsed: number) => void): HandleConstant',
 	],
 	[
 		'function get_info(handle: any): LuaMultiReturn<[any, any]>',
