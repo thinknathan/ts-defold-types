@@ -5,7 +5,7 @@
 /// <reference types="./deprecated.d.ts" />
 /// <reference types="./socket.d.ts" />
 
-// DEFOLD. stable version 1.9.4 (512763fd375633fd67197225e61fe90a5929166b)
+// DEFOLD. stable version 1.9.5 (87b6907759f7b8dff830d54b2250b8d721bde291)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 /**
@@ -5757,14 +5757,38 @@ The name of the geometry. Used when matching animations between multiple atlases
 
 
 
+`width`
+The width of the image the sprite geometry represents
+
+
+
+
+`height`
+The height of the image the sprite geometry represents
+
+
+
+
+`pivot_x`
+The pivot x value of the image in unit coords. (0,0) is upper left corner, (1,1) is bottom right. Default is 0.5.
+
+
+
+
+`pivot_y`
+The pivot y value of the image in unit coords. (0,0) is upper left corner, (1,1) is bottom right. Default is 0.5.
+
+
+
+
 `vertices`
-a list of the vertices in texture space of the geometry in the form {px0, py0, px1, py1, ..., pxn, pyn}
+a list of the vertices in image space of the geometry in the form {px0, py0, px1, py1, ..., pxn, pyn}
 
 
 
 
 `uvs`
-a list of the uv coordinates in texture space of the geometry in the form of {u0, v0, u1, v1, ..., un, vn}
+a list of the uv coordinates in image space of the geometry in the form of {u0, v0, u1, v1, ..., un, vn}.
 
 
 
