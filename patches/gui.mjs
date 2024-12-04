@@ -43,6 +43,8 @@ export const gui = [
 		'',
 		'type SizeModeConstant = number & { readonly __brand: "gui.SIZE_MODE" };',
 	],
+	// Create Constant type
+	['', 'type TypeConstant = number & { readonly __brand: "gui.TYPE" };'],
 	// (greedy)
 	[/let (EASING_.+): any/g, 'const $1: EasingConstant'],
 	// (greedy)
@@ -67,6 +69,8 @@ export const gui = [
 	[/let (RESULT_.+): any/g, 'const $1: ResultConstant'],
 	// (greedy)
 	[/let (SIZE_MODE_.+): any/g, 'const $1: SizeModeConstant'],
+	// (greedy)
+	[/let (TYPE_.+): any/g, 'const $1: TypeConstant'],
 	// function animate
 	['property: any', 'property: string | PropConstant'],
 	[
@@ -192,5 +196,9 @@ export const gui = [
 	[
 		'export type layout_changed = "layout_changed"',
 		'export type layout_changed = "layout_changed"; export type layout_changed_message = { id: hash, previous_id: hash }',
+	],
+	[
+		'function get_type(node: node): LuaMultiReturn<[any, any, any]>',
+		'function get_type(node: node): TypeConstant',
 	],
 ];

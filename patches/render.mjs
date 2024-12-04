@@ -102,4 +102,14 @@ export const render = [
 		'function set_camera(camera: any, options?: any)',
 		'function set_camera(camera: any, options?: { use_frustum: boolean })',
 	],
+	// Probably a temporary fix to add new types here.
+	// Needs to be adjusted when CONTEXT_EVENT_CONTEXT_LOST is properly added
+	// to the docs.
+	[
+		'function set_listener(callback: any): void',
+		`function set_listener(callback: undefined | ((this: any, event_type: ContextEventConstant) => void)): void;
+		type ContextEventConstant = number & { readonly __brand: "render.CONTEXT_EVENT" };
+		export const CONTEXT_EVENT_CONTEXT_LOST: ContextEventConstant;
+		export const CONTEXT_EVENT_CONTEXT_RESTORED: ContextEventConstant;`,
+	],
 ];
