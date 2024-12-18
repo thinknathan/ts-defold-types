@@ -5,7 +5,7 @@
 /// <reference types="./deprecated.d.ts" />
 /// <reference types="./socket.d.ts" />
 
-// DEFOLD. stable version 1.9.5 (87b6907759f7b8dff830d54b2250b8d721bde291)
+// DEFOLD. stable version 1.9.6 (c44cf0e43c510ce26be7600e002f53e660d5b718)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 /**
@@ -2116,6 +2116,7 @@ declare namespace graphics {
 
 /** @see {@link https://defold.com/ref/stable/gui/|API Documentation} */
 declare namespace gui {
+	type TypeConstant = number & { readonly __brand: 'gui.TYPE' };
 	type SizeModeConstant = number & { readonly __brand: 'gui.SIZE_MODE' };
 	type ResultConstant = number & { readonly __brand: 'gui.RESULT' };
 	type PropConstant = string & { readonly __brand: 'gui.PROP' };
@@ -2613,6 +2614,31 @@ declare namespace gui {
 	 * manual size mode
 	 */
 	export const SIZE_MODE_MANUAL: SizeModeConstant;
+
+	/**
+	 * box type
+	 */
+	export const TYPE_BOX: TypeConstant;
+
+	/**
+	 * custom type
+	 */
+	export const TYPE_CUSTOM: TypeConstant;
+
+	/**
+	 * particlefx type
+	 */
+	export const TYPE_PARTICLEFX: TypeConstant;
+
+	/**
+	 * pie type
+	 */
+	export const TYPE_PIE: TypeConstant;
+
+	/**
+	 * text type
+	 */
+	export const TYPE_TEXT: TypeConstant;
 
 	/**
 	* This starts an animation of a node property according to the specified parameters.
@@ -3221,6 +3247,22 @@ index into array property (1 based)
 	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_tree|API Documentation}
 	 */
 	export function get_tree(node: node): AnyNotNil | undefined;
+
+	/**
+	* gets the node type
+	* @param node  node from which to get the type
+	* @returns type  type
+
+- `gui.TYPE_BOX`
+- `gui.TYPE_TEXT`
+- `gui.TYPE_PIE`
+- `gui.TYPE_PARTICLEFX`
+- `gui.TYPE_CUSTOM`
+
+	* @returns subtype  id of the custom type
+* @see {@link https://defold.com/ref/stable/gui/#gui.get_type|API Documentation}
+	*/
+	export function get_type(node: node): TypeConstant;
 
 	/**
 	 * Returns `true` if a node is visible and `false` if it's not.
@@ -4824,7 +4866,6 @@ declare namespace profiler {
 To stop recording, switch to a different mode such as `MODE_PAUSE` or `MODE_RUN`.
 You can also use the `view_recorded_frame` function to display a recorded frame. Doing so stops the recording as well.
 Every time you switch to recording mode the recording buffer is cleared.
-The recording buffer is also cleared when setting the `MODE_SHOW_PEAK_FRAME` mode.
 * @see {@link https://defold.com/ref/stable/profiler/#profiler.set_ui_mode|API Documentation}
 	*/
 	export function set_ui_mode(mode: ModeConstant): void;
@@ -5457,6 +5498,30 @@ If true, the renderer will use the cameras view-projection matrix for frustum cu
 	 * @param depth  depth mask
 	 */
 	export function set_depth_mask(depth: boolean): void;
+
+	/**
+	* Set or remove listener. Currenly only only two type of events can arrived:
+	* `render.CONTEXT_EVENT_CONTEXT_LOST` - when rendering context lost. Rending paused and all graphics resources become invalid.
+	* `render.CONTEXT_EVENT_CONTEXT_RESTORED` - when rendering context was restored. Rendering still paused and graphics resources still
+	* invalid but can be reloaded.
+	* @param callback  A callback that receives all render related events.
+Pass `undefined` if want to remove listener.
+
+`this`
+The render script
+`event_type`
+Rendering event. Possible values: `render.CONTEXT_EVENT_CONTEXT_LOST`, `render.CONTEXT_EVENT_CONTEXT_RESTORED`
+
+	*/
+	export function set_listener(
+		callback:
+			((this: any, event_type: ContextEventConstant) => void) | undefined,
+	): void;
+	type ContextEventConstant = number & {
+		readonly __brand: 'render.CONTEXT_EVENT';
+	};
+	export const CONTEXT_EVENT_CONTEXT_LOST: ContextEventConstant;
+	export const CONTEXT_EVENT_CONTEXT_RESTORED: ContextEventConstant;
 
 	/**
 	 * Sets the scale and units used to calculate depth values.
@@ -6572,6 +6637,12 @@ declare namespace sys {
 		arg5?: string;
 		arg6?: string;
 	};
+
+	/**
+	 * Resume rendering.
+	 * This message can only be sent to the designated `@system` socket.
+	 */
+	export type resume_rendering = 'resume_rendering';
 
 	/**
 	 * Set game update-frequency (frame cap). This option is equivalent to `display.update_frequency` in
@@ -7884,6 +7955,22 @@ declare namespace vmath {
 	): number;
 
 	/**
+	 * Converts euler angles (x, y, z) in degrees into a quaternion
+	 * The error is guaranteed to be less than 0.001.
+	 * If the first argument is vector3, its values are used as x, y, z angles.
+	 * @param x  rotation around x-axis in degrees or vector3 with euler angles in degrees
+	 * @param y  rotation around y-axis in degrees
+	 * @param z  rotation around z-axis in degrees
+	 * @returns q  quaternion describing an equivalent rotation (231 (YZX) rotation sequence)
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.euler_to_quat|API Documentation}
+	 */
+	export function euler_to_quat(
+		x: vmath.vector3 | number,
+		y: number,
+		z: number,
+	): vmath.quaternion;
+
+	/**
 	 * The resulting matrix is the inverse of the supplied matrix.
 	 * ⚠ For ortho-normal matrices, e.g. regular object transformation,
 	 * use `vmath.ortho_inv()` instead.
@@ -8342,6 +8429,21 @@ declare namespace vmath {
 	export function quat_rotation_z(angle: number): vmath.quaternion;
 
 	/**
+	 * Converts a quaternion into euler angles (r0, r1, r2), based on YZX rotation order.
+	 * To handle gimbal lock (singularity at r1 ~ +/- 90 degrees), the cut off is at r0 = +/- 88.85 degrees, which snaps to +/- 90.
+	 * The provided quaternion is expected to be normalized.
+	 * The error is guaranteed to be less than +/- 0.02 degrees
+	 * @param q  source quaternion
+	 * @returns x  euler angle x in degrees
+	 * @returns y  euler angle y in degrees
+	 * @returns z  euler angle z in degrees
+	 * @see {@link https://defold.com/ref/stable/vmath/#vmath.quat_to_euler|API Documentation}
+	 */
+	export function quat_to_euler(
+		q: vmath.quaternion,
+	): LuaMultiReturn<[number, number, number]>;
+
+	/**
 	 * Returns a new vector from the supplied vector that is
 	 * rotated by the rotation described by the supplied
 	 * quaternion.
@@ -8514,6 +8616,8 @@ declare namespace zlib {
 
 /** @see {@link https://defold.com/ref/stable/camera/|API Documentation} */
 declare namespace camera {
+	type handle = number & { readonly __brand: 'camera.HANDLE' };
+
 	/**
 	 * The ratio between the frustum width and height. Used when calculating the
 	 * projection of a perspective camera.
@@ -8527,7 +8631,7 @@ declare namespace camera {
 	 * @returns aspect_ratio  the aspect ratio.
 	 * @see {@link https://defold.com/ref/stable/camera/#camera.get_aspect_ratio|API Documentation}
 	 */
-	export function get_aspect_ratio(camera: any): number;
+	export function get_aspect_ratio(camera: handle | url | undefined): number;
 
 	/**
 	 * This function returns a table with all the camera URLs that have been
@@ -8535,7 +8639,15 @@ declare namespace camera {
 	 * @returns cameras  a table with all camera URLs
 	 * @see {@link https://defold.com/ref/stable/camera/#camera.get_cameras|API Documentation}
 	 */
-	export function get_cameras(): AnyNotNil | undefined;
+	export function get_cameras(): url[];
+
+	/**
+	 * get enabled
+	 * @param camera  camera id
+	 * @returns flag  true if the camera is enabled
+	 * @see {@link https://defold.com/ref/stable/camera/#camera.get_enabled|API Documentation}
+	 */
+	export function get_enabled(camera: handle | url | undefined): boolean;
 
 	/**
 	 * get far z
@@ -8543,7 +8655,7 @@ declare namespace camera {
 	 * @returns far_z  the far z.
 	 * @see {@link https://defold.com/ref/stable/camera/#camera.get_far_z|API Documentation}
 	 */
-	export function get_far_z(camera: any): number;
+	export function get_far_z(camera: handle | url | undefined): number;
 
 	/**
 	 * get field of view
@@ -8551,7 +8663,7 @@ declare namespace camera {
 	 * @returns fov  the field of view.
 	 * @see {@link https://defold.com/ref/stable/camera/#camera.get_fov|API Documentation}
 	 */
-	export function get_fov(camera: any): number;
+	export function get_fov(camera: handle | url | undefined): number;
 
 	/**
 	 * get near z
@@ -8559,7 +8671,7 @@ declare namespace camera {
 	 * @returns near_z  the near z.
 	 * @see {@link https://defold.com/ref/stable/camera/#camera.get_near_z|API Documentation}
 	 */
-	export function get_near_z(camera: any): number;
+	export function get_near_z(camera: handle | url | undefined): number;
 
 	/**
 	 * get orthographic zoom
@@ -8567,7 +8679,9 @@ declare namespace camera {
 	 * @returns orthographic_zoom  true if the camera is using an orthographic projection.
 	 * @see {@link https://defold.com/ref/stable/camera/#camera.get_orthographic_zoom|API Documentation}
 	 */
-	export function get_orthographic_zoom(camera: any): boolean;
+	export function get_orthographic_zoom(
+		camera: handle | url | undefined,
+	): boolean;
 
 	/**
 	 * get projection matrix
@@ -8575,7 +8689,9 @@ declare namespace camera {
 	 * @returns projection  the projection matrix.
 	 * @see {@link https://defold.com/ref/stable/camera/#camera.get_projection|API Documentation}
 	 */
-	export function get_projection(camera: any): vmath.matrix4;
+	export function get_projection(
+		camera: handle | url | undefined,
+	): vmath.matrix4;
 
 	/**
 	 * get view matrix
@@ -8583,7 +8699,7 @@ declare namespace camera {
 	 * @returns view  the view matrix.
 	 * @see {@link https://defold.com/ref/stable/camera/#camera.get_view|API Documentation}
 	 */
-	export function get_view(camera: any): vmath.matrix4;
+	export function get_view(camera: handle | url | undefined): vmath.matrix4;
 
 	/**
 	 * set aspect ratio
@@ -8591,7 +8707,10 @@ declare namespace camera {
 	 * @param aspect_ratio  the aspect ratio.
 	 * @see {@link https://defold.com/ref/stable/camera/#camera.set_aspect_ratio|API Documentation}
 	 */
-	export function set_aspect_ratio(camera: any, aspect_ratio: number): void;
+	export function set_aspect_ratio(
+		camera: handle | url | undefined,
+		aspect_ratio: number,
+	): void;
 
 	/**
 	 * set far z
@@ -8599,7 +8718,10 @@ declare namespace camera {
 	 * @param far_z  the far z.
 	 * @see {@link https://defold.com/ref/stable/camera/#camera.set_far_z|API Documentation}
 	 */
-	export function set_far_z(camera: any, far_z: number): void;
+	export function set_far_z(
+		camera: handle | url | undefined,
+		far_z: number,
+	): void;
 
 	/**
 	 * set field of view
@@ -8607,7 +8729,7 @@ declare namespace camera {
 	 * @param fov  the field of view.
 	 * @see {@link https://defold.com/ref/stable/camera/#camera.set_fov|API Documentation}
 	 */
-	export function set_fov(camera: any, fov: number): void;
+	export function set_fov(camera: handle | url | undefined, fov: number): void;
 
 	/**
 	 * set near z
@@ -8615,7 +8737,10 @@ declare namespace camera {
 	 * @param near_z  the near z.
 	 * @see {@link https://defold.com/ref/stable/camera/#camera.set_near_z|API Documentation}
 	 */
-	export function set_near_z(camera: any, near_z: number): void;
+	export function set_near_z(
+		camera: handle | url | undefined,
+		near_z: number,
+	): void;
 
 	/**
 	 * set orthographic zoom
@@ -8624,7 +8749,7 @@ declare namespace camera {
 	 * @see {@link https://defold.com/ref/stable/camera/#camera.set_orthographic_zoom|API Documentation}
 	 */
 	export function set_orthographic_zoom(
-		camera: any,
+		camera: handle | url | undefined,
 		orthographic_zoom: boolean,
 	): void;
 
