@@ -42,4 +42,12 @@ export const resource = [
 		'function set_texture(path: hash | string, table: any, buffer: buffer)',
 		'function set_texture(path: hash | string, table: { type: graphics.TextureConstant, width: number, height: number, format: graphics.TextureConstant, x?: number, y?: number, mipmap?: number, compression_type?: graphics.CompressionConstant }, buffer: buffer)',
 	],
+	[
+		'function create_sound_data(path: string, options?: any)',
+		`function create_sound_data(path: string, options?: {
+		data?: any,
+		filesize?: number,
+		partial?: boolean
+	})`,
+	],
 ];

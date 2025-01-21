@@ -1,5 +1,17 @@
 # Changelog
 
+## v1.9.7
+
+- Update for latest Defold
+
+## v1.9.6
+
+- Update for latest Defold
+
+## v1.9.5
+
+- Update for latest Defold
+
 ## v1.9.4
 
 - Update for latest Defold
