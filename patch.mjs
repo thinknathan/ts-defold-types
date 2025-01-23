@@ -34,6 +34,7 @@ import { collectionFactory } from './patches/collectionFactory.mjs';
 import { collectionProxy } from './patches/collectionProxy.mjs';
 import { factory } from './patches/factory.mjs';
 import { label } from './patches/label.mjs';
+import { liveupdate } from './patches/liveupdate.mjs';
 import { model } from './patches/model.mjs';
 import { particleFx } from './patches/particleFx.mjs';
 import { sound } from './patches/sound.mjs';
@@ -152,6 +153,10 @@ const patches = [
 	{
 		regex: /(declare namespace label {)([\s\S]*?)(declare namespace)/s,
 		replacements: label,
+	},
+	{
+		regex: /(declare namespace liveupdate {)([\s\S]*?)(declare namespace)/s,
+		replacements: liveupdate,
 	},
 	{
 		regex: /(declare namespace model {)([\s\S]*?)(declare namespace)/s,
