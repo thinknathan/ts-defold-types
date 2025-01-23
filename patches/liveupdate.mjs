@@ -1,6 +1,6 @@
 // @ts-check
 
-/** msg namespace @satisfies {(string | RegExp)[][]} */
+/** liveupdate namespace @satisfies {(string | RegExp)[][]} */
 export const liveupdate = [
 	// Create Constant type
 	[
