@@ -265,9 +265,9 @@
     fastq "^1.6.0"
 
 "@ts-defold/type-gen@^0.5.2":
-  version "0.5.6"
-  resolved "https://registry.yarnpkg.com/@ts-defold/type-gen/-/type-gen-0.5.6.tgz#d8f3abfa2e36b570dedab914d3d7a9332c249dad"
-  integrity sha512-j24CfMwGCR4WlAKxj7OdKaWac0hAgLzSRrZqVjFsOS+YRPa7KHy9ycISbrnwRM/CEjZBWHkRvFPKGKbuaIDYjw==
+  version "0.5.7"
+  resolved "https://registry.yarnpkg.com/@ts-defold/type-gen/-/type-gen-0.5.7.tgz#bfa5609cf010bddb892e7438df147051e6b7e7a1"
+  integrity sha512-li9WhIiX8G9zDJXPAPTD1nRG95D3QwSZSX5TROsVkNbOMgpuxGBUnkAt65Q68E7RWp6HCvFmJWNtX706z0W+AQ==
   dependencies:
     adm-zip "^0.5.5"
     node-fetch "^2.6.1"
