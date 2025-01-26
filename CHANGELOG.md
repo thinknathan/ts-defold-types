@@ -3,6 +3,7 @@
 ## v1.9.7
 
 - Update for latest Defold
+- Added missing `liveupdate` API
 
 ## v1.9.6
 
