@@ -5,9 +5,11 @@
 * text=auto
 
 # Exclude files from archive
+/_docs export-ignore
 /_docs/* export-ignore
 /.github/* export-ignore
 /.vscode/* export-ignore
+/patches export-ignore
 /patches/* export-ignore
 eslint.config.mjs export-ignore
 .gitattributes export-ignore
@@ -16,3 +18,4 @@ eslint.config.mjs export-ignore
 patch.mjs export-ignore
 tsconfig.json export-ignore
 yarn.lock export-ignore
+commitlint.config.mjs export-ignore
