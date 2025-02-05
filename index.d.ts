@@ -5,7 +5,7 @@
 /// <reference types="./deprecated.d.ts" />
 /// <reference types="./socket.d.ts" />
 
-// DEFOLD. stable version 1.9.6 (c44cf0e43c510ce26be7600e002f53e660d5b718)
+// DEFOLD. stable version 1.9.7 (9b28d9589d24981c7eb13ce63fa0172222700387)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 /**
@@ -209,6 +209,221 @@ declare function hash_to_hex(h: hash): string;
  */
 declare function pprint(...v: any[]): void;
 
+// =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
+
+declare namespace liveupdate {
+	type LiveUpdateConstant = number & {
+		readonly __brand: 'liveupdate.CONSTANT';
+	};
+
+	/**
+	 * LIVEUPDATE_BUNDLED_RESOURCE_MISMATCH
+	 */
+	export const LIVEUPDATE_BUNDLED_RESOURCE_MISMATCH: LiveUpdateConstant;
+
+	/**
+	 * LIVEUPDATE_ENGINE_VERSION_MISMATCH
+	 */
+	export const LIVEUPDATE_ENGINE_VERSION_MISMATCH: LiveUpdateConstant;
+
+	/**
+	 * LIVEUPDATE_FORMAT_ERROR
+	 */
+	export const LIVEUPDATE_FORMAT_ERROR: LiveUpdateConstant;
+
+	/**
+	 * LIVEUPDATE_INVAL
+	 */
+	export const LIVEUPDATE_INVAL: LiveUpdateConstant;
+
+	/**
+	 * LIVEUPDATE_INVALID_HEADER
+	 */
+	export const LIVEUPDATE_INVALID_HEADER: LiveUpdateConstant;
+
+	/**
+	 * LIVEUPDATE_INVALID_RESOURCE
+	 */
+	export const LIVEUPDATE_INVALID_RESOURCE: LiveUpdateConstant;
+
+	/**
+	 * LIVEUPDATE_IO_ERROR
+	 */
+	export const LIVEUPDATE_IO_ERROR: LiveUpdateConstant;
+
+	/**
+	 * LIVEUPDATE_MEM_ERROR
+	 */
+	export const LIVEUPDATE_MEM_ERROR: LiveUpdateConstant;
+
+	/**
+	 * LIVEUPDATE_OK
+	 */
+	export const LIVEUPDATE_OK: LiveUpdateConstant;
+
+	/**
+	 * LIVEUPDATE_SCHEME_MISMATCH
+	 */
+	export const LIVEUPDATE_SCHEME_MISMATCH: LiveUpdateConstant;
+
+	/**
+	 * LIVEUPDATE_SIGNATURE_MISMATCH
+	 */
+	export const LIVEUPDATE_SIGNATURE_MISMATCH: LiveUpdateConstant;
+
+	/**
+	 * LIVEUPDATE_UNKNOWN
+	 */
+	export const LIVEUPDATE_UNKNOWN: LiveUpdateConstant;
+
+	/**
+	 * LIVEUPDATE_VERSION_MISMATCH
+	 */
+	export const LIVEUPDATE_VERSION_MISMATCH: LiveUpdateConstant;
+
+	/**
+	 * Adds a resource mount to the resource system.
+	 * The mounts are persisted between sessions.
+	 * After the mount succeeded, the resources are available to load. (i.e. no reboot required)
+	 * @param name  Unique name of the mount
+	 * @param uri  The uri of the mount, including the scheme. Currently supported schemes are 'zip' and 'archive'.
+	 * @param priority  Priority of mount. Larger priority takes prescedence
+	 * @param callback  Callback after the asynchronous request completed
+	 * @returns result  The result of the request
+	 * @see {@link https://defold.com/ref/stable/liveupdate/#liveupdate.add_mount|API Documentation}
+	 */
+	export function add_mount(
+		name: string,
+		uri: string,
+		priority: number,
+		callback?: (this: any) => void,
+	): LiveUpdateConstant;
+
+	/**
+	 * Return a reference to the Manifest that is currently loaded.
+	 * @returns manifest_reference  reference to the Manifest that is currently loaded
+	 * @see {@link https://defold.com/ref/stable/liveupdate/#liveupdate.get_current_manifest|API Documentation}
+	 */
+	export function get_current_manifest(): number;
+
+	/**
+	 * Get an array of the current mounts
+	 * This can be used to determine if a new mount is needed or not
+	 * @returns mounts  Array of mounts
+	 * @see {@link https://defold.com/ref/stable/liveupdate/#liveupdate.get_mounts|API Documentation}
+	 */
+	export function get_mounts(): {
+		name: string;
+		uri: string;
+		priority: number;
+	}[];
+
+	/**
+	 * Is any liveupdate data mounted and currently in use?
+	 * This can be used to determine if a new manifest or zip file should be downloaded.
+	 * @returns bool  true if a liveupdate archive (any format) has been loaded
+	 * @see {@link https://defold.com/ref/stable/liveupdate/#liveupdate.is_using_liveupdate_data|API Documentation}
+	 */
+	export function is_using_liveupdate_data(): boolean;
+
+	/**
+	 * Remove a mount the resource system.
+	 * The remaining mounts are persisted between sessions.
+	 * Removing a mount does not affect any loaded resources.
+	 * @param name  Unique name of the mount
+	 * @returns result  The result of the call
+	 * @see {@link https://defold.com/ref/stable/liveupdate/#liveupdate.remove_mount|API Documentation}
+	 */
+	export function remove_mount(name: string): LiveUpdateConstant;
+
+	/**
+	* Stores a zip file and uses it for live update content. The contents of the
+	* zip file will be verified against the manifest to ensure file integrity.
+	* It is possible to opt out of the resource verification using an option passed
+	* to this function.
+	* The path is stored in the (internal) live update location.
+	* @param path  the path to the original file on disc
+	* @param callback  the callback function
+executed after the storage has completed
+
+`this`
+The current object.
+`status`
+the status of the store operation (See liveupdate.store_manifest)
+
+	* @param options  optional table with extra parameters. Supported entries:
+
+`verify`: if archive should be verified as well as stored (defaults to true)
+* @see {@link https://defold.com/ref/stable/liveupdate/#liveupdate.store_archive|API Documentation}
+
+	*/
+	export function store_archive(
+		path: string,
+		callback: (this: any, status: LiveUpdateConstant) => void,
+		options?: { verify: boolean },
+	): void;
+
+	/**
+	* Create a new manifest from a buffer. The created manifest is verified
+	* by ensuring that the manifest was signed using the bundled public/private
+	* key-pair during the bundle process and that the manifest supports the current
+	* running engine version. Once the manifest is verified it is stored on device.
+	* The next time the engine starts (or is rebooted) it will look for the stored
+	* manifest before loading resources. Storing a new manifest allows the
+	* developer to update the game, modify existing resources, or add new
+	* resources to the game through LiveUpdate.
+	* @param manifest_buffer  the binary data that represents the manifest
+	* @param callback  the callback function
+executed once the engine has attempted to store the manifest.
+
+`this`
+The current object.
+`status`
+the status of the store operation:
+
+
+- `liveupdate.LIVEUPDATE_OK`
+- `liveupdate.LIVEUPDATE_INVALID_RESOURCE`
+- `liveupdate.LIVEUPDATE_VERSION_MISMATCH`
+- `liveupdate.LIVEUPDATE_ENGINE_VERSION_MISMATCH`
+- `liveupdate.LIVEUPDATE_SIGNATURE_MISMATCH`
+- `liveupdate.LIVEUPDATE_BUNDLED_RESOURCE_MISMATCH`
+- `liveupdate.LIVEUPDATE_FORMAT_ERROR`
+* @see {@link https://defold.com/ref/stable/liveupdate/#liveupdate.store_manifest|API Documentation}
+
+	*/
+	export function store_manifest(
+		manifest_buffer: string,
+		callback: (this: any, status: LiveUpdateConstant) => void,
+	): void;
+
+	/**
+	* add a resource to the data archive and runtime index. The resource will be verified
+	* internally before being added to the data archive.
+	* @param manifest_reference  The manifest to check against.
+	* @param data  The resource data that should be stored.
+	* @param hexdigest  The expected hash for the resource,
+retrieved through collectionproxy.missing_resources.
+	* @param callback  The callback
+function that is executed once the engine has been attempted to store
+the resource.
+
+`this`
+The current object.
+`hexdigest`
+The hexdigest of the resource.
+`status`
+Whether or not the resource was successfully stored.
+* @see {@link https://defold.com/ref/stable/liveupdate/#liveupdate.store_resource|API Documentation}
+
+	*/
+	export function store_resource(
+		manifest_reference: number,
+		data: string,
+		hexdigest: string,
+		callback: (this: any, hexdigest: string, status: boolean) => void,
+	): void;
+}
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 /** @see {@link https://defold.com/ref/stable/socket/|API Documentation} */
@@ -4474,6 +4689,7 @@ end
 	* do not intersect with ray casts.
 	* Which collision objects to hit is filtered by their collision groups and can be configured
 	* through `groups`.
+	* NOTE: Ray casts will ignore collision objects that contain the starting point of the ray. This is a limitation in Box2D.
 	* @param from  the world position of the start of the ray
 	* @param to  the world position of the end of the ray
 	* @param groups  a lua table containing the hashed groups for which to test collisions against
@@ -4503,6 +4719,7 @@ Set to `true` to return all ray cast hits. If `false`, it will only return the c
 	 * - If an object is hit, the result will be reported via a ray_cast_response message.
 	 * - If there is no object hit, the result will be reported via a ray_cast_missed message.
 	 *
+	 * NOTE: Ray casts will ignore collision objects that contain the starting point of the ray. This is a limitation in Box2D.
 	 * @param from  the world position of the start of the ray
 	 * @param to  the world position of the end of the ray
 	 * @param groups  a lua table containing the hashed groups for which to test collisions against
@@ -5921,6 +6138,30 @@ optional flag to determine wether or not the resource should take over ownership
 	export function create_buffer(
 		path: string,
 		table: { buffer: buffer; transfer_ownership?: boolean },
+	): hash;
+
+	/**
+	* Creates a sound data resource
+	* Supported formats are .oggc and .wavc
+	* @param path  the path to the resource. Must not already exist.
+	* @param options  A table containing parameters for the text. Supported entries:
+
+`data`
+The raw data of the file. May be partial, but must include the header of the file
+`filesize`
+If the file is partial, it must also specify the full size of the complete file.
+`partial`
+Is the data not representing the full file, but just the initial chunk?
+
+	* @returns path_hash  the resulting path hash to the resource
+	*/
+	export function create_sound_data(
+		path: string,
+		options?: {
+			data?: any;
+			filesize?: number;
+			partial?: boolean;
+		},
 	): hash;
 
 	/**
@@ -7590,6 +7831,7 @@ Not available in HTML5 build
 				response?: string;
 				headers: { [key: string]: string };
 				path?: string;
+				url?: string;
 				error?: string;
 			},
 		) => void,
