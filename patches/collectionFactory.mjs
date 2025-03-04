@@ -19,7 +19,7 @@ export const collectionFactory = [
 		'complete_function?: (this: any, url: url, result: boolean) => void',
 	],
 	[
-		'function create(url: string | hash | url, position?: vmath.vector3, rotation?: vmath.quaternion, properties?: any, scale?: number): any',
-		'function create(url: string | hash | url, position?: vmath.vector3, rotation?: vmath.quaternion, properties?: any, scale?: number): LuaMap<hash, hash>',
+		'function create(url: string | hash | url, position?: vmath.vector3, rotation?: vmath.quaternion, properties?: any, scale?: number | vmath.vector3): any',
+		'function create(url: string | hash | url, position?: vmath.vector3, rotation?: vmath.quaternion, properties?: any, scale?: number | vmath.vector3): LuaMap<hash, hash>',
 	],
 ];
