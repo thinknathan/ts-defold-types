@@ -5,7 +5,7 @@
 /// <reference types="./deprecated.d.ts" />
 /// <reference types="./socket.d.ts" />
 
-// DEFOLD. stable version 1.9.7 (9b28d9589d24981c7eb13ce63fa0172222700387)
+// DEFOLD. stable version 1.9.8 (67542769598a1b794877c96f740f3f527f63f491)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 /**
@@ -7803,11 +7803,14 @@ The response data. Contains the fields:
 
 `status`: the status of the response
 `response`: the response data (if not saved on disc)
-`headers`: all the returned headers
+`headers`: all the returned headers (if status is 200 or 206)
 `path`: the stored path (if saved to disc)
 `error`: if any unforeseen errors occurred (e.g. file I/O)
 `bytes_received`: the amount of bytes received/sent for a request, only if option `report_progress` is true
 `bytes_total`: the total amount of bytes for a request, only if option `report_progress` is true
+`range_start`: the start offset into the requested file
+`range_end`: the end offset into the requested file (inclusive)
+`document_size`: the full size of the requested file
 
 	* @param headers  optional table with custom headers
 	* @param post_data  optional data to send
@@ -7833,6 +7836,11 @@ Not available in HTML5 build
 				path?: string;
 				url?: string;
 				error?: string;
+				bytes_received?: number;
+				bytes_total?: number;
+				range_start: number;
+				range_end: number;
+				document_size: number;
 			},
 		) => void,
 		headers?: { [key: string]: string },
@@ -7842,6 +7850,7 @@ Not available in HTML5 build
 			path?: string;
 			ignore_cache?: boolean;
 			chunked_transfer?: boolean;
+			report_progress?: boolean;
 		},
 	): void;
 }
@@ -9097,7 +9106,7 @@ declare namespace collectionfactory {
 		position?: vmath.vector3,
 		rotation?: vmath.quaternion,
 		properties?: any,
-		scale?: number,
+		scale?: vmath.vector3 | number,
 	): LuaMap<hash, hash>;
 
 	/**
@@ -9416,7 +9425,10 @@ declare namespace label {
 	 * @param text  the text
 	 * @see {@link https://defold.com/ref/stable/label/#label.set_text|API Documentation}
 	 */
-	export function set_text(url: hash | url | string, text: string): void;
+	export function set_text(
+		url: hash | url | string,
+		text: number | string,
+	): void;
 
 	/**
 	 * The leading of the label. This value is used to scale the line spacing of text.
