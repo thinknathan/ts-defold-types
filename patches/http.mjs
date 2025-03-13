@@ -20,9 +20,9 @@ export const http = [
 				error?: string;
 				bytes_received?: number;
 				bytes_total?: number;
-				range_start: number;
-				range_end: number;
-				document_size: number;
+				range_start?: number;
+				range_end?: number;
+				document_size?: number;
 			}
 		) => void,
 		 headers?: { [key:string]: string },
