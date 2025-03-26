@@ -3,6 +3,10 @@
 /** b2d.body namespace @satisfies {(string | RegExp)[][]} */
 export const b2dBody = [
 	[
+		'function enable_sleep(body: any, enable: any)',
+		'function enable_sleep(body: typeof b2d.body, enable: boolean)',
+	],
+	[
 		'function set_active(body: any, enable: any)',
 		'function set_active(body: typeof b2d.body, enable: boolean)',
 	],

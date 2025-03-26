@@ -1,6 +1,114 @@
 /** @noSelfInFile */
 
 /** */
+declare namespace physics {
+	/**
+	* sets a physics world event listener. If a function is set, physics messages will no longer be sent.
+	* @param callback  A callback that receives information about all the physics interactions in this physics world.
+
+	`this`
+	The calling script
+	`event`
+	The type of event. Can be one of these messages:
+
+
+	- contact_point_event
+	- collision_event
+	- trigger_event
+	- ray_cast_response
+	- ray_cast_missed
+
+
+	`data`
+	The callback value data is a table that contains event-related data. See the documentation for details on the messages.
+	* @see {@link https://defold.com/ref/stable/physics/#physics.set_listener|API Documentation}
+	* @deprecated since v1.9.9
+	*/
+	export function set_listener(
+		callback: (
+			this: any,
+			event:
+				| collision_event
+				| contact_point_event
+				| ray_cast_missed
+				| ray_cast_response
+				| trigger_event,
+			data: object,
+		) => void,
+	): void;
+}
+
+/** */
+declare namespace b2d.body {
+	/**
+	 * Print the body representation to the log output
+	 * @param body  body
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.dump|API Documentation}
+	 * @deprecated since v1.9.9
+	 */
+	export function dump(body: typeof b2d.body): void;
+
+	/**
+	 * Get the rotational inertia of the body about the local origin.
+	 * @param body  body
+	 * @returns inertia  the rotational inertia, usually in kg-m^2.
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.get_inertia|API Documentation}
+	 * @deprecated since v1.9.9
+	 */
+	export function get_inertia(body: typeof b2d.body): number;
+
+	/**
+	 * Get the local position of the center of mass.
+	 * @param body  body
+	 * @returns center  Get the local position of the center of mass.
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.get_local_center|API Documentation}
+	 * @deprecated since v1.9.9
+	 */
+	export function get_local_center(body: typeof b2d.body): vmath.vector3;
+
+	/**
+	 * Get the next body in the world's body list.
+	 * @param body  body
+	 * @returns body  the next body
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.get_next|API Documentation}
+	 * @deprecated since v1.9.9
+	 */
+	export function get_next(body: typeof b2d.body): typeof b2d.body | undefined;
+
+	/**
+	 * Get the angle in radians.
+	 * @param body  body
+	 * @returns angle  the current world rotation angle in radians.
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.get_world_center|API Documentation}
+	 * @deprecated since v1.9.9
+	 */
+	export function get_world_center(body: typeof b2d.body): number;
+
+	/**
+	 * Is this body allowed to sleep
+	 * @param body  body
+	 * @returns enabled  true if the body is allowed to sleep
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.is_sleeping_allowed|API Documentation}
+	 * @deprecated since v1.9.9
+	 */
+	export function is_sleeping_allowed(
+		body: typeof b2d.body,
+	): AnyNotNil | undefined;
+
+	/**
+	 * You can disable sleeping on this body. If you disable sleeping, the body will be woken.
+	 * @param body  body
+	 * @param enable  if false, the body will never sleep, and consume more CPU
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.set_sleeping_allowed|API Documentation}
+	 * @deprecated since v1.9.9
+	 */
+	export function set_sleeping_allowed(
+		body: typeof b2d.body,
+		enable: boolean,
+	): void;
+}
+
+/** */
 declare namespace render {
 	/**
 	 * @deprecated since v1.9.2

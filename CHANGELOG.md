@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.9.9 (Upcoming)
+
+- Update for latest Defold
+- Many functions moved to `deprecated.d.ts` this release
+
 ## v1.9.8
 
 - Update for latest Defold

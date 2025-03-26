@@ -8,6 +8,10 @@ export const physics = [
 	['let linear_velocity: any', 'let linear_velocity: vmath.vector3'],
 	['let mass: any', 'const mass: number'],
 	[
+		'function set_event_listener(callback: any)',
+		'function set_event_listener(callback: (this: any, event: contact_point_event | collision_event | trigger_event | ray_cast_response | ray_cast_missed, data: AnyNotNil) => void)',
+	],
+	[
 		'function set_listener(callback: any',
 		'function set_listener(callback: (this: any, event: contact_point_event | collision_event | trigger_event | ray_cast_response | ray_cast_missed, data: object) => void',
 	],

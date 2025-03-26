@@ -2,6 +2,11 @@
 
 /** resource namespace @satisfies {(string | RegExp)[][]} */
 export const resource = [
+	// TO-DO: What is the actual return value here? The docs were changed in v1.9.9
+	[
+		'export function create_texture_async(path: string, table: any, buffer?: buffer): any',
+		'export function create_texture_async(path: string, table: AnyNotNil, buffer?: buffer): AnyNotNil',
+	],
 	[
 		'function get_render_target_info(path: any): any',
 		`function get_render_target_info(path: string): { handle: unknown, attachments: { handle: unknown, width: number, height: number, depth: number, mipmaps: number, type: graphics.TextureConstant, buffer_type: graphics.BufferTypeConstant }[] };`,
