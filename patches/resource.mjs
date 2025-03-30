@@ -2,10 +2,10 @@
 
 /** resource namespace @satisfies {(string | RegExp)[][]} */
 export const resource = [
-	// TO-DO: What is the actual return value here? The docs were changed in v1.9.9
+	// Fixes a docs issue introduced in v1.10.0
 	[
 		'export function create_texture_async(path: string, table: any, buffer?: buffer): any',
-		'export function create_texture_async(path: string, table: AnyNotNil, buffer?: buffer): AnyNotNil',
+		'export function create_texture_async(path: string, table: AnyNotNil, buffer?: buffer): LuaMultiReturn<[hash, number]>',
 	],
 	[
 		'function get_render_target_info(path: any): any',
