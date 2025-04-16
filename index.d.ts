@@ -5,7 +5,7 @@
 /// <reference types="./deprecated.d.ts" />
 /// <reference types="./socket.d.ts" />
 
-// DEFOLD. stable version 1.9.8 (67542769598a1b794877c96f740f3f527f63f491)
+// DEFOLD. stable version 1.10.0 (591eb496d52f4140bc2c7de547131f1b9408b9b4)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 /**
@@ -534,11 +534,20 @@ declare namespace b2d.body {
 	export function apply_torque(body: typeof b2d.body, torque: number): void;
 
 	/**
-	 * Print the body representation to the log output
+	 * You can disable sleeping on this body. If you disable sleeping, the body will be woken.
 	 * @param body  body
-	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.dump|API Documentation}
+	 * @param enable  if false, the body will never sleep, and consume more CPU
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.enable_sleep|API Documentation}
 	 */
-	export function dump(body: typeof b2d.body): void;
+	export function enable_sleep(body: typeof b2d.body, enable: boolean): void;
+
+	/**
+	 * Get the angle in radians.
+	 * @param body  body
+	 * @returns angle  the current world rotation angle in radians.
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.get_angle|API Documentation}
+	 */
+	export function get_angle(body: typeof b2d.body): number;
 
 	/**
 	 * Get the angular damping of the body.
@@ -563,14 +572,6 @@ declare namespace b2d.body {
 	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.get_gravity_scale|API Documentation}
 	 */
 	export function get_gravity_scale(body: typeof b2d.body): number;
-
-	/**
-	 * Get the rotational inertia of the body about the local origin.
-	 * @param body  body
-	 * @returns inertia  the rotational inertia, usually in kg-m^2.
-	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.get_inertia|API Documentation}
-	 */
-	export function get_inertia(body: typeof b2d.body): number;
 
 	/**
 	 * Get the linear damping of the body.
@@ -616,9 +617,11 @@ declare namespace b2d.body {
 	 * Get the local position of the center of mass.
 	 * @param body  body
 	 * @returns center  Get the local position of the center of mass.
-	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.get_local_center|API Documentation}
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.get_local_center_of_mass|API Documentation}
 	 */
-	export function get_local_center(body: typeof b2d.body): vmath.vector3;
+	export function get_local_center_of_mass(
+		body: typeof b2d.body,
+	): vmath.vector3;
 
 	/**
 	 * Gets a local point relative to the body's origin given a world point.
@@ -653,20 +656,20 @@ declare namespace b2d.body {
 	export function get_mass(body: typeof b2d.body): number;
 
 	/**
-	 * Get the next body in the world's body list.
-	 * @param body  body
-	 * @returns body  the next body
-	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.get_next|API Documentation}
-	 */
-	export function get_next(body: typeof b2d.body): AnyNotNil | undefined;
-
-	/**
 	 * Get the world body origin position.
 	 * @param body  body
 	 * @returns position  the world position of the body's origin.
 	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.get_position|API Documentation}
 	 */
 	export function get_position(body: typeof b2d.body): vmath.vector3;
+
+	/**
+	 * Get the rotational inertia of the body about the local origin.
+	 * @param body  body
+	 * @returns inertia  the rotational inertia, usually in kg-m^2.
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.get_rotational_inertia|API Documentation}
+	 */
+	export function get_rotational_inertia(body: typeof b2d.body): number;
 
 	/**
 	 * Get the type of this body.
@@ -685,20 +688,14 @@ declare namespace b2d.body {
 	export function get_world(body: typeof b2d.body): AnyNotNil | undefined;
 
 	/**
-	 * Get the angle in radians.
-	 * @param body  body
-	 * @returns angle  the current world rotation angle in radians.
-	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.get_world_center|API Documentation}
-	 */
-	export function get_world_center(body: typeof b2d.body): number;
-
-	/**
 	 * Get the world position of the center of mass.
 	 * @param body  body
 	 * @returns center  Get the world position of the center of mass.
-	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.get_world_center|API Documentation}
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.get_world_center_of_mass|API Documentation}
 	 */
-	export function get_world_center(body: typeof b2d.body): vmath.vector3;
+	export function get_world_center_of_mass(
+		body: typeof b2d.body,
+	): vmath.vector3;
 
 	/**
 	 * Get the world coordinates of a point given the local coordinates.
@@ -762,9 +759,9 @@ declare namespace b2d.body {
 	 * Is this body allowed to sleep
 	 * @param body  body
 	 * @returns enabled  true if the body is allowed to sleep
-	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.is_sleeping_allowed|API Documentation}
+	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.is_sleeping_enabled|API Documentation}
 	 */
-	export function is_sleeping_allowed(
+	export function is_sleeping_enabled(
 		body: typeof b2d.body,
 	): AnyNotNil | undefined;
 
@@ -873,17 +870,6 @@ declare namespace b2d.body {
 	export function set_linear_velocity(
 		body: typeof b2d.body,
 		velocity: vmath.vector3,
-	): void;
-
-	/**
-	 * You can disable sleeping on this body. If you disable sleeping, the body will be woken.
-	 * @param body  body
-	 * @param enable  if false, the body will never sleep, and consume more CPU
-	 * @see {@link https://defold.com/ref/stable/b2d.body/#b2d.body.set_sleeping_allowed|API Documentation}
-	 */
-	export function set_sleeping_allowed(
-		body: typeof b2d.body,
-		enable: boolean,
 	): void;
 
 	/**
@@ -2273,6 +2259,11 @@ declare namespace graphics {
 	export const TEXTURE_TYPE_2D_ARRAY: TextureConstant;
 
 	/**
+	 * May be undefined if the graphics driver doesn't support ...
+	 */
+	export const TEXTURE_TYPE_3D: TextureConstant;
+
+	/**
 	 *
 	 */
 	export const TEXTURE_TYPE_CUBE_MAP: TextureConstant;
@@ -2281,6 +2272,11 @@ declare namespace graphics {
 	 *
 	 */
 	export const TEXTURE_TYPE_IMAGE_2D: TextureConstant;
+
+	/**
+	 * May be undefined if the graphics driver doesn't support ...
+	 */
+	export const TEXTURE_TYPE_IMAGE_3D: TextureConstant;
 
 	/**
 	 *
@@ -4380,8 +4376,8 @@ declare namespace physics {
 	};
 
 	/**
-	 * See physics.set_listener.
-	 * This message is sent to a function specified in physics.set_listener
+	 * See physics.set_event_listener.
+	 * This message is sent to a function specified in physics.set_event_listener
 	 * when two collision objects collide.
 	 * This message only reports that a collision has occurred and will be sent once per frame and per colliding pair.
 	 * For more detailed information, check for the contact_point_event.
@@ -4406,8 +4402,8 @@ declare namespace physics {
 	};
 
 	/**
-	 * See physics.set_listener.
-	 * This message is sent to a function specified in physics.set_listener when
+	 * See physics.set_event_listener.
+	 * This message is sent to a function specified in physics.set_event_listener when
 	 * a collision object has contact points with another collision object.
 	 * Since multiple contact points can occur for two colliding objects, this event can be sent
 	 * multiple times in the same frame for the same two colliding objects. To only be notified once
@@ -4734,6 +4730,37 @@ Set to `true` to return all ray cast hits. If `false`, it will only return the c
 	): void;
 
 	/**
+	* sets a physics world event listener. If a function is set, physics messages will no longer be sent to on_message.
+	* @param callback  A callback that receives an information about all the physics interactions in this physics world.
+
+`this`
+The calling script
+`event`
+The type of event. Can be one of these messages:
+
+
+- contact_point_event
+- collision_event
+- trigger_event
+- ray_cast_response
+- ray_cast_missed
+
+
+`data`
+The callback value data is a table that contains event-related data. See the documentation for details on the messages.
+* @see {@link https://defold.com/ref/stable/physics/#physics.set_event_listener|API Documentation}
+
+	*/
+	export function set_event_listener(
+		callback: (
+			this: any,
+			event:
+				collision_event | contact_point_event | ray_cast_missed | ray_cast_response | trigger_event,
+			data: AnyNotNil,
+		) => void,
+	): void;
+
+	/**
 	 * Set the gravity in runtime. The gravity change is not global, it will only affect
 	 * the collection that the function is called from.
 	 * Note: For 2D physics the z component of the gravity vector will be ignored.
@@ -4781,37 +4808,6 @@ Note: The `collide_connected` field cannot be updated/changed after a connection
 		collisionobject: hash | url | string,
 		joint_id: hash | string,
 		properties: any,
-	): void;
-
-	/**
-	* sets a physics world event listener. If a function is set, physics messages will no longer be sent.
-	* @param callback  A callback that receives information about all the physics interactions in this physics world.
-
-`this`
-The calling script
-`event`
-The type of event. Can be one of these messages:
-
-
-- contact_point_event
-- collision_event
-- trigger_event
-- ray_cast_response
-- ray_cast_missed
-
-
-`data`
-The callback value data is a table that contains event-related data. See the documentation for details on the messages.
-* @see {@link https://defold.com/ref/stable/physics/#physics.set_listener|API Documentation}
-
-	*/
-	export function set_listener(
-		callback: (
-			this: any,
-			event:
-				collision_event | contact_point_event | ray_cast_missed | ray_cast_response | trigger_event,
-			data: object,
-		) => void,
 	): void;
 
 	/**
@@ -4905,7 +4901,7 @@ end
 
 	/**
 	 * This message is sent back to the sender of a ray_cast_request, or to the physics world listener
-	 * if it is set (see physics.set_listener), if the ray didn't hit any collision object.
+	 * if it is set (see physics.set_event_listener), if the ray didn't hit any collision object.
 	 * See physics.raycast_async for examples of how to use it.
 	 */
 	export type ray_cast_missed = 'ray_cast_missed';
@@ -4913,7 +4909,7 @@ end
 
 	/**
 	 * This message is sent back to the sender of a ray_cast_request, or to the physics world listener
-	 * if it is set (see physics.set_listener), if the ray hits a collision object.
+	 * if it is set (see physics.set_event_listener), if the ray hits a collision object.
 	 * See physics.raycast_async for examples of how to use it.
 	 */
 	export type ray_cast_response = 'ray_cast_response';
@@ -4927,8 +4923,8 @@ end
 	};
 
 	/**
-	 * See physics.set_listener.
-	 * This message is sent to a function specified in physics.set_listener
+	 * See physics.set_event_listener.
+	 * This message is sent to a function specified in physics.set_event_listener
 	 * when a collision object interacts with another collision object and one of them is a trigger.
 	 * This message only reports that an interaction actually happened and will be sent once per colliding pair and frame.
 	 * For more detailed information, check for the contact_point_event.
@@ -4992,6 +4988,12 @@ declare namespace profiler {
 	export const VIEW_MODE_MINIMIZED: ViewModeConstant;
 
 	/**
+	 * logs the current frame to the console
+	 * @see {@link https://defold.com/ref/stable/profiler/#profiler.dump_frame|API Documentation}
+	 */
+	export function dump_frame(): void;
+
+	/**
 	 * Creates and shows or hides and destroys the on-sceen profiler ui
 	 * The profiler is a real-time tool that shows the numbers of milliseconds spent
 	 * in each scope per frame as well as counters. The profiler is very useful for
@@ -5045,8 +5047,8 @@ declare namespace profiler {
 	export function get_memory_usage(): number;
 
 	/**
-	 * Send a text to the profiler
-	 * @param text  the string to send to the profiler
+	 * Send a text to the connected profiler
+	 * @param text  the string to send to the connected profiler
 	 * @see {@link https://defold.com/ref/stable/profiler/#profiler.log_text|API Documentation}
 	 */
 	export function log_text(text: string): void;
@@ -6179,14 +6181,18 @@ The texture type. Supported values:
 
 
 - `graphics.TEXTURE_TYPE_2D`
-- `graphics.TEXTURE_TYPE_CUBE_MAP`
 - `graphics.TEXTURE_TYPE_IMAGE_2D`
+- `graphics.TEXTURE_TYPE_3D`
+- `graphics.TEXTURE_TYPE_IMAGE_3D`
+- `graphics.TEXTURE_TYPE_CUBE_MAP`
 
 
 `width`
 The width of the texture (in pixels). Must be larger than 0.
 `height`
 The width of the texture (in pixels). Must be larger than 0.
+`depth`
+The depth of the texture (in pixels). Must be larger than 0. Only used when `type` is `graphics.TEXTURE_TYPE_3D` or `graphics.TEXTURE_TYPE_IMAGE_3D`.
 `format`
 The texture format, note that some of these formats might not be supported by the running device. Supported values:
 
@@ -6247,6 +6253,11 @@ Creating an empty texture with no buffer data is not supported as a core feature
 
 	* @param buffer  optional buffer of precreated pixel data
 	* @returns path  The path to the resource.
+⚠ 3D Textures are currently only supported on OpenGL and Vulkan adapters. To check if your device supports 3D textures, use:
+```lua
+if graphics.TEXTURE_TYPE_3D !== undefined then
+    -- Device and graphics adapter support 3D textures
+end
 	*/
 	export function create_texture(
 		path: string,
@@ -6280,6 +6291,9 @@ The texture type. Supported values:
 
 
 - `graphics.TEXTURE_TYPE_2D`
+- `graphics.TEXTURE_TYPE_IMAGE_2D`
+- `graphics.TEXTURE_TYPE_3D`
+- `graphics.TEXTURE_TYPE_IMAGE_3D`
 - `graphics.TEXTURE_TYPE_CUBE_MAP`
 
 
@@ -6287,6 +6301,8 @@ The texture type. Supported values:
 The width of the texture (in pixels). Must be larger than 0.
 `height`
 The width of the texture (in pixels). Must be larger than 0.
+`depth`
+The depth of the texture (in pixels). Must be larger than 0. Only used when `type` is `graphics.TEXTURE_TYPE_3D` or `graphics.TEXTURE_TYPE_IMAGE_3D`.
 `format`
 The texture format, note that some of these formats might not be supported by the running device. Supported values:
 
@@ -6318,6 +6334,12 @@ These constants might not be available on the device:
 - `graphics.TEXTURE_FORMAT_R32F`
 - `graphics.TEXTURE_FORMAT_RG32F`
 
+You can test if the device supports these values by checking if a specific enum is undefined or not:
+`if graphics.TEXTURE_FORMAT_RGBA16F !== undefined then
+    -- it is safe to use this format
+end
+`
+
 
 `flags`
 Texture creation flags that can be used to dictate how the texture is created. Supported values:
@@ -6326,12 +6348,6 @@ Texture creation flags that can be used to dictate how the texture is created. S
 - `graphics.TEXTURE_USAGE_FLAG_SAMPLE` - The texture can be sampled from a shader (default)
 - `graphics.TEXTURE_USAGE_FLAG_MEMORYLESS` - The texture can be used as a memoryless texture, i.e only transient memory for the texture is used during rendering
 - `graphics.TEXTURE_USAGE_FLAG_STORAGE` - The texture can be used as a storage texture, which is required for a shader to write to the texture
-
-You can test if the device supports these values by checking if a specific enum is undefined or not:
-`if graphics.TEXTURE_FORMAT_RGBA16F !== undefined then
-    -- it is safe to use this format
-end
-`
 
 
 `max_mipmaps`
@@ -6345,14 +6361,18 @@ Creating an empty texture with no buffer data is not supported as a core feature
 - `COMPRESSION_TYPE_BASIS_UASTC`
 
 	* @param buffer  optional buffer of precreated pixel data
-	* @returns path  The path to the resource.
 	* @returns request_id  The request id for the async request.
+⚠ 3D Textures are currently only supported on OpenGL and Vulkan adapters. To check if your device supports 3D textures, use:
+```lua
+if graphics.TEXTURE_TYPE_3D !== undefined then
+    -- Device and graphics adapter support 3D textures
+end
 	*/
 	export function create_texture_async(
 		path: string,
 		table: AnyNotNil,
 		buffer?: buffer,
-	): LuaMultiReturn<[hash, any]>;
+	): LuaMultiReturn<[hash, number]>;
 
 	/**
 	 * Constructor-like function with two purposes:
@@ -6509,7 +6529,7 @@ width of the texture
 `height`
 height of the texture
 `depth`
-depth of the texture (i.e 1 for a 2D texture and 6 for a cube map)
+depth of the texture (i.e 1 for a 2D texture, 6 for a cube map, number of slices for an array texture and the actual depth of a 3D texture)
 `mipmaps`
 number of mipmaps of the texture
 `flags`
@@ -6519,9 +6539,11 @@ The texture type. Supported values:
 
 
 - `graphics.TEXTURE_TYPE_2D`
-- `graphics.TEXTURE_TYPE_IMAGE_2D`
-- `graphics.TEXTURE_TYPE_CUBE_MAP`
 - `graphics.TEXTURE_TYPE_2D_ARRAY`
+- `graphics.TEXTURE_TYPE_IMAGE_2D`
+- `graphics.TEXTURE_TYPE_3D`
+- `graphics.TEXTURE_TYPE_IMAGE_3D`
+- `graphics.TEXTURE_TYPE_CUBE_MAP`
 
 	*/
 	export function get_texture_info(path: hash | string): {
@@ -6749,6 +6771,9 @@ The texture type. Supported values:
 
 
 - `graphics.TEXTURE_TYPE_2D`
+- `graphics.TEXTURE_TYPE_IMAGE_2D`
+- `graphics.TEXTURE_TYPE_3D`
+- `graphics.TEXTURE_TYPE_IMAGE_3D`
 - `graphics.TEXTURE_TYPE_CUBE_MAP`
 
 
@@ -6796,6 +6821,8 @@ end
 optional x offset of the texture (in pixels)
 `y`
 optional y offset of the texture (in pixels)
+`z`
+optional z offset of the texture (in pixels). Only applies to 3D textures
 `mipmap`
 optional mipmap to upload the data to
 `compression_type`
@@ -6807,6 +6834,11 @@ optional specify the compression type for the data in the buffer object that hol
 
 	* @param buffer  The buffer of precreated pixel data
 ⚠ To update a cube map texture you need to pass in six times the amount of data via the buffer, since a cube map has six sides!
+⚠ 3D Textures are currently only supported on OpenGL and Vulkan adapters. To check if your device supports 3D textures, use:
+```lua
+if graphics.TEXTURE_TYPE_3D !== undefined then
+    -- Device and graphics adapter support 3D textures
+end
 	*/
 	export function set_texture(
 		path: hash | string,
@@ -7521,6 +7553,13 @@ declare namespace window {
 	export function get_dim_mode(): DimmingConstant;
 
 	/**
+	 * This returns the content scale of the current display.
+	 * @returns scale  The display scale
+	 * @see {@link https://defold.com/ref/stable/window/#window.get_display_scale|API Documentation}
+	 */
+	export function get_display_scale(): number;
+
+	/**
 	 * This returns the current lock state of the mouse cursor
 	 * @returns state  The lock state
 	 * @see {@link https://defold.com/ref/stable/window/#window.get_mouse_lock|API Documentation}
@@ -7591,6 +7630,29 @@ The callback value `data` is a table which currently holds these values
 	 * @see {@link https://defold.com/ref/stable/window/#window.set_mouse_lock|API Documentation}
 	 */
 	export function set_mouse_lock(flag: boolean): void;
+
+	/**
+	 * Sets the window position.
+	 * @param x  Horizontal position of window
+	 * @param y  Vertical position of window
+	 * @see {@link https://defold.com/ref/stable/window/#window.set_position|API Documentation}
+	 */
+	export function set_position(x: number, y: number): void;
+
+	/**
+	 * Sets the window size. Works on desktop platforms only.
+	 * @param width  Width of window
+	 * @param height  Height of window
+	 * @see {@link https://defold.com/ref/stable/window/#window.set_size|API Documentation}
+	 */
+	export function set_size(width: number, height: number): void;
+
+	/**
+	 * Sets the window title. Works on desktop platforms.
+	 * @param title  The title, encoded as UTF-8
+	 * @see {@link https://defold.com/ref/stable/window/#window.set_title|API Documentation}
+	 */
+	export function set_title(title: string): void;
 }
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
@@ -7838,9 +7900,9 @@ Not available in HTML5 build
 				error?: string;
 				bytes_received?: number;
 				bytes_total?: number;
-				range_start: number;
-				range_end: number;
-				document_size: number;
+				range_start?: number;
+				range_end?: number;
+				document_size?: number;
 			},
 		) => void,
 		headers?: { [key: string]: string },
