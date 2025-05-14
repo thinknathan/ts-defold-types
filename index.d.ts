@@ -5,7 +5,7 @@
 /// <reference types="./deprecated.d.ts" />
 /// <reference types="./socket.d.ts" />
 
-// DEFOLD. stable version 1.10.0 (591eb496d52f4140bc2c7de547131f1b9408b9b4)
+// DEFOLD. stable version 1.10.1 (d8e6e73a8efac6b9a72783027867e547b6a363e4)
 // =^..^=   =^..^=   =^..^=    =^..^=    =^..^=    =^..^=    =^..^= //
 
 /**
@@ -6144,7 +6144,7 @@ optional flag to determine wether or not the resource should take over ownership
 
 	/**
 	* Creates a sound data resource
-	* Supported formats are .oggc and .wavc
+	* Supported formats are .oggc, .opusc and .wavc
 	* @param path  the path to the resource. Must not already exist.
 	* @param options  A table containing parameters for the text. Supported entries:
 
@@ -6755,7 +6755,7 @@ optional flag to determine wether or not the resource should take over ownership
 	): void;
 
 	/**
-	 * Update internal sound resource (wavc/oggc) with new data
+	 * Update internal sound resource (wavc/oggc/opusc) with new data
 	 * @param path  The path to the resource
 	 * @param buffer  A lua string containing the binary sound data
 	 */
@@ -9567,6 +9567,18 @@ declare namespace model {
 	export function cancel(url: hash | url | string): void;
 
 	/**
+	 * Get AABB of the whole model in local coordinate space.
+	 * AABB information return as a table with `min` and `max` fields, where `min` and `max` has type `vmath.vector4`.
+	 * @param url  the model
+	 * @returns aabb  A table containing AABB of the model. If model has no meshes - return vmath.vector3(0,0,0) for min and max fields.
+	 * @see {@link https://defold.com/ref/stable/model/#model.get_aabb|API Documentation}
+	 */
+	export function get_aabb(url: hash | url | string): {
+		min: vmath.vector3;
+		max: vmath.vector3;
+	};
+
+	/**
 	 * Gets the id of the game object that corresponds to a model skeleton bone.
 	 * The returned game object can be used for parenting and transform queries.
 	 * This function has complexity `O(n)`, where `n` is the number of bones in the model skeleton.
@@ -9580,6 +9592,17 @@ declare namespace model {
 		url: hash | url | string,
 		bone_id: hash | string,
 	): hash;
+
+	/**
+	 * Get AABB of all meshes.
+	 * AABB information return as a table with `min` and `max` fields, where `min` and `max` has type `vmath.vector4`.
+	 * @param url  the model
+	 * @returns aabb  A table containing info about all AABB in the format
+	 * @see {@link https://defold.com/ref/stable/model/#model.get_mesh_aabb|API Documentation}
+	 */
+	export function get_mesh_aabb(
+		url: hash | url | string,
+	): LuaMap<hash, { min: vmath.vector3; max: vmath.vector3 }>;
 
 	/**
 	 * Get the enabled state of a mesh
