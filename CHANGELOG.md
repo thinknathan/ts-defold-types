@@ -1,6 +1,11 @@
 # Changelog
 
-## v1.10.1 (Upcoming)
+## v1.10.2
+
+- Update for latest Defold
+- Switch from `@ts-defold/type-gen` to `tsd-ext-type-gen`
+
+## v1.10.1
 
 - Update for latest Defold
 

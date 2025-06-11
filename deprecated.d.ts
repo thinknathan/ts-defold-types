@@ -25,16 +25,7 @@ declare namespace physics {
 	* @deprecated since v1.9.9
 	*/
 	export function set_listener(
-		callback: (
-			this: any,
-			event:
-				| collision_event
-				| contact_point_event
-				| ray_cast_missed
-				| ray_cast_response
-				| trigger_event,
-			data: object,
-		) => void,
+		callback: (this: any, event: any, data: object) => void,
 	): void;
 }
 
@@ -113,335 +104,335 @@ declare namespace render {
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const BLEND_CONSTANT_ALPHA: graphics.BlendConstant;
+	export const BLEND_CONSTANT_ALPHA: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const BLEND_CONSTANT_COLOR: graphics.BlendConstant;
+	export const BLEND_CONSTANT_COLOR: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const BLEND_DST_ALPHA: graphics.BlendConstant;
+	export const BLEND_DST_ALPHA: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const BLEND_DST_COLOR: graphics.BlendConstant;
+	export const BLEND_DST_COLOR: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const BLEND_ONE: graphics.BlendConstant;
+	export const BLEND_ONE: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const BLEND_ONE_MINUS_CONSTANT_ALPHA: graphics.BlendConstant;
+	export const BLEND_ONE_MINUS_CONSTANT_ALPHA: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const BLEND_ONE_MINUS_CONSTANT_COLOR: graphics.BlendConstant;
+	export const BLEND_ONE_MINUS_CONSTANT_COLOR: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const BLEND_ONE_MINUS_DST_ALPHA: graphics.BlendConstant;
+	export const BLEND_ONE_MINUS_DST_ALPHA: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const BLEND_ONE_MINUS_DST_COLOR: graphics.BlendConstant;
+	export const BLEND_ONE_MINUS_DST_COLOR: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const BLEND_ONE_MINUS_SRC_ALPHA: graphics.BlendConstant;
+	export const BLEND_ONE_MINUS_SRC_ALPHA: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const BLEND_ONE_MINUS_SRC_COLOR: graphics.BlendConstant;
+	export const BLEND_ONE_MINUS_SRC_COLOR: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const BLEND_SRC_ALPHA: graphics.BlendConstant;
+	export const BLEND_SRC_ALPHA: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const BLEND_SRC_ALPHA_SATURATE: graphics.BlendConstant;
+	export const BLEND_SRC_ALPHA_SATURATE: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const BLEND_SRC_COLOR: graphics.BlendConstant;
+	export const BLEND_SRC_COLOR: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const BLEND_ZERO: graphics.BlendConstant;
+	export const BLEND_ZERO: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const BUFFER_COLOR0_BIT: graphics.BufferConstant;
+	export const BUFFER_COLOR0_BIT: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const BUFFER_COLOR1_BIT: graphics.BufferConstant;
+	export const BUFFER_COLOR1_BIT: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const BUFFER_COLOR2_BIT: graphics.BufferConstant;
+	export const BUFFER_COLOR2_BIT: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const BUFFER_COLOR3_BIT: graphics.BufferConstant;
+	export const BUFFER_COLOR3_BIT: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const BUFFER_COLOR_BIT: graphics.BufferConstant;
+	export const BUFFER_COLOR_BIT: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const BUFFER_DEPTH_BIT: graphics.BufferConstant;
+	export const BUFFER_DEPTH_BIT: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const BUFFER_STENCIL_BIT: graphics.BufferConstant;
+	export const BUFFER_STENCIL_BIT: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const COMPARE_FUNC_ALWAYS: graphics.CompareFuncConstant;
+	export const COMPARE_FUNC_ALWAYS: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const COMPARE_FUNC_EQUAL: graphics.CompareFuncConstant;
+	export const COMPARE_FUNC_EQUAL: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const COMPARE_FUNC_GEQUAL: graphics.CompareFuncConstant;
+	export const COMPARE_FUNC_GEQUAL: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const COMPARE_FUNC_GREATER: graphics.CompareFuncConstant;
+	export const COMPARE_FUNC_GREATER: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const COMPARE_FUNC_LEQUAL: graphics.CompareFuncConstant;
+	export const COMPARE_FUNC_LEQUAL: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const COMPARE_FUNC_LESS: graphics.CompareFuncConstant;
+	export const COMPARE_FUNC_LESS: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const COMPARE_FUNC_NEVER: graphics.CompareFuncConstant;
+	export const COMPARE_FUNC_NEVER: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const COMPARE_FUNC_NOTEQUAL: graphics.CompareFuncConstant;
+	export const COMPARE_FUNC_NOTEQUAL: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const FACE_BACK: graphics.FaceConstant;
+	export const FACE_BACK: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const FACE_FRONT: graphics.FaceConstant;
+	export const FACE_FRONT: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const FACE_FRONT_AND_BACK: graphics.FaceConstant;
+	export const FACE_FRONT_AND_BACK: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const FILTER_LINEAR: graphics.FilterConstant;
+	export const FILTER_LINEAR: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const FILTER_NEAREST: graphics.FilterConstant;
+	export const FILTER_NEAREST: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const FORMAT_DEPTH: graphics.FormatConstant;
+	export const FORMAT_DEPTH: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const FORMAT_LUMINANCE: graphics.FormatConstant;
-
-	/**
-	 * May be undefined if the format isn't supported
-	 * @deprecated since v1.9.2
-	 */
-	export const FORMAT_R16F: graphics.FormatConstant | undefined;
+	export const FORMAT_LUMINANCE: number;
 
 	/**
 	 * May be undefined if the format isn't supported
 	 * @deprecated since v1.9.2
 	 */
-	export const FORMAT_R32F: graphics.FormatConstant | undefined;
+	export const FORMAT_R16F: number | undefined;
 
 	/**
 	 * May be undefined if the format isn't supported
 	 * @deprecated since v1.9.2
 	 */
-	export const FORMAT_RG16F: graphics.FormatConstant | undefined;
+	export const FORMAT_R32F: number | undefined;
 
 	/**
 	 * May be undefined if the format isn't supported
 	 * @deprecated since v1.9.2
 	 */
-	export const FORMAT_RG32F: graphics.FormatConstant | undefined;
-
-	/**
-	 * @deprecated since v1.9.2
-	 */
-	export const FORMAT_RGB: graphics.FormatConstant;
+	export const FORMAT_RG16F: number | undefined;
 
 	/**
 	 * May be undefined if the format isn't supported
 	 * @deprecated since v1.9.2
 	 */
-	export const FORMAT_RGB16F: graphics.FormatConstant | undefined;
+	export const FORMAT_RG32F: number | undefined;
+
+	/**
+	 * @deprecated since v1.9.2
+	 */
+	export const FORMAT_RGB: number;
 
 	/**
 	 * May be undefined if the format isn't supported
 	 * @deprecated since v1.9.2
 	 */
-	export const FORMAT_RGB32F: graphics.FormatConstant | undefined;
-
-	/**
-	 * @deprecated since v1.9.2
-	 */
-	export const FORMAT_RGBA: graphics.FormatConstant;
+	export const FORMAT_RGB16F: number | undefined;
 
 	/**
 	 * May be undefined if the format isn't supported
 	 * @deprecated since v1.9.2
 	 */
-	export const FORMAT_RGBA16F: graphics.FormatConstant | undefined;
+	export const FORMAT_RGB32F: number | undefined;
+
+	/**
+	 * @deprecated since v1.9.2
+	 */
+	export const FORMAT_RGBA: number;
 
 	/**
 	 * May be undefined if the format isn't supported
 	 * @deprecated since v1.9.2
 	 */
-	export const FORMAT_RGBA32F: graphics.FormatConstant | undefined;
+	export const FORMAT_RGBA16F: number | undefined;
+
+	/**
+	 * May be undefined if the format isn't supported
+	 * @deprecated since v1.9.2
+	 */
+	export const FORMAT_RGBA32F: number | undefined;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const FORMAT_STENCIL: graphics.FormatConstant;
+	export const FORMAT_STENCIL: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const STATE_BLEND: graphics.StateConstant;
+	export const STATE_BLEND: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const STATE_CULL_FACE: graphics.StateConstant;
+	export const STATE_CULL_FACE: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const STATE_DEPTH_TEST: graphics.StateConstant;
+	export const STATE_DEPTH_TEST: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const STATE_POLYGON_OFFSET_FILL: graphics.StateConstant;
+	export const STATE_POLYGON_OFFSET_FILL: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const STATE_STENCIL_TEST: graphics.StateConstant;
+	export const STATE_STENCIL_TEST: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const STENCIL_OP_DECR: graphics.StencilConstant;
+	export const STENCIL_OP_DECR: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const STENCIL_OP_DECR_WRAP: graphics.StencilConstant;
+	export const STENCIL_OP_DECR_WRAP: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const STENCIL_OP_INCR: graphics.StencilConstant;
+	export const STENCIL_OP_INCR: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const STENCIL_OP_INCR_WRAP: graphics.StencilConstant;
+	export const STENCIL_OP_INCR_WRAP: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const STENCIL_OP_INVERT: graphics.StencilConstant;
+	export const STENCIL_OP_INVERT: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const STENCIL_OP_KEEP: graphics.StencilConstant;
+	export const STENCIL_OP_KEEP: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const STENCIL_OP_REPLACE: graphics.StencilConstant;
+	export const STENCIL_OP_REPLACE: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const STENCIL_OP_ZERO: graphics.StencilConstant;
+	export const STENCIL_OP_ZERO: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const WRAP_CLAMP_TO_BORDER: graphics.WrapConstant;
+	export const WRAP_CLAMP_TO_BORDER: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const WRAP_CLAMP_TO_EDGE: graphics.WrapConstant;
+	export const WRAP_CLAMP_TO_EDGE: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const WRAP_MIRRORED_REPEAT: graphics.WrapConstant;
+	export const WRAP_MIRRORED_REPEAT: number;
 
 	/**
 	 * @deprecated since v1.9.2
 	 */
-	export const WRAP_REPEAT: graphics.WrapConstant;
+	export const WRAP_REPEAT: number;
 }
 
 declare namespace resource {
@@ -449,187 +440,187 @@ declare namespace resource {
 	 * BASIS_UASTC compression type
 	 * @deprecated since v1.9.2
 	 */
-	export const COMPRESSION_TYPE_BASIS_UASTC: graphics.CompressionConstant;
+	export const COMPRESSION_TYPE_BASIS_UASTC: number;
 
 	/**
 	 * COMPRESSION_TYPE_DEFAULT compression type
 	 * @deprecated since v1.9.2
 	 */
-	export const COMPRESSION_TYPE_DEFAULT: graphics.CompressionConstant;
+	export const COMPRESSION_TYPE_DEFAULT: number;
 
 	/**
 	 * luminance type texture format
 	 * @deprecated since v1.9.2
 	 */
-	export const TEXTURE_FORMAT_LUMINANCE: graphics.TextureConstant;
+	export const TEXTURE_FORMAT_LUMINANCE: number;
 
 	/**
 	 * R16F type texture format
 	 * @deprecated since v1.9.2
 	 */
-	export const TEXTURE_FORMAT_R16F: graphics.TextureConstant;
+	export const TEXTURE_FORMAT_R16F: number;
 
 	/**
 	 * R32F type texture format
 	 * @deprecated since v1.9.2
 	 */
-	export const TEXTURE_FORMAT_R32F: graphics.TextureConstant;
+	export const TEXTURE_FORMAT_R32F: number;
 
 	/**
 	 * RG16F type texture format
 	 * @deprecated since v1.9.2
 	 */
-	export const TEXTURE_FORMAT_RG16F: graphics.TextureConstant;
+	export const TEXTURE_FORMAT_RG16F: number;
 
 	/**
 	 * RG32F type texture format
 	 * @deprecated since v1.9.2
 	 */
-	export const TEXTURE_FORMAT_RG32F: graphics.TextureConstant;
+	export const TEXTURE_FORMAT_RG32F: number;
 
 	/**
 	 * RGB type texture format
 	 * @deprecated since v1.9.2
 	 */
-	export const TEXTURE_FORMAT_RGB: graphics.TextureConstant;
+	export const TEXTURE_FORMAT_RGB: number;
 
 	/**
 	 * RGB16F type texture format
 	 * @deprecated since v1.9.2
 	 */
-	export const TEXTURE_FORMAT_RGB16F: graphics.TextureConstant;
+	export const TEXTURE_FORMAT_RGB16F: number;
 
 	/**
 	 * RGB32F type texture format
 	 * @deprecated since v1.9.2
 	 */
-	export const TEXTURE_FORMAT_RGB32F: graphics.TextureConstant;
+	export const TEXTURE_FORMAT_RGB32F: number;
 
 	/**
 	 * RGBA type texture format
 	 * @deprecated since v1.9.2
 	 */
-	export const TEXTURE_FORMAT_RGBA: graphics.TextureConstant;
+	export const TEXTURE_FORMAT_RGBA: number;
 
 	/**
 	 * RGBA16F type texture format
 	 * @deprecated since v1.9.2
 	 */
-	export const TEXTURE_FORMAT_RGBA16F: graphics.TextureConstant;
+	export const TEXTURE_FORMAT_RGBA16F: number;
 
 	/**
 	 * RGBA32F type texture format
 	 * @deprecated since v1.9.2
 	 */
-	export const TEXTURE_FORMAT_RGBA32F: graphics.TextureConstant;
+	export const TEXTURE_FORMAT_RGBA32F: number;
 
 	/**
 	 * RGBA_ASTC_4x4 type texture format
 	 * @deprecated since v1.9.2
 	 */
-	export const TEXTURE_FORMAT_RGBA_ASTC_4x4: graphics.TextureConstant;
+	export const TEXTURE_FORMAT_RGBA_ASTC_4x4: number;
 
 	/**
 	 * RGBA_BC3 type texture format
 	 * @deprecated since v1.9.2
 	 */
-	export const TEXTURE_FORMAT_RGBA_BC3: graphics.TextureConstant;
+	export const TEXTURE_FORMAT_RGBA_BC3: number;
 
 	/**
 	 * RGBA_BC7 type texture format
 	 * @deprecated since v1.9.2
 	 */
-	export const TEXTURE_FORMAT_RGBA_BC7: graphics.TextureConstant;
+	export const TEXTURE_FORMAT_RGBA_BC7: number;
 
 	/**
 	 * RGBA_ETC2 type texture format
 	 * @deprecated since v1.9.2
 	 */
-	export const TEXTURE_FORMAT_RGBA_ETC2: graphics.TextureConstant;
+	export const TEXTURE_FORMAT_RGBA_ETC2: number;
 
 	/**
 	 * RGBA_PVRTC_2BPPV1 type texture format
 	 * @deprecated since v1.9.2
 	 */
-	export const TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1: graphics.TextureConstant;
+	export const TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1: number;
 
 	/**
 	 * RGBA_PVRTC_4BPPV1 type texture format
 	 * @deprecated since v1.9.2
 	 */
-	export const TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1: graphics.TextureConstant;
+	export const TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1: number;
 
 	/**
 	 * RGB_BC1 type texture format
 	 * @deprecated since v1.9.2
 	 */
-	export const TEXTURE_FORMAT_RGB_BC1: graphics.TextureConstant;
+	export const TEXTURE_FORMAT_RGB_BC1: number;
 
 	/**
 	 * RGB_ETC1 type texture format
 	 * @deprecated since v1.9.2
 	 */
-	export const TEXTURE_FORMAT_RGB_ETC1: graphics.TextureConstant;
+	export const TEXTURE_FORMAT_RGB_ETC1: number;
 
 	/**
 	 * RGB_PVRTC_2BPPV1 type texture format
 	 * @deprecated since v1.9.2
 	 */
-	export const TEXTURE_FORMAT_RGB_PVRTC_2BPPV1: graphics.TextureConstant;
+	export const TEXTURE_FORMAT_RGB_PVRTC_2BPPV1: number;
 
 	/**
 	 * RGB_PVRTC_4BPPV1 type texture format
 	 * @deprecated since v1.9.2
 	 */
-	export const TEXTURE_FORMAT_RGB_PVRTC_4BPPV1: graphics.TextureConstant;
+	export const TEXTURE_FORMAT_RGB_PVRTC_4BPPV1: number;
 
 	/**
 	 * RG_BC5 type texture format
 	 * @deprecated since v1.9.2
 	 */
-	export const TEXTURE_FORMAT_RG_BC5: graphics.TextureConstant;
+	export const TEXTURE_FORMAT_RG_BC5: number;
 
 	/**
 	 * R_BC4 type texture format
 	 * @deprecated since v1.9.2
 	 */
-	export const TEXTURE_FORMAT_R_BC4: graphics.TextureConstant;
+	export const TEXTURE_FORMAT_R_BC4: number;
 
 	/**
 	 * 2D texture type
 	 * @deprecated since v1.9.2
 	 */
-	export const TEXTURE_TYPE_2D: graphics.TextureConstant;
+	export const TEXTURE_TYPE_2D: number;
 
 	/**
 	 * 2D Array texture type
 	 * @deprecated since v1.9.2
 	 */
-	export const TEXTURE_TYPE_2D_ARRAY: graphics.TextureConstant;
+	export const TEXTURE_TYPE_2D_ARRAY: number;
 
 	/**
 	 * Cube map texture type
 	 * @deprecated since v1.9.2
 	 */
-	export const TEXTURE_TYPE_CUBE_MAP: graphics.TextureConstant;
+	export const TEXTURE_TYPE_CUBE_MAP: number;
 
 	/**
 	 * Usage hint for creating textures that uses temporary memory
 	 * @deprecated since v1.9.2
 	 */
-	export const TEXTURE_USAGE_FLAG_MEMORYLESS: graphics.TextureConstant;
+	export const TEXTURE_USAGE_FLAG_MEMORYLESS: number;
 
 	/**
 	 * Usage hint for creating textures that can be sampled in a shader
 	 * @deprecated since v1.9.2
 	 */
-	export const TEXTURE_USAGE_FLAG_SAMPLE: graphics.TextureConstant;
+	export const TEXTURE_USAGE_FLAG_SAMPLE: number;
 
 	/**
 	 * Usage hint for creating textures that can be used for writing in a shader
 	 * @deprecated since v1.9.2
 	 */
-	export const TEXTURE_USAGE_FLAG_STORAGE: graphics.TextureConstant;
+	export const TEXTURE_USAGE_FLAG_STORAGE: number;
 }
 
 declare namespace camera {

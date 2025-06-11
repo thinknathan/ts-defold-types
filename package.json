@@ -15,7 +15,7 @@
 		"**/*.d.ts"
 	],
 	"scripts": {
-		"build": "type-gen && yarn run patch && yarn run prettier && yarn run lint",
+		"build": "xtgen -m global -o ./ && yarn run patch && yarn run prettier && yarn run lint",
 		"check": "tsc --noEmit",
 		"lint": "eslint ./index.d.ts --fix",
 		"patch": "node patch.mjs",
@@ -32,13 +32,13 @@
 	"devDependencies": {
 		"@commitlint/cli": "^19.3.0",
 		"@commitlint/config-conventional": "^19.2.2",
-		"@ts-defold/type-gen": "^0.5.2",
 		"eslint": "^9.0.0",
 		"husky": "^9.0.11",
 		"prettier": "^3.1.0",
-		"typescript": "5.7.2",
+		"tsd-ext-type-gen": "^2.0.0",
+		"typescript": "5.8.2",
 		"typescript-eslint": "^8.0.0",
-		"typescript-to-lua": "~1.29.1"
+		"typescript-to-lua": "~1.31.0"
 	},
 	"peerDependencies": {
 		"typescript-to-lua": ">=1.10.0"
