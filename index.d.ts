@@ -4,7 +4,7 @@
 /// <reference types="lua-types/special/jit-only" />
 /// <reference types="./deprecated.d.ts" />
 
-// Defold v1.10.2 (7a0e23b3fcab4c5db82f2b32f5d8ac5df9467c9d)
+// Defold v1.10.3 (1c76521bb8b08c63ef619aa8a5ab563dddf7b3cf)
 
 /**
  * Pretty printing of Lua values. This function prints Lua values
@@ -90,6 +90,18 @@ declare type bufferstream = LuaUserdata & number[] & object;
 /** @see {@link https://defold.com/ref/stable/b2d/|Box2D Documentation} @since 1.8.0 */
 declare namespace b2d {
 	/**
+	 * Box2D body
+	 * @param value
+	 * @see {@link https://defold.com/ref/stable/b2d/#b2d.b2Body|API Documentation}
+	 */
+	export function b2Body(value: any): void;
+	/**
+	 * Box2D world
+	 * @param value
+	 * @see {@link https://defold.com/ref/stable/b2d/#b2d.b2World|API Documentation}
+	 */
+	export function b2World(value: any): void;
+	/**
 	 * Get the Box2D body from a collision object
 	 * @param url the url to the game object collision component
 	 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_body|API Documentation}
@@ -106,6 +118,18 @@ declare namespace b2d {
 }
 
 declare namespace b2d {
+	/**
+	 * Box2D body
+	 * @param value
+	 * @see {@link https://defold.com/ref/stable/b2d/#b2d.b2Body|API Documentation}
+	 */
+	export function b2Body(value: any): void;
+	/**
+	 * Box2D world
+	 * @param value
+	 * @see {@link https://defold.com/ref/stable/b2d/#b2d.b2World|API Documentation}
+	 */
+	export function b2World(value: any): void;
 	export namespace body {
 		/**
 		 * Dynamic body
@@ -1573,7 +1597,7 @@ go.animate("go", "position.y", go.PLAYBACK_LOOP_PINGPONG, 100, vec, 2.0)
 	export function animate(
 		url: hash | url | string,
 		property: hash | string,
-		playback: number,
+		playback: any          ,
 		to: vmath.quaternion | vmath.vector3 | vmath.vector4 | number,
 		easing:
 			ReturnType<typeof vmath.vector> | vmath.quaternion | vmath.vector3 | vmath.vector4 | number,
@@ -1670,7 +1694,7 @@ end
 ```
 * @see {@link https://defold.com/ref/stable/go/#go.final|API Documentation}
  */
-	export function final(this: object): void;
+	export function final(this: any): void;
 	/**
  * This is a callback-function, which is called by the engine at fixed intervals to update the state of a script
 component. The function will be called if 'Fixed Update Frequency' is enabled in the Engine section of game.project.
@@ -1680,13 +1704,13 @@ physics (enabled by ticking 'Use Fixed Timestep' in the Physics section of game.
  * @param dt the time-step of the frame update
 * @see {@link https://defold.com/ref/stable/go/#go.fixed_update|API Documentation}
  */
-	export function fixed_update(this: object, dt: number): void;
+	export function fixed_update(this: any, dt: number): void;
 	/**
  * gets a named property of the specified game object or component
  * @param url url of the game object or component having the property
  * @param property id of the property to retrieve
  * @param options optional options table
-- index integer index into array property (1 based)
+- index number index into array property (1 based)
 - key hash name of internal property
  * @example Get a property "speed" from a script "player", the property must be declared in the player-script:
 ```lua
@@ -1937,7 +1961,7 @@ end
 ```
 * @see {@link https://defold.com/ref/stable/go/#go.init|API Documentation}
  */
-	export function init(this: object): void;
+	export function init(this: any): void;
 	/**
  * This is a callback-function, which is called by the engine when user input is sent to the game object instance of the script.
 It can be used to take action on the input, e.g. move the instance according to the input.
@@ -2158,7 +2182,7 @@ end
 * @see {@link https://defold.com/ref/stable/go/#go.on_input|API Documentation}
  */
 	export function on_input(
-		this: object,
+		this: any,
 		action_id: hash,
 		action: object,
 	): boolean | undefined;
@@ -2200,7 +2224,7 @@ end
 * @see {@link https://defold.com/ref/stable/go/#go.on_message|API Documentation}
  */
 	export function on_message(
-		this: object,
+		this: any,
 		message_id: hash,
 		message: object,
 		sender: url,
@@ -2243,7 +2267,7 @@ end
 ```
 * @see {@link https://defold.com/ref/stable/go/#go.on_reload|API Documentation}
  */
-	export function on_reload(this: object): void;
+	export function on_reload(this: any): void;
 	/**
  * This function defines a property which can then be used in the script through the self-reference.
 The properties defined this way are automatically exposed in the editor in game objects and collections which use the script.
@@ -2322,7 +2346,8 @@ end
 	export function set(
 		url: hash | url | string,
 		property: hash | string,
-		value: any | object,
+		value:
+			hash | url | vmath.quaternion | vmath.vector3 | vmath.vector4 | any | boolean | number,
 		options?: object,
 	): void;
 	/**
@@ -2439,7 +2464,7 @@ end
 ```
 * @see {@link https://defold.com/ref/stable/go/#go.update|API Documentation}
  */
-	export function update(this: object, dt: number): void;
+	export function update(this: any, dt: number): void;
 	/**
  * ⚠ The function uses world transformation calculated at the end of previous frame.
  * @param position position which need to be converted
@@ -3373,7 +3398,7 @@ end
 ```
 * @see {@link https://defold.com/ref/stable/gui/#gui.final|API Documentation}
  */
-	export function final(this: object): void;
+	export function final(this: any): void;
 	/**
  * Instead of using specific getters such as gui.get_position or gui.get_scale,
 you can use gui.get instead and supply the property as a string or a hash.
@@ -3400,7 +3425,7 @@ You can also use this function to get material constants.
  * @param node node to get the property for
  * @param property the property to retrieve
  * @param options optional options table (only applicable for material constants)
-- `index` integer index into array property (1 based)
+- `index` number index into array property (1 based)
  * @example Get properties on existing nodes:
 ```lua
 local node = gui.get_node("my_box_node")
@@ -3908,7 +3933,7 @@ end
 ```
 * @see {@link https://defold.com/ref/stable/gui/#gui.init|API Documentation}
  */
-	export function init(this: object): void;
+	export function init(this: any): void;
 	/**
  * Returns `true` if a node is enabled and `false` if it's not.
 Disabled nodes are not rendered and animations acting on them are not evaluated.
@@ -4233,7 +4258,7 @@ end
 * @see {@link https://defold.com/ref/stable/gui/#gui.on_input|API Documentation}
  */
 	export function on_input(
-		this: object,
+		this: any,
 		action_id: hash,
 		action: object,
 	): boolean | undefined;
@@ -4249,7 +4274,7 @@ See the update function for examples on how to use this callback-function.
 * @see {@link https://defold.com/ref/stable/gui/#gui.on_message|API Documentation}
  */
 	export function on_message(
-		this: object,
+		this: any,
 		message_id: hash,
 		message: object,
 	): void;
@@ -4267,7 +4292,7 @@ end
 ```
 * @see {@link https://defold.com/ref/stable/gui/#gui.on_reload|API Documentation}
  */
-	export function on_reload(this: object): void;
+	export function on_reload(this: any): void;
 	/**
  * Tests whether a coordinate is within the bounding box of a
 node.
@@ -4444,7 +4469,7 @@ If the material has a constant array called 'tint_array' specified in the materi
  * @param property the property to set
  * @param value the property to set
  * @param options optional options table (only applicable for material constants)
-- `index` integer index into array property (1 based)
+- `index` number index into array property (1 based)
 - `key` hash name of internal property
  * @example Updates the position property on an existing node:
 ```lua
@@ -5086,7 +5111,7 @@ end
 ```
 * @see {@link https://defold.com/ref/stable/gui/#gui.update|API Documentation}
  */
-	export function update(this: object, dt: number): void;
+	export function update(this: any, dt: number): void;
 }
 declare namespace gui {
 	export type final = (this: any) => void;
@@ -5320,7 +5345,7 @@ A Lua error is raised for syntax errors.
  * @param json json data
  * @param options table with decode options
 
-bool `decode_null_as_userdata`: wether to decode a JSON null value as json.null or nil (default is nil)
+boolean `decode_null_as_userdata`: wether to decode a JSON null value as json.null or nil (default is nil)
 
  * @example Converting a string containing JSON data into a Lua table:
 ```lua
@@ -5528,7 +5553,7 @@ DEBUG:SCRIPT: MOUNTS,
 }
 ```
  */
-	export function get_mounts(): unknown;
+	export function get_mounts(): object;
 	/**
  * Is any liveupdate data mounted and currently in use?
 This can be used to determine if a new manifest or zip file should be downloaded.
@@ -6969,6 +6994,11 @@ render.clear({[graphics.BUFFER_TYPE_COLOR0_BIT] = vmath.vector4(0, 0, 0, 0), [gr
 		[key: number]: vmath.vector4 | number;
 	}): void;
 	/**
+	 * Constant buffer
+	 * @param value
+	 */
+	export function constant_buffer(value: any): constant_buffer;
+	/**
  * Constant buffers are used to set shader program variables and are optionally passed to the `render.draw()` function.
 The buffer's constant elements can be indexed like an ordinary Lua table, but you can't iterate over them with pairs() or ipairs().
  * @example Set a "tint" constant in a constant buffer in the render script:
@@ -7059,7 +7089,7 @@ function update(self, dt)
 end
 ```
  */
-	export function disable_texture(binding: hash | number | string): void;
+	export function disable_texture(binding: hash | any | string): void;
 	/**
  * Dispatches the currently enabled compute program. The dispatch call takes three arguments x,y,z which constitutes
 the 'global working group' of the compute dispatch. Together with the 'local working group' specified in the compute shader
@@ -7157,7 +7187,7 @@ render.draw(self.my_pred, {frustum = frustum, frustum_planes = render.FRUSTUM_PL
 ```
  */
 	export function draw(
-		predicate: any,
+		predicate: number,
 		options?: {
 			frustum?: vmath.matrix4;
 			frustum_planes?: number;
@@ -7296,7 +7326,7 @@ end
 	export function enable_texture(
 		binding: hash | number | string,
 		handle_or_name: hash | any | string,
-		buffer_type?: number,
+		buffer_type?: any          ,
 	): void;
 	/**
  * Returns the logical window height that is set in the "game.project" settings.
@@ -7328,7 +7358,7 @@ local w = render.get_render_target_height('my_rt_resource', graphics.BUFFER_TYPE
  */
 	export function get_render_target_height(
 		render_target: render_target,
-		buffer_type: number,
+		buffer_type: any          ,
 	): number;
 	/**
  * Returns the specified buffer width from a render target.
@@ -7350,7 +7380,7 @@ local w = render.get_render_target_width('my_rt_resource', graphics.BUFFER_TYPE_
  */
 	export function get_render_target_width(
 		render_target: render_target,
-		buffer_type: number,
+		buffer_type: any          ,
 	): number;
 	/**
  * Returns the logical window width that is set in the "game.project" settings.
@@ -7401,7 +7431,12 @@ local p = render.predicate({hash("opaque"), hash("smoke")})
  */
 	export function predicate(
 		tags: Array<hash | string> | LuaSet<hash | string>,
-	): unknown;
+	): number;
+	/**
+	 * Render target
+	 * @param value
+	 */
+	export function render_target(value: number): render_target;
 	/**
  * Creates a new render target according to the supplied
 specification table.
@@ -8040,6 +8075,11 @@ render.set_viewport(0, 0, render.get_window_width(), render.get_window_height())
 		width: number,
 		height: number,
 	): void;
+	/**
+	 * Texture handle
+	 * @param value
+	 */
+	export function texture(value: number): void;
 }
 declare namespace render {
 	export type constant_buffer = { [key: string]: any };
@@ -8127,25 +8167,25 @@ string the id of the animation, used in e.g sprite.play_animation
 
 
 `width`
-integer the width of the animation
+number the width of the animation
 
 
 
 
 `height`
-integer the height of the animation
+number the height of the animation
 
 
 
 
 `frame_start`
-integer index to the first geometry of the animation. Indices are lua based and must be in the range of 1 ..  in atlas.
+number index to the first geometry of the animation. Indices are lua based and must be in the range of 1 ..  in atlas.
 
 
 
 
 `frame_end`
-integer index to the last geometry of the animation (non-inclusive). Indices are lua based and must be in the range of 1 ..  in atlas.
+number index to the last geometry of the animation (non-inclusive). Indices are lua based and must be in the range of 1 ..  in atlas.
 
 
 
@@ -8157,7 +8197,7 @@ constant optional playback mode of the animation, the default value is go.PLAYBA
 
 
 `fps`
-integer optional fps of the animation, the default value is 30
+number optional fps of the animation, the default value is 30
 
 
 
@@ -8261,8 +8301,8 @@ function init(self)
                 id = 'idle0',
                 width = 128,
                 height = 128,
-                pivot_x = 64,
-                pivot_y = 64,
+                pivot_x = 0.5,
+                pivot_y = 0.5,
                 vertices  = {
                     0,   0,
                     0,   128,
@@ -8851,19 +8891,17 @@ end
  * @returns A table containing info about the render target:
 
 `handle`
-handle the opaque handle to the texture resource
+number the opaque handle to the texture resource
 'attachments'
 table a table of attachments, where each attachment contains the following entries:
-`handle`
-handle the opaque handle to the texture resource
 `width`
-integer width of the texture
+number width of the texture
 `height`
-integer height of the texture
+number height of the texture
 `depth`
-integer depth of the texture (i.e 1 for a 2D texture and 6 for a cube map)
+number depth of the texture (i.e 1 for a 2D texture and 6 for a cube map)
 `mipmaps`
-integer number of mipmaps of the texture
+number number of mipmaps of the texture
 `type`
 number The texture type. Supported values:
 
@@ -8935,7 +8973,7 @@ end
  * @param options A table containing parameters for the text. Supported entries:
 
 `width`
-integer The width of the text field. Not used if `line_break` is false.
+number The width of the text field. Not used if `line_break` is false.
 `leading`
 number The leading (default 1.0)
 `tracking`
@@ -8974,19 +9012,19 @@ end
  * @returns A table containing info about the texture:
 
 `handle`
-handle the opaque handle to the texture resource
+number the opaque handle to the texture resource
 `width`
-integer width of the texture
+number width of the texture
 `height`
-integer height of the texture
+number height of the texture
 `depth`
-integer depth of the texture (i.e 1 for a 2D texture, 6 for a cube map, the actual depth of a 3D texture)
+number depth of the texture (i.e 1 for a 2D texture, 6 for a cube map, the actual depth of a 3D texture)
 `page_count`
-integer number of pages of the texture array. For 2D texture value is 1. For cube map - 6
+number number of pages of the texture array. For 2D texture value is 1. For cube map - 6
 `mipmaps`
-integer number of mipmaps of the texture
+number number of mipmaps of the texture
 `flags`
-integer usage hints of the texture.
+number usage hints of the texture.
 `type`
 number The texture type. Supported values:
 
@@ -9163,25 +9201,25 @@ string the id of the animation, used in e.g sprite.play_animation
 
 
 `width`
-integer the width of the animation
+number the width of the animation
 
 
 
 
 `height`
-integer the height of the animation
+number the height of the animation
 
 
 
 
 `frame_start`
-integer index to the first geometry of the animation. Indices are lua based and must be in the range of 1 ..  in atlas.
+number index to the first geometry of the animation. Indices are lua based and must be in the range of 1 ..  in atlas.
 
 
 
 
 `frame_end`
-integer index to the last geometry of the animation (non-inclusive). Indices are lua based and must be in the range of 1 ..  in atlas.
+number index to the last geometry of the animation (non-inclusive). Indices are lua based and must be in the range of 1 ..  in atlas.
 
 
 
@@ -9193,7 +9231,7 @@ constant optional playback mode of the animation, the default value is go.PLAYBA
 
 
 `fps`
-integer optional fps of the animation, the default value is 30
+number optional fps of the animation, the default value is 30
 
 
 
@@ -9632,6 +9670,11 @@ declare namespace socket {
 	 */
 	export const _VERSION: string;
 	/**
+	 * TCP client object
+	 * @param value
+	 */
+	export function client(value: any): void;
+	/**
  * This function is a shortcut that creates and returns a TCP client object connected to a remote
 address at a given port. Optionally, the user can also specify the local address and port to
 bind (`locaddr` and `locport`), or restrict the socket family to `"inet"` or `"inet6"`.
@@ -9663,6 +9706,11 @@ print(socket.gettime() - t .. " seconds elapsed")
 ```
  */
 	export function gettime(): number;
+	/**
+	 * TCP master object
+	 * @param value
+	 */
+	export function master(value: any): void;
 	/**
  * This function creates and returns a clean try function that allows for cleanup before the exception is raised.
 The `finalizer` function will be called in protected mode (see protect).
@@ -9785,6 +9833,11 @@ Note: The UDP object returned will have the option "ipv6-v6only" set to true.
 	export function udp6(): LuaMultiReturn<
 		[typeof socket.unconnected | undefined, string | undefined]
 	>;
+	/**
+	 * unconnected UDP object
+	 * @param value
+	 */
+	export function unconnected(value: any): void;
 	export namespace dns {
 		/**
  * This function converts a host name to IPv4 or IPv6 address.
@@ -11688,7 +11741,7 @@ Timers created within a script will automatically die when the script is deleted
 `self`
 object The current object
 `handle`
-integer The handle of the timer
+number The handle of the timer
 `time_elapsed`
 number The elapsed time - on first trigger it is time since timer.delay call, otherwise time since last trigger
 
