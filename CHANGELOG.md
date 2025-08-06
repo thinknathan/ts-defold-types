@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.10.4
+
+- Update for latest Defold
+
+## v1.10.3
+
+- Update for latest Defold
+
 ## v1.10.2
 
 - Update for latest Defold
