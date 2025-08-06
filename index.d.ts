@@ -87,7 +87,7 @@ declare type buffer = object;
  */
 declare type bufferstream = LuaUserdata & number[] & object;
 
-declare namespace missingName {
+declare namespace font {
 	/**
  * Asynchronoously adds more glyphs to a .fontc resource
  * @param path The path to the .fontc resource
@@ -117,7 +117,7 @@ local requestid = font.add_glyphs("/path/to/my.fontc", "abcABC123", function (se
 -- Remove glyphs
 local requestid = font.remove_glyphs("/path/to/my.fontc", "abcABC123")
 ```
-* @see {@link https://defold.com/ref/stable/missingName/#missingName.add_glyphs|API Documentation}
+* @see {@link https://defold.com/ref/stable/font/#font.add_glyphs|API Documentation}
  */
 	export function add_glyphs(
 		path: hash | string,
@@ -133,25 +133,13 @@ local requestid = font.remove_glyphs("/path/to/my.fontc", "abcABC123")
 	 * Removes glyphs from the font
 	 * @param path The path to the .fontc resource
 	 * @param text A string with unique unicode characters to be removed
-	 * @see {@link https://defold.com/ref/stable/missingName/#missingName.remove_glyphs|API Documentation}
+	 * @see {@link https://defold.com/ref/stable/font/#font.remove_glyphs|API Documentation}
 	 */
 	export function remove_glyphs(path: hash | string, text: string): void;
 }
 
 /** @see {@link https://defold.com/ref/stable/b2d/|Box2D Documentation} @since 1.8.0 */
 declare namespace b2d {
-	/**
-	 * Box2D body
-	 * @param value
-	 * @see {@link https://defold.com/ref/stable/b2d/#b2d.b2Body|API Documentation}
-	 */
-	export function b2Body(value: any): void;
-	/**
-	 * Box2D world
-	 * @param value
-	 * @see {@link https://defold.com/ref/stable/b2d/#b2d.b2World|API Documentation}
-	 */
-	export function b2World(value: any): void;
 	/**
 	 * Get the Box2D body from a collision object
 	 * @param url the url to the game object collision component
@@ -169,18 +157,6 @@ declare namespace b2d {
 }
 
 declare namespace b2d {
-	/**
-	 * Box2D body
-	 * @param value
-	 * @see {@link https://defold.com/ref/stable/b2d/#b2d.b2Body|API Documentation}
-	 */
-	export function b2Body(value: any): void;
-	/**
-	 * Box2D world
-	 * @param value
-	 * @see {@link https://defold.com/ref/stable/b2d/#b2d.b2World|API Documentation}
-	 */
-	export function b2World(value: any): void;
 	export namespace body {
 		/**
 		 * Dynamic body
@@ -1648,7 +1624,8 @@ go.animate("go", "position.y", go.PLAYBACK_LOOP_PINGPONG, 100, vec, 2.0)
 	export function animate(
 		url: hash | url | string,
 		property: hash | string,
-		playback: any          ,
+		playback:
+			typeof go.PLAYBACK_LOOP_BACKWARD          ,
 		to: vmath.quaternion | vmath.vector3 | vmath.vector4 | number,
 		easing:
 			ReturnType<typeof vmath.vector> | vmath.quaternion | vmath.vector3 | vmath.vector4 | number,
@@ -1745,7 +1722,7 @@ end
 ```
 * @see {@link https://defold.com/ref/stable/go/#go.final|API Documentation}
  */
-	export function final(this: any): void;
+	export function final(this: LuaUserdata): void;
 	/**
  * This is a callback-function, which is called by the engine at fixed intervals to update the state of a script
 component. The function will be called if 'Fixed Update Frequency' is enabled in the Engine section of game.project.
@@ -1755,7 +1732,7 @@ physics (enabled by ticking 'Use Fixed Timestep' in the Physics section of game.
  * @param dt the time-step of the frame update
 * @see {@link https://defold.com/ref/stable/go/#go.fixed_update|API Documentation}
  */
-	export function fixed_update(this: any, dt: number): void;
+	export function fixed_update(this: LuaUserdata, dt: number): void;
 	/**
  * gets a named property of the specified game object or component
  * @param url url of the game object or component having the property
@@ -2012,7 +1989,7 @@ end
 ```
 * @see {@link https://defold.com/ref/stable/go/#go.init|API Documentation}
  */
-	export function init(this: any): void;
+	export function init(this: LuaUserdata): void;
 	/**
  * This is a callback-function, which is called by the engine when user input is sent to the game object instance of the script.
 It can be used to take action on the input, e.g. move the instance according to the input.
@@ -2233,7 +2210,7 @@ end
 * @see {@link https://defold.com/ref/stable/go/#go.on_input|API Documentation}
  */
 	export function on_input(
-		this: any,
+		this: LuaUserdata,
 		action_id: hash,
 		action: object,
 	): boolean | undefined;
@@ -2275,7 +2252,7 @@ end
 * @see {@link https://defold.com/ref/stable/go/#go.on_message|API Documentation}
  */
 	export function on_message(
-		this: any,
+		this: LuaUserdata,
 		message_id: hash,
 		message: object,
 		sender: url,
@@ -2318,7 +2295,7 @@ end
 ```
 * @see {@link https://defold.com/ref/stable/go/#go.on_reload|API Documentation}
  */
-	export function on_reload(this: any): void;
+	export function on_reload(this: LuaUserdata): void;
 	/**
  * This function defines a property which can then be used in the script through the self-reference.
 The properties defined this way are automatically exposed in the editor in game objects and collections which use the script.
@@ -2515,7 +2492,7 @@ end
 ```
 * @see {@link https://defold.com/ref/stable/go/#go.update|API Documentation}
  */
-	export function update(this: any, dt: number): void;
+	export function update(this: LuaUserdata, dt: number): void;
 	/**
  * ⚠ The function uses world transformation calculated at the end of previous frame.
  * @param position position which need to be converted
@@ -3449,7 +3426,7 @@ end
 ```
 * @see {@link https://defold.com/ref/stable/gui/#gui.final|API Documentation}
  */
-	export function final(this: any): void;
+	export function final(this: LuaUserdata): void;
 	/**
  * Instead of using specific getters such as gui.get_position or gui.get_scale,
 you can use gui.get instead and supply the property as a string or a hash.
@@ -3984,7 +3961,7 @@ end
 ```
 * @see {@link https://defold.com/ref/stable/gui/#gui.init|API Documentation}
  */
-	export function init(this: any): void;
+	export function init(this: LuaUserdata): void;
 	/**
  * Returns `true` if a node is enabled and `false` if it's not.
 Disabled nodes are not rendered and animations acting on them are not evaluated.
@@ -4309,7 +4286,7 @@ end
 * @see {@link https://defold.com/ref/stable/gui/#gui.on_input|API Documentation}
  */
 	export function on_input(
-		this: any,
+		this: LuaUserdata,
 		action_id: hash,
 		action: object,
 	): boolean | undefined;
@@ -4325,7 +4302,7 @@ See the update function for examples on how to use this callback-function.
 * @see {@link https://defold.com/ref/stable/gui/#gui.on_message|API Documentation}
  */
 	export function on_message(
-		this: any,
+		this: LuaUserdata,
 		message_id: hash,
 		message: object,
 	): void;
@@ -4343,7 +4320,7 @@ end
 ```
 * @see {@link https://defold.com/ref/stable/gui/#gui.on_reload|API Documentation}
  */
-	export function on_reload(this: any): void;
+	export function on_reload(this: LuaUserdata): void;
 	/**
  * Tests whether a coordinate is within the bounding box of a
 node.
@@ -5162,7 +5139,7 @@ end
 ```
 * @see {@link https://defold.com/ref/stable/gui/#gui.update|API Documentation}
  */
-	export function update(this: any, dt: number): void;
+	export function update(this: LuaUserdata, dt: number): void;
 }
 declare namespace gui {
 	export type final = (this: any) => void;
@@ -7045,11 +7022,6 @@ render.clear({[graphics.BUFFER_TYPE_COLOR0_BIT] = vmath.vector4(0, 0, 0, 0), [gr
 		[key: number]: vmath.vector4 | number;
 	}): void;
 	/**
-	 * Constant buffer
-	 * @param value
-	 */
-	export function constant_buffer(value: any): constant_buffer;
-	/**
  * Constant buffers are used to set shader program variables and are optionally passed to the `render.draw()` function.
 The buffer's constant elements can be indexed like an ordinary Lua table, but you can't iterate over them with pairs() or ipairs().
  * @example Set a "tint" constant in a constant buffer in the render script:
@@ -7140,7 +7112,7 @@ function update(self, dt)
 end
 ```
  */
-	export function disable_texture(binding: hash | any | string): void;
+	export function disable_texture(binding: hash | number | string): void;
 	/**
  * Dispatches the currently enabled compute program. The dispatch call takes three arguments x,y,z which constitutes
 the 'global working group' of the compute dispatch. Together with the 'local working group' specified in the compute shader
@@ -7376,8 +7348,14 @@ end
  */
 	export function enable_texture(
 		binding: hash | number | string,
-		handle_or_name: hash | any | string,
-		buffer_type?: any          ,
+		handle_or_name: hash | number | string,
+		buffer_type?:
+			| any
+			| typeof graphics.BUFFER_TYPE_COLOR1_BIT
+			 
+			 
+			 
+			 ,
 	): void;
 	/**
  * Returns the logical window height that is set in the "game.project" settings.
@@ -7409,7 +7387,13 @@ local w = render.get_render_target_height('my_rt_resource', graphics.BUFFER_TYPE
  */
 	export function get_render_target_height(
 		render_target: render_target,
-		buffer_type: any          ,
+		buffer_type:
+			| typeof graphics.BUFFER_TYPE_COLOR0_BIT
+			 
+			 
+			 
+			 
+			 ,
 	): number;
 	/**
  * Returns the specified buffer width from a render target.
@@ -7431,7 +7415,13 @@ local w = render.get_render_target_width('my_rt_resource', graphics.BUFFER_TYPE_
  */
 	export function get_render_target_width(
 		render_target: render_target,
-		buffer_type: any          ,
+		buffer_type:
+			| typeof graphics.BUFFER_TYPE_COLOR0_BIT
+			 
+			 
+			 
+			 
+			 ,
 	): number;
 	/**
  * Returns the logical window width that is set in the "game.project" settings.
@@ -7483,11 +7473,6 @@ local p = render.predicate({hash("opaque"), hash("smoke")})
 	export function predicate(
 		tags: Array<hash | string> | LuaSet<hash | string>,
 	): number;
-	/**
-	 * Render target
-	 * @param value
-	 */
-	export function render_target(value: number): render_target;
 	/**
  * Creates a new render target according to the supplied
 specification table.
@@ -8126,11 +8111,6 @@ render.set_viewport(0, 0, render.get_window_width(), render.get_window_height())
 		width: number,
 		height: number,
 	): void;
-	/**
-	 * Texture handle
-	 * @param value
-	 */
-	export function texture(value: number): void;
 }
 declare namespace render {
 	export type constant_buffer = { [key: string]: any };
@@ -9721,11 +9701,6 @@ declare namespace socket {
 	 */
 	export const _VERSION: string;
 	/**
-	 * TCP client object
-	 * @param value
-	 */
-	export function client(value: any): void;
-	/**
  * This function is a shortcut that creates and returns a TCP client object connected to a remote
 address at a given port. Optionally, the user can also specify the local address and port to
 bind (`locaddr` and `locport`), or restrict the socket family to `"inet"` or `"inet6"`.
@@ -9757,11 +9732,6 @@ print(socket.gettime() - t .. " seconds elapsed")
 ```
  */
 	export function gettime(): number;
-	/**
-	 * TCP master object
-	 * @param value
-	 */
-	export function master(value: any): void;
 	/**
  * This function creates and returns a clean try function that allows for cleanup before the exception is raised.
 The `finalizer` function will be called in protected mode (see protect).
@@ -9884,11 +9854,6 @@ Note: The UDP object returned will have the option "ipv6-v6only" set to true.
 	export function udp6(): LuaMultiReturn<
 		[typeof socket.unconnected | undefined, string | undefined]
 	>;
-	/**
-	 * unconnected UDP object
-	 * @param value
-	 */
-	export function unconnected(value: any): void;
 	export namespace dns {
 		/**
  * This function converts a host name to IPv4 or IPv6 address.
