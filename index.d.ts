@@ -4,7 +4,7 @@
 /// <reference types="lua-types/special/jit-only" />
 /// <reference types="./deprecated.d.ts" />
 
-// Defold v1.10.3 (1c76521bb8b08c63ef619aa8a5ab563dddf7b3cf)
+// Defold v1.10.4 (1aafd0a262ff40214ed7f51302d92fa587c607ef)
 
 /**
  * Pretty printing of Lua values. This function prints Lua values
@@ -86,6 +86,57 @@ declare type buffer = object;
  * A data stream derived from a buffer.
  */
 declare type bufferstream = LuaUserdata & number[] & object;
+
+declare namespace missingName {
+	/**
+ * Asynchronoously adds more glyphs to a .fontc resource
+ * @param path The path to the .fontc resource
+ * @param text A string with unique unicode characters to be loaded
+ * @param callback (optional) A callback function that is called after the request is finished
+
+`self`
+object The current object.
+`request_id`
+number The request id
+`result`
+boolean True if request was succesful
+`errstring`
+string `nil` if the request was successful
+
+ * @returns Returns the asynchronous request id
+ * @example ```lua
+-- Add glyphs
+local requestid = font.add_glyphs("/path/to/my.fontc", "abcABC123", function (self, request, result, errstring)
+        -- make a note that all the glyphs are loaded
+        -- and we're ready to present the text
+        self.dialog_text_ready = true
+    end)
+```
+
+```lua
+-- Remove glyphs
+local requestid = font.remove_glyphs("/path/to/my.fontc", "abcABC123")
+```
+* @see {@link https://defold.com/ref/stable/missingName/#missingName.add_glyphs|API Documentation}
+ */
+	export function add_glyphs(
+		path: hash | string,
+		text: string,
+		callback?: (
+			this: any,
+			request_id: any,
+			result: any,
+			errstring: any,
+		) => void,
+	): number;
+	/**
+	 * Removes glyphs from the font
+	 * @param path The path to the .fontc resource
+	 * @param text A string with unique unicode characters to be removed
+	 * @see {@link https://defold.com/ref/stable/missingName/#missingName.remove_glyphs|API Documentation}
+	 */
+	export function remove_glyphs(path: hash | string, text: string): void;
+}
 
 /** @see {@link https://defold.com/ref/stable/b2d/|Box2D Documentation} @since 1.8.0 */
 declare namespace b2d {
