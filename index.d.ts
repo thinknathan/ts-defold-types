@@ -4,7 +4,7 @@
 /// <reference types="lua-types/special/jit-only" />
 /// <reference types="./deprecated.d.ts" />
 
-// Defold v1.10.4 (1aafd0a262ff40214ed7f51302d92fa587c607ef)
+// Defold v1.11.0 (7c81792859a6da7f7401c0ac37a4cc83bb500ff6)
 
 /**
  * Pretty printing of Lua values. This function prints Lua values
@@ -86,57 +86,6 @@ declare type buffer = object;
  * A data stream derived from a buffer.
  */
 declare type bufferstream = LuaUserdata & number[] & object;
-
-declare namespace font {
-	/**
- * Asynchronoously adds more glyphs to a .fontc resource
- * @param path The path to the .fontc resource
- * @param text A string with unique unicode characters to be loaded
- * @param callback (optional) A callback function that is called after the request is finished
-
-`self`
-object The current object.
-`request_id`
-number The request id
-`result`
-boolean True if request was succesful
-`errstring`
-string `nil` if the request was successful
-
- * @returns Returns the asynchronous request id
- * @example ```lua
--- Add glyphs
-local requestid = font.add_glyphs("/path/to/my.fontc", "abcABC123", function (self, request, result, errstring)
-        -- make a note that all the glyphs are loaded
-        -- and we're ready to present the text
-        self.dialog_text_ready = true
-    end)
-```
-
-```lua
--- Remove glyphs
-local requestid = font.remove_glyphs("/path/to/my.fontc", "abcABC123")
-```
-* @see {@link https://defold.com/ref/stable/font/#font.add_glyphs|API Documentation}
- */
-	export function add_glyphs(
-		path: hash | string,
-		text: string,
-		callback?: (
-			this: any,
-			request_id: any,
-			result: any,
-			errstring: any,
-		) => void,
-	): number;
-	/**
-	 * Removes glyphs from the font
-	 * @param path The path to the .fontc resource
-	 * @param text A string with unique unicode characters to be removed
-	 * @see {@link https://defold.com/ref/stable/font/#font.remove_glyphs|API Documentation}
-	 */
-	export function remove_glyphs(path: hash | string, text: string): void;
-}
 
 /** @see {@link https://defold.com/ref/stable/b2d/|Box2D Documentation} @since 1.8.0 */
 declare namespace b2d {
@@ -735,12 +684,25 @@ buffer.set_metadata(buf, hash("somefloats"), {-2.5, 10.0, 32.2}, buffer.VALUE_TY
 /** @see {@link https://defold.com/ref/stable/camera/|API Documentation} */
 declare namespace camera {
 	/**
-	 * get aspect ratio
-	 * @param camera camera id
-	 * @returns the aspect ratio.
-	 * @see {@link https://defold.com/ref/stable/camera/#camera.get_aspect_ratio|API Documentation}
-	 */
+ * Gets the effective aspect ratio of the camera. If auto aspect ratio is enabled,
+returns the aspect ratio calculated from the current render target dimensions.
+Otherwise returns the manually set aspect ratio.
+ * @param camera camera id
+ * @returns the effective aspect ratio.
+* @see {@link https://defold.com/ref/stable/camera/#camera.get_aspect_ratio|API Documentation}
+ */
 	export function get_aspect_ratio(camera: url | number | undefined): number;
+	/**
+ * Returns whether auto aspect ratio is enabled. When enabled, the camera automatically
+calculates aspect ratio from render target dimensions. When disabled, uses the
+manually set aspect ratio value.
+ * @param camera camera id
+ * @returns true if auto aspect ratio is enabled
+* @see {@link https://defold.com/ref/stable/camera/#camera.get_auto_aspect_ratio|API Documentation}
+ */
+	export function get_auto_aspect_ratio(
+		camera: url | number | undefined,
+	): boolean;
 	/**
  * This function returns a table with all the camera URLs that have been
 registered in the render context.
@@ -808,14 +770,28 @@ end
 	 */
 	export function get_view(camera: url | number | undefined): vmath.matrix4;
 	/**
-	 * set aspect ratio
-	 * @param camera camera id
-	 * @param aspect_ratio the aspect ratio.
-	 * @see {@link https://defold.com/ref/stable/camera/#camera.set_aspect_ratio|API Documentation}
-	 */
+ * Sets the manual aspect ratio for the camera. This value is only used when
+auto aspect ratio is disabled. To disable auto aspect ratio and use this
+manual value, call camera.set_auto_aspect_ratio(camera, false).
+ * @param camera camera id
+ * @param aspect_ratio the manual aspect ratio value.
+* @see {@link https://defold.com/ref/stable/camera/#camera.set_aspect_ratio|API Documentation}
+ */
 	export function set_aspect_ratio(
 		camera: url | number | undefined,
 		aspect_ratio: number,
+	): void;
+	/**
+ * Enables or disables automatic aspect ratio calculation. When enabled (true),
+the camera automatically calculates aspect ratio from render target dimensions.
+When disabled (false), uses the manually set aspect ratio value.
+ * @param camera camera id
+ * @param auto_aspect_ratio true to enable auto aspect ratio
+* @see {@link https://defold.com/ref/stable/camera/#camera.set_auto_aspect_ratio|API Documentation}
+ */
+	export function set_auto_aspect_ratio(
+		camera: url | number | undefined,
+		auto_aspect_ratio: boolean,
 	): void;
 	/**
 	 * set far z
@@ -1362,6 +1338,57 @@ factory.unload("#factory")
 	export function unload(url?: hash | url | string): void;
 }
 
+declare namespace font {
+	/**
+ * Asynchronoously adds more glyphs to a .fontc resource
+ * @param path The path to the .fontc resource
+ * @param text A string with unique unicode characters to be loaded
+ * @param callback (optional) A callback function that is called after the request is finished
+
+`self`
+object The current object.
+`request_id`
+number The request id
+`result`
+boolean True if request was succesful
+`errstring`
+string `nil` if the request was successful
+
+ * @returns Returns the asynchronous request id
+ * @example ```lua
+-- Add glyphs
+local requestid = font.add_glyphs("/path/to/my.fontc", "abcABC123", function (self, request, result, errstring)
+        -- make a note that all the glyphs are loaded
+        -- and we're ready to present the text
+        self.dialog_text_ready = true
+    end)
+```
+
+```lua
+-- Remove glyphs
+local requestid = font.remove_glyphs("/path/to/my.fontc", "abcABC123")
+```
+* @see {@link https://defold.com/ref/stable/font/#font.add_glyphs|API Documentation}
+ */
+	export function add_glyphs(
+		path: hash | string,
+		text: string,
+		callback?: (
+			this: any,
+			request_id: any,
+			result: any,
+			errstring: any,
+		) => void,
+	): number;
+	/**
+	 * Removes glyphs from the font
+	 * @param path The path to the .fontc resource
+	 * @param text A string with unique unicode characters to be removed
+	 * @see {@link https://defold.com/ref/stable/font/#font.remove_glyphs|API Documentation}
+	 */
+	export function remove_glyphs(path: hash | string, text: string): void;
+}
+
 /** @see {@link https://defold.com/ref/stable/go/|API Documentation} */
 declare namespace go {
 	/**
@@ -1698,13 +1725,18 @@ go.delete(ids, true)
 	): void;
 	export { delete_ as delete };
 	/**
- * A lua-error will be raised if the game object belongs to another
-collection than the collection from which the function was called.
+ * This function can check for game objects in any collection by specifying
+the collection name in the URL.
  * @param url url of the game object to check
  * @returns true if the game object exists
- * @example Check if game object "my_game_object" exists
+ * @example Check if game object "my_game_object" exists in the current collection
 ```lua
 go.exists("/my_game_object")
+```
+
+Check if game object exists in another collection
+```lua
+go.exists("other_collection:/my_game_object")
 ```
 * @see {@link https://defold.com/ref/stable/go/#go.exists|API Documentation}
  */
@@ -2453,7 +2485,7 @@ go.set_rotation(r, "x")
 	): void;
 	/**
  * The scale factor is relative to the parent (if any). The global world scale factor cannot be manually set.
-⚠ Physics are currently not affected when setting scale from this function.
+⚠ See manual to know how physics affected when setting scale from this function.
  * @param scale vector or uniform scale factor, must be greater than 0
  * @param id optional id of the game object instance to get the scale for, by default the instance of the calling script
  * @example Set the scale of the game object instance the script is attached to:
@@ -2462,14 +2494,36 @@ local s = vmath.vector3(2.0, 1.0, 1.0)
 go.set_scale(s)
 ```
 
-Set the scale of another game object instance with id "x":
+Set the scale of another game object instance with id "obj_id":
 ```lua
 local s = 1.2
-go.set_scale(s, "x")
+go.set_scale(s, "obj_id")
 ```
 * @see {@link https://defold.com/ref/stable/go/#go.set_scale|API Documentation}
  */
 	export function set_scale(
+		scale: vmath.vector3 | number,
+		id?: hash | url | string,
+	): void;
+	/**
+ * The scale factor is relative to the parent (if any). The global world scale factor cannot be manually set.
+⚠ See manual to know how physics affected when setting scale from this function.
+ * @param scale vector or uniform scale factor, must be greater than 0
+ * @param id optional id of the game object instance to get the scale for, by default the instance of the calling script
+ * @example Set the scale of the game object instance the script is attached to:
+```lua
+local s = vmath.vector3(2.0, 1.0, 5.0)
+go.set_scale_xy(s) -- z will not be set here, only x and y
+```
+
+Set the scale of another game object instance with id "obj_id":
+```lua
+local s = 1.2
+go.set_scale_xy(s, "obj_id") -- z will not be set here, only x and y
+```
+* @see {@link https://defold.com/ref/stable/go/#go.set_scale_xy|API Documentation}
+ */
+	export function set_scale_xy(
 		scale: vmath.vector3 | number,
 		id?: hash | url | string,
 	): void;
@@ -8277,6 +8331,12 @@ number The pivot x value of the image in unit coords. (0,0) is upper left corner
 
 `pivot_y`
 number The pivot y value of the image in unit coords. (0,0) is upper left corner, (1,1) is bottom right. Default is 0.5.
+
+
+
+
+`rotated`
+boolean Whether the image is rotated 90 degrees counter-clockwise in the atlas. This affects UV coordinate generation for proper rendering. Default is false.
 
 
 
