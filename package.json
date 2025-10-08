@@ -1,6 +1,6 @@
 {
 	"name": "@ts-defold/types",
-	"version": "1.11.0",
+	"version": "1.11.1",
 	"description": "TypeScript definitions for Defold",
 	"repository": "github:thinknathan/ts-defold-types",
 	"keywords": [
