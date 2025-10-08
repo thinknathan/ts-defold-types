@@ -4,7 +4,7 @@
 /// <reference types="lua-types/special/jit-only" />
 /// <reference types="./deprecated.d.ts" />
 
-// Defold v1.11.0 (7c81792859a6da7f7401c0ac37a4cc83bb500ff6)
+// Defold v1.11.1 (1ba9e1aa422166864c3267f03f5110144b745c1e)
 
 /**
  * Pretty printing of Lua values. This function prints Lua values
@@ -684,6 +684,20 @@ buffer.set_metadata(buf, hash("somefloats"), {-2.5, 10.0, 32.2}, buffer.VALUE_TY
 /** @see {@link https://defold.com/ref/stable/camera/|API Documentation} */
 declare namespace camera {
 	/**
+ * Computes zoom so the original display area covers the entire window while preserving aspect ratio.
+Equivalent to using max(window_width/width, window_height/height).
+ */
+	export const ORTHO_MODE_AUTO_COVER: number;
+	/**
+ * Computes zoom so the original display area (game.project width/height) fits inside the window
+while preserving aspect ratio. Equivalent to using min(window_width/width, window_height/height).
+ */
+	export const ORTHO_MODE_AUTO_FIT: number;
+	/**
+	 * Uses the manually set orthographic zoom value (camera.set_orthographic_zoom).
+	 */
+	export const ORTHO_MODE_FIXED: number;
+	/**
  * Gets the effective aspect ratio of the camera. If auto aspect ratio is enabled,
 returns the aspect ratio calculated from the current render target dimensions.
 Otherwise returns the manually set aspect ratio.
@@ -744,6 +758,16 @@ end
 	 * @see {@link https://defold.com/ref/stable/camera/#camera.get_near_z|API Documentation}
 	 */
 	export function get_near_z(camera: url | number | undefined): number;
+	/**
+ * get orthographic zoom mode
+ * @param camera camera id
+ * @returns one of camera.ORTHO_MODE_FIXED, camera.ORTHO_MODE_AUTO_FIT or
+camera.ORTHO_MODE_AUTO_COVER
+* @see {@link https://defold.com/ref/stable/camera/#camera.get_orthographic_mode|API Documentation}
+ */
+	export function get_orthographic_mode(
+		camera: url | number | undefined,
+	): number;
 	/**
 	 * get orthographic zoom
 	 * @param camera camera id
@@ -819,6 +843,16 @@ When disabled (false), uses the manually set aspect ratio value.
 	export function set_near_z(
 		camera: url | number | undefined,
 		near_z: number,
+	): void;
+	/**
+	 * set orthographic zoom mode
+	 * @param camera camera id
+	 * @param mode camera.ORTHO_MODE_FIXED, camera.ORTHO_MODE_AUTO_FIT or camera.ORTHO_MODE_AUTO_COVER
+	 * @see {@link https://defold.com/ref/stable/camera/#camera.set_orthographic_mode|API Documentation}
+	 */
+	export function set_orthographic_mode(
+		camera: url | number | undefined,
+		mode: number,
 	): void;
 	/**
 	 * set orthographic zoom
@@ -1923,6 +1957,7 @@ local s = go.get_scale_uniform("x")
 	export function get_scale_uniform(id?: hash | url | string): number;
 	/**
  * The function will return the world position calculated at the end of the previous frame.
+To recalculate it within the current frame, use go.update_world_transform on the instance before calling this.
 Use go.get_position to retrieve the position relative to the parent.
  * @param id optional id of the game object instance to get the world position for, by default the instance of the calling script
  * @returns instance world position
@@ -1940,6 +1975,7 @@ local p = go.get_world_position("x")
 	export function get_world_position(id?: hash | url | string): vmath.vector3;
 	/**
  * The function will return the world rotation calculated at the end of the previous frame.
+To recalculate it within the current frame, use go.update_world_transform on the instance before calling this.
 Use go.get_rotation to retrieve the rotation relative to the parent.
  * @param id optional id of the game object instance to get the world rotation for, by default the instance of the calling script
  * @returns instance world rotation
@@ -1959,6 +1995,7 @@ local r = go.get_world_rotation("x")
 	): vmath.quaternion;
 	/**
  * The function will return the world 3D scale factor calculated at the end of the previous frame.
+To recalculate it within the current frame, use go.update_world_transform on the instance before calling this.
 Use go.get_scale to retrieve the 3D scale factor relative to the parent.
 This vector is derived by decomposing the transformation matrix and should be used with care.
 For most cases it should be fine to use go.get_world_scale_uniform instead.
@@ -1978,6 +2015,7 @@ local s = go.get_world_scale("x")
 	export function get_world_scale(id?: hash | url | string): vmath.vector3;
 	/**
  * The function will return the world scale factor calculated at the end of the previous frame.
+To recalculate it within the current frame, use go.update_world_transform on the instance before calling this.
 Use go.get_scale_uniform to retrieve the scale factor relative to the parent.
  * @param id optional id of the game object instance to get the world scale for, by default the instance of the calling script
  * @returns instance world scale factor
@@ -1995,6 +2033,7 @@ local s = go.get_world_scale_uniform("x")
 	export function get_world_scale_uniform(id?: hash | url | string): number;
 	/**
  * The function will return the world transform matrix calculated at the end of the previous frame.
+To recalculate it within the current frame, use go.update_world_transform on the instance before calling this.
  * @param id optional id of the game object instance to get the world transform for, by default the instance of the calling script
  * @returns instance world transform
  * @example Get the world transform of the game object instance the script is attached to:
@@ -2548,6 +2587,27 @@ end
  */
 	export function update(this: LuaUserdata, dt: number): void;
 	/**
+ * Recalculates and updates the cached world transform immediately for the target instance
+and its ancestors (parent chain up to the collection root). Descendants (children) are
+not updated by this function.
+If no id is provided, the instance of the calling script is used.
+⚠ Use this after changing local transform mid-frame when you need the
+new world transform right away (e.g. before end-of-frame updates). Note that child
+instances will still have last-frame world transforms until the regular update.
+ * @param id optional id of the game object instance to update
+ * @example Update this game object's world transform:
+```lua
+go.update_world_transform()
+```
+
+Update another game object's world transform:
+```lua
+go.update_world_transform("/other")
+```
+* @see {@link https://defold.com/ref/stable/go/#go.update_world_transform|API Documentation}
+ */
+	export function update_world_transform(id?: hash | url | string): void;
+	/**
  * ⚠ The function uses world transformation calculated at the end of previous frame.
  * @param position position which need to be converted
  * @param url url of the game object which coordinate system convert to
@@ -2768,7 +2828,7 @@ declare namespace graphics {
 	/**
 	 * May be nil if the graphics driver doesn't support it
 	 */
-	export let TEXTURE_FORMAT_RGBA_ASTC_4x4: number;
+	export const TEXTURE_FORMAT_RGBA_ASTC_4X4: number;
 	/**
 	 * May be nil if the graphics driver doesn't support it
 	 */
@@ -3742,6 +3802,14 @@ The radius is defined along the x-axis.
 	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_layout|API Documentation}
 	 */
 	export function get_layout(): hash;
+	/**
+ * Returns a table mapping each layout id hash to a vector3(width, height, 0). For the default layout,
+the current scene resolution is returned. If a layout name is not present in the Display Profiles (or when
+no display profiles are assigned), the width/height pair is 0.
+ * @returns layout_id_hash -> vmath.vector3(width, height, 0)
+* @see {@link https://defold.com/ref/stable/gui/#gui.get_layouts|API Documentation}
+ */
+	export function get_layouts(): object;
 	/**
 	 * Returns the leading value for a text node.
 	 * @param node node from where to get the leading
@@ -4801,6 +4869,15 @@ The radius is defined along the x-axis.
 	 * @see {@link https://defold.com/ref/stable/gui/#gui.set_layer|API Documentation}
 	 */
 	export function set_layer(node: node, layer: hash | string): void;
+	/**
+ * Applies a named layout on the GUI scene. This re-applies per-layout node descriptors
+and, if a matching Display Profile exists, updates the scene resolution. Emits
+the "layout_changed" message to the scene script when the layout actually changes.
+ * @param layout the layout id to apply
+ * @returns true if the layout exists in the scene and was applied, false otherwise
+* @see {@link https://defold.com/ref/stable/gui/#gui.set_layout|API Documentation}
+ */
+	export function set_layout(layout: hash | string): boolean;
 	/**
  * Sets the leading value for a text node. This value is used to
 scale the line spacing of text.
@@ -7059,6 +7136,18 @@ declare namespace render {
 	export const FRUSTUM_PLANES_SIDES: number;
 	export const RENDER_TARGET_DEFAULT: number;
 	/**
+	 * Depth sort far-to-near (default; good for transparent passes).
+	 */
+	export const SORT_BACK_TO_FRONT: number;
+	/**
+	 * Depth sort near-to-far (good for opaque passes to reduce overdraw).
+	 */
+	export const SORT_FRONT_TO_BACK: number;
+	/**
+	 * No per-call sorting; draw entries in insertion order.
+	 */
+	export const SORT_NONE: number;
+	/**
  * Clear buffers in the currently enabled render target with specified value. If the render target has been created with multiple
 color attachments, all buffers will be cleared with the same value.
  * @param buffers table with keys specifying which buffers to clear and values set to clear values. Available keys are:
@@ -7231,6 +7320,8 @@ render.FRUSTUM_PLANES_ALL : All 6 sides of the frustum.
 
 `constants`
 constant_buffer optional constants to use while rendering
+`sort_order`
+int How to sort draw order for world-ordered entries. Default uses the renderer's preferred world sorting (back-to-front).
 
  * @example ```lua
 function init(self)
@@ -8590,7 +8681,7 @@ These constants might not be available on the device:
 `graphics.TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1`
 `graphics.TEXTURE_FORMAT_RGB_ETC1`
 `graphics.TEXTURE_FORMAT_RGBA_ETC2`
-`graphics.TEXTURE_FORMAT_RGBA_ASTC_4x4`
+`graphics.TEXTURE_FORMAT_RGBA_ASTC_4X4`
 `graphics.TEXTURE_FORMAT_RGB_BC1`
 `graphics.TEXTURE_FORMAT_RGBA_BC3`
 `graphics.TEXTURE_FORMAT_R_BC4`
@@ -8773,7 +8864,7 @@ These constants might not be available on the device:
 `graphics.TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1`
 `graphics.TEXTURE_FORMAT_RGB_ETC1`
 `graphics.TEXTURE_FORMAT_RGBA_ETC2`
-`graphics.TEXTURE_FORMAT_RGBA_ASTC_4x4`
+`graphics.TEXTURE_FORMAT_RGBA_ASTC_4X4`
 `graphics.TEXTURE_FORMAT_RGB_BC1`
 `graphics.TEXTURE_FORMAT_RGBA_BC3`
 `graphics.TEXTURE_FORMAT_R_BC4`
@@ -8815,6 +8906,7 @@ Creating an empty texture with no buffer data is not supported as a core feature
 `COMPRESSION_TYPE_BASIS_UASTC`
 
  * @param buffer optional buffer of precreated pixel data
+ * @param callback callback function when texture is created (self, request_id, resource)
  * @example Create a texture resource asyncronously with a buffer and a callback
 ```lua
 function callback(self, request_id, resource)
@@ -8900,6 +8992,7 @@ end
 			compression_type?: number;
 		},
 		buffer?: buffer,
+		callback: () => void,
 	): LuaMultiReturn<[hash, number]>;
 	/**
  * Constructor-like function with two purposes:
@@ -9536,7 +9629,7 @@ These constants might not be available on the device:
 - `graphics.TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1`
 - `graphics.TEXTURE_FORMAT_RGB_ETC1`
 - `graphics.TEXTURE_FORMAT_RGBA_ETC2`
-- `graphics.TEXTURE_FORMAT_RGBA_ASTC_4x4`
+- `graphics.TEXTURE_FORMAT_RGBA_ASTC_4X4`
 - `graphics.TEXTURE_FORMAT_RGB_BC1`
 - `graphics.TEXTURE_FORMAT_RGBA_BC3`
 - `graphics.TEXTURE_FORMAT_R_BC4`
@@ -10760,6 +10853,10 @@ number sound gain between 0 and 1, default is 1. The final gain of the sound wil
 number sound pan between -1 and 1, default is 0. The final pan of the sound will be an addition of this pan and the sound pan.
 `speed`
 number sound speed where 1.0 is normal speed, 0.5 is half speed and 2.0 is double speed. The final speed of the sound will be a multiplication of this speed and the sound speed.
+`start_time`
+number start playback offset (seconds). Optional, mutually exclusive with `start_frame`.
+`start_frame`
+number start playback offset (frames/samples). Optional, mutually exclusive with `start_time`. If both are provided, `start_frame` is used.
 
  * @param complete_function function to call when the sound has finished playing or stopped manually via sound.stop.
 
@@ -11257,8 +11354,8 @@ print(my_file_path) --> /home/foobar/.local/share/my_game/my_file
 -- Android package name: com.foobar.packagename
 print(my_file_path) --> /data/data/0/com.foobar.packagename/files/my_file
 
--- iOS: /var/mobile/Containers/Data/Application/123456AB-78CD-90DE-12345678ABCD/my_game/my_file
-print(my_file_path) --> /var/containers/Bundle/Applications/123456AB-78CD-90DE-12345678ABCD/my_game.app
+-- iOS: my_game.app
+print(my_file_path) --> /var/mobile/Containers/Data/Application/123456AB-78CD-90DE-12345678ABCD/my_game/my_file
 
 -- HTML5 path inside the IndexedDB: /data/.my_game/my_file or /.my_game/my_file
 print(my_file_path) --> /data/.my_game/my_file
