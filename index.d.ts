@@ -4,8 +4,35 @@
 /// <reference types="lua-types/special/jit-only" />
 /// <reference types="./deprecated.d.ts" />
 
-// Defold v1.11.1 (1ba9e1aa422166864c3267f03f5110144b745c1e)
+// DEFOLD. stable version 1.11.1 (758dfc0ea71dca26d169fddd0c5a1bc6dd0be4b3)
 
+/**
+ * All ids in the engine are represented as hashes, so a string needs to be hashed
+before it can be compared with an id.
+ * @param s string to hash
+ * @returns a hashed string
+ * @example To compare a message_id in an on-message callback function:
+```lua
+function on_message(self, message_id, message, sender)
+    if message_id == hash("my_message") then
+        -- Act on the message here
+    end
+end
+```
+ */
+declare function hash(s: string): hash;
+/**
+ * Returns a hexadecimal representation of a hash value.
+The returned string is always padded with leading zeros.
+ * @param h hash value to get hex string for
+ * @returns hex representation of the hash
+ * @example ```lua
+local h = hash("my_hash")
+local hexstr = hash_to_hex(h)
+print(hexstr) --> a2bc06d97f580aab
+```
+ */
+declare function hash_to_hex(h: hash): string;
 /**
  * Pretty printing of Lua values. This function prints Lua values
 in a manner similar to +print()+, but will also recurse into tables
@@ -35,33 +62,6 @@ Lua tables is undefined):
 ```
  */
 declare function pprint(...v: any[]): void;
-/**
- * All ids in the engine are represented as hashes, so a string needs to be hashed
-before it can be compared with an id.
- * @param s string to hash
- * @returns a hashed string
- * @example To compare a message_id in an on-message callback function:
-```lua
-function on_message(self, message_id, message, sender)
-    if message_id == hash("my_message") then
-        -- Act on the message here
-    end
-end
-```
- */
-declare function hash(s: string): hash;
-/**
- * Returns a hexadecimal representation of a hash value.
-The returned string is always padded with leading zeros.
- * @param h hash value to get hex string for
- * @returns hex representation of the hash
- * @example ```lua
-local h = hash("my_hash")
-local hexstr = hash_to_hex(h)
-print(hexstr) --> a2bc06d97f580aab
-```
- */
-declare function hash_to_hex(h: hash): string;
 /**
  * A unique identifier used to reference resources, messages, properties, and other entities within the game.
  */
@@ -3806,10 +3806,9 @@ The radius is defined along the x-axis.
  * Returns a table mapping each layout id hash to a vector3(width, height, 0). For the default layout,
 the current scene resolution is returned. If a layout name is not present in the Display Profiles (or when
 no display profiles are assigned), the width/height pair is 0.
- * @returns layout_id_hash -> vmath.vector3(width, height, 0)
 * @see {@link https://defold.com/ref/stable/gui/#gui.get_layouts|API Documentation}
  */
-	export function get_layouts(): object;
+	export function get_layouts(): LuaMap<hash, vmath.vector3>;
 	/**
 	 * Returns the leading value for a text node.
 	 * @param node node from where to get the leading
@@ -8529,6 +8528,7 @@ end
 				height: number;
 				pivot_x: number;
 				pivot_y: number;
+				rotated: boolean;
 				vertices: LuaSet<number> | number[];
 				uvs: LuaSet<number> | number[];
 				indices: LuaSet<number> | number[];
@@ -8991,8 +8991,8 @@ end
 			max_mipmaps?: number;
 			compression_type?: number;
 		},
-		buffer?: buffer,
-		callback: () => void,
+		buffer: buffer,
+		callback?: (this: any, request_id: number, resource: hash) => void,
 	): LuaMultiReturn<[hash, number]>;
 	/**
  * Constructor-like function with two purposes:
@@ -10902,6 +10902,8 @@ end
 			gain?: number;
 			pan?: number;
 			speed?: number;
+			start_time?: number;
+			start_frame?: number;
 		},
 		complete_function?: (
 			this: any,
