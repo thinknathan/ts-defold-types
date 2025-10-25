@@ -1,5 +1,18 @@
 # Changelog
 
+## v1.11.2
+
+- Update for latest Defold
+- Add `gui.cancel_animation` to deprecated
+
+## v1.11.1
+
+- Update for latest Defold
+
+## v1.11.0
+
+- Update for latest Defold
+
 ## v1.10.4
 
 - Update for latest Defold

@@ -657,6 +657,41 @@ declare namespace camera {
 
 declare namespace gui {
 	/**
+	 * If an animation of the specified node is currently running (started by `gui.animate`), it will immediately be canceled.
+	 * @param node node that should have its animation canceled
+	 * @param property property for which the animation should be canceled
+
+	`"position"`
+	`"rotation"`
+	`"euler"`
+	`"scale"`
+	`"color"`
+	`"outline"`
+	`"shadow"`
+	`"size"`
+	`"fill_angle"` (pie)
+	`"inner_radius"` (pie)
+	`"leading"` (text)
+	`"tracking"` (text)
+	`"slice9"` (slice9)
+
+	* @example Start an animation of the position property of a node, then cancel parts of
+	the animation:
+	```lua
+	local node = gui.get_node("my_node")
+	-- animate to new position
+	local pos = vmath.vector3(100, 100, 0)
+	gui.animate(node, "position", pos, go.EASING_LINEAR, 2)
+	...
+	-- cancel animation of the x component.
+	gui.cancel_animation(node, "position.x")
+	```
+	* @deprecated since v1.11.2. Use `gui.cancel_animations` instead
+	* @see {@link https://defold.com/ref/stable/gui/#gui.cancel_animation|API Documentation}
+ 	*/
+	export function cancel_animation(node: node, property: number | string): void;
+
+	/**
 	* Get the text metrics from a text node.
 	* @deprecated since v1.2.189
 	* @param node  text node to measure text from
