@@ -8,7 +8,9 @@
 
 ## This Fork
 
-This fork has more detailed types than the origin repo. Hand-written patches replace many of the `any` keywords with specific types, sets constant values to use `const`, etc. See the changelog for details.
+This fork has releases that match the version number of Defold releases.
+
+It also maintains a list of deprecated functions that get removed entirely from the original repo.
 
 This repo can be used as a drop-in replacement of the original.
 
