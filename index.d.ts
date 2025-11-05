@@ -4,7 +4,7 @@
 /// <reference types="lua-types/special/jit-only" />
 /// <reference types="./deprecated.d.ts" />
 
-// DEFOLD. stable version 1.11.1 (758dfc0ea71dca26d169fddd0c5a1bc6dd0be4b3)
+// DEFOLD. stable version 1.11.2 (a6d86c0083f00ee6c3709478ff3b33deff5e6d19)
 
 /**
  * All ids in the engine are represented as hashes, so a string needs to be hashed
@@ -3435,9 +3435,9 @@ end
 		playback?: number,
 	): void;
 	/**
- * If an animation of the specified node is currently running (started by `gui.animate`), it will immediately be canceled.
+ * If one or more animations of the specified node is currently running (started by `gui.animate`), they will immediately be canceled.
  * @param node node that should have its animation canceled
- * @param property property for which the animation should be canceled
+ * @param property optional property for which the animation should be canceled
 
 `"position"`
 `"rotation"`
@@ -3462,11 +3462,25 @@ local pos = vmath.vector3(100, 100, 0)
 gui.animate(node, "position", pos, go.EASING_LINEAR, 2)
 ...
 -- cancel animation of the x component.
-gui.cancel_animation(node, "position.x")
+gui.cancel_animations(node, "position.x")
 ```
-* @see {@link https://defold.com/ref/stable/gui/#gui.cancel_animation|API Documentation}
+
+Cancels all property animations on a node in a single call:
+```lua
+local node = gui.get_node("my_node")
+-- animate to new position and scale
+gui.animate(node, "position", vmath.vector3(100, 100, 0), go.EASING_LINEAR, 5)
+gui.animate(node, "scale", vmath.vector3(0.5), go.EASING_LINEAR, 5)
+...
+-- cancel positioning and scaling at once
+gui.cancel_animations(node)
+```
+* @see {@link https://defold.com/ref/stable/gui/#gui.cancel_animations|API Documentation}
  */
-	export function cancel_animation(node: node, property: number | string): void;
+	export function cancel_animations(
+		node: node,
+		property?:   number | string,
+	): void;
 	/**
  * Cancels any running flipbook animation on the specified node.
  * @param node node cancel flipbook animation for
