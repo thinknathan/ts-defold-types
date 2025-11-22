@@ -4,7 +4,7 @@
 /// <reference types="lua-types/special/jit-only" />
 /// <reference types="./deprecated.d.ts" />
 
-// DEFOLD. stable version 1.11.2 (a6d86c0083f00ee6c3709478ff3b33deff5e6d19)
+// DEFOLD. stable version 1.11.2 (cddb6eb43c32e4930257fcbbb30f19cf28deb081)
 
 /**
  * All ids in the engine are represented as hashes, so a string needs to be hashed
@@ -13064,6 +13064,21 @@ print(vec - vmath.vector4(2.0)) --> vmath.vector4(-1, 0, 1, 2)
 	): vmath.vector4;
 }
 declare namespace vmath {
+	export function clamp(
+		value: number,
+		min: vmath.vector3 | vmath.vector4 | number,
+		max: vmath.vector3 | vmath.vector4 | number,
+	): number;
+	export function clamp(
+		value: vmath.vector3,
+		min: vmath.vector3 | vmath.vector4 | number,
+		max: vmath.vector3 | vmath.vector4 | number,
+	): vmath.vector3;
+	export function clamp(
+		value: vmath.vector4,
+		min: vmath.vector3 | vmath.vector4 | number,
+		max: vmath.vector3 | vmath.vector4 | number,
+	): vmath.vector4;
 	export type matrix4 = number & {
 		/**
 		 * Multiplication Operator for Matrix4
@@ -13074,23 +13089,35 @@ declare namespace vmath {
 		c1: vmath.vector4;
 		c2: vmath.vector4;
 		c3: vmath.vector4;
+		m00: number;
 		m01: number;
 		m02: number;
 		m03: number;
-		m04: number;
+		m10: number;
 		m11: number;
 		m12: number;
 		m13: number;
-		m14: number;
+		m20: number;
 		m21: number;
 		m22: number;
 		m23: number;
-		m24: number;
+		m30: number;
 		m31: number;
 		m32: number;
 		m33: number;
-		m34: number;
 	};
+	export function mul_per_elem(
+		v1: vmath.vector3,
+		v2: vmath.vector3,
+	): vmath.vector3;
+	export function mul_per_elem(
+		v1: vmath.vector4,
+		v2: vmath.vector4,
+	): vmath.vector4;
+	export function normalize(v1: vmath.vector3): vmath.vector3;
+	export function normalize(v1: vmath.vector4): vmath.vector4;
+	export function normalize(v1: vmath.quaternion): vmath.quaternion;
+	export function normalize(v1: vmath.vector): vmath.vector;
 	export type quaternion = number & {
 		/**
 		 * Multiplication Operator for Matrix4
@@ -13102,6 +13129,16 @@ declare namespace vmath {
 		z: number;
 		w: number;
 	};
+	export function slerp(
+		t: number,
+		v1: vmath.vector3,
+		v2: vmath.vector3,
+	): vmath.vector3;
+	export function slerp(
+		t: number,
+		v1: vmath.vector4,
+		v2: vmath.vector4,
+	): vmath.vector4;
 	export type vector = number & { [key: number]: number };
 	export type vector3 = number & {
 		/**
