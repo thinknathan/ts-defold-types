@@ -20,6 +20,10 @@ export const finalChanges = [
 		'/** @see {@link https://defold.com/ref/stable/crash/|API Documentation} */\ndeclare namespace crash',
 	],
 	[
+		'declare namespace font',
+		'/** @see {@link https://defold.com/ref/stable/font/|API Documentation} */\ndeclare namespace font',
+	],
+	[
 		'declare namespace go',
 		'/** @see {@link https://defold.com/ref/stable/go/|API Documentation} */\ndeclare namespace go',
 	],
