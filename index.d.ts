@@ -4,35 +4,8 @@
 /// <reference types="lua-types/special/jit-only" />
 /// <reference types="./deprecated.d.ts" />
 
-// DEFOLD. stable version 1.11.2 (cddb6eb43c32e4930257fcbbb30f19cf28deb081)
+// DEFOLD. stable version 1.12.0 (3206f699aaff89f357c9d549050b8453e080c5d2)
 
-/**
- * All ids in the engine are represented as hashes, so a string needs to be hashed
-before it can be compared with an id.
- * @param s string to hash
- * @returns a hashed string
- * @example To compare a message_id in an on-message callback function:
-```lua
-function on_message(self, message_id, message, sender)
-    if message_id == hash("my_message") then
-        -- Act on the message here
-    end
-end
-```
- */
-declare function hash(s: string): hash;
-/**
- * Returns a hexadecimal representation of a hash value.
-The returned string is always padded with leading zeros.
- * @param h hash value to get hex string for
- * @returns hex representation of the hash
- * @example ```lua
-local h = hash("my_hash")
-local hexstr = hash_to_hex(h)
-print(hexstr) --> a2bc06d97f580aab
-```
- */
-declare function hash_to_hex(h: hash): string;
 /**
  * Pretty printing of Lua values. This function prints Lua values
 in a manner similar to +print()+, but will also recurse into tables
@@ -63,6 +36,33 @@ Lua tables is undefined):
  */
 declare function pprint(...v: any[]): void;
 /**
+ * All ids in the engine are represented as hashes, so a string needs to be hashed
+before it can be compared with an id.
+ * @param s string to hash
+ * @returns a hashed string
+ * @example To compare a message_id in an on-message callback function:
+```lua
+function on_message(self, message_id, message, sender)
+    if message_id == hash("my_message") then
+        -- Act on the message here
+    end
+end
+```
+ */
+declare function hash(s: string): hash;
+/**
+ * Returns a hexadecimal representation of a hash value.
+The returned string is always padded with leading zeros.
+ * @param h hash value to get hex string for
+ * @returns hex representation of the hash
+ * @example ```lua
+local h = hash("my_hash")
+local hexstr = hash_to_hex(h)
+print(hexstr) --> a2bc06d97f580aab
+```
+ */
+declare function hash_to_hex(h: hash): string;
+/**
  * A unique identifier used to reference resources, messages, properties, and other entities within the game.
  */
 declare type hash = Readonly<
@@ -86,6 +86,35 @@ declare type buffer = object;
  * A data stream derived from a buffer.
  */
 declare type bufferstream = LuaUserdata & number[] & object;
+
+declare namespace missingName {
+	/**
+ * Enables engine throttling.
+ * @param enable true if throttling should be enabled
+ * @param cooldown the time period to do update + render for (seconds)
+ * @example Disable throttling
+```lua
+sys.set_engine_throttle(false)
+```
+
+Enable throttling
+```lua
+sys.set_engine_throttle(true, 1.5)
+```
+* @see {@link https://defold.com/ref/stable/missingName/#missingName.set_engine_throttle|API Documentation}
+ */
+	export function set_engine_throttle(enable: boolean, cooldown: number): void;
+	/**
+ * Disables rendering
+ * @param enable true if throttling should be enabled
+ * @example Disable rendering
+```lua
+sys.set_render_enable(false)
+```
+* @see {@link https://defold.com/ref/stable/missingName/#missingName.set_render_enable|API Documentation}
+ */
+	export function set_render_enable(enable: boolean): void;
+}
 
 /** @see {@link https://defold.com/ref/stable/b2d/|Box2D Documentation} @since 1.8.0 */
 declare namespace b2d {
@@ -794,6 +823,57 @@ camera.ORTHO_MODE_AUTO_COVER
 	 */
 	export function get_view(camera: url | number | undefined): vmath.matrix4;
 	/**
+ * Converts a screen-space 2D point with view depth to a 3D world point.
+z is the view depth in world units measured from the camera plane along the camera forward axis.
+If a camera isn't specified, the last enabled camera is used.
+ * @param pos Screen-space position (x, y) with z as view depth in world units
+ * @param camera optional camera id
+ * @returns the world coordinate
+ * @example Place objects at the touch point with a random Z position, keeping them within the visible view zone.
+```lua
+ function on_input(self, action_id, action)
+     if action_id == hash("touch") then
+         if action.pressed then
+             local percpective_camera = msg.url("#perspective_camera")
+             local random_z = math.random(camera.get_near_z(percpective_camera) + 0.01, camera.get_far_z(percpective_camera) - 0.01)
+             local world_position = camera.screen_to_world(vmath.vector3(action.screen_x, action.screen_y, random_z), percpective_camera)
+             go.set_position(world_position, "/go1")
+         end
+     end
+ end
+```
+* @see {@link https://defold.com/ref/stable/camera/#camera.screen_to_world|API Documentation}
+ */
+	export function screen_to_world(
+		pos: vmath.vector3,
+		camera?: url | number  ,
+	): vmath.vector3;
+	/**
+ * Converts 2D screen coordinates (x,y) to the 3D world-space point on the camera's near plane for that pixel.
+If a camera isn't specified, the last enabled camera is used.
+ * @param x X coordinate on screen.
+ * @param y Y coordinate on screen.
+ * @param camera optional camera id
+ * @returns the world coordinate on the camera near plane
+ * @example Place objects at the touch point.
+```lua
+ function on_input(self, action_id, action)
+     if action_id == hash("touch") then
+         if action.pressed then
+             local world_position = camera.screen_xy_to_world(action.screen_x, action.screen_y)
+             go.set_position(world_position, "/go1")
+         end
+     end
+ end
+```
+* @see {@link https://defold.com/ref/stable/camera/#camera.screen_xy_to_world|API Documentation}
+ */
+	export function screen_xy_to_world(
+		x: number,
+		y: number,
+		camera?: url | number  ,
+	): vmath.vector3;
+	/**
  * Sets the manual aspect ratio for the camera. This value is only used when
 auto aspect ratio is disabled. To disable auto aspect ratio and use this
 manual value, call camera.set_auto_aspect_ratio(camera, false).
@@ -864,6 +944,27 @@ When disabled (false), uses the manually set aspect ratio value.
 		camera: url | number | undefined,
 		orthographic_zoom: number,
 	): void;
+	/**
+ * Converts a 3D world position to screen-space coordinates with view depth.
+Returns a vector3 where x and y are in screen pixels and z is the view depth in world units
+measured from the camera plane along the camera forward axis. The returned z can be used with
+camera.screen_to_world to reconstruct the world position on the same pixel ray.
+If a camera isn't specified, the last enabled camera is used.
+ * @param world_pos World-space position
+ * @param camera optional camera id
+ * @returns Screen position (x,y in pixels, z is view depth)
+ * @example Convert go position into screen pisition
+```lua
+ go.update_world_transform("/go1")
+ local world_pos = go.get_world_position("/go1")
+ local screen_pos = camera.world_to_screen(world_pos)
+```
+* @see {@link https://defold.com/ref/stable/camera/#camera.world_to_screen|API Documentation}
+ */
+	export function world_to_screen(
+		world_pos: vmath.vector3,
+		camera?: url | number  ,
+	): vmath.vector3;
 }
 
 /** @see {@link https://defold.com/ref/stable/collectionfactory/|API Documentation} */
@@ -1372,11 +1473,31 @@ factory.unload("#factory")
 	export function unload(url?: hash | url | string): void;
 }
 
+/** @see {@link https://defold.com/ref/stable/font/|API Documentation} */
 declare namespace font {
 	/**
- * Asynchronoously adds more glyphs to a .fontc resource
- * @param path The path to the .fontc resource
- * @param text A string with unique unicode characters to be loaded
+ * associates a ttf resource to a .fontc file.
+ * @param fontc The path to the .fontc resource
+ * @param ttf The path to the .ttf resource
+ * @example ```lua
+local font_hash = hash("/assets/fonts/roboto.fontc")
+local ttf_hash = hash("/assets/fonts/Roboto/Roboto-Bold.ttf")
+font.add_font(font_hash, ttf_hash)
+```
+ */
+	export function add_font(fontc: hash | string, ttf: hash | string): void;
+	/**
+	 * Gets information about a font, such as the associated font files
+	 * @param fontc The path to the .fontc resource
+	 */
+	export function get_info(fontc: hash | string): {
+		path: hash;
+		fonts: { path: string; path_hash: hash }[];
+	};
+	/**
+ * prepopulates the font glyph cache with rasterised glyphs
+ * @param fontc The path to the .fontc resource
+ * @param text The text to layout
  * @param callback (optional) A callback function that is called after the request is finished
 
 `self`
@@ -1390,22 +1511,14 @@ string `nil` if the request was successful
 
  * @returns Returns the asynchronous request id
  * @example ```lua
--- Add glyphs
-local requestid = font.add_glyphs("/path/to/my.fontc", "abcABC123", function (self, request, result, errstring)
-        -- make a note that all the glyphs are loaded
-        -- and we're ready to present the text
-        self.dialog_text_ready = true
+local font_hash = hash("/assets/fonts/roboto.fontc")
+font.prewarm_text(font_hash, "Some text", function (self, request_id, result, errstring)
+        -- cache is warm, show the text!
     end)
 ```
-
-```lua
--- Remove glyphs
-local requestid = font.remove_glyphs("/path/to/my.fontc", "abcABC123")
-```
-* @see {@link https://defold.com/ref/stable/font/#font.add_glyphs|API Documentation}
  */
-	export function add_glyphs(
-		path: hash | string,
+	export function prewarm_text(
+		fontc: hash | string,
 		text: string,
 		callback?: (
 			this: any,
@@ -1415,12 +1528,16 @@ local requestid = font.remove_glyphs("/path/to/my.fontc", "abcABC123")
 		) => void,
 	): number;
 	/**
-	 * Removes glyphs from the font
-	 * @param path The path to the .fontc resource
-	 * @param text A string with unique unicode characters to be removed
-	 * @see {@link https://defold.com/ref/stable/font/#font.remove_glyphs|API Documentation}
-	 */
-	export function remove_glyphs(path: hash | string, text: string): void;
+ * associates a ttf resource to a .fontc file
+ * @param fontc The path to the .fontc resource
+ * @param ttf The path to the .ttf resource
+ * @example ```lua
+local font_hash = hash("/assets/fonts/roboto.fontc")
+local ttf_hash = hash("/assets/fonts/Roboto/Roboto-Bold.ttf")
+font.remove_font(font_hash, ttf_hash)
+```
+ */
+	export function remove_font(fontc: hash | string, ttf: hash | string): void;
 }
 
 /** @see {@link https://defold.com/ref/stable/go/|API Documentation} */
@@ -4178,6 +4295,7 @@ If the second argument is `nil` the first node is moved to the bottom.
 `"rgb"` - RGB
 `"rgba"` - RGBA
 `"l"` - LUMINANCE
+`"astc"` - ASTC compressed format
 
  * @param buffer texture data
  * @param flip flip texture vertically
@@ -4206,6 +4324,16 @@ function init(self)
          end
      end
 end
+```How to create a texture using .astc format
+
+```lua
+local path = "/assets/images/logo_4x4.astc"
+local buffer = sys.load_resource(path)
+local n = gui.new_box_node(pos, vmath.vector3(size, size, 0))
+-- size is read from the .astc buffer
+-- flip is not supported
+gui.new_texture(path, 0, 0, "astc", buffer, false)
+gui.set_texture(n, path)
 ```
 * @see {@link https://defold.com/ref/stable/gui/#gui.new_texture|API Documentation}
  */
@@ -5134,6 +5262,7 @@ end
   `"rgb"` - RGB
   `"rgba"` - RGBA
   `"l"` - LUMINANCE
+  `"astc"` - ASTC compressed format
 
  * @param buffer texture data
  * @param flip flip texture vertically
@@ -5437,6 +5566,27 @@ declare namespace image {
 	 * RGBA image type
 	 */
 	export const TYPE_RGBA: number;
+	/**
+ * get the header of an .astc buffer
+ * @param buffer .astc file data buffer
+ * @example How to get the block size and dimensions from a .astc file
+```lua
+local s = sys.load_resource("/assets/cat.astc")
+local header = image.get_astc_header(s)
+pprint(s)
+```
+* @see {@link https://defold.com/ref/stable/image/#image.get_astc_header|API Documentation}
+ */
+	export function get_astc_header(buffer: string):
+		| {
+				width: number;
+				height: number;
+				depth: number;
+				block_size_x: number;
+				block_size_y: number;
+				block_size_z: number;
+		  }
+		| undefined;
 	/**
  * Load image (PNG or JPEG) from buffer.
  * @param buffer image data buffer
@@ -11112,7 +11262,7 @@ declare namespace sys {
 	 */
 	export const REQUEST_STATUS_FINISHED: number;
 	/**
- * deserializes buffer into a lua table
+ * This function will raise a Lua error if an error occurs while deserializing the buffer.
  * @param buffer buffer to deserialize from
  * @example Deserialize a lua table that was previously serialized:
 ```lua
@@ -11190,6 +11340,7 @@ end
 	};
 	/**
  * The path from which the application is run.
+This function will raise a Lua error if unable to get the application support path.
  * @returns path to application executable
  * @example Find a path where we can store data (the example path is on the macOS platform):
 ```lua
@@ -11215,6 +11366,21 @@ print(application_path) --> http://www.foobar.com/my_game
 * @see {@link https://defold.com/ref/stable/sys/#sys.get_application_path|API Documentation}
  */
 	export function get_application_path(): string;
+	/**
+ * Get boolean config value from the game.project configuration file with optional default value
+ * @param key key to get value for. The syntax is SECTION.KEY
+ * @param default_value (optional) default value to return if the value does not exist
+ * @returns config value as a boolean. default_value if the config key does not exist. false if no default value was supplied.
+ * @example Get user config value
+```lua
+local vsync = sys.get_config_boolean("display.vsync", false)
+```
+* @see {@link https://defold.com/ref/stable/sys/#sys.get_config_boolean|API Documentation}
+ */
+	export function get_config_boolean(
+		key: string,
+		default_value?: boolean,
+	): boolean;
 	/**
  * Get integer config value from the game.project configuration file with optional default value
  * @param key key to get value for. The syntax is SECTION.KEY
@@ -11351,6 +11517,7 @@ end
 	}[];
 	/**
  * The save-file path is operating system specific and is typically located under the user's home directory.
+This function will raise a Lua error if unable to get the save file path.
  * @param application_id user defined id of the application, which helps define the location of the save-file
  * @param file_name file-name to get path for
  * @returns path to save-file
@@ -11411,6 +11578,7 @@ end
 	};
 	/**
  * If the file exists, it must have been created by `sys.save` to be loaded.
+This function will raise a Lua error if an error occurs while loading the file.
  * @param filename file to read from
  * @example Load data that was previously saved, e.g. an earlier game session:
 ```lua
@@ -11610,24 +11778,23 @@ Additionally, the total number of rows that any one table may contain is limited
 (i.e. a 16 bit range). When tables are used to represent arrays, the values of
 keys are permitted to fall within a 32 bit range, supporting sparse arrays, however
 the limit on the total number of rows remains in effect.
+This function will raise a Lua error if an error occurs while saving the table.
  * @param filename file to write to
  * @param table lua table to save
- * @returns a boolean indicating if the table could be saved or not
  * @example Save data:
 ```lua
 local my_table = {}
 table.insert(my_table, "my_value")
 local my_file_path = sys.get_save_file("my_game", "my_file")
-if not sys.save(my_file_path, my_table) then
-  -- Alert user that the data could not be saved
-end
+sys.save(my_file_path, my_table)
 ```
 * @see {@link https://defold.com/ref/stable/sys/#sys.save|API Documentation}
  */
-	export function save(filename: string, table: object): boolean;
+	export function save(filename: string, table: object): void;
 	/**
  * The buffer can later deserialized by `sys.deserialize`.
-This method has all the same limitations as `sys.save`.
+This function has all the same limitations as `sys.save`.
+This function will raise a Lua error if an error occurs while serializing the table.
  * @param table lua table to serialize
  * @returns serialized data buffer
  * @example Serialize table:
