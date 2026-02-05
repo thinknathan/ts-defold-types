@@ -16,6 +16,7 @@
 	],
 	"scripts": {
 		"build": "xtgen -m global -o ./ && yarn run patch && yarn run prettier && yarn run lint",
+		"build:beta": "xtgen -m global -c beta -o ./ && yarn run patch && yarn run prettier && yarn run lint",
 		"check": "tsc --noEmit",
 		"lint": "eslint ./index.d.ts --fix",
 		"patch": "node patch.mjs",
