@@ -4,8 +4,35 @@
 /// <reference types="lua-types/special/jit-only" />
 /// <reference types="./deprecated.d.ts" />
 
-// DEFOLD. stable version 1.12.0 (3206f699aaff89f357c9d549050b8453e080c5d2)
+// DEFOLD. stable version 1.12.1 (16c6fd602f32de4814660672c38ce3ccbbc1fb59)
 
+/**
+ * All ids in the engine are represented as hashes, so a string needs to be hashed
+before it can be compared with an id.
+ * @param s string to hash
+ * @returns a hashed string
+ * @example To compare a message_id in an on-message callback function:
+```lua
+function on_message(self, message_id, message, sender)
+    if message_id == hash("my_message") then
+        -- Act on the message here
+    end
+end
+```
+ */
+declare function hash(s: string): hash;
+/**
+ * Returns a hexadecimal representation of a hash value.
+The returned string is always padded with leading zeros.
+ * @param h hash value to get hex string for
+ * @returns hex representation of the hash
+ * @example ```lua
+local h = hash("my_hash")
+local hexstr = hash_to_hex(h)
+print(hexstr) --> a2bc06d97f580aab
+```
+ */
+declare function hash_to_hex(h: hash): string;
 /**
  * Pretty printing of Lua values. This function prints Lua values
 in a manner similar to +print()+, but will also recurse into tables
@@ -36,33 +63,6 @@ Lua tables is undefined):
  */
 declare function pprint(...v: any[]): void;
 /**
- * All ids in the engine are represented as hashes, so a string needs to be hashed
-before it can be compared with an id.
- * @param s string to hash
- * @returns a hashed string
- * @example To compare a message_id in an on-message callback function:
-```lua
-function on_message(self, message_id, message, sender)
-    if message_id == hash("my_message") then
-        -- Act on the message here
-    end
-end
-```
- */
-declare function hash(s: string): hash;
-/**
- * Returns a hexadecimal representation of a hash value.
-The returned string is always padded with leading zeros.
- * @param h hash value to get hex string for
- * @returns hex representation of the hash
- * @example ```lua
-local h = hash("my_hash")
-local hexstr = hash_to_hex(h)
-print(hexstr) --> a2bc06d97f580aab
-```
- */
-declare function hash_to_hex(h: hash): string;
-/**
  * A unique identifier used to reference resources, messages, properties, and other entities within the game.
  */
 declare type hash = Readonly<
@@ -86,35 +86,6 @@ declare type buffer = object;
  * A data stream derived from a buffer.
  */
 declare type bufferstream = LuaUserdata & number[] & object;
-
-declare namespace missingName {
-	/**
- * Enables engine throttling.
- * @param enable true if throttling should be enabled
- * @param cooldown the time period to do update + render for (seconds)
- * @example Disable throttling
-```lua
-sys.set_engine_throttle(false)
-```
-
-Enable throttling
-```lua
-sys.set_engine_throttle(true, 1.5)
-```
-* @see {@link https://defold.com/ref/stable/missingName/#missingName.set_engine_throttle|API Documentation}
- */
-	export function set_engine_throttle(enable: boolean, cooldown: number): void;
-	/**
- * Disables rendering
- * @param enable true if throttling should be enabled
- * @example Disable rendering
-```lua
-sys.set_render_enable(false)
-```
-* @see {@link https://defold.com/ref/stable/missingName/#missingName.set_render_enable|API Documentation}
- */
-	export function set_render_enable(enable: boolean): void;
-}
 
 /** @see {@link https://defold.com/ref/stable/b2d/|Box2D Documentation} @since 1.8.0 */
 declare namespace b2d {
@@ -2179,6 +2150,14 @@ end
  */
 	export function init(this: LuaUserdata): void;
 	/**
+ * This is a callback-function, which is called by the engine at the end of the frame to update the state of a script
+component. Use it to make final adjustments to the game object instance.
+ * @param this reference to the script state to be used for storing data
+ * @param dt the time-step of the frame update
+* @see {@link https://defold.com/ref/stable/go/#go.late_update|API Documentation}
+ */
+	export function late_update(this: LuaUserdata, dt: number): void;
+	/**
  * This is a callback-function, which is called by the engine when user input is sent to the game object instance of the script.
 It can be used to take action on the input, e.g. move the instance according to the input.
 For an instance to obtain user input, it must first acquire input focus
@@ -2779,6 +2758,7 @@ declare namespace go {
 		gamepad?: number;
 		touch?: touch_input[];
 	};
+	export type late_update = (this: any, dt: number) => void;
 	export type on_input = (
 		this: any,
 		action_id: hash,
@@ -2790,6 +2770,7 @@ declare namespace go {
 		message: object,
 		sender: url,
 	) => void;
+	export type on_reload = (this: any) => void;
 	export type touch_input = {
 		id: number;
 		pressed: boolean;
@@ -3405,6 +3386,22 @@ texture using gui.new_texture().
 	 * The texture id already exists when trying to use gui.new_texture().
 	 */
 	export const RESULT_TEXTURE_ALREADY_EXISTS: number;
+	/**
+	 * Safe area mode that applies insets on all edges.
+	 */
+	export const SAFE_AREA_BOTH: number;
+	/**
+	 * Safe area mode that applies insets only on the long edges.
+	 */
+	export const SAFE_AREA_LONG: number;
+	/**
+	 * Safe area mode that ignores safe area insets.
+	 */
+	export const SAFE_AREA_NONE: number;
+	/**
+	 * Safe area mode that applies insets only on the short edges.
+	 */
+	export const SAFE_AREA_SHORT: number;
 	/**
 	 * The size of the node is determined by the currently assigned texture.
 	 */
@@ -5147,6 +5144,18 @@ The rotation is expressed as a quaternion
 		rotation: vmath.quaternion | vmath.vector4,
 	): void;
 	/**
+ * Sets how the safe area is applied to this gui scene.
+ * @param mode safe area mode
+
+`gui.SAFE_AREA_NONE`
+`gui.SAFE_AREA_LONG`
+`gui.SAFE_AREA_SHORT`
+`gui.SAFE_AREA_BOTH`
+* @see {@link https://defold.com/ref/stable/gui/#gui.set_safe_area_mode|API Documentation}
+
+ */
+	export function set_safe_area_mode(mode: number): void;
+	/**
 	 * Sets the scaling of the supplied node.
 	 * @param node node to set the scale for
 	 * @param scale new scale
@@ -5428,6 +5437,7 @@ declare namespace gui {
 		message: object,
 		sender: url,
 	) => void;
+	export type on_reload = (this: any) => void;
 	export type update = (this: any, dt: number) => void;
 }
 
@@ -5544,6 +5554,7 @@ end
 			ignore_cache?: boolean;
 			chunked_transfer?: boolean;
 			report_progress?: boolean;
+			proxy?: string;
 		},
 	): void;
 }
@@ -6822,7 +6833,7 @@ end
 		request_id?: number,
 	): void;
 	/**
- * sets a physics world event listener. If a function is set, physics messages will no longer be sent to on_message.
+ * Only one physics world event listener can be set at a time.
  * @param callback A callback that receives an information about all the physics interactions in this physics world.
 
 `self`
@@ -7658,8 +7669,8 @@ end
 		binding: hash | number | string,
 		handle_or_name: hash | number | string,
 		buffer_type?:
-			| any
-			| typeof graphics.BUFFER_TYPE_COLOR1_BIT
+			| typeof graphics.BUFFER_TYPE_COLOR0_BIT
+			 
 			 
 			 
 			 
@@ -11816,6 +11827,22 @@ sys.set_connectivity_host("www.google.com")
  */
 	export function set_connectivity_host(host: string): void;
 	/**
+ * Enables engine throttling.
+ * @param enable true if throttling should be enabled
+ * @param cooldown the time period to do update + render for (seconds)
+ * @example Disable throttling
+```lua
+sys.set_engine_throttle(false)
+```
+
+Enable throttling
+```lua
+sys.set_engine_throttle(true, 1.5)
+```
+* @see {@link https://defold.com/ref/stable/sys/#sys.set_engine_throttle|API Documentation}
+ */
+	export function set_engine_throttle(enable: boolean, cooldown: number): void;
+	/**
  * Set the Lua error handler function.
 The error handler is a function which is called whenever a lua runtime error occurs.
  * @param error_handler the function to be called on error
@@ -11851,6 +11878,16 @@ end
 	export function set_error_handler(
 		error_handler: (source: string, message: string, traceback: string) => void,
 	): void;
+	/**
+ * Disables rendering
+ * @param enable true if throttling should be enabled
+ * @example Disable rendering
+```lua
+sys.set_render_enable(false)
+```
+* @see {@link https://defold.com/ref/stable/sys/#sys.set_render_enable|API Documentation}
+ */
+	export function set_render_enable(enable: boolean): void;
 	/**
  * Set game update-frequency (frame cap). This option is equivalent to `display.update_frequency` in
 the "game.project" settings but set in run-time. If `Vsync` checked in "game.project", the rate will
@@ -13436,6 +13473,37 @@ On platforms that does not support dimming, `window.DIMMING_UNKNOWN` is always r
 	 */
 	export function get_mouse_lock(): boolean;
 	/**
+ * This returns the safe area rectangle (x, y, width, height) and the inset
+values relative to the window edges. On platforms without a safe area,
+this returns the full window size and zero insets.
+ * @returns safe area data
+
+`safe_area`
+table table containing these keys:
+
+
+number `x`
+number `y`
+number `width`
+number `height`
+number `inset_left`
+number `inset_top`
+number `inset_right`
+number `inset_bottom`
+* @see {@link https://defold.com/ref/stable/window/#window.get_safe_area|API Documentation}
+
+ */
+	export function get_safe_area(): {
+		x: number;
+		y: number;
+		width: number;
+		height: number;
+		inset_left: number;
+		inset_top: number;
+		inset_right: number;
+		inset_bottom: number;
+	};
+	/**
 	 * This returns the current window size (width and height).
 	 * @returns The window width & The window height
 	 * @see {@link https://defold.com/ref/stable/window/#window.get_size|API Documentation}
@@ -13454,7 +13522,7 @@ This function has no effect on platforms that does not support dimming.
  */
 	export function set_dim_mode(mode: number): void;
 	/**
- * Sets a window event listener.
+ * Sets a window event listener. Only one window event listener can be set at a time.
  * @param callback A callback which receives info about window events. Pass an empty function or `nil` if you no longer wish to receive callbacks.
 
 `self`
