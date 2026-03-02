@@ -3,7 +3,7 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="lua-types/special/jit-only" />
 
-// DEFOLD. stable version 1.12.1 (16c6fd602f32de4814660672c38ce3ccbbc1fb59)
+// DEFOLD. stable version 1.12.2 (e43be333aa7a4fc319ab62adc8d405c8e98bf92f)
 
 /**
  * All ids in the engine are represented as hashes, so a string needs to be hashed
@@ -1603,6 +1603,7 @@ export function fixed_update(this: LuaUserdata, dt: number): void;
  * @param options optional options table
 - index number index into array property (1 based)
 - key hash name of internal property
+- keys table array of internal component resources identified by key (e.g. a particle fx emitter, see examples below)
  * @example Get a property "speed" from a script "player", the property must be declared in the player-script:
 ```lua
 go.property("speed", 50)
@@ -1629,18 +1630,21 @@ Getting all values in a material property array as a table
 -- get all vector4's in the constant array
 go.get(url, "example")
 -- result: { vector4, vector4, ... }
-
 -- get all elements of the vector4's from an array
 go.get(url, "example.x")
 -- result: { number1, number2, ... }
 ```Get a named property
-
 ```lua
-function init(self)
-    -- get the resource of a certain gui font
-    local font_hash = go.get("#gui", "fonts", {key = "system_font_BIG"})
-end
-```
+lua
+-- get the resource of a certain gui font
+local font_hash = go.get("#gui", "fonts", {key = "system_font_BIG"})```Get a property from a sub-component, using the "keys" options table
+```lua
+lua
+-- Addressing the first level of a component:
+go.get("#particlefx", "material", { keys = { "cone_emitter" } })```Get a property into a deeper sub-hierarchy (if the component supports it).
+```lua
+-- Note: There is currently no component that supports this, but a custom component could.
+go.get("#my_component", "some_property", { keys = { "root", "child_node" } })
  */
 export function get(url: string | hash | url, property: string | hash, options?: object): unknown;
 /**
@@ -2173,6 +2177,7 @@ export function property(name: string, value: number | hash | url | vmath.vector
  * @param options optional options table
 - index integer index into array property (1 based)
 - key hash name of internal property
+- keys table array of internal component resources identified by key (e.g. a particle fx emitter, see examples below)
  * @example Set a property "speed" of a script "player", the property must be declared in the player-script:
 ```lua
 go.property("speed", 50)
@@ -2196,18 +2201,25 @@ go.set(url, "example.x", 7, {index=1})
 
 Set a material property array by a table of vector4
 ```lua
+lua
 -- set the first two vector4's in the array
 -- if the array has more than two elements in the array they will not be set
-go.set(url, "example", { vmath.vector4(1,1,1,1), vmath.vector4(2,2,2,2) })
-```Set a named property
-
+go.set(url, "example", { vmath.vector4(1,1,1,1), vmath.vector4(2,2,2,2) })```Set a named property
 ```lua
 go.property("big_font", resource.font())
-
 function init(self)
     go.set("#gui", "fonts", self.big_font, {key = "system_font_BIG"})
 end
-```
+```Set a property on a sub-component, using the "keys" options table
+```lua
+lua
+go.property("my_material", resource.material)
+function init(self)
+    go.set("#particlefx", "material", self.my_material, { keys = { "cone_emitter" } })
+end```Set a property in a deeper sub-hierarchy (if the component supports it).
+```lua
+-- Note: There is currently no component that supports this, but a custom component could.
+go.set("#my_component", "some_property", some_value, { keys = { "root", "child_node" } })
  */
 export function set(url: string | hash | url, property: string | hash, value: number | boolean | hash | url | vmath.vector3 | vmath.vector4 | vmath.quaternion | any, options?: object): void;
 /**
@@ -3056,7 +3068,7 @@ export const TYPE_TEXT: number;
  * This starts an animation of a node property according to the specified parameters.
 If the node property is already being animated, that animation will be canceled and
 replaced by the new one. Note however that several different node properties
-can be animated simultaneously. Use `gui.cancel_animation` to stop the animation
+can be animated simultaneously. Use `gui.cancel_animations` to stop the animation
 before it has completed.
 Composite properties of type vector3, vector4 or quaternion
 also expose their sub-components (x, y, z and w).
