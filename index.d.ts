@@ -4,7 +4,7 @@
 /// <reference types="lua-types/special/jit-only" />
 /// <reference types="./deprecated.d.ts" />
 
-// DEFOLD. stable version 1.12.1 (16c6fd602f32de4814660672c38ce3ccbbc1fb59)
+// DEFOLD. stable version 1.12.2 (e43be333aa7a4fc319ab62adc8d405c8e98bf92f)
 
 /**
  * All ids in the engine are represented as hashes, so a string needs to be hashed
@@ -1768,7 +1768,6 @@ local values = { 0, 0, 0, 0, 0, 0, 0, 0,
 local vec = vmath.vector(values)
 go.animate("go", "position.y", go.PLAYBACK_LOOP_PINGPONG, 100, vec, 2.0)
 ```
-* @see {@link https://defold.com/ref/stable/go/#go.animate|API Documentation}
  */
 	export function animate(
 		url: hash | url | string,
@@ -1801,7 +1800,6 @@ Cancel all property animations of the sprite component of the current game objec
 ```lua
 go.cancel_animations("#sprite")
 ```
-* @see {@link https://defold.com/ref/stable/go/#go.cancel_animations|API Documentation}
  */
 	export function cancel_animations(
 		url: hash | url | string,
@@ -1839,7 +1837,6 @@ go.delete(id, true)
 local ids = { hash("/my_object_1"), hash("/my_object_2"), hash("/my_object_3") }
 go.delete(ids, true)
 ```
-* @see {@link https://defold.com/ref/stable/go/#go.delete_|API Documentation}
  */
 	export function delete_(
 		id?: hash | url | object | string,
@@ -1860,7 +1857,6 @@ Check if game object exists in another collection
 ```lua
 go.exists("other_collection:/my_game_object")
 ```
-* @see {@link https://defold.com/ref/stable/go/#go.exists|API Documentation}
  */
 	export function exists(url: hash | url | string): boolean;
 	/**
@@ -1874,7 +1870,6 @@ function final(self)
     msg.post("my_friend_instance", "im_dead", {my_stats = self.some_value})
 end
 ```
-* @see {@link https://defold.com/ref/stable/go/#go.final|API Documentation}
  */
 	export function final(this: LuaUserdata): void;
 	/**
@@ -1884,7 +1879,6 @@ It can for instance be used to update game logic with the physics simulation if 
 physics (enabled by ticking 'Use Fixed Timestep' in the Physics section of game.project).
  * @param this reference to the script state to be used for storing data
  * @param dt the time-step of the frame update
-* @see {@link https://defold.com/ref/stable/go/#go.fixed_update|API Documentation}
  */
 	export function fixed_update(this: LuaUserdata, dt: number): void;
 	/**
@@ -1894,6 +1888,7 @@ physics (enabled by ticking 'Use Fixed Timestep' in the Physics section of game.
  * @param options optional options table
 - index number index into array property (1 based)
 - key hash name of internal property
+- keys table array of internal component resources identified by key (e.g. a particle fx emitter, see examples below)
  * @example Get a property "speed" from a script "player", the property must be declared in the player-script:
 ```lua
 go.property("speed", 50)
@@ -1920,19 +1915,21 @@ Getting all values in a material property array as a table
 -- get all vector4's in the constant array
 go.get(url, "example")
 -- result: { vector4, vector4, ... }
-
 -- get all elements of the vector4's from an array
 go.get(url, "example.x")
 -- result: { number1, number2, ... }
 ```Get a named property
-
 ```lua
-function init(self)
-    -- get the resource of a certain gui font
-    local font_hash = go.get("#gui", "fonts", {key = "system_font_BIG"})
-end
-```
-* @see {@link https://defold.com/ref/stable/go/#go.get|API Documentation}
+lua
+-- get the resource of a certain gui font
+local font_hash = go.get("#gui", "fonts", {key = "system_font_BIG"})```Get a property from a sub-component, using the "keys" options table
+```lua
+lua
+-- Addressing the first level of a component:
+go.get("#particlefx", "material", { keys = { "cone_emitter" } })```Get a property into a deeper sub-hierarchy (if the component supports it).
+```lua
+-- Note: There is currently no component that supports this, but a custom component could.
+go.get("#my_component", "some_property", { keys = { "root", "child_node" } })
  */
 	export function get(
 		url: hash | url | string,
@@ -1960,7 +1957,6 @@ print(id) --> hash: [/my_sub_collection/my_instance]
 local id = go.get_id("my_instance") -- relative path
 print(id) --> hash: [/my_sub_collection/my_instance]
 ```
-* @see {@link https://defold.com/ref/stable/go/#go.get_id|API Documentation}
  */
 	export function get_id(path?: string): hash;
 	/**
@@ -1976,7 +1972,6 @@ Get parent of the instance with id "x":
 ```lua
 local parent_id = go.get_parent("x")
 ```
-* @see {@link https://defold.com/ref/stable/go/#go.get_parent|API Documentation}
  */
 	export function get_parent(id?: hash | url | string): hash | undefined;
 	/**
@@ -1992,7 +1987,6 @@ Get the position of another game object instance "my_gameobject":
 ```lua
 local pos = go.get_position("my_gameobject")
 ```
-* @see {@link https://defold.com/ref/stable/go/#go.get_position|API Documentation}
  */
 	export function get_position(id?: hash | url | string): vmath.vector3;
 	/**
@@ -2008,7 +2002,6 @@ Get the rotation of another game object instance with id "x":
 ```lua
 local r = go.get_rotation("x")
 ```
-* @see {@link https://defold.com/ref/stable/go/#go.get_rotation|API Documentation}
  */
 	export function get_rotation(id?: hash | url | string): vmath.quaternion;
 	/**
@@ -2024,7 +2017,6 @@ Get the scale of another game object instance with id "x":
 ```lua
 local s = go.get_scale("x")
 ```
-* @see {@link https://defold.com/ref/stable/go/#go.get_scale|API Documentation}
  */
 	export function get_scale(id?: hash | url | string): vmath.vector3;
 	/**
@@ -2040,7 +2032,6 @@ Get the uniform scale of another game object instance with id "x":
 ```lua
 local s = go.get_scale_uniform("x")
 ```
-* @see {@link https://defold.com/ref/stable/go/#go.get_scale_uniform|API Documentation}
  */
 	export function get_scale_uniform(id?: hash | url | string): number;
 	/**
@@ -2058,7 +2049,6 @@ Get the world position of another game object instance with id "x":
 ```lua
 local p = go.get_world_position("x")
 ```
-* @see {@link https://defold.com/ref/stable/go/#go.get_world_position|API Documentation}
  */
 	export function get_world_position(id?: hash | url | string): vmath.vector3;
 	/**
@@ -2076,7 +2066,6 @@ Get the world rotation of another game object instance with id "x":
 ```lua
 local r = go.get_world_rotation("x")
 ```
-* @see {@link https://defold.com/ref/stable/go/#go.get_world_rotation|API Documentation}
  */
 	export function get_world_rotation(
 		id?: hash | url | string,
@@ -2098,7 +2087,6 @@ Get the world scale of another game object instance "x":
 ```lua
 local s = go.get_world_scale("x")
 ```
-* @see {@link https://defold.com/ref/stable/go/#go.get_world_scale|API Documentation}
  */
 	export function get_world_scale(id?: hash | url | string): vmath.vector3;
 	/**
@@ -2116,7 +2104,6 @@ Get the world scale of another game object instance with id "x":
 ```lua
 local s = go.get_world_scale_uniform("x")
 ```
-* @see {@link https://defold.com/ref/stable/go/#go.get_world_scale_uniform|API Documentation}
  */
 	export function get_world_scale_uniform(id?: hash | url | string): number;
 	/**
@@ -2133,7 +2120,6 @@ Get the world transform of another game object instance with id "x":
 ```lua
 local m = go.get_world_transform("x")
 ```
-* @see {@link https://defold.com/ref/stable/go/#go.get_world_transform|API Documentation}
  */
 	export function get_world_transform(id?: hash | url | string): vmath.matrix4;
 	/**
@@ -2146,7 +2132,6 @@ function init(self)
     self.my_value = 1
 end
 ```
-* @see {@link https://defold.com/ref/stable/go/#go.init|API Documentation}
  */
 	export function init(this: LuaUserdata): void;
 	/**
@@ -2154,7 +2139,6 @@ end
 component. Use it to make final adjustments to the game object instance.
  * @param this reference to the script state to be used for storing data
  * @param dt the time-step of the frame update
-* @see {@link https://defold.com/ref/stable/go/#go.late_update|API Documentation}
  */
 	export function late_update(this: LuaUserdata, dt: number): void;
 	/**
@@ -2374,7 +2358,6 @@ function on_input(self, action_id, action)
     end
 end
 ```
-* @see {@link https://defold.com/ref/stable/go/#go.on_input|API Documentation}
  */
 	export function on_input(
 		this: LuaUserdata,
@@ -2416,7 +2399,6 @@ function on_message(self, message_id, message, sender)
     end
 end
 ```
-* @see {@link https://defold.com/ref/stable/go/#go.on_message|API Documentation}
  */
 	export function on_message(
 		this: LuaUserdata,
@@ -2460,7 +2442,6 @@ function on_reload(self)
     self.max_speed = 100
 end
 ```
-* @see {@link https://defold.com/ref/stable/go/#go.on_reload|API Documentation}
  */
 	export function on_reload(this: LuaUserdata): void;
 	/**
@@ -2486,7 +2467,6 @@ function on_message(self, message_id, message, sender)
     end
 end
 ```
-* @see {@link https://defold.com/ref/stable/go/#go.property|API Documentation}
  */
 	export function property(
 		name: string,
@@ -2501,6 +2481,7 @@ end
  * @param options optional options table
 - index integer index into array property (1 based)
 - key hash name of internal property
+- keys table array of internal component resources identified by key (e.g. a particle fx emitter, see examples below)
  * @example Set a property "speed" of a script "player", the property must be declared in the player-script:
 ```lua
 go.property("speed", 50)
@@ -2524,19 +2505,25 @@ go.set(url, "example.x", 7, {index=1})
 
 Set a material property array by a table of vector4
 ```lua
+lua
 -- set the first two vector4's in the array
 -- if the array has more than two elements in the array they will not be set
-go.set(url, "example", { vmath.vector4(1,1,1,1), vmath.vector4(2,2,2,2) })
-```Set a named property
-
+go.set(url, "example", { vmath.vector4(1,1,1,1), vmath.vector4(2,2,2,2) })```Set a named property
 ```lua
 go.property("big_font", resource.font())
-
 function init(self)
     go.set("#gui", "fonts", self.big_font, {key = "system_font_BIG"})
 end
-```
-* @see {@link https://defold.com/ref/stable/go/#go.set|API Documentation}
+```Set a property on a sub-component, using the "keys" options table
+```lua
+lua
+go.property("my_material", resource.material)
+function init(self)
+    go.set("#particlefx", "material", self.my_material, { keys = { "cone_emitter" } })
+end```Set a property in a deeper sub-hierarchy (if the component supports it).
+```lua
+-- Note: There is currently no component that supports this, but a custom component could.
+go.set("#my_component", "some_property", some_value, { keys = { "root", "child_node" } })
  */
 	export function set(
 		url: hash | url | string,
@@ -2569,7 +2556,6 @@ Detach an instance "my_instance" from its parent (if any):
 ```lua
 go.set_parent(go.get_id("my_instance"))
 ```
-* @see {@link https://defold.com/ref/stable/go/#go.set_parent|API Documentation}
  */
 	export function set_parent(
 		id?: hash | url | string,
@@ -2591,7 +2577,6 @@ Set the position of another game object instance with id "x":
 local p = ...
 go.set_position(p, "x")
 ```
-* @see {@link https://defold.com/ref/stable/go/#go.set_position|API Documentation}
  */
 	export function set_position(
 		position: vmath.vector3,
@@ -2612,7 +2597,6 @@ Set the rotation of another game object instance with id "x":
 local r = ...
 go.set_rotation(r, "x")
 ```
-* @see {@link https://defold.com/ref/stable/go/#go.set_rotation|API Documentation}
  */
 	export function set_rotation(
 		rotation: vmath.quaternion,
@@ -2634,7 +2618,6 @@ Set the scale of another game object instance with id "obj_id":
 local s = 1.2
 go.set_scale(s, "obj_id")
 ```
-* @see {@link https://defold.com/ref/stable/go/#go.set_scale|API Documentation}
  */
 	export function set_scale(
 		scale: vmath.vector3 | number,
@@ -2656,7 +2639,6 @@ Set the scale of another game object instance with id "obj_id":
 local s = 1.2
 go.set_scale_xy(s, "obj_id") -- z will not be set here, only x and y
 ```
-* @see {@link https://defold.com/ref/stable/go/#go.set_scale_xy|API Documentation}
  */
 	export function set_scale_xy(
 		scale: vmath.vector3 | number,
@@ -2679,7 +2661,6 @@ function update(self, dt)
     go.set_position(go.get_position() + dt * self.my_velocity)
 end
 ```
-* @see {@link https://defold.com/ref/stable/go/#go.update|API Documentation}
  */
 	export function update(this: LuaUserdata, dt: number): void;
 	/**
@@ -2700,7 +2681,6 @@ Update another game object's world transform:
 ```lua
 go.update_world_transform("/other")
 ```
-* @see {@link https://defold.com/ref/stable/go/#go.update_world_transform|API Documentation}
  */
 	export function update_world_transform(id?: hash | url | string): void;
 	/**
@@ -2714,7 +2694,6 @@ go.update_world_transform("/other")
   local child_pos = go.get_world_position("/child")
   local new_position = go.world_to_local_position(test_pos, "/child")
 ```
-* @see {@link https://defold.com/ref/stable/go/#go.world_to_local_position|API Documentation}
  */
 	export function world_to_local_position(
 		position: vmath.vector3,
@@ -2731,7 +2710,6 @@ go.update_world_transform("/other")
    local child_transform = go.get_world_transform("/child")
    local result_transform = go.world_to_local_transform(test_transform, "/child")
 ```
-* @see {@link https://defold.com/ref/stable/go/#go.world_to_local_transform|API Documentation}
  */
 	export function world_to_local_transform(
 		transformation: vmath.matrix4,
@@ -3434,7 +3412,7 @@ texture using gui.new_texture().
  * This starts an animation of a node property according to the specified parameters.
 If the node property is already being animated, that animation will be canceled and
 replaced by the new one. Note however that several different node properties
-can be animated simultaneously. Use `gui.cancel_animation` to stop the animation
+can be animated simultaneously. Use `gui.cancel_animations` to stop the animation
 before it has completed.
 Composite properties of type vector3, vector4 or quaternion
 also expose their sub-components (x, y, z and w).
