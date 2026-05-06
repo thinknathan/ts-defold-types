@@ -4,7 +4,7 @@
 /// <reference types="lua-types/special/jit-only" />
 /// <reference types="./deprecated.d.ts" />
 
-// DEFOLD. stable version 1.12.3 (4bea51a98ab77678fd091d6e06d13c5cf5e01ca7)
+// DEFOLD. stable version 1.12.4 (402218d5544666871f07ecdfa21032a7fb59413f)
 
 /**
  * Pretty printing of Lua values. This function prints Lua values
@@ -1682,46 +1682,6 @@ end
  */
 	export function get_resources(collectionproxy: url): string[];
 	/**
- * return an array of missing resources for a collection proxy. Each
-entry is a hexadecimal string that represents the data of the specific
-resource. This representation corresponds with the filename for each
-individual resource that is exported when you bundle an application with
-LiveUpdate functionality. It should be considered good practise to always
-check whether or not there are any missing resources in a collection proxy
-before attempting to load the collection proxy.
- * @param collectionproxy the collectionproxy to check for missing
-resources.
- * @example ```lua
-function init(self)
-end
-
-local function callback(self, id, response)
-    local expected = self.resources[id]
-    if response ~= nil and response.status == 200 then
-        print("Successfully downloaded resource: " .. expected)
-        resource.store_resource(response.response)
-    else
-        print("Failed to download resource: " .. expected)
-        -- error handling
-    end
-end
-
-local function download_resources(self, cproxy)
-    self.resources = {}
-    local resources = collectionproxy.missing_resources(cproxy)
-    for _, v in ipairs(resources) do
-        print("Downloading resource: " .. v)
-
-        local uri = "http://example.defold.com/" .. v
-        local id = http.request(uri, "GET", callback)
-        self.resources[id] = v
-    end
-end
-```
-* @see {@link https://defold.com/ref/stable/collectionproxy/#collectionproxy.missing_resources|API Documentation}
- */
-	export function missing_resources(collectionproxy: url): string[];
-	/**
  * The collection should be loaded by the collection proxy.
 Setting the collection to "nil" will revert it back to the original collection.
 The collection proxy shouldn't be loaded and should have the 'Exclude' checkbox checked.
@@ -1889,531 +1849,6 @@ The generated dump can be read by crash.load_previous
 * @see {@link https://defold.com/ref/stable/crash/#crash.write_dump|API Documentation}
  */
 	export function write_dump(): void;
-}
-
-declare namespace dmScript {
-	/**
-	 * Check if the value in the supplied index on the lua stack is a hash.
-	 * @param L Lua state
-	 * @param index Index of the value
-	 * @returns The hash value
-	 */
-	export function CheckHash(L: any, index: number): hash;
-	/**
- * Check if the value in the supplied index on the lua stack is a hash or string.
-If it is a string, it gets hashed on the fly
- * @param L Lua state
- * @param index Index of the value
- * @returns The hash value
- */
-	export function CheckHashOrString(L: any, index: number): hash;
-	/**
-	 * Check if the value in the supplied index on the lua stack is a dmVMath::Matrix4.
-	 * @param L Lua state
-	 * @param index Index of the value
-	 * @returns The pointer to the value
-	 */
-	export function CheckMatrix4(L: any, index: number): unknown;
-	/**
-	 * Check if the value in the supplied index on the lua stack is a dmVMath::Quat.
-	 * @param L Lua state
-	 * @param index Index of the value
-	 * @returns The pointer to the value
-	 */
-	export function CheckQuat(L: any, index: number): unknown;
-	/**
- * Serialize a table to a buffer
-Supported types: LUA_TBOOLEAN, LUA_TNUMBER, LUA_TSTRING, Point3, Vector3, Vector4 and Quat
-Keys must be strings
- * @param L Lua state
- * @param buffer Buffer that will be written to (must be DM_ALIGNED(16))
- * @param buffer_size Buffer size
- * @param index Index of the table
- * @returns Number of bytes used in buffer
- */
-	export function CheckTable(
-		L: any,
-		buffer: any,
-		buffer_size: any,
-		index: number,
-	): unknown;
-	/**
-	 * Check if the value in the supplied index on the lua stack is a dmMessage::URL and returns it if so.
-	 * @param L Lua state
-	 * @param index Index of the value
-	 * @returns The pointer to the value
-	 */
-	export function CheckURL(L: any, index: number): unknown;
-	/**
-	 * Get the current game object URL
-	 * @param L Lua state
-	 * @param out_url where to store the result
-	 * @returns true if successful
-	 */
-	export function CheckURL(L: any, out_url: any): boolean;
-	/**
-	 * Check if the value in the supplied index on the lua stack is a dmVMath::Vector3.
-	 * @param L Lua state
-	 * @param index Index of the value
-	 * @returns The pointer to the value
-	 */
-	export function CheckVector3(L: any, index: number): unknown;
-	/**
-	 * Check if the value in the supplied index on the lua stack is a dmVMath::Vector3.
-	 * @param L Lua state
-	 * @param index Index of the value
-	 * @returns The pointer to the value
-	 */
-	export function CheckVector4(L: any, index: number): unknown;
-	/**
- * Stores the current Lua state plus references to the script instance (self) and the callback.
-Expects SetInstance() to have been called prior to using this method.
-The allocated data is created on the Lua stack and references are made against the
-instances own context table.
-If the callback is not explicitly deleted with DestroyCallback() the references and
-data will stay around until the script instance is deleted.
- * @param L Lua state
- * @param index Lua stack index of the function
- * @returns Lua callback struct if successful, 0 otherwise
- * @example ```lua
-static int SomeFunction(lua_State* L) // called from Lua
-{
-    LuaCallbackInfo* cbk = dmScript::CreateCallback(L, 1);
-    ... store the callback for later
-}
-
-static void InvokeCallback(LuaCallbackInfo* cbk)
-{
-    lua_State* L = dmScript::GetCallbackLuaContext(cbk);
-    DM_LUA_STACK_CHECK(L, 0);
-
-    if (!dmScript::SetupCallback(callback))
-    {
-        return;
-    }
-
-    lua_pushstring(L, "hello");
-
-    dmScript::PCall(L, 2, 0); // self + # user arguments
-
-    dmScript::TeardownCallback(callback);
-    dmScript::DestroyCallback(cbk); // only do this if you're not using the callback again
-}
-```
- */
-	export function CreateCallback(L: any, index: number): unknown;
-	/**
- * This macro will verify that the Lua stack size hasn't been changed before
-throwing a Lua error, which will long-jump out of the current function.
-This macro can only be used together with DM_LUA_STACK_CHECK and should
-be prefered over manual checking of the stack.
- * @param fmt Format string that contains error information.
- * @param args Format string args (variable arg list)
- * @example ```lua
-static int ModuleFunc(lua_State* L)
-{
-    DM_LUA_STACK_CHECK(L, 1);
-    if (some_error_check(L))
-    {
-        return DM_LUA_ERROR("some error message");
-    }
-    lua_pushnumber(L, 42);
-    return 1;
-}
-```
- */
-	export function DM_LUA_ERROR(fmt: any, args: any[]): void;
-	/**
- * Diff is the expected difference of the stack size.
-If luaL_error, or another function that executes a long-jump, is part of the executed code,
-the stack guard cannot be guaranteed to execute at the end of the function.
-In that case you should manually check the stack using `lua_gettop`.
-In the case of luaL_error, see DM_LUA_ERROR.
- * @param L lua state
- * @param diff Number of expected items to be on the Lua stack once this struct goes out of scope
- * @example ```lua
-DM_LUA_STACK_CHECK(L, 1);
-lua_pushnumber(L, 42);
-```
- */
-	export function DM_LUA_STACK_CHECK(L: any, diff: number): void;
-	/**
-	 * Deletes the Lua callback
-	 * @param cbk Lua callback struct
-	 */
-	export function DestroyCallback(cbk: any): void;
-	/**
-	 * Gets the Lua context from a callback struct
-	 * @param cbk Lua callback struct
-	 * @returns Lua state
-	 */
-	export function GetCallbackLuaContext(cbk: any): unknown;
-	/**
- * Retrieve current script instance from the global table and place it on the top of the stack, only valid when set.
-(see dmScript::GetMainThread)
- * @param L lua state
- */
-	export function GetInstance(L: any): void;
-	/**
-	 * Retrieve Lua state from the context
-	 * @param context the script context
-	 * @returns the lua state
-	 */
-	export function GetLuaState(context: any): unknown;
-	/**
- * Retrieve the main thread lua state from any lua state (main thread or coroutine).
- * @param L lua state
- * @returns the main thread lua state
- * @example How to create a Lua callback
-```lua
-dmScript::LuaCallbackInfo* g_MyCallbackInfo = 0;
-
-static void InvokeCallback(dmScript::LuaCallbackInfo* cbk)
-{
-    if (!dmScript::IsCallbackValid(cbk))
-        return;
-
-    lua_State* L = dmScript::GetCallbackLuaContext(cbk);
-    DM_LUA_STACK_CHECK(L, 0)
-
-    if (!dmScript::SetupCallback(cbk))
-    {
-        dmLogError("Failed to setup callback");
-        return;
-    }
-
-    lua_pushstring(L, "Hello from extension!");
-    lua_pushnumber(L, 76);
-
-    dmScript::PCall(L, 3, 0); // instance + 2
-
-    dmScript::TeardownCallback(cbk);
-}
-
-static int Start(lua_State* L)
-{
-    DM_LUA_STACK_CHECK(L, 0);
-
-    g_MyCallbackInfo = dmScript::CreateCallback(L, 1);
-
-    return 0;
-}
-
-static int Update(lua_State* L)
-{
-    DM_LUA_STACK_CHECK(L, 0);
-
-    static int count = 0;
-    if( count++ == 5 )
-    {
-        InvokeCallback(g_MyCallbackInfo);
-        if (g_MyCallbackInfo)
-            dmScript::DestroyCallback(g_MyCallbackInfo);
-        g_MyCallbackInfo = 0;
-    }
-    return 0;
-}
-```
- */
-	export function GetMainThread(L: any): unknown;
-	/**
-	 * Gets as good as possible printable string from a hash or string
-	 * @param L Lua state
-	 * @param index Index of the value
-	 * @param buffer buffer receiving the value
-	 * @param buffer_length the buffer length
-	 * @returns Returns buffer. If buffer is non null, it will always contain a null terminated string. "" if the hash could not be looked up.
-	 */
-	export function GetStringFromHashOrString(
-		L: any,
-		index: number,
-		buffer: any,
-		buffer_length: any,
-	): unknown;
-	/**
-	 * Check if Lua callback is valid.
-	 * @param cbk Lua callback struct
-	 */
-	export function IsCallbackValid(cbk: any): void;
-	/**
-	 * Check if the value at #index is a hash
-	 * @param L Lua state
-	 * @param index Index of the value
-	 * @returns true if the value at #index is a hash
-	 */
-	export function IsHash(L: any, index: number): boolean;
-	/**
-	 * Check if the script instance in the lua state is valid. The instance is assumed to have been previously set by dmScript::SetInstance.
-	 * @param L lua state
-	 * @returns Returns true if the instance is valid
-	 */
-	export function IsInstanceValid(L: any): boolean;
-	/**
-	 * Check if the value at #index is a dmVMath::Matrix4*
-	 * @param L Lua state
-	 * @param index Index of the value
-	 * @returns if value at #index is a dmVMath::Matrix4*
-	 */
-	export function IsMatrix4(L: any, index: number): boolean;
-	/**
-	 * Check if the value at #index is a dmVMath::Quat*
-	 * @param L Lua state
-	 * @param index Index of the value
-	 * @returns if value at #index is a dmVMath::Quat*
-	 */
-	export function IsQuat(L: any, index: number): boolean;
-	/**
-	 * Check if the value at #index is a URL
-	 * @param L Lua state
-	 * @param index Index of the value
-	 * @returns true if the value at #index is a URL
-	 */
-	export function IsURL(L: any, index: number): boolean;
-	/**
-	 * Check if the value at #index is a dmVMath::Vector3*
-	 * @param L Lua state
-	 * @param index Index of the value
-	 * @returns if value at #index is a dmVMath::Vector3*
-	 */
-	export function IsVector3(L: any, index: number): boolean;
-	/**
-	 * Check if the value at #index is a dmVMath::Vector4*
-	 * @param L Lua state
-	 * @param index Index of the value
-	 * @returns if value at #index is a dmVMath::Vector4*
-	 */
-	export function IsVector4(L: any, index: number): boolean;
-	/**
-	 * Convert a Json string to Lua table.
-	 * @param L lua state
-	 * @param json json string
-	 * @param json_len length of json string
-	 * @returns 1 if it succeeds. Throws a Lua error if it fails
-	 */
-	export function JsonToLua(L: any, json: any, json_len: any): number;
-	/**
-	 * callback info struct that will hold the relevant info needed to make a callback into Lua
-	 */
-	export let LuaCallbackInfo: unknown;
-	/**
-	 * Convert a Lua table to a Json string
-	 * @param L lua state
-	 * @param json [out] Pointer to char*, which will receive a newly allocated string. Use free().
-	 * @param json_len length of json string
-	 * @returns <0 if it fails. >=0 if it succeeds.
-	 */
-	export function LuaToJson(L: any, json: any, json_len: any): number;
-	/**
- * This function wraps lua_pcall with the addition of specifying an error handler which produces a backtrace.
-In the case of an error, the error is logged and popped from the stack.
- * @param L lua state
- * @param nargs number of arguments
- * @param nresult number of results
- * @returns error code from pcall
- */
-	export function PCall(L: any, nargs: number, nresult: number): number;
-	/**
-	 * Push DDF message to Lua stack
-	 * @param L the Lua state
-	 * @param descriptor field descriptor
-	 * @param data the message data (i.e. the message struct)
-	 * @param pointers_are_offsets True if pointers are offsets
-	 */
-	export function PushDDF(
-		L: any,
-		descriptor: any,
-		data: any,
-		pointers_are_offsets: boolean,
-	): void;
-	/**
-	 * Push a hash value onto the supplied lua state, will increase the stack by 1.
-	 * @param L Lua state
-	 * @param hash Hash value to push
-	 */
-	export function PushHash(L: any, hash: any): void;
-	/**
-	 * Push a matrix4 value onto the Lua stack. Will increase the stack by 1.
-	 * @param L Lua state
-	 * @param matrix dmVMath::Matrix4 value to push
-	 */
-	export function PushMatrix4(L: any, matrix: any): void;
-	/**
-	 * Push a quaternion value onto Lua stack. Will increase the stack by 1.
-	 * @param L Lua state
-	 * @param quat dmVMath::Quat value to push
-	 */
-	export function PushQuat(L: any, quat: any): void;
-	/**
-	 * Push a URL value onto the supplied lua state, will increase the stack by 1.
-	 * @param L Lua state
-	 * @param url URL reference to push
-	 */
-	export function PushURL(L: any, url: any): void;
-	/**
-	 * Push a dmVMath::Vector3 value onto the supplied lua state, will increase the stack by 1.
-	 * @param L Lua state
-	 * @param v Vector3 value to push
-	 */
-	export function PushVector3(L: any, v: any): void;
-	/**
-	 * Push a dmVMath::Vector4 value onto the supplied lua state, will increase the stack by 1.
-	 * @param L Lua state
-	 * @param v dmVMath::Vector4 value to push
-	 */
-	export function PushVector4(L: any, v: any): void;
-	/**
- * Creates and returns a reference, in the table at index t, for the object at the
-top of the stack (and pops the object).
-It also tracks number of global references kept.
- * @param L lua state
- * @param table table the lua table that stores the references. E.g LUA_REGISTRYINDEX
- * @returns the new reference
- */
-	export function Ref(L: any, table: number): number;
-	/**
- * Creates a reference to the value at top of stack, the ref is done in the
-current instances context table.
-Expects SetInstance() to have been set with an value that has a meta table
-with META_GET_INSTANCE_CONTEXT_TABLE_REF method.
- * @param L Lua state
- * @returns ref to value or LUA_NOREF
-Lua stack on entry
- [-1] value
-Lua stack on exit
- */
-	export function RefInInstance(L: any): number;
-	/**
- * Resolves a url in string format into a dmMessage::URL struct.
-Special handling for:
-- "." returns the default socket + path
-- "#" returns default socket + path + fragment
- * @param L Lua state
- * @param url url
- * @param out_url where to store the result
- * @param default_url default url
- * @returns dmMessage::RESULT_OK if the conversion succeeded
- */
-	export function RefInInstance(
-		L: any,
-		url: any,
-		out_url: any,
-		default_url: any,
-	): unknown;
-	/**
- * Resolves the value in the supplied index on the lua stack to a URL. It long jumps (calls luaL_error) on failure.
-It also gets the current (caller) url if the a pointer is passed to `out_default_url`
- * @param L Lua state
- * @param index Index of the value
- * @param out_url where to store the result
- * @param out_default_url default URL used in the resolve, can be 0x0 (not used)
- * @returns 0 if successful. Throws Lua error on failure
- */
-	export function ResolveURL(
-		L: any,
-		index: number,
-		out_url: any,
-		out_default_url: any,
-	): number;
-	/**
- * Sets the current script instance
-Set the value on the top of the stack as the instance into the global table and pops it from the stack.
-(see dmScript::GetMainThread)
- * @param L lua state
- */
-	export function SetInstance(L: any): void;
-	/**
- * The Lua stack after a successful call:
-`   [-4] old instance
-   [-3] context table
-   [-2] callback
-   [-1] self
-`
-
-In the event of an unsuccessful call, the Lua stack is unchanged
- * @param cbk Lua callback struct
- * @returns if the setup was successful
- */
-	export function SetupCallback(cbk: any): boolean;
-	/**
- * Sets the previous instance
-Expects Lua stack:
-`   [-2] old instance
-   [-1] context table
-`
-
-Both values are removed from the stack
- * @param cbk Lua callback struct
- */
-	export function TeardownCallback(cbk: any): void;
-	/**
-	 * Check if the value at #index is a hash
-	 * @param L Lua state
-	 * @param index Index of the value
-	 * @returns pointer to hash or 0 if it's not a hash
-	 */
-	export function ToHash(L: any, index: number): unknown;
-	/**
-	 * Get the value at index as a dmVMath::Matrix4*
-	 * @param L Lua state
-	 * @param index Index of the value
-	 * @returns The pointer to the value, or 0 if not correct type
-	 */
-	export function ToMatrix4(L: any, index: number): unknown;
-	/**
-	 * Get the value at index as a dmVMath::Quat*
-	 * @param L Lua state
-	 * @param index Index of the value
-	 * @returns The pointer to the value, or 0 if not correct type
-	 */
-	export function ToQuat(L: any, index: number): unknown;
-	/**
-	 * get the value at index as a dmMessage::URL*
-	 * @param L Lua state
-	 * @param index Index of the value
-	 * @returns pointer to URL or 0 if it's not a URL
-	 */
-	export function ToURL(L: any, index: number): unknown;
-	/**
-	 * Get the value at index as a dmVMath::Vector3*
-	 * @param L Lua state
-	 * @param index Index of the value
-	 * @returns The pointer to the value, or 0 if not correct type
-	 */
-	export function ToVector3(L: any, index: number): unknown;
-	/**
-	 * Get the value at index as a dmVMath::Vector4*
-	 * @param L Lua state
-	 * @param index Index of the value
-	 * @returns The pointer to the value, or 0 if not correct type
-	 */
-	export function ToVector4(L: any, index: number): unknown;
-	/**
- * Releases reference ref from the table at index t (see luaL_ref).
-The entry is removed from the table, so that the referred object can be collected.
-It also decreases the number of global references kept
- * @param L lua state
- * @param table table the lua table that stores the references. E.g LUA_REGISTRYINDEX
- * @param reference the reference to the object
- */
-	export function Unref(L: any, table: number, reference: number): void;
-	/**
- * Deletes the instance local lua reference
-Expects SetInstance() to have been set with an value that has a meta table
-with META_GET_INSTANCE_CONTEXT_TABLE_REF method.
- * @param L Lua state
- * @param ref ref to value or LUA_NOREF
-Lua stack on entry
-Lua stack on exit
- */
-	export function UnrefInInstance(L: any, ref: number): void;
-	/**
-	 * Converts a URL into a readable string. Useful for e.g. error messages
-	 * @param url url
-	 * @param buffer the output buffer
-	 * @param buffer_size the output buffer size
-	 * @returns returns the passed in buffer
-	 */
-	export function UrlToString(url: any, buffer: any, buffer_size: any): unknown;
 }
 
 /** @see {@link https://defold.com/ref/stable/factory/|API Documentation} */
@@ -6850,6 +6285,122 @@ end
 	): void;
 }
 
+declare namespace liveupdate {
+	/**
+	 * Mismatch between between expected bundled resources and actual bundled resources. The manifest expects a resource to be in the bundle, but it was not found in the bundle. This is typically the case when a non-excluded resource was modified between publishing the bundle and publishing the manifest.
+	 */
+	export const LIVEUPDATE_BUNDLED_RESOURCE_MISMATCH: number;
+	/**
+	 * Mismatch between running engine version and engine versions supported by manifest.
+	 */
+	export const LIVEUPDATE_ENGINE_VERSION_MISMATCH: number;
+	/**
+	 * Failed to parse manifest data buffer. The manifest was probably produced by a different engine version.
+	 */
+	export const LIVEUPDATE_FORMAT_ERROR: number;
+	/**
+	 * Argument was invalid
+	 */
+	export const LIVEUPDATE_INVAL: number;
+	/**
+	 * The handled resource is invalid.
+	 */
+	export const LIVEUPDATE_INVALID_HEADER: number;
+	/**
+	 * The header of the resource is invalid.
+	 */
+	export const LIVEUPDATE_INVALID_RESOURCE: number;
+	/**
+	 * I/O operation failed
+	 */
+	export const LIVEUPDATE_IO_ERROR: number;
+	/**
+	 * Memory wasn't allocated
+	 */
+	export const LIVEUPDATE_MEM_ERROR: number;
+	/**
+	 * LIVEUPDATE_OK
+	 */
+	export const LIVEUPDATE_OK: number;
+	/**
+	 * Mismatch between scheme used to load resources. Resources are loaded with a different scheme than from manifest, for example over HTTP or directly from file. This is typically the case when running the game directly from the editor instead of from a bundle.
+	 */
+	export const LIVEUPDATE_SCHEME_MISMATCH: number;
+	/**
+	 * Mismatch between expected and actual integrity data for legacy liveupdate verification.
+	 */
+	export const LIVEUPDATE_SIGNATURE_MISMATCH: number;
+	/**
+	 * Unspecified error
+	 */
+	export const LIVEUPDATE_UNKNOWN: number;
+	/**
+	 * Mismatch between manifest expected version and actual version.
+	 */
+	export const LIVEUPDATE_VERSION_MISMATCH: number;
+	/**
+ * Adds a resource mount to the resource system.
+The mounts are persisted between sessions.
+After the mount succeeded, the resources are available to load. (i.e. no reboot required)
+ * @param name Unique name of the mount
+ * @param uri The uri of the mount, including the scheme. Currently supported schemes are 'zip' and 'archive'.
+ * @param priority Priority of mount. Larger priority takes prescedence
+ * @param callback Callback after the asynchronous request completed
+ * @returns The result of the request
+ * @example Add multiple mounts. Higher priority takes precedence.
+```lua
+liveupdate.add_mount("common", "zip:/path/to/common_stuff.zip", 10, function (result) end) -- base pack
+liveupdate.add_mount("levelpack_1", "zip:/path/to/levels_1_to_20.zip", 20, function (result) end) -- level pack
+liveupdate.add_mount("season_pack_1", "zip:/path/to/easter_pack_1.zip", 30, function (result) end) -- season pack, overriding content in the other packs
+```
+ */
+	export function add_mount(
+		name: string,
+		uri: string,
+		priority: number,
+		callback: () => void,
+	): number;
+	/**
+ * Get an array of the current mounts
+This can be used to determine if a new mount is needed or not
+ * @returns Array of mounts
+ * @example Output the current resource mounts
+```lua
+pprint("MOUNTS", liveupdate.get_mounts())
+```
+
+Give an output like:
+```lua
+DEBUG:SCRIPT: MOUNTS,
+{ --[[0x119667bf0]]
+  1 = { --[[0x119667c50]]
+    name = "liveupdate",
+    uri = "zip:/device/path/to/acchives/liveupdate.zip",
+    priority = 5
+  },
+  2 = { --[[0x119667d50]]
+    name = "_base",
+    uri = "archive:build/default/game.dmanifest",
+    priority = -10
+  }
+}
+```
+ */
+	export function get_mounts(): object;
+	/**
+ * Remove a mount the resource system.
+The remaining mounts are persisted between sessions.
+Removing a mount does not affect any loaded resources.
+ * @param name Unique name of the mount
+ * @returns The result of the call
+ * @example Add multiple mounts. Higher priority takes precedence.
+```lua
+liveupdate.remove_mount("season_pack_1")
+```
+ */
+	export function remove_mount(name: string): number;
+}
+
 /** @see {@link https://defold.com/ref/stable/model/|API Documentation} */
 declare namespace model {
 	/**
@@ -10747,37 +10298,9 @@ declare namespace socket {
 	 */
 	export const _SETSIZE: number;
 	/**
-	 * This constant contains the maximum number of sockets that the select function can handle.
-	 */
-	export const _SETSIZE: number;
-	/**
 	 * This constant has a string describing the current LuaSocket version.
 	 */
 	export const _VERSION: string;
-	/**
-	 * This constant has a string describing the current LuaSocket version.
-	 */
-	export const _VERSION: string;
-	/**
- * This function is a shortcut that creates and returns a TCP client object connected to a remote
-address at a given port. Optionally, the user can also specify the local address and port to
-bind (`locaddr` and `locport`), or restrict the socket family to `"inet"` or `"inet6"`.
-Without specifying family to connect, whether a tcp or tcp6 connection is created depends on
-your system configuration.
- * @param address the address to connect to.
- * @param port the port to connect to.
- * @param locaddr optional local address to bind to.
- * @param locport optional local port to bind to.
- * @param family optional socket family to use, `"inet"` or `"inet6"`.
- * @returns a new IPv6 TCP client object, or `nil` in case of error. & the error message, or `nil` if no error occurred.
- */
-	export function connect(
-		address: string,
-		port: number,
-		locaddr?: string,
-		locport?: number,
-		family?: string,
-	): LuaMultiReturn<[typeof socket.client | undefined, string | undefined]>;
 	/**
  * This function is a shortcut that creates and returns a TCP client object connected to a remote
 address at a given port. Optionally, the user can also specify the local address and port to
@@ -10810,38 +10333,6 @@ print(socket.gettime() - t .. " seconds elapsed")
 ```
  */
 	export function gettime(): number;
-	/**
- * Returns the time in seconds, relative to the system epoch (Unix epoch time since January 1, 1970 (UTC) or Windows file time since January 1, 1601 (UTC)).
-You should use the values returned by this function for relative measurements only.
- * @returns the number of seconds elapsed.
- * @example How to use the gettime() function to measure running time:
-```lua
-t = socket.gettime()
--- do stuff
-print(socket.gettime() - t .. " seconds elapsed")
-```
- */
-	export function gettime(): number;
-	/**
- * This function creates and returns a clean try function that allows for cleanup before the exception is raised.
-The `finalizer` function will be called in protected mode (see protect).
- * @param finalizer a function that will be called before the try throws the exception.
- * @example Perform operations on an open socket ```lua
-c```:
-```lua
--- create a try function that closes 'c' on error
-local try = socket.newtry(function() c:close() end)
--- do everything reassured c will be closed
-try(c:send("hello there?\r\n"))
-local answer = try(c:receive())
-...
-try(c:send("good bye\r\n"))
-c:close()
-```
- */
-	export function newtry(
-		finalizer: (...args: any[]) => any,
-	): (...args: any[]) => unknown;
 	/**
  * This function creates and returns a clean try function that allows for cleanup before the exception is raised.
 The `finalizer` function will be called in protected mode (see protect).
@@ -10882,45 +10373,6 @@ local n, error = dostuff()
 	export function protect(
 		func: (...args: any[]) => any,
 	): (...args: any[]) => LuaMultiReturn<[undefined, string]>;
-	/**
- * Converts a function that throws exceptions into a safe function. This function only catches exceptions thrown by try functions. It does not catch normal Lua errors.
-⚠ Beware that if your function performs some illegal operation that raises an error, the protected function will catch the error and return it as a string. This is because try functions uses errors as the mechanism to throw exceptions.
- * @param func a function that calls a try function (or assert, or error) to throw exceptions.
- * @example ```lua
-local dostuff = socket.protect(function()
-    local try = socket.newtry()
-    local c = try(socket.connect("myserver.com", 80))
-    try = socket.newtry(function() c:close() end)
-    try(c:send("hello?\r\n"))
-    local answer = try(c:receive())
-    c:close()
-end)
-
-local n, error = dostuff()
-```
- */
-	export function protect(
-		func: (...args: any[]) => any,
-	): (...args: any[]) => LuaMultiReturn<[undefined, string]>;
-	/**
- * The function returns a list with the sockets ready for reading, a list with the sockets ready for writing and an error message. The error message is "timeout" if a timeout condition was met and nil otherwise. The returned tables are doubly keyed both by integers and also by the sockets themselves, to simplify the test if a specific socket has changed status.
-`Recvt` and `sendt` parameters can be empty tables or `nil`. Non-socket values (or values with non-numeric indices) in these arrays will be silently ignored.
-The returned tables are doubly keyed both by integers and also by the sockets themselves, to simplify the test if a specific socket has changed status.
-⚠ This function can monitor a limited number of sockets, as defined by the constant socket._SETSIZE. This number may be as high as 1024 or as low as 64 by default, depending on the system. It is usually possible to change this at compile time. Invoking select with a larger number of sockets will raise an error.
-⚠ A known bug in WinSock causes select to fail on non-blocking TCP sockets. The function may return a socket as writable even though the socket is not ready for sending.
-⚠ Calling select with a server socket in the receive parameter before a call to accept does not guarantee accept will return immediately. Use the settimeout method or accept might block forever.
-⚠ If you close a socket and pass it to select, it will be ignored.
-(Using select with non-socket objects: Any object that implements `getfd` and `dirty` can be used with select, allowing objects from other libraries to be used within a socket.select driven loop.)
- * @param recvt array with the sockets to test for characters available for reading.
- * @param sendt array with sockets that are watched to see if it is OK to immediately write on them.
- * @param timeout the maximum amount of time (in seconds) to wait for a change in status. Nil, negative or omitted timeout value allows the function to block indefinitely.
- * @returns a list with the sockets ready for reading. & a list with the sockets ready for writing. & an error message. "timeout" if a timeout condition was met, otherwise `nil`.
- */
-	export function select(
-		recvt: object,
-		sendt: object,
-		timeout?: number,
-	): LuaMultiReturn<[object, object, string | undefined]>;
 	/**
  * The function returns a list with the sockets ready for reading, a list with the sockets ready for writing and an error message. The error message is "timeout" if a timeout condition was met and nil otherwise. The returned tables are doubly keyed both by integers and also by the sockets themselves, to simplify the test if a specific socket has changed status.
 `Recvt` and `sendt` parameters can be empty tables or `nil`. Non-socket values (or values with non-numeric indices) in these arrays will be silently ignored.
@@ -10969,50 +10421,10 @@ local code, sep = socket.skip(2, string.find(line, "^(%d%d%d)(.?)"))
 		retN?: any,
 	): LuaMultiReturn<[any | undefined, any | undefined, any | undefined]>;
 	/**
- * This function drops a number of arguments and returns the remaining.
-It is useful to avoid creation of dummy variables:
-`D` is the number of arguments to drop. `Ret1` to `retN` are the arguments.
-The function returns `retD+1` to `retN`.
- * @param d the number of arguments to drop.
- * @param ret1 argument 1.
- * @param ret2 argument 2.
- * @param retN argument N.
- * @returns argument D+1. & argument D+2. & argument N.
- * @example Instead of doing the following with dummy variables:
-```lua
--- get the status code and separator from SMTP server reply
-local dummy1, dummy2, code, sep = string.find(line, "^(%d%d%d)(.?)")
-```
-
-You can skip a number of variables:
-```lua
--- get the status code and separator from SMTP server reply
-local code, sep = socket.skip(2, string.find(line, "^(%d%d%d)(.?)"))
-```
- */
-	export function skip(
-		d: number,
-		ret1?: any,
-		ret2?: any,
-		retN?: any,
-	): LuaMultiReturn<[any | undefined, any | undefined, any | undefined]>;
-	/**
 	 * Freezes the program execution during a given amount of time.
 	 * @param time the number of seconds to sleep for.
 	 */
 	export function sleep(time: number): void;
-	/**
-	 * Freezes the program execution during a given amount of time.
-	 * @param time the number of seconds to sleep for.
-	 */
-	export function sleep(time: number): void;
-	/**
-	 * Creates and returns an IPv4 TCP master object. A master object can be transformed into a server object with the method `listen` (after a call to `bind`) or into a client object with the method `connect`. The only other method supported by a master object is the `close` method.
-	 * @returns a new IPv4 TCP master object, or `nil` in case of error. & the error message, or `nil` if no error occurred.
-	 */
-	export function tcp(): LuaMultiReturn<
-		[typeof socket.master | undefined, string | undefined]
-	>;
 	/**
 	 * Creates and returns an IPv4 TCP master object. A master object can be transformed into a server object with the method `listen` (after a call to `bind`) or into a client object with the method `connect`. The only other method supported by a master object is the `close` method.
 	 * @returns a new IPv4 TCP master object, or `nil` in case of error. & the error message, or `nil` if no error occurred.
@@ -11029,33 +10441,10 @@ Note: The TCP object returned will have the option "ipv6-v6only" set to true.
 		[typeof socket.master | undefined, string | undefined]
 	>;
 	/**
- * Creates and returns an IPv6 TCP master object. A master object can be transformed into a server object with the method `listen` (after a call to `bind`) or into a client object with the method connect. The only other method supported by a master object is the close method.
-Note: The TCP object returned will have the option "ipv6-v6only" set to true.
- * @returns a new IPv6 TCP master object, or `nil` in case of error. & the error message, or `nil` if no error occurred.
- */
-	export function tcp6(): LuaMultiReturn<
-		[typeof socket.master | undefined, string | undefined]
-	>;
-	/**
 	 * Creates and returns an unconnected IPv4 UDP object. Unconnected objects support the `sendto`, `receive`, `receivefrom`, `getoption`, `getsockname`, `setoption`, `settimeout`, `setpeername`, `setsockname`, and `close` methods. The `setpeername` method is used to connect the object.
 	 * @returns a new unconnected IPv4 UDP object, or `nil` in case of error. & the error message, or `nil` if no error occurred.
 	 */
 	export function udp(): LuaMultiReturn<
-		[typeof socket.unconnected | undefined, string | undefined]
-	>;
-	/**
-	 * Creates and returns an unconnected IPv4 UDP object. Unconnected objects support the `sendto`, `receive`, `receivefrom`, `getoption`, `getsockname`, `setoption`, `settimeout`, `setpeername`, `setsockname`, and `close` methods. The `setpeername` method is used to connect the object.
-	 * @returns a new unconnected IPv4 UDP object, or `nil` in case of error. & the error message, or `nil` if no error occurred.
-	 */
-	export function udp(): LuaMultiReturn<
-		[typeof socket.unconnected | undefined, string | undefined]
-	>;
-	/**
- * Creates and returns an unconnected IPv6 UDP object. Unconnected objects support the `sendto`, `receive`, `receivefrom`, `getoption`, `getsockname`, `setoption`, `settimeout`, `setpeername`, `setsockname`, and `close` methods. The `setpeername` method is used to connect the object.
-Note: The UDP object returned will have the option "ipv6-v6only" set to true.
- * @returns a new unconnected IPv6 UDP object, or `nil` in case of error. & the error message, or `nil` if no error occurred.
- */
-	export function udp6(): LuaMultiReturn<
 		[typeof socket.unconnected | undefined, string | undefined]
 	>;
 	/**
@@ -11093,56 +10482,10 @@ In case of error, the function returns nil followed by an error message.
 			address: string,
 		): LuaMultiReturn<[object | undefined, string | undefined]>;
 		/**
- * This function converts a host name to IPv4 or IPv6 address.
-The supplied address can be an IPv4 or IPv6 address or host name.
-The function returns a table with all information returned by the resolver:
-`{
- [1] = {
-    family = family-name-1,
-    addr = address-1
-  },
-  ...
-  [n] = {
-    family = family-name-n,
-    addr = address-n
-  }
-}
-`
-
-Here, family contains the string `"inet"` for IPv4 addresses, and `"inet6"` for IPv6 addresses.
-In case of error, the function returns nil followed by an error message.
- * @param address a hostname or an IPv4 or IPv6 address.
- * @returns a table with all information returned by the resolver, or if an error occurs, `nil`. & the error message, or `nil` if no error occurred.
- */
-		export function getaddrinfo(
-			address: string,
-		): LuaMultiReturn<[object | undefined, string | undefined]>;
-		/**
 		 * Returns the standard host name for the machine as a string.
 		 * @returns the host name for the machine.
 		 */
 		export function gethostname(): string;
-		/**
-		 * Returns the standard host name for the machine as a string.
-		 * @returns the host name for the machine.
-		 */
-		export function gethostname(): string;
-		/**
- * This function converts an address to host name.
-The supplied address can be an IPv4 or IPv6 address or host name.
-The function returns a table with all information returned by the resolver:
-`{
-  [1] = host-name-1,
-  ...
-  [n] = host-name-n,
-}
-`
- * @param address a hostname or an IPv4 or IPv6 address.
- * @returns a table with all information returned by the resolver, or if an error occurs, `nil`. & the error message, or `nil` if no error occurred.
- */
-		export function getnameinfo(
-			address: string,
-		): LuaMultiReturn<[object | undefined, string | undefined]>;
 		/**
  * This function converts an address to host name.
 The supplied address can be an IPv4 or IPv6 address or host name.
@@ -11166,24 +10509,6 @@ The address can be an IPv4 address or a host name.
  * @returns the canonic host name of the given address, or `nil` in case of an error. & a table with all information returned by the resolver, or if an error occurs, the error message string.
  */
 		export function tohostname(
-			address: string,
-		): LuaMultiReturn<[string | undefined, object | string]>;
-		/**
- * This function converts from an IPv4 address to host name.
-The address can be an IPv4 address or a host name.
- * @param address an IPv4 address or host name.
- * @returns the canonic host name of the given address, or `nil` in case of an error. & a table with all information returned by the resolver, or if an error occurs, the error message string.
- */
-		export function tohostname(
-			address: string,
-		): LuaMultiReturn<[string | undefined, object | string]>;
-		/**
- * This function converts a host name to IPv4 address.
-The address can be an IP address or a host name.
- * @param address a hostname or an IP address.
- * @returns the first IP address found for the hostname, or `nil` in case of an error. & a table with all information returned by the resolver, or if an error occurs, the error message string.
- */
-		export function toip(
 			address: string,
 		): LuaMultiReturn<[string | undefined, object | string]>;
 		/**
@@ -11203,28 +10528,11 @@ The address can be an IP address or a host name.
  */
 		close(): void;
 		/**
- * Closes the TCP object. The internal socket used by the object is closed and the local address to which the object was bound is made available to other applications. No further operations (except for further calls to the close method) are allowed on a closed socket.
-⚠ It is important to close all used sockets once they are not needed, since, in many systems, each socket uses a file descriptor, which are limited system resources. Garbage-collected objects are automatically closed before destruction, though.
- */
-		close(): void;
-		/**
  * Check the read buffer status.
 ⚠ This is an internal method, any use is unlikely to be portable.
  * @returns `true` if there is any data in the read buffer, `false` otherwise.
  */
 		dirty(): boolean;
-		/**
- * Check the read buffer status.
-⚠ This is an internal method, any use is unlikely to be portable.
- * @returns `true` if there is any data in the read buffer, `false` otherwise.
- */
-		dirty(): boolean;
-		/**
- * Returns the underlying socket descriptor or handle associated to the object.
-⚠ This is an internal method, any use is unlikely to be portable.
- * @returns the descriptor or handle. In case the object has been closed, the return will be -1.
- */
-		getfd(): number;
 		/**
  * Returns the underlying socket descriptor or handle associated to the object.
 ⚠ This is an internal method, any use is unlikely to be portable.
@@ -11246,26 +10554,6 @@ The address can be an IP address or a host name.
 			option: string,
 		): LuaMultiReturn<[any | undefined, string | undefined]>;
 		/**
- * Gets options for the TCP object. See client:setoption for description of the option names and values.
- * @param option the name of the option to get:
-
-`"keepalive"`
-`"linger"`
-`"reuseaddr"`
-`"tcp-nodelay"`
-
- * @returns the option value, or `nil` in case of error. & the error message, or `nil` if no error occurred.
- */
-		getoption(
-			option: string,
-		): LuaMultiReturn<[any | undefined, string | undefined]>;
-		/**
- * Returns information about the remote side of a connected client object.
-⚠ It makes no sense to call this method on server objects.
- * @returns a string with the IP address of the peer, the port number that peer is using for the connection, and the family ("inet" or "inet6"). In case of error, the method returns `nil`.
- */
-		getpeername(): string;
-		/**
  * Returns information about the remote side of a connected client object.
 ⚠ It makes no sense to call this method on server objects.
  * @returns a string with the IP address of the peer, the port number that peer is using for the connection, and the family ("inet" or "inet6"). In case of error, the method returns `nil`.
@@ -11277,40 +10565,10 @@ The address can be an IP address or a host name.
 		 */
 		getsockname(): string;
 		/**
-		 * Returns the local address information associated to the object.
-		 * @returns a string with local IP address, the local port number, and the family ("inet" or "inet6"). In case of error, the method returns `nil`.
-		 */
-		getsockname(): string;
-		/**
 		 * Returns accounting information on the socket, useful for throttling of bandwidth.
 		 * @returns a string with the number of bytes received, the number of bytes sent, and the age of the socket object in seconds.
 		 */
 		getstats(): string;
-		/**
-		 * Returns accounting information on the socket, useful for throttling of bandwidth.
-		 * @returns a string with the number of bytes received, the number of bytes sent, and the age of the socket object in seconds.
-		 */
-		getstats(): string;
-		/**
- * Reads data from a client object, according to the specified `read pattern`. Patterns follow the Lua file I/O format, and the difference in performance between patterns is negligible.
- * @param pattern the read pattern that can be any of the following:
-
-`"*a"`
-reads from the socket until the connection is closed. No end-of-line translation is performed;
-`"*l"`
-reads a line of text from the socket. The line is terminated by a LF character (ASCII 10), optionally preceded by a CR character (ASCII 13). The CR and LF characters are not included in the returned line. In fact, all CR characters are ignored by the pattern. This is the default pattern;
-`number`
-causes the method to read a specified number of bytes from the socket.
-
- * @param prefix an optional string to be concatenated to the beginning of any received data before return.
- * @returns the received pattern, or `nil` in case of error. & the error message, or `nil` if no error occurred. The error message can be the string `"closed"` in case the connection was closed before the transmission was completed or the string `"timeout"` in case there was a timeout during the operation. & a (possibly empty) string containing the partial that was received, or `nil` if no error occurred.
- */
-		receive(
-			pattern?: number | string,
-			prefix?: string,
-		): LuaMultiReturn<
-			[string | undefined, string | undefined, string | undefined]
-		>;
 		/**
  * Reads data from a client object, according to the specified `read pattern`. Patterns follow the Lua file I/O format, and the difference in performance between patterns is negligible.
  * @param pattern the read pattern that can be any of the following:
@@ -11348,60 +10606,10 @@ The optional arguments i and j work exactly like the standard string.sub Lua fun
 			[number | undefined, string | undefined, number | undefined]
 		>;
 		/**
- * Sends data through client object.
-The optional arguments i and j work exactly like the standard string.sub Lua function to allow the selection of a substring to be sent.
-⚠ Output is not buffered. For small strings, it is always better to concatenate them in Lua (with the `..` operator) and send the result in one call instead of calling the method several times.
- * @param data the string to be sent.
- * @param i optional starting index of the string.
- * @param j optional end index of string.
- * @returns the index of the last byte within [i, j] that has been sent, or `nil` in case of error. Notice that, if `i` is 1 or absent, this is effectively the total number of bytes sent. & the error message, or `nil` if no error occurred. The error message can be `"closed"` in case the connection was closed before the transmission was completed or the string `"timeout"` in case there was a timeout during the operation. & in case of error, the index of the last byte within [i, j] that has been sent. You might want to try again from the byte following that. `nil` if no error occurred.
- */
-		send(
-			data: string,
-			i?: number,
-			j?: number,
-		): LuaMultiReturn<
-			[number | undefined, string | undefined, number | undefined]
-		>;
-		/**
 		 * Sets the underling socket descriptor or handle associated to the object. The current one is simply replaced, not closed, and no other change to the object state is made
 		 * @param handle the descriptor or handle to set.
 		 */
 		setfd(handle: number): void;
-		/**
-		 * Sets the underling socket descriptor or handle associated to the object. The current one is simply replaced, not closed, and no other change to the object state is made
-		 * @param handle the descriptor or handle to set.
-		 */
-		setfd(handle: number): void;
-		/**
- * Sets options for the TCP object. Options are only needed by low-level or time-critical applications. You should only modify an option if you are sure you need it.
- * @param option the name of the option to set. The value is provided in the `value` parameter:
-
-`"keepalive"`
-Setting this option to `true` enables the periodic transmission of messages on a connected socket. Should the connected party fail to respond to these messages, the connection is considered broken and processes using the socket are notified;
-`"linger"`
-Controls the action taken when unsent data are queued on a socket and a close is performed. The value is a table with the following keys:
-
-
-boolean `on`
-number `timeout` (seconds)
-
-If the 'on' field is set to true, the system will block the process on the close attempt until it is able to transmit the data or until `timeout` has passed. If 'on' is false and a close is issued, the system will process the close in a manner that allows the process to continue as quickly as possible. It is not advised to set this to anything other than zero;
-
-`"reuseaddr"`
-Setting this option indicates that the rules used in validating addresses supplied in a call to `bind` should allow reuse of local addresses;
-`"tcp-nodelay"`
-Setting this option to `true` disables the Nagle's algorithm for the connection;
-`"ipv6-v6only"`
-Setting this option to `true` restricts an inet6 socket to sending and receiving only IPv6 packets.
-
- * @param value the value to set for the specified option.
- * @returns the value `1`, or `nil` in case of error. & the error message, or `nil` if no error occurred.
- */
-		setoption(
-			option: string,
-			value?: any,
-		): LuaMultiReturn<[number | undefined, string | undefined]>;
 		/**
  * Sets options for the TCP object. Options are only needed by low-level or time-critical applications. You should only modify an option if you are sure you need it.
  * @param option the name of the option to set. The value is provided in the `value` parameter:
@@ -11440,14 +10648,6 @@ Setting this option to `true` restricts an inet6 socket to sending and receiving
 		 */
 		setstats(received: number, sent: number, age: number): number | undefined;
 		/**
-		 * Resets accounting information on the socket, useful for throttling of bandwidth.
-		 * @param received the new number of bytes received.
-		 * @param sent the new number of bytes sent.
-		 * @param age the new age in seconds.
-		 * @returns the value `1` in case of success, or `nil` in case of error.
-		 */
-		setstats(received: number, sent: number, age: number): number | undefined;
-		/**
  * Changes the timeout values for the object. By default, all I/O operations are blocking. That is, any call to the methods `send`, `receive`, and `accept` will block indefinitely, until the operation completes. The `settimeout` method defines a limit on the amount of time the I/O methods can block. When a timeout is set and the specified amount of time has elapsed, the affected methods give up and fail with an error code.
 There are two timeout modes and both can be used together for fine tuning.
 ⚠ Although timeout values have millisecond precision in LuaSocket, large blocks can cause I/O functions not to respect timeout values due to the time the library takes to transfer blocks to and from the OS and to and from the Lua interpreter. Also, function that accept host names and perform automatic name resolution might be blocked by the resolver for longer than the specified timeout value.
@@ -11461,34 +10661,6 @@ total timeout. Specifies the upper limit on the amount of time LuaSocket can blo
 
  */
 		settimeout(value: number, mode?: string): void;
-		/**
- * Changes the timeout values for the object. By default, all I/O operations are blocking. That is, any call to the methods `send`, `receive`, and `accept` will block indefinitely, until the operation completes. The `settimeout` method defines a limit on the amount of time the I/O methods can block. When a timeout is set and the specified amount of time has elapsed, the affected methods give up and fail with an error code.
-There are two timeout modes and both can be used together for fine tuning.
-⚠ Although timeout values have millisecond precision in LuaSocket, large blocks can cause I/O functions not to respect timeout values due to the time the library takes to transfer blocks to and from the OS and to and from the Lua interpreter. Also, function that accept host names and perform automatic name resolution might be blocked by the resolver for longer than the specified timeout value.
- * @param value the amount of time to wait, in seconds. The `nil` timeout value allows operations to block indefinitely. Negative timeout values have the same effect.
- * @param mode optional timeout mode to set:
-
-`"b"`
-block timeout. Specifies the upper limit on the amount of time LuaSocket can be blocked by the operating system while waiting for completion of any single I/O operation. This is the default mode;
-`"t"`
-total timeout. Specifies the upper limit on the amount of time LuaSocket can block a Lua script before returning from a call.
-
- */
-		settimeout(value: number, mode?: string): void;
-		/**
- * Shuts down part of a full-duplex connection.
- * @param mode which way of the connection should be shut down:
-
-`"both"`
-disallow further sends and receives on the object. This is the default mode;
-`"send"`
-disallow further sends on the object;
-`"receive"`
-disallow further receives on the object.
-
- * @returns the value `1`.
- */
-		shutdown(mode: string): number;
 		/**
  * Shuts down part of a full-duplex connection.
  * @param mode which way of the connection should be shut down:
@@ -11511,31 +10683,6 @@ disallow further receives on the object.
  */
 		close(): void;
 		/**
- * Closes a UDP object. The internal socket used by the object is closed and the local address to which the object was bound is made available to other applications. No further operations (except for further calls to the close method) are allowed on a closed socket.
-⚠ It is important to close all used sockets once they are not needed, since, in many systems, each socket uses a file descriptor, which are limited system resources. Garbage-collected objects are automatically closed before destruction, though.
- */
-		close(): void;
-		/**
- * Gets an option value from the UDP object. See connected:setoption for description of the option names and values.
- * @param option the name of the option to get:
-
-`"dontroute"`
-`"broadcast"`
-`"reuseaddr"`
-`"reuseport"`
-`"ip-multicast-loop"`
-`"ipv6-v6only"`
-`"ip-multicast-if"`
-`"ip-multicast-ttl"`
-`"ip-add-membership"`
-`"ip-drop-membership"`
-
- * @returns the option value, or `nil` in case of error. & the error message, or `nil` if no error occurred.
- */
-		getoption(
-			option: string,
-		): LuaMultiReturn<[any | undefined, string | undefined]>;
-		/**
  * Gets an option value from the UDP object. See connected:setoption for description of the option names and values.
  * @param option the name of the option to get:
 
@@ -11562,31 +10709,11 @@ disallow further receives on the object.
  */
 		getpeername(): string;
 		/**
- * Retrieves information about the peer associated with a connected UDP object.
-⚠ It makes no sense to call this method on unconnected objects.
- * @returns a string with the IP address of the peer, the port number that peer is using for the connection, and the family ("inet" or "inet6"). In case of error, the method returns `nil`.
- */
-		getpeername(): string;
-		/**
  * Returns the local address information associated to the object.
 ⚠ UDP sockets are not bound to any address until the `setsockname` or the `sendto` method is called for the first time (in which case it is bound to an ephemeral port and the wild-card address).
  * @returns a string with local IP address, a number with the local port, and the family ("inet" or "inet6"). In case of error, the method returns `nil`.
  */
 		getsockname(): string;
-		/**
- * Returns the local address information associated to the object.
-⚠ UDP sockets are not bound to any address until the `setsockname` or the `sendto` method is called for the first time (in which case it is bound to an ephemeral port and the wild-card address).
- * @returns a string with local IP address, a number with the local port, and the family ("inet" or "inet6"). In case of error, the method returns `nil`.
- */
-		getsockname(): string;
-		/**
-		 * Receives a datagram from the UDP object. If the UDP object is connected, only datagrams coming from the peer are accepted. Otherwise, the returned datagram can come from any host.
-		 * @param size optional maximum size of the datagram to be retrieved. If there are more than size bytes available in the datagram, the excess bytes are discarded. If there are less then size bytes available in the current datagram, the available bytes are returned. If size is omitted, the maximum datagram size is used (which is currently limited by the implementation to 8192 bytes).
-		 * @returns the received datagram, or `nil` in case of error. & the error message, or `nil` if no error occurred.
-		 */
-		receive(
-			size?: number,
-		): LuaMultiReturn<[string | undefined, string | undefined]>;
 		/**
 		 * Receives a datagram from the UDP object. If the UDP object is connected, only datagrams coming from the peer are accepted. Otherwise, the returned datagram can come from any host.
 		 * @param size optional maximum size of the datagram to be retrieved. If there are more than size bytes available in the datagram, the excess bytes are discarded. If there are less then size bytes available in the current datagram, the available bytes are returned. If size is omitted, the maximum datagram size is used (which is currently limited by the implementation to 8192 bytes).
@@ -11603,56 +10730,6 @@ disallow further receives on the object.
  */
 		send(
 			datagram: string,
-		): LuaMultiReturn<[number | undefined, string | undefined]>;
-		/**
- * Sends a datagram to the UDP peer of a connected object.
-⚠ In UDP, the send method never blocks and the only way it can fail is if the underlying transport layer refuses to send a message to the specified address (i.e. no interface accepts the address).
- * @param datagram a string with the datagram contents. The maximum datagram size for UDP is 64K minus IP layer overhead. However datagrams larger than the link layer packet size will be fragmented, which may deteriorate performance and/or reliability.
- * @returns the value `1` on success, or `nil` in case of error. & the error message, or `nil` if no error occurred.
- */
-		send(
-			datagram: string,
-		): LuaMultiReturn<[number | undefined, string | undefined]>;
-		/**
- * Sets options for the UDP object. Options are only needed by low-level or time-critical applications. You should only modify an option if you are sure you need it.
- * @param option the name of the option to set. The value is provided in the `value` parameter:
-
-`"dontroute"`
-Indicates that outgoing messages should bypass the standard routing facilities. Receives a boolean value;
-`"broadcast"`
-Requests permission to send broadcast datagrams on the socket. Receives a boolean value;
-`"reuseaddr"`
-Indicates that the rules used in validating addresses supplied in a `bind` call should allow reuse of local addresses. Receives a boolean value;
-`"reuseport"`
-Allows completely duplicate bindings by multiple processes if they all set `"reuseport"` before binding the port. Receives a boolean value;
-`"ip-multicast-loop"`
-Specifies whether or not a copy of an outgoing multicast datagram is delivered to the sending host as long as it is a member of the multicast group. Receives a boolean value;
-`"ipv6-v6only"`
-Specifies whether to restrict inet6 sockets to sending and receiving only IPv6 packets. Receive a boolean value;
-`"ip-multicast-if"`
-Sets the interface over which outgoing multicast datagrams are sent. Receives an IP address;
-`"ip-multicast-ttl"`
-Sets the Time To Live in the IP header for outgoing multicast datagrams. Receives a number;
-
-`"ip-add-membership"`: Joins the multicast group specified. Receives a table with fields:
-
-string `multiaddr` (IP address)
-string `interface` (IP address)
-
-
-"'ip-drop-membership"`
-Leaves the multicast group specified. Receives a table with fields:
-
-
-string `multiaddr` (IP address)
-string `interface` (IP address)
-
- * @param value the value to set for the specified option.
- * @returns the value `1`, or `nil` in case of error. & the error message, or `nil` if no error occurred.
- */
-		setoption(
-			option: string,
-			value?: any,
 		): LuaMultiReturn<[number | undefined, string | undefined]>;
 		/**
  * Sets options for the UDP object. Options are only needed by low-level or time-critical applications. You should only modify an option if you are sure you need it.
@@ -11705,22 +10782,6 @@ For connected objects, outgoing datagrams will be sent to the specified peer, an
 		setpeername(
 			___: string,
 		): LuaMultiReturn<[number | undefined, string | undefined]>;
-		/**
- * Changes the peer of a UDP object. This method turns an unconnected UDP object into a connected UDP object or vice versa.
-For connected objects, outgoing datagrams will be sent to the specified peer, and datagrams received from other peers will be discarded by the OS. Connected UDP objects must use the `send` and `receive` methods instead of `sendto` and `receivefrom`.
-⚠ Since the address of the peer does not have to be passed to and from the OS, the use of connected UDP objects is recommended when the same peer is used for several transmissions and can result in up to 30% performance gains.
- * @param ___ if address is "*" and the object is connected, the peer association is removed and the object becomes an unconnected object again.
- * @returns the value `1` on success, or `nil` in case of error. & the error message, or `nil` if no error occurred.
- */
-		setpeername(
-			___: string,
-		): LuaMultiReturn<[number | undefined, string | undefined]>;
-		/**
- * Changes the timeout values for the object. By default, the `receive` and `receivefrom`  operations are blocking. That is, any call to the methods will block indefinitely, until data arrives. The `settimeout` function defines a limit on the amount of time the functions can block. When a timeout is set and the specified amount of time has elapsed, the affected methods give up and fail with an error code.
-⚠ In UDP, the `send` and `sendto` methods never block (the datagram is just passed to the OS and the call returns immediately). Therefore, the `settimeout` method has no effect on them.
- * @param value the amount of time to wait, in seconds. The `nil` timeout value allows operations to block indefinitely. Negative timeout values have the same effect.
- */
-		settimeout(value: number): void;
 		/**
  * Changes the timeout values for the object. By default, the `receive` and `receivefrom`  operations are blocking. That is, any call to the methods will block indefinitely, until data arrives. The `settimeout` function defines a limit on the amount of time the functions can block. When a timeout is set and the specified amount of time has elapsed, the affected methods give up and fail with an error code.
 ⚠ In UDP, the `send` and `sendto` methods never block (the datagram is just passed to the OS and the call returns immediately). Therefore, the `settimeout` method has no effect on them.
@@ -11740,36 +10801,10 @@ For connected objects, outgoing datagrams will be sent to the specified peer, an
 			port: number,
 		): LuaMultiReturn<[number | undefined, string | undefined]>;
 		/**
-		 * Binds a master object to address and port on the local host.
-		 * @param address an IP address or a host name. If address is `"*"`, the system binds to all local interfaces using the `INADDR_ANY` constant.
-		 * @param port the port to commect to, in the range [0..64K). If port is 0, the system automatically chooses an ephemeral port.
-		 * @returns the value `1`, or `nil` in case of error. & the error message, or `nil` if no error occurred.
-		 */
-		bind(
-			address: string,
-			port: number,
-		): LuaMultiReturn<[number | undefined, string | undefined]>;
-		/**
  * Closes the TCP object. The internal socket used by the object is closed and the local address to which the object was bound is made available to other applications. No further operations (except for further calls to the close method) are allowed on a closed socket.
 ⚠ It is important to close all used sockets once they are not needed, since, in many systems, each socket uses a file descriptor, which are limited system resources. Garbage-collected objects are automatically closed before destruction, though.
  */
 		close(): void;
-		/**
- * Closes the TCP object. The internal socket used by the object is closed and the local address to which the object was bound is made available to other applications. No further operations (except for further calls to the close method) are allowed on a closed socket.
-⚠ It is important to close all used sockets once they are not needed, since, in many systems, each socket uses a file descriptor, which are limited system resources. Garbage-collected objects are automatically closed before destruction, though.
- */
-		close(): void;
-		/**
- * Attempts to connect a master object to a remote host, transforming it into a client object. Client objects support methods send, receive, getsockname, getpeername, settimeout, and close.
-Note that the function `socket.connect` is available and is a shortcut for the creation of client sockets.
- * @param address an IP address or a host name. If address is `"*"`, the system binds to all local interfaces using the `INADDR_ANY` constant.
- * @param port the port to commect to, in the range [0..64K). If port is 0, the system automatically chooses an ephemeral port.
- * @returns the value `1`, or `nil` in case of error. & the error message, or `nil` if no error occurred.
- */
-		connect(
-			address: string,
-			port: number,
-		): LuaMultiReturn<[number | undefined, string | undefined]>;
 		/**
  * Attempts to connect a master object to a remote host, transforming it into a client object. Client objects support methods send, receive, getsockname, getpeername, settimeout, and close.
 Note that the function `socket.connect` is available and is a shortcut for the creation of client sockets.
@@ -11788,18 +10823,6 @@ Note that the function `socket.connect` is available and is a shortcut for the c
  */
 		dirty(): boolean;
 		/**
- * Check the read buffer status.
-⚠ This is an internal method, any use is unlikely to be portable.
- * @returns `true` if there is any data in the read buffer, `false` otherwise.
- */
-		dirty(): boolean;
-		/**
- * Returns the underlying socket descriptor or handle associated to the object.
-⚠ This is an internal method, any use is unlikely to be portable.
- * @returns the descriptor or handle. In case the object has been closed, the return will be -1.
- */
-		getfd(): number;
-		/**
  * Returns the underlying socket descriptor or handle associated to the object.
 ⚠ This is an internal method, any use is unlikely to be portable.
  * @returns the descriptor or handle. In case the object has been closed, the return will be -1.
@@ -11810,16 +10833,6 @@ Note that the function `socket.connect` is available and is a shortcut for the c
 		 * @returns a string with local IP address, the local port number, and the family ("inet" or "inet6"). In case of error, the method returns `nil`.
 		 */
 		getsockname(): string;
-		/**
-		 * Returns the local address information associated to the object.
-		 * @returns a string with local IP address, the local port number, and the family ("inet" or "inet6"). In case of error, the method returns `nil`.
-		 */
-		getsockname(): string;
-		/**
-		 * Returns accounting information on the socket, useful for throttling of bandwidth.
-		 * @returns a string with the number of bytes received, the number of bytes sent, and the age of the socket object in seconds.
-		 */
-		getstats(): string;
 		/**
 		 * Returns accounting information on the socket, useful for throttling of bandwidth.
 		 * @returns a string with the number of bytes received, the number of bytes sent, and the age of the socket object in seconds.
@@ -11834,19 +10847,6 @@ Note that the function `socket.connect` is available and is a shortcut for the c
 			backlog: number,
 		): LuaMultiReturn<[number | undefined, string | undefined]>;
 		/**
-		 * Specifies the socket is willing to receive connections, transforming the object into a server object. Server objects support the `accept`, `getsockname`, `setoption`, `settimeout`, and `close` methods.
-		 * @param backlog the number of client connections that can be queued waiting for service. If the queue is full and another client attempts connection, the connection is refused.
-		 * @returns the value `1`, or `nil` in case of error. & the error message, or `nil` if no error occurred.
-		 */
-		listen(
-			backlog: number,
-		): LuaMultiReturn<[number | undefined, string | undefined]>;
-		/**
-		 * Sets the underling socket descriptor or handle associated to the object. The current one is simply replaced, not closed, and no other change to the object state is made
-		 * @param handle the descriptor or handle to set.
-		 */
-		setfd(handle: number): void;
-		/**
 		 * Sets the underling socket descriptor or handle associated to the object. The current one is simply replaced, not closed, and no other change to the object state is made
 		 * @param handle the descriptor or handle to set.
 		 */
@@ -11859,28 +10859,6 @@ Note that the function `socket.connect` is available and is a shortcut for the c
 		 * @returns the value `1` in case of success, or `nil` in case of error.
 		 */
 		setstats(received: number, sent: number, age: number): number | undefined;
-		/**
-		 * Resets accounting information on the socket, useful for throttling of bandwidth.
-		 * @param received the new number of bytes received.
-		 * @param sent the new number of bytes sent.
-		 * @param age the new age in seconds.
-		 * @returns the value `1` in case of success, or `nil` in case of error.
-		 */
-		setstats(received: number, sent: number, age: number): number | undefined;
-		/**
- * Changes the timeout values for the object. By default, all I/O operations are blocking. That is, any call to the methods `send`, `receive`, and `accept` will block indefinitely, until the operation completes. The `settimeout` method defines a limit on the amount of time the I/O methods can block. When a timeout is set and the specified amount of time has elapsed, the affected methods give up and fail with an error code.
-There are two timeout modes and both can be used together for fine tuning.
-⚠ Although timeout values have millisecond precision in LuaSocket, large blocks can cause I/O functions not to respect timeout values due to the time the library takes to transfer blocks to and from the OS and to and from the Lua interpreter. Also, function that accept host names and perform automatic name resolution might be blocked by the resolver for longer than the specified timeout value.
- * @param value the amount of time to wait, in seconds. The `nil` timeout value allows operations to block indefinitely. Negative timeout values have the same effect.
- * @param mode optional timeout mode to set:
-
-`"b"`
-block timeout. Specifies the upper limit on the amount of time LuaSocket can be blocked by the operating system while waiting for completion of any single I/O operation. This is the default mode;
-`"t"`
-total timeout. Specifies the upper limit on the amount of time LuaSocket can block a Lua script before returning from a call.
-
- */
-		settimeout(value: number, mode?: string): void;
 		/**
  * Changes the timeout values for the object. By default, all I/O operations are blocking. That is, any call to the methods `send`, `receive`, and `accept` will block indefinitely, until the operation completes. The `settimeout` method defines a limit on the amount of time the I/O methods can block. When a timeout is set and the specified amount of time has elapsed, the affected methods give up and fail with an error code.
 There are two timeout modes and both can be used together for fine tuning.
@@ -11906,19 +10884,6 @@ total timeout. Specifies the upper limit on the amount of time LuaSocket can blo
 			[typeof socket.client | undefined, string | undefined]
 		>;
 		/**
- * Waits for a remote connection on the server object and returns a client object representing that connection.
-⚠ Calling `socket.select` with a server object in the `recvt` parameter before a call to accept does not guarantee accept will return immediately. Use the `settimeout` method or accept might block until another client shows up.
- * @returns if a connection is successfully initiated, a client object is returned, or `nil` in case of error. & the error message, or `nil` if no error occurred. The error is `"timeout"` if a timeout condition is met.
- */
-		accept(): LuaMultiReturn<
-			[typeof socket.client | undefined, string | undefined]
-		>;
-		/**
- * Closes the TCP object. The internal socket used by the object is closed and the local address to which the object was bound is made available to other applications. No further operations (except for further calls to the close method) are allowed on a closed socket.
-⚠ It is important to close all used sockets once they are not needed, since, in many systems, each socket uses a file descriptor, which are limited system resources. Garbage-collected objects are automatically closed before destruction, though.
- */
-		close(): void;
-		/**
  * Closes the TCP object. The internal socket used by the object is closed and the local address to which the object was bound is made available to other applications. No further operations (except for further calls to the close method) are allowed on a closed socket.
 ⚠ It is important to close all used sockets once they are not needed, since, in many systems, each socket uses a file descriptor, which are limited system resources. Garbage-collected objects are automatically closed before destruction, though.
  */
@@ -11929,18 +10894,6 @@ total timeout. Specifies the upper limit on the amount of time LuaSocket can blo
  * @returns `true` if there is any data in the read buffer, `false` otherwise.
  */
 		dirty(): boolean;
-		/**
- * Check the read buffer status.
-⚠ This is an internal method, any use is unlikely to be portable.
- * @returns `true` if there is any data in the read buffer, `false` otherwise.
- */
-		dirty(): boolean;
-		/**
- * Returns the underlying socket descriptor or handle associated to the object.
-⚠ This is an internal method, any use is unlikely to be portable.
- * @returns the descriptor or handle. In case the object has been closed, the return will be -1.
- */
-		getfd(): number;
 		/**
  * Returns the underlying socket descriptor or handle associated to the object.
 ⚠ This is an internal method, any use is unlikely to be portable.
@@ -11962,25 +10915,6 @@ total timeout. Specifies the upper limit on the amount of time LuaSocket can blo
 			option: string,
 		): LuaMultiReturn<[any | undefined, string | undefined]>;
 		/**
- * Gets options for the TCP object. See server:setoption for description of the option names and values.
- * @param option the name of the option to get:
-
-`"keepalive"`
-`"linger"`
-`"reuseaddr"`
-`"tcp-nodelay"`
-
- * @returns the option value, or `nil` in case of error. & the error message, or `nil` if no error occurred.
- */
-		getoption(
-			option: string,
-		): LuaMultiReturn<[any | undefined, string | undefined]>;
-		/**
-		 * Returns the local address information associated to the object.
-		 * @returns a string with local IP address, the local port number, and the family ("inet" or "inet6"). In case of error, the method returns `nil`.
-		 */
-		getsockname(): string;
-		/**
 		 * Returns the local address information associated to the object.
 		 * @returns a string with local IP address, the local port number, and the family ("inet" or "inet6"). In case of error, the method returns `nil`.
 		 */
@@ -11991,49 +10925,10 @@ total timeout. Specifies the upper limit on the amount of time LuaSocket can blo
 		 */
 		getstats(): string;
 		/**
-		 * Returns accounting information on the socket, useful for throttling of bandwidth.
-		 * @returns a string with the number of bytes received, the number of bytes sent, and the age of the socket object in seconds.
-		 */
-		getstats(): string;
-		/**
 		 * Sets the underling socket descriptor or handle associated to the object. The current one is simply replaced, not closed, and no other change to the object state is made
 		 * @param handle the descriptor or handle to set.
 		 */
 		setfd(handle: number): void;
-		/**
-		 * Sets the underling socket descriptor or handle associated to the object. The current one is simply replaced, not closed, and no other change to the object state is made
-		 * @param handle the descriptor or handle to set.
-		 */
-		setfd(handle: number): void;
-		/**
- * Sets options for the TCP object. Options are only needed by low-level or time-critical applications. You should only modify an option if you are sure you need it.
- * @param option the name of the option to set. The value is provided in the `value` parameter:
-
-`"keepalive"`
-Setting this option to `true` enables the periodic transmission of messages on a connected socket. Should the connected party fail to respond to these messages, the connection is considered broken and processes using the socket are notified;
-`"linger"`
-Controls the action taken when unsent data are queued on a socket and a close is performed. The value is a table with the following keys:
-
-
-boolean `on`
-number `timeout` (seconds)
-
-If the 'on' field is set to true, the system will block the process on the close attempt until it is able to transmit the data or until `timeout` has passed. If 'on' is false and a close is issued, the system will process the close in a manner that allows the process to continue as quickly as possible. It is not advised to set this to anything other than zero;
-
-`"reuseaddr"`
-Setting this option indicates that the rules used in validating addresses supplied in a call to `bind` should allow reuse of local addresses;
-`"tcp-nodelay"`
-Setting this option to `true` disables the Nagle's algorithm for the connection;
-`"ipv6-v6only"`
-Setting this option to `true` restricts an inet6 socket to sending and receiving only IPv6 packets.
-
- * @param value the value to set for the specified option.
- * @returns the value `1`, or `nil` in case of error. & the error message, or `nil` if no error occurred.
- */
-		setoption(
-			option: string,
-			value?: any,
-		): LuaMultiReturn<[number | undefined, string | undefined]>;
 		/**
  * Sets options for the TCP object. Options are only needed by low-level or time-critical applications. You should only modify an option if you are sure you need it.
  * @param option the name of the option to set. The value is provided in the `value` parameter:
@@ -12071,28 +10966,6 @@ Setting this option to `true` restricts an inet6 socket to sending and receiving
 		 * @returns the value `1` in case of success, or `nil` in case of error.
 		 */
 		setstats(received: number, sent: number, age: number): number | undefined;
-		/**
-		 * Resets accounting information on the socket, useful for throttling of bandwidth.
-		 * @param received the new number of bytes received.
-		 * @param sent the new number of bytes sent.
-		 * @param age the new age in seconds.
-		 * @returns the value `1` in case of success, or `nil` in case of error.
-		 */
-		setstats(received: number, sent: number, age: number): number | undefined;
-		/**
- * Changes the timeout values for the object. By default, all I/O operations are blocking. That is, any call to the methods `send`, `receive`, and `accept` will block indefinitely, until the operation completes. The `settimeout` method defines a limit on the amount of time the I/O methods can block. When a timeout is set and the specified amount of time has elapsed, the affected methods give up and fail with an error code.
-There are two timeout modes and both can be used together for fine tuning.
-⚠ Although timeout values have millisecond precision in LuaSocket, large blocks can cause I/O functions not to respect timeout values due to the time the library takes to transfer blocks to and from the OS and to and from the Lua interpreter. Also, function that accept host names and perform automatic name resolution might be blocked by the resolver for longer than the specified timeout value.
- * @param value the amount of time to wait, in seconds. The `nil` timeout value allows operations to block indefinitely. Negative timeout values have the same effect.
- * @param mode optional timeout mode to set:
-
-`"b"`
-block timeout. Specifies the upper limit on the amount of time LuaSocket can be blocked by the operating system while waiting for completion of any single I/O operation. This is the default mode;
-`"t"`
-total timeout. Specifies the upper limit on the amount of time LuaSocket can block a Lua script before returning from a call.
-
- */
-		settimeout(value: number, mode?: string): void;
 		/**
  * Changes the timeout values for the object. By default, all I/O operations are blocking. That is, any call to the methods `send`, `receive`, and `accept` will block indefinitely, until the operation completes. The `settimeout` method defines a limit on the amount of time the I/O methods can block. When a timeout is set and the specified amount of time has elapsed, the affected methods give up and fail with an error code.
 There are two timeout modes and both can be used together for fine tuning.
@@ -12115,31 +10988,6 @@ total timeout. Specifies the upper limit on the amount of time LuaSocket can blo
  */
 		close(): void;
 		/**
- * Closes a UDP object. The internal socket used by the object is closed and the local address to which the object was bound is made available to other applications. No further operations (except for further calls to the close method) are allowed on a closed socket.
-⚠ It is important to close all used sockets once they are not needed, since, in many systems, each socket uses a file descriptor, which are limited system resources. Garbage-collected objects are automatically closed before destruction, though.
- */
-		close(): void;
-		/**
- * Gets an option value from the UDP object. See unconnected:setoption for description of the option names and values.
- * @param option the name of the option to get:
-
-`"dontroute"`
-`"broadcast"`
-`"reuseaddr"`
-`"reuseport"`
-`"ip-multicast-loop"`
-`"ipv6-v6only"`
-`"ip-multicast-if"`
-`"ip-multicast-ttl"`
-`"ip-add-membership"`
-`"ip-drop-membership"`
-
- * @returns the option value, or `nil` in case of error. & the error message, or `nil` if no error occurred.
- */
-		getoption(
-			option: string,
-		): LuaMultiReturn<[any | undefined, string | undefined]>;
-		/**
  * Gets an option value from the UDP object. See unconnected:setoption for description of the option names and values.
  * @param option the name of the option to get:
 
@@ -12166,20 +11014,6 @@ total timeout. Specifies the upper limit on the amount of time LuaSocket can blo
  */
 		getsockname(): string;
 		/**
- * Returns the local address information associated to the object.
-⚠ UDP sockets are not bound to any address until the `setsockname` or the `sendto` method is called for the first time (in which case it is bound to an ephemeral port and the wild-card address).
- * @returns a string with local IP address, a number with the local port, and the family ("inet" or "inet6"). In case of error, the method returns `nil`.
- */
-		getsockname(): string;
-		/**
-		 * Receives a datagram from the UDP object. If the UDP object is connected, only datagrams coming from the peer are accepted. Otherwise, the returned datagram can come from any host.
-		 * @param size optional maximum size of the datagram to be retrieved. If there are more than size bytes available in the datagram, the excess bytes are discarded. If there are less then size bytes available in the current datagram, the available bytes are returned. If size is omitted, the maximum datagram size is used (which is currently limited by the implementation to 8192 bytes).
-		 * @returns the received datagram, or `nil` in case of error. & the error message, or `nil` if no error occurred.
-		 */
-		receive(
-			size?: number,
-		): LuaMultiReturn<[string | undefined, string | undefined]>;
-		/**
 		 * Receives a datagram from the UDP object. If the UDP object is connected, only datagrams coming from the peer are accepted. Otherwise, the returned datagram can come from any host.
 		 * @param size optional maximum size of the datagram to be retrieved. If there are more than size bytes available in the datagram, the excess bytes are discarded. If there are less then size bytes available in the current datagram, the available bytes are returned. If size is omitted, the maximum datagram size is used (which is currently limited by the implementation to 8192 bytes).
 		 * @returns the received datagram, or `nil` in case of error. & the error message, or `nil` if no error occurred.
@@ -12195,27 +11029,6 @@ total timeout. Specifies the upper limit on the amount of time LuaSocket can blo
 		receivefrom(
 			size?: number,
 		): LuaMultiReturn<[string | undefined, string, number | undefined]>;
-		/**
-		 * Works exactly as the receive method, except it returns the IP address and port as extra return values (and is therefore slightly less efficient).
-		 * @param size optional maximum size of the datagram to be retrieved.
-		 * @returns the received datagram, or `nil` in case of error. & the IP address, or the error message in case of error. & the port number, or `nil` in case of error.
-		 */
-		receivefrom(
-			size?: number,
-		): LuaMultiReturn<[string | undefined, string, number | undefined]>;
-		/**
- * Sends a datagram to the specified IP address and port number.
-⚠ In UDP, the send method never blocks and the only way it can fail is if the underlying transport layer refuses to send a message to the specified address (i.e. no interface accepts the address).
- * @param datagram a string with the datagram contents. The maximum datagram size for UDP is 64K minus IP layer overhead. However datagrams larger than the link layer packet size will be fragmented, which may deteriorate performance and/or reliability.
- * @param ip the IP address of the recipient. Host names are not allowed for performance reasons.
- * @param port the port number at the recipient.
- * @returns the value `1` on success, or `nil` in case of error. & the error message, or `nil` if no error occurred.
- */
-		sendto(
-			datagram: string,
-			ip: string,
-			port: number,
-		): LuaMultiReturn<[number | undefined, string | undefined]>;
 		/**
  * Sends a datagram to the specified IP address and port number.
 ⚠ In UDP, the send method never blocks and the only way it can fail is if the underlying transport layer refuses to send a message to the specified address (i.e. no interface accepts the address).
@@ -12271,59 +11084,6 @@ string `interface` (IP address)
 			value?: any,
 		): LuaMultiReturn<[number | undefined, string | undefined]>;
 		/**
- * Sets options for the UDP object. Options are only needed by low-level or time-critical applications. You should only modify an option if you are sure you need it.
- * @param option the name of the option to set. The value is provided in the `value` parameter:
-
-`"dontroute"`
-Indicates that outgoing messages should bypass the standard routing facilities. Receives a boolean value;
-`"broadcast"`
-Requests permission to send broadcast datagrams on the socket. Receives a boolean value;
-`"reuseaddr"`
-Indicates that the rules used in validating addresses supplied in a `bind` call should allow reuse of local addresses. Receives a boolean value;
-`"reuseport"`
-Allows completely duplicate bindings by multiple processes if they all set `"reuseport"` before binding the port. Receives a boolean value;
-`"ip-multicast-loop"`
-Specifies whether or not a copy of an outgoing multicast datagram is delivered to the sending host as long as it is a member of the multicast group. Receives a boolean value;
-`"ipv6-v6only"`
-Specifies whether to restrict inet6 sockets to sending and receiving only IPv6 packets. Receive a boolean value;
-`"ip-multicast-if"`
-Sets the interface over which outgoing multicast datagrams are sent. Receives an IP address;
-`"ip-multicast-ttl"`
-Sets the Time To Live in the IP header for outgoing multicast datagrams. Receives a number;
-
-`"ip-add-membership"`: Joins the multicast group specified. Receives a table with fields:
-
-string `multiaddr` (IP address)
-string `interface` (IP address)
-
-
-"'ip-drop-membership"`
-Leaves the multicast group specified. Receives a table with fields:
-
-
-string `multiaddr` (IP address)
-string `interface` (IP address)
-
- * @param value the value to set for the specified option.
- * @returns the value `1`, or `nil` in case of error. & the error message, or `nil` if no error occurred.
- */
-		setoption(
-			option: string,
-			value?: any,
-		): LuaMultiReturn<[number | undefined, string | undefined]>;
-		/**
- * Changes the peer of a UDP object. This method turns an unconnected UDP object into a connected UDP object or vice versa.
-For connected objects, outgoing datagrams will be sent to the specified peer, and datagrams received from other peers will be discarded by the OS. Connected UDP objects must use the `send` and `receive` methods instead of `sendto` and `receivefrom`.
-⚠ Since the address of the peer does not have to be passed to and from the OS, the use of connected UDP objects is recommended when the same peer is used for several transmissions and can result in up to 30% performance gains.
- * @param address an IP address or a host name.
- * @param port the port number.
- * @returns the value `1` on success, or `nil` in case of error. & the error message, or `nil` if no error occurred.
- */
-		setpeername(
-			address: string,
-			port: number,
-		): LuaMultiReturn<[number | undefined, string | undefined]>;
-		/**
  * Changes the peer of a UDP object. This method turns an unconnected UDP object into a connected UDP object or vice versa.
 For connected objects, outgoing datagrams will be sent to the specified peer, and datagrams received from other peers will be discarded by the OS. Connected UDP objects must use the `send` and `receive` methods instead of `sendto` and `receivefrom`.
 ⚠ Since the address of the peer does not have to be passed to and from the OS, the use of connected UDP objects is recommended when the same peer is used for several transmissions and can result in up to 30% performance gains.
@@ -12346,23 +11106,6 @@ For connected objects, outgoing datagrams will be sent to the specified peer, an
 			address: string,
 			port: number,
 		): LuaMultiReturn<[number | undefined, string | undefined]>;
-		/**
- * Binds the UDP object to a local address.
-⚠ This method can only be called before any datagram is sent through the UDP object, and only once. Otherwise, the system automatically binds the object to all local interfaces and chooses an ephemeral port as soon as the first datagram is sent. After the local address is set, either automatically by the system or explicitly by `setsockname`, it cannot be changed.
- * @param address an IP address or a host name. If address is "*" the system binds to all local interfaces using the constant `INADDR_ANY`.
- * @param port the port number. If port is 0, the system chooses an ephemeral port.
- * @returns the value `1` on success, or `nil` in case of error. & the error message, or `nil` if no error occurred.
- */
-		setsockname(
-			address: string,
-			port: number,
-		): LuaMultiReturn<[number | undefined, string | undefined]>;
-		/**
- * Changes the timeout values for the object. By default, the `receive` and `receivefrom`  operations are blocking. That is, any call to the methods will block indefinitely, until data arrives. The `settimeout` function defines a limit on the amount of time the functions can block. When a timeout is set and the specified amount of time has elapsed, the affected methods give up and fail with an error code.
-⚠ In UDP, the `send` and `sendto` methods never block (the datagram is just passed to the OS and the call returns immediately). Therefore, the `settimeout` method has no effect on them.
- * @param value the amount of time to wait, in seconds. The `nil` timeout value allows operations to block indefinitely. Negative timeout values have the same effect.
- */
-		settimeout(value: number): void;
 		/**
  * Changes the timeout values for the object. By default, the `receive` and `receivefrom`  operations are blocking. That is, any call to the methods will block indefinitely, until data arrives. The `settimeout` function defines a limit on the amount of time the functions can block. When a timeout is set and the specified amount of time has elapsed, the affected methods give up and fail with an error code.
 ⚠ In UDP, the `send` and `sendto` methods never block (the datagram is just passed to the OS and the call returns immediately). Therefore, the `settimeout` method has no effect on them.
@@ -12557,7 +11300,7 @@ number sound gain between 0 and 1, default is 1. The final gain of the sound wil
 `pan`
 number sound pan between -1 and 1, default is 0. The final pan of the sound will be an addition of this pan and the sound pan.
 `speed`
-number sound speed where 1.0 is normal speed, 0.5 is half speed and 2.0 is double speed. The final speed of the sound will be a multiplication of this speed and the sound speed.
+number sound speed where 1.0 is normal speed, 0.5 is half speed and 2.0 is double speed. Valid range is 0.0 to 50.0. The final speed of the sound will be a multiplication of this speed and the sound speed.
 `start_time`
 number start playback offset (seconds). Optional, mutually exclusive with `start_frame`.
 `start_frame`
