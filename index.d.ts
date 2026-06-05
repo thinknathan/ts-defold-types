@@ -3,35 +3,8 @@
 /// <reference types="lua-types/5.1" />
 /// <reference types="lua-types/special/jit-only" />
 
-// DEFOLD. stable version 1.12.2 (e43be333aa7a4fc319ab62adc8d405c8e98bf92f)
+// DEFOLD. stable version 1.12.4 (402218d5544666871f07ecdfa21032a7fb59413f)
 
-/**
- * All ids in the engine are represented as hashes, so a string needs to be hashed
-before it can be compared with an id.
- * @param s string to hash
- * @returns a hashed string
- * @example To compare a message_id in an on-message callback function:
-```lua
-function on_message(self, message_id, message, sender)
-    if message_id == hash("my_message") then
-        -- Act on the message here
-    end
-end
-```
- */
-declare function hash(s: string): hash;
-/**
- * Returns a hexadecimal representation of a hash value.
-The returned string is always padded with leading zeros.
- * @param h hash value to get hex string for
- * @returns hex representation of the hash
- * @example ```lua
-local h = hash("my_hash")
-local hexstr = hash_to_hex(h)
-print(hexstr) --> a2bc06d97f580aab
-```
- */
-declare function hash_to_hex(h: hash): string;
 /**
  * Pretty printing of Lua values. This function prints Lua values
 in a manner similar to +print()+, but will also recurse into tables
@@ -61,6 +34,33 @@ Lua tables is undefined):
 ```
  */
 declare function pprint(...v: any[]): void;
+/**
+ * All ids in the engine are represented as hashes, so a string needs to be hashed
+before it can be compared with an id.
+ * @param s string to hash
+ * @returns a hashed string
+ * @example To compare a message_id in an on-message callback function:
+```lua
+function on_message(self, message_id, message, sender)
+    if message_id == hash("my_message") then
+        -- Act on the message here
+    end
+end
+```
+ */
+declare function hash(s: string): hash;
+/**
+ * Returns a hexadecimal representation of a hash value.
+The returned string is always padded with leading zeros.
+ * @param h hash value to get hex string for
+ * @returns hex representation of the hash
+ * @example ```lua
+local h = hash("my_hash")
+local hexstr = hash_to_hex(h)
+print(hexstr) --> a2bc06d97f580aab
+```
+ */
+declare function hash_to_hex(h: hash): string;
 /**
  * A unique identifier used to reference resources, messages, properties, and other entities within the game.
  */
@@ -97,6 +97,12 @@ export function get_world(): unknown;
 }
 
 declare namespace b2d {
+/**
+ * Does this body have fixed rotation?
+ * @param body body
+ * @returns is the rotation fixed
+ */
+export function body_is_fixed_rotation(body: typeof b2d.body): boolean;
 export namespace body {
 /**
  * Dynamic body
@@ -149,6 +155,11 @@ This wakes up the body.
  */
 export function apply_torque(body: typeof b2d.body, torque: number): void;
 /**
+ * Print the body representation to the log output
+ * @param body body
+ */
+export function dump(body: typeof b2d.body): void;
+/**
  * You can disable sleeping on this body. If you disable sleeping, the body will be woken.
  * @param body body
  * @param enable if false, the body will never sleep, and consume more CPU
@@ -178,6 +189,12 @@ export function get_angular_velocity(body: typeof b2d.body): number;
  * @returns the scale
  */
 export function get_gravity_scale(body: typeof b2d.body): number;
+/**
+ * Get the rotational inertia of the body about the local origin.
+ * @param body body
+ * @returns the rotational inertia, usually in kg-m^2.
+ */
+export function get_inertia(body: typeof b2d.body): number;
 /**
  * Get the linear damping of the body.
  * @param body body
@@ -209,6 +226,12 @@ export function get_linear_velocity_from_world_point(body: typeof b2d.body, worl
  * @param body body
  * @returns Get the local position of the center of mass.
  */
+export function get_local_center(body: typeof b2d.body): vmath.vector3;
+/**
+ * Get the local position of the center of mass.
+ * @param body body
+ * @returns Get the local position of the center of mass.
+ */
 export function get_local_center_of_mass(body: typeof b2d.body): vmath.vector3;
 /**
  * Gets a local point relative to the body's origin given a world point.
@@ -230,6 +253,12 @@ export function get_local_vector(body: typeof b2d.body, world_vector: vmath.vect
  * @returns the mass, usually in kilograms (kg).
  */
 export function get_mass(body: typeof b2d.body): number;
+/**
+ * Get the next body in the world's body list.
+ * @param body body
+ * @returns the next body
+ */
+export function get_next(body: typeof b2d.body): typeof b2d.body;
 /**
  * Get the world body origin position.
  * @param body body
@@ -253,6 +282,18 @@ export function get_type(body: typeof b2d.body): unknown;
  * @param body body
  */
 export function get_world(body: typeof b2d.body): unknown;
+/**
+ * Get the angle in radians.
+ * @param body body
+ * @returns the current world rotation angle in radians.
+ */
+export function get_world_center(body: typeof b2d.body): number;
+/**
+ * Get the world position of the center of mass.
+ * @param body body
+ * @returns Get the world position of the center of mass.
+ */
+export function get_world_center(body: typeof b2d.body): vmath.vector3;
 /**
  * Get the world position of the center of mass.
  * @param body body
@@ -297,6 +338,12 @@ export function is_bullet(body: typeof b2d.body): boolean;
  * @returns is the rotation fixed
  */
 export function is_fixed_rotation(body: typeof b2d.body): boolean;
+/**
+ * Is this body allowed to sleep
+ * @param body body
+ * @returns true if the body is allowed to sleep
+ */
+export function is_sleeping_allowed(body: typeof b2d.body): boolean;
 /**
  * Is this body allowed to sleep
  * @param body body
@@ -376,6 +423,12 @@ export function set_linear_damping(body: typeof b2d.body, damping: number): void
  */
 export function set_linear_velocity(body: typeof b2d.body, velocity: vmath.vector3): void;
 /**
+ * You can disable sleeping on this body. If you disable sleeping, the body will be woken.
+ * @param body body
+ * @param enable if false, the body will never sleep, and consume more CPU
+ */
+export function set_sleeping_allowed(body: typeof b2d.body, enable: boolean): void;
+/**
  * Set the position of the body's origin and rotation.
 This breaks any contacts and wakes the other bodies.
 Manipulating a body's transform may cause non-physical behavior.
@@ -391,6 +444,157 @@ export function set_transform(body: typeof b2d.body, position: vmath.vector3, an
  */
 export function set_type(body: typeof b2d.body, type: any): void;
 }
+}
+
+declare namespace bit {
+/**
+ * Returns the bitwise arithmetic right-shift of its first argument by the number of bits given by the second argument.
+Arithmetic right-shift treats the most-significant bit as a sign bit and replicates it.
+Only the lower 5 bits of the shift count are used (reduces to the range [0..31]).
+ * @param x number
+ * @param n number of bits
+ * @returns bitwise arithmetic right-shifted number
+ * @example ```lua
+print(bit.arshift(256, 8))           --> 1
+print(bit.arshift(-256, 8))          --> -1
+printx(bit.arshift(0x87654321, 12))  --> 0xfff87654
+```
+ */
+export function arshift(x: number, n: number): number;
+/**
+ * Returns the bitwise and of all of its arguments. Note that more than two arguments are allowed.
+ * @param x1 number
+ * @param __ number(s)
+ * @returns bitwise and of the provided arguments
+ * @example ```lua
+printx(bit.band(0x12345678, 0xff))        --> 0x00000078
+```
+ */
+export function band(x1: number, __?: number): number;
+/**
+ * Returns the bitwise not of its argument.
+ * @param x number
+ * @returns bitwise not of number x
+ * @example ```lua
+print(bit.bnot(0))            --> -1
+printx(bit.bnot(0))           --> 0xffffffff
+print(bit.bnot(-1))           --> 0
+print(bit.bnot(0xffffffff))   --> 0
+printx(bit.bnot(0x12345678))  --> 0xedcba987
+```
+ */
+export function bnot(x: number): number;
+/**
+ * Returns the bitwise or of all of its arguments. Note that more than two arguments are allowed.
+ * @param x1 number
+ * @param __ number(s)
+ * @returns bitwise or of the provided arguments
+ * @example ```lua
+print(bit.bor(1, 2, 4, 8))                --> 15
+```
+ */
+export function bor(x1: number, __?: number): number;
+/**
+ * Swaps the bytes of its argument and returns it. This can be used to convert little-endian 32 bit numbers to big-endian 32 bit numbers or vice versa.
+ * @param x number
+ * @returns bitwise swapped number
+ * @example ```lua
+printx(bit.bswap(0x12345678)) --> 0x78563412
+printx(bit.bswap(0x78563412)) --> 0x12345678
+```
+ */
+export function bswap(x: number): number;
+/**
+ * Returns the bitwise xor of all of its arguments. Note that more than two arguments are allowed.
+ * @param x1 number
+ * @param __ number(s)
+ * @returns bitwise xor of the provided arguments
+ * @example ```lua
+printx(bit.bxor(0xa5a5f0f0, 0xaa55ff00))  --> 0x0ff00ff0
+```
+ */
+export function bxor(x1: number, __?: number): number;
+/**
+ * Returns the bitwise logical left-shift of its first argument by the number of bits given by the second argument.
+Logical shifts treat the first argument as an unsigned number and shift in 0-bits.
+Only the lower 5 bits of the shift count are used (reduces to the range [0..31]).
+ * @param x number
+ * @param n number of bits
+ * @returns bitwise logical left-shifted number
+ * @example ```lua
+print(bit.lshift(1, 0))              --> 1
+print(bit.lshift(1, 8))              --> 256
+print(bit.lshift(1, 40))             --> 256
+printx(bit.lshift(0x87654321, 12))   --> 0x54321000
+```
+ */
+export function lshift(x: number, n: number): number;
+/**
+ * Returns the bitwise left rotation of its first argument by the number of bits given by the second argument. Bits shifted out on one side are shifted back in on the other side.
+Only the lower 5 bits of the rotate count are used (reduces to the range [0..31]).
+ * @param x number
+ * @param n number of bits
+ * @returns bitwise left-rotated number
+ * @example ```lua
+printx(bit.rol(0x12345678, 12))   --> 0x45678123
+```
+ */
+export function rol(x: number, n: number): number;
+/**
+ * Returns the bitwise right rotation of its first argument by the number of bits given by the second argument. Bits shifted out on one side are shifted back in on the other side.
+Only the lower 5 bits of the rotate count are used (reduces to the range [0..31]).
+ * @param x number
+ * @param n number of bits
+ * @returns bitwise right-rotated number
+ * @example ```lua
+printx(bit.ror(0x12345678, 12))   --> 0x67812345
+```
+ */
+export function ror(x: number, n: number): number;
+/**
+ * Returns the bitwise logical right-shift of its first argument by the number of bits given by the second argument.
+Logical shifts treat the first argument as an unsigned number and shift in 0-bits.
+Only the lower 5 bits of the shift count are used (reduces to the range [0..31]).
+ * @param x number
+ * @param n number of bits
+ * @returns bitwise logical right-shifted number
+ * @example ```lua
+print(bit.rshift(256, 8))            --> 1
+print(bit.rshift(-256, 8))           --> 16777215
+printx(bit.rshift(0x87654321, 12))   --> 0x00087654
+```
+ */
+export function rshift(x: number, n: number): number;
+/**
+ * Normalizes a number to the numeric range for bit operations and returns it. This function is usually not needed since all bit operations already normalize all of their input arguments.
+ * @param x number to normalize
+ * @returns normalized number
+ * @example ```lua
+print(0xffffffff)                --> 4294967295 (*)
+print(bit.tobit(0xffffffff))     --> -1
+printx(bit.tobit(0xffffffff))    --> 0xffffffff
+print(bit.tobit(0xffffffff + 1)) --> 0
+print(bit.tobit(2^40 + 1234))    --> 1234
+```
+
+(*) See the treatment of hex literals for an explanation why the printed numbers in the first two lines differ (if your Lua installation uses a double number type).
+ */
+export function tobit(x: number): number;
+/**
+ * Converts its first argument to a hex string. The number of hex digits is given by the absolute value of the optional second argument. Positive numbers between 1 and 8 generate lowercase hex digits. Negative numbers generate uppercase hex digits. Only the least-significant 4*|n| bits are used. The default is to generate 8 lowercase hex digits.
+ * @param x number to convert
+ * @param n number of hex digits to return
+ * @returns hexadecimal string
+ * @example ```lua
+print(bit.tohex(1))              --> 00000001
+print(bit.tohex(-1))             --> ffffffff
+print(bit.tohex(0xffffffff))     --> ffffffff
+print(bit.tohex(-1, -8))         --> FFFFFFFF
+print(bit.tohex(0x21, 4))        --> 0021
+print(bit.tohex(0x87654321, 4))  --> 4321
+```
+ */
+export function tohex(x: number, n: number): string;
 }
 
 declare namespace buffer {
@@ -900,45 +1104,6 @@ end
 ```
  */
 export function get_resources(collectionproxy: url): string[];
-/**
- * return an array of missing resources for a collection proxy. Each
-entry is a hexadecimal string that represents the data of the specific
-resource. This representation corresponds with the filename for each
-individual resource that is exported when you bundle an application with
-LiveUpdate functionality. It should be considered good practise to always
-check whether or not there are any missing resources in a collection proxy
-before attempting to load the collection proxy.
- * @param collectionproxy the collectionproxy to check for missing
-resources.
- * @example ```lua
-function init(self)
-end
-
-local function callback(self, id, response)
-    local expected = self.resources[id]
-    if response ~= nil and response.status == 200 then
-        print("Successfully downloaded resource: " .. expected)
-        resource.store_resource(response.response)
-    else
-        print("Failed to download resource: " .. expected)
-        -- error handling
-    end
-end
-
-local function download_resources(self, cproxy)
-    self.resources = {}
-    local resources = collectionproxy.missing_resources(cproxy)
-    for _, v in ipairs(resources) do
-        print("Downloading resource: " .. v)
-
-        local uri = "http://example.defold.com/" .. v
-        local id = http.request(uri, "GET", callback)
-        self.resources[id] = v
-    end
-end
-```
- */
-export function missing_resources(collectionproxy: url): string[];
 /**
  * The collection should be loaded by the collection proxy.
 Setting the collection to "nil" will revert it back to the original collection.
@@ -5159,7 +5324,7 @@ export const LIVEUPDATE_OK: number;
  */
 export const LIVEUPDATE_SCHEME_MISMATCH: number;
 /**
- * Mismatch between manifest expected signature and actual signature.
+ * Mismatch between expected and actual integrity data for legacy liveupdate verification.
  */
 export const LIVEUPDATE_SIGNATURE_MISMATCH: number;
 /**
@@ -5188,11 +5353,6 @@ liveupdate.add_mount("season_pack_1", "zip:/path/to/easter_pack_1.zip", 30, func
  */
 export function add_mount(name: string, uri: string, priority: number, callback: () => void): number;
 /**
- * Return a reference to the Manifest that is currently loaded.
- * @returns reference to the Manifest that is currently loaded
- */
-export function get_current_manifest(): number;
-/**
  * Get an array of the current mounts
 This can be used to determine if a new mount is needed or not
  * @returns Array of mounts
@@ -5220,12 +5380,6 @@ DEBUG:SCRIPT: MOUNTS,
  */
 export function get_mounts(): object;
 /**
- * Is any liveupdate data mounted and currently in use?
-This can be used to determine if a new manifest or zip file should be downloaded.
- * @returns true if a liveupdate archive (any format) has been loaded
- */
-export function is_using_liveupdate_data(): boolean;
-/**
  * Remove a mount the resource system.
 The remaining mounts are persisted between sessions.
 Removing a mount does not affect any loaded resources.
@@ -5237,215 +5391,6 @@ liveupdate.remove_mount("season_pack_1")
 ```
  */
 export function remove_mount(name: string): number;
-/**
- * Stores a zip file and uses it for live update content. The contents of the
-zip file will be verified against the manifest to ensure file integrity.
-It is possible to opt out of the resource verification using an option passed
-to this function.
-The path is stored in the (internal) live update location.
- * @param path the path to the original file on disc
- * @param callback the callback function
-executed after the storage has completed
-
-`self`
-object The current object.
-`status`
-constant the status of the store operation (See liveupdate.store_manifest)
-
- * @param options optional table with extra parameters. Supported entries:
-
-boolean `verify`: if archive should be verified as well as stored (defaults to true)
-
- * @example How to download an archive with HTTP and store it on device.
-```lua
-local LIVEUPDATE_URL = <a file server url>
-
--- This can be anything, but you should keep the platform bundles apart
-local ZIP_FILENAME = 'defold.resourcepack.zip'
-
-local APP_SAVE_DIR = "LiveUpdateDemo"
-
-function init(self)
-    self.proxy = "levels#level1"
-
-    print("INIT: is_using_liveupdate_data:", liveupdate.is_using_liveupdate_data())
-    -- let's download the archive
-    msg.post("#", "attempt_download_archive")
-end
-
--- helper function to store headers from the http request (e.g. the ETag)
-local function store_http_response_headers(name, data)
-    local path = sys.get_save_file(APP_SAVE_DIR, name)
-    sys.save(path, data)
-end
-
-local function load_http_response_headers(name)
-    local path = sys.get_save_file(APP_SAVE_DIR, name)
-    return sys.load(path)
-end
-
--- returns headers that can potentially generate a 304
--- without redownloading the file again
-local function get_http_request_headers(name)
-    local data = load_http_response_headers(name)
-    local headers = {}
-    for k, v in pairs(data) do
-        if string.lower(k) == 'etag' then
-            headers['If-None-Match'] = v
-        elseif string.lower(k) == 'last-modified' then
-            headers['If-Modified-Since'] = v
-        end
-    end
-    return headers
-end
-
-local function store_archive_cb(self, path, status)
-    if status == true then
-        print("Successfully stored live update archive!", path)
-        sys.reboot()
-    else
-        print("Failed to store live update archive, ", path)
-        -- remove the path
-    end
-end
-
-function on_message(self, message_id, message, sender)
-    if message_id == hash("attempt_download_archive") then
-
-        -- by supplying the ETag, we don't have to redownload the file again
-        -- if we already have downloaded it.
-        local headers = get_http_request_headers(ZIP_FILENAME .. '.json')
-        if not liveupdate.is_using_liveupdate_data() then
-            headers = {} -- live update data has been purged, and we need do a fresh download
-        end
-
-        local path = sys.get_save_file(APP_SAVE_DIR, ZIP_FILENAME)
-        local options = {
-            path = path,        -- a temporary file on disc. will be removed upon successful liveupdate storage
-            ignore_cache = true -- we don't want to store a (potentially large) duplicate in our http cache
-        }
-
-        local url = LIVEUPDATE_URL .. ZIP_FILENAME
-        print("Downloading", url)
-        http.request(url, "GET", function(self, id, response)
-            if response.status == 304 then
-                print(string.format("%d: Archive zip file up-to-date", response.status))
-            elseif response.status == 200 and response.error == nil then
-                -- register the path to the live update system
-                liveupdate.store_archive(response.path, store_archive_cb)
-                -- at this point, the "path" has been moved internally to a different location
-
-                -- save the ETag for the next run
-                store_http_response_headers(ZIP_FILENAME .. '.json', response.headers)
-            else
-                print("Error when downloading", url, "to", path, ":", response.status, response.error)
-            end
-
-            -- If we got a 200, we would call store_archive_cb() then reboot
-            -- Second time, if we get here, it should be after a 304, and then
-            -- we can load the missing resources from the liveupdate archive
-            if liveupdate.is_using_liveupdate_data() then
-                msg.post(self.proxy, "load")
-            end
-        end,
-        headers, nil, options)
-```
- */
-export function store_archive(path: string, callback: ((this: any, status: any) => void), options?: { verify: boolean }): void;
-/**
- * Create a new manifest from a buffer. The created manifest is verified
-by ensuring that the manifest was signed using the bundled public/private
-key-pair during the bundle process and that the manifest supports the current
-running engine version. Once the manifest is verified it is stored on device.
-The next time the engine starts (or is rebooted) it will look for the stored
-manifest before loading resources. Storing a new manifest allows the
-developer to update the game, modify existing resources, or add new
-resources to the game through LiveUpdate.
- * @param manifest_buffer the binary data that represents the manifest
- * @param callback the callback function
-executed once the engine has attempted to store the manifest.
-
-`self`
-object The current object.
-`status`
-constant the status of the store operation:
-
-
-`liveupdate.LIVEUPDATE_OK`
-`liveupdate.LIVEUPDATE_INVALID_RESOURCE`
-`liveupdate.LIVEUPDATE_VERSION_MISMATCH`
-`liveupdate.LIVEUPDATE_ENGINE_VERSION_MISMATCH`
-`liveupdate.LIVEUPDATE_SIGNATURE_MISMATCH`
-`liveupdate.LIVEUPDATE_BUNDLED_RESOURCE_MISMATCH`
-`liveupdate.LIVEUPDATE_FORMAT_ERROR`
-
- * @example How to download a manifest with HTTP and store it on device.
-```lua
-local function store_manifest_cb(self, status)
-  if status == liveupdate.LIVEUPDATE_OK then
-    pprint("Successfully stored manifest. This manifest will be loaded instead of the bundled manifest the next time the engine starts.")
-  else
-    pprint("Failed to store manifest")
-  end
-end
-
-local function download_and_store_manifest(self)
-  http.request(MANIFEST_URL, "GET", function(self, id, response)
-      if response.status == 200 then
-        liveupdate.store_manifest(response.response, store_manifest_cb)
-      end
-    end)
-end
-```
- */
-export function store_manifest(manifest_buffer: string, callback: ((this: any, status: any) => void)): void;
-/**
- * add a resource to the data archive and runtime index. The resource will be verified
-internally before being added to the data archive.
- * @param manifest_reference The manifest to check against.
- * @param data The resource data that should be stored.
- * @param hexdigest The expected hash for the resource,
-retrieved through collectionproxy.missing_resources.
- * @param callback The callback
-function that is executed once the engine has been attempted to store
-the resource.
-
-`self`
-object The current object.
-`hexdigest`
-string The hexdigest of the resource.
-`status`
-boolean Whether or not the resource was successfully stored.
-
- * @example ```lua
-function init(self)
-    self.manifest = liveupdate.get_current_manifest()
-end
-
-local function callback_store_resource(self, hexdigest, status)
-     if status == true then
-          print("Successfully stored resource: " .. hexdigest)
-     else
-          print("Failed to store resource: " .. hexdigest)
-     end
-end
-
-local function load_resources(self, target)
-     local resources = collectionproxy.missing_resources(target)
-     for _, resource_hash in ipairs(resources) do
-          local baseurl = "http://example.defold.com:8000/"
-          http.request(baseurl .. resource_hash, "GET", function(self, id, response)
-               if response.status == 200 then
-                    liveupdate.store_resource(self.manifest, response.response, resource_hash, callback_store_resource)
-               else
-                    print("Failed to download resource: " .. resource_hash)
-               end
-          end)
-     end
-end
-```
- */
-export function store_resource(manifest_reference: number, data: string, hexdigest: string, callback: ((this: any, hexdigest: any, status: any) => void)): void;
 }
 
 declare namespace model {
@@ -7720,8 +7665,7 @@ function init(self)
                 id          = "my_animation",
                 width       = 128,
                 height      = 128,
-                frame_start = 1,
-                frame_end   = 2,
+                frames      = { 1 }
             }
         },
         geometries = {
@@ -7758,8 +7702,9 @@ export function create_atlas(path: string, table: { texture: string | hash; anim
 												id: string;
 												width: number;
 												height: number;
-												frame_start: number;
-												frame_end: number;
+												frame_start?: number;
+												frame_end?: number;
+												frames?: number[];
 												playback?: number;
 												fps?: number;
 												flip_vertical?: boolean;
@@ -8236,9 +8181,11 @@ texture
 geometries
 animations
 
+Each animation entry also contains a `frames` table with indices into
+`geometries`, preserving the frame-to-geometry mapping used by the atlas.
 See resource.set_atlas for a detailed description of each field
  */
-export function get_atlas(path: hash | string): {texture: string | hash, animations: { id: string; width: number; height: number; frame_start: number; frame_end: number; playback?: number; fps?: number; flip_vertical?: boolean; flip_horizontal?: boolean }, geometries: { vertices: number[] | LuaSet<number>; uvs: number[] | LuaSet<number>; indices: number[] | LuaSet<number> }[]};
+export function get_atlas(path: hash | string): {texture: string | hash, animations: { id: string; width: number; height: number; frames: number[]; playback?: number; fps?: number; flip_vertical?: boolean; flip_horizontal?: boolean }, geometries: { vertices: number[] | LuaSet<number>; uvs: number[] | LuaSet<number>; indices: number[] | LuaSet<number> }[]};
 /**
  * gets the buffer from a resource
  * @param path The path to the resource
@@ -8639,8 +8586,7 @@ function init(self)
                 id          = "my_animation",
                 width       = 256,
                 height      = 256,
-                frame_start = 1,
-                frame_end   = 2,
+                frames      = { 1 }
             }
         },
         geometries = {
@@ -8665,7 +8611,7 @@ function init(self)
 end
 ```
  */
-export function set_atlas(path: hash | string, table: { texture: string | hash; animations: { id: string; width: number; height: number; frame_start: number; frame_end: number; playback?: number; fps?: number; flip_vertical?: boolean; flip_horizontal?: boolean }; geometries: { vertices: number[] | LuaSet<number>; uvs: number[] | LuaSet<number>; indices: number[] | LuaSet<number> }[] }): void;
+export function set_atlas(path: hash | string, table: { texture: string | hash; animations: { id: string; width: number; height: number; frame_start?: number; frame_end?: number; frames?: number[]; playback?: number; fps?: number; flip_vertical?: boolean; flip_horizontal?: boolean }; geometries: { vertices: number[] | LuaSet<number>; uvs: number[] | LuaSet<number>; indices: number[] | LuaSet<number> }[] }): void;
 /**
  * Sets the buffer of a resource. By default, setting the resource buffer will either copy the data from the incoming buffer object
 to the buffer stored in the destination resource, or make a new buffer object if the sizes between the source buffer and the destination buffer
@@ -9854,7 +9800,7 @@ number sound gain between 0 and 1, default is 1. The final gain of the sound wil
 `pan`
 number sound pan between -1 and 1, default is 0. The final pan of the sound will be an addition of this pan and the sound pan.
 `speed`
-number sound speed where 1.0 is normal speed, 0.5 is half speed and 2.0 is double speed. The final speed of the sound will be a multiplication of this speed and the sound speed.
+number sound speed where 1.0 is normal speed, 0.5 is half speed and 2.0 is double speed. Valid range is 0.0 to 50.0. The final speed of the sound will be a multiplication of this speed and the sound speed.
 `start_time`
 number start playback offset (seconds). Optional, mutually exclusive with `start_frame`.
 `start_frame`
