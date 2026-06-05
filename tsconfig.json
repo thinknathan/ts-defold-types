@@ -2,9 +2,9 @@
   "compilerOptions": {
       "target": "es2019",
       "lib": ["es2019"],
-      "module": "commonjs",
+      "module": "nodenext",
       "esModuleInterop": true,
-      "moduleResolution": "node",
+      "moduleResolution": "nodenext",
       "declaration": true,
       "sourceMap": true,
       "newLine": "LF",
