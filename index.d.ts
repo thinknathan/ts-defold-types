@@ -4,35 +4,8 @@
 /// <reference types="lua-types/special/jit-only" />
 /// <reference types="./deprecated.d.ts" />
 
-// DEFOLD. stable version 1.13.0 (3969a7e3381405aff80b7ecc9fb1fa5ffdcdc1dc)
+// DEFOLD. stable version 1.13.1 (574678c7d44be490d874fbed2d0ae6211feec4d9)
 
-/**
- * All ids in the engine are represented as hashes, so a string needs to be hashed
-before it can be compared with an id.
- * @param s string to hash
- * @returns a hashed string
- * @example To compare a message_id in an on-message callback function:
-```lua
-function on_message(self, message_id, message, sender)
-    if message_id == hash("my_message") then
-        -- Act on the message here
-    end
-end
-```
- */
-declare function hash(s: string): hash;
-/**
- * Returns a hexadecimal representation of a hash value.
-The returned string is always padded with leading zeros.
- * @param h hash value to get hex string for
- * @returns hex representation of the hash
- * @example ```lua
-local h = hash("my_hash")
-local hexstr = hash_to_hex(h)
-print(hexstr) --> a2bc06d97f580aab
-```
- */
-declare function hash_to_hex(h: hash): string;
 /**
  * Pretty printing of Lua values. This function prints Lua values
 in a manner similar to +print()+, but will also recurse into tables
@@ -62,6 +35,33 @@ Lua tables is undefined):
 ```
  */
 declare function pprint(...v: any[]): void;
+/**
+ * All ids in the engine are represented as hashes, so a string needs to be hashed
+before it can be compared with an id.
+ * @param s string to hash
+ * @returns a hashed string
+ * @example To compare a message_id in an on-message callback function:
+```lua
+function on_message(self, message_id, message, sender)
+    if message_id == hash("my_message") then
+        -- Act on the message here
+    end
+end
+```
+ */
+declare function hash(s: string): hash;
+/**
+ * Returns a hexadecimal representation of a hash value.
+The returned string is always padded with leading zeros.
+ * @param h hash value to get hex string for
+ * @returns hex representation of the hash
+ * @example ```lua
+local h = hash("my_hash")
+local hexstr = hash_to_hex(h)
+print(hexstr) --> a2bc06d97f580aab
+```
+ */
+declare function hash_to_hex(h: hash): string;
 /**
  * A unique identifier used to reference resources, messages, properties, and other entities within the game.
  */
@@ -4141,6 +4141,31 @@ end
  */
 	export function get_resources(collectionproxy: url): string[];
 	/**
+ * Loads the collection referenced by a collection proxy. The proxy is also
+initialized and the callback receives `proxy_loading`, `proxy_ready`, or
+`proxy_error` messages.
+ * @param url the collection proxy component
+ * @param options options table, currently unused
+ * @param callback callback
+ * @example ```lua
+collectionproxy.load("#proxy", nil, function(self, message_id, message, sender)
+    if message_id == hash("proxy_ready") then
+        print("proxy is ready")
+    elseif message_id == hash("proxy_loading") then
+        print("progress", message.progress)
+    elseif message_id == hash("proxy_error") then
+        print("error", message.code)
+    end
+end)
+```
+* @see {@link https://defold.com/ref/stable/collectionproxy/#collectionproxy.load|API Documentation}
+ */
+	export function load(
+		url: hash | url | string,
+		options: object | undefined,
+		callback: (this: any, message_id: any, message: any, sender: any) => void,
+	): void;
+	/**
  * The collection should be loaded by the collection proxy.
 Setting the collection to "nil" will revert it back to the original collection.
 The collection proxy shouldn't be loaded and should have the 'Exclude' checkbox checked.
@@ -8085,12 +8110,29 @@ Nodes that are created dynamically from script are not affected.
  */
 	export function reset_nodes(): void;
 	/**
-	 * Convert the screen position to the local position of supplied node
-	 * @param node node used for getting local transformation matrix
-	 * @param screen_position screen position
-	 * @returns local position
-	 * @see {@link https://defold.com/ref/stable/gui/#gui.screen_to_local|API Documentation}
-	 */
+ * Converts a screen-space position to the local position value for the supplied node.
+The conversion takes the parent transform, anchors, adjust mode, and adjust reference into account.
+ * @param node node whose local position space should be used
+ * @param screen_position screen-space position
+ * @returns local position value for the node
+ * @example Animate a node to the pressed pointer position:
+```lua
+function init(self)
+    msg.post(".", "acquire_input_focus")
+    self.marker = gui.get_node("marker")
+end
+
+function on_input(self, action_id, action)
+    if action_id == hash("touch") and action.pressed then
+        local screen_position = vmath.vector3(action.screen_x, action.screen_y, 0)
+        local target_position = gui.screen_to_local(self.marker, screen_position)
+        gui.animate(self.marker, gui.PROP_POSITION, target_position, gui.EASING_OUTQUAD, 0.2)
+        return true
+    end
+end
+```
+* @see {@link https://defold.com/ref/stable/gui/#gui.screen_to_local|API Documentation}
+ */
 	export function screen_to_local(
 		node: node,
 		screen_position: vmath.vector3,
@@ -8127,7 +8169,7 @@ if the constant is a matrix. Arrays are also supported by gui.set - to set an ar
 If the material has a constant array called 'tint_array' specified in the material, you can use `gui.set(node, "tint_array", vmath.vec4(1,0,0,1), { index = 4})` to set the fourth array element to a different value.
  * @param node node to set the property for, or msg.url() to the gui itself
  * @param property the property to set
- * @param value the property to set
+ * @param value the property to set. `nil` is only supported for removing runtime texture mappings with `gui.set(msg.url(), "textures", nil, {key = ...})`.
  * @param options optional options table (only applicable for material constants)
 - `index` number index into array property (1 based)
 - `key` hash name of internal property
@@ -8181,12 +8223,24 @@ function on_message(self, message_id, message, sender)
    end
 end
 ```
+
+Remove a named runtime texture resource mapping:
+```lua
+local atlas_id = resource.create_atlas("/runtime.texturesetc", atlas_params)
+gui.set(msg.url(), "textures", atlas_id, {key = "runtime_texture"})
+gui.set_texture(gui.get_node("box"), "runtime_texture")
+
+-- Later, remove the GUI mapping before releasing the atlas resource.
+gui.set(msg.url(), "textures", nil, {key = "runtime_texture"})
+resource.release(atlas_id)
+```
 * @see {@link https://defold.com/ref/stable/gui/#gui.set|API Documentation}
  */
 	export function set(
 		node: node | url,
 		property: hash | number | string,
-		value: vmath.quaternion | vmath.vector3 | vmath.vector4 | number,
+		value:
+			vmath.quaternion | vmath.vector3 | vmath.vector4 | number | undefined,
 		options?: object,
 	): void;
 	/**
@@ -9490,6 +9544,7 @@ number the semantic type of the vertex attribute. Supported values:
 `graphics.SEMANTIC_TYPE_BONE_WEIGHTS`
 `graphics.SEMANTIC_TYPE_BONE_INDICES`
 `graphics.SEMANTIC_TYPE_TEXTURE_TRANSFORM_2D`
+`graphics.SEMANTIC_TYPE_MORPH_TARGET_WEIGHTS`
 
  * @example Get the vertex attributes from a material specified as a resource property
 ```lua
@@ -9676,6 +9731,7 @@ number the semantic type of the vertex attribute. Supported values:
 `graphics.SEMANTIC_TYPE_BONE_WEIGHTS`
 `graphics.SEMANTIC_TYPE_BONE_INDICES`
 `graphics.SEMANTIC_TYPE_TEXTURE_TRANSFORM_2D`
+`graphics.SEMANTIC_TYPE_MORPH_TARGET_WEIGHTS`
 
  * @example Configures a vertex attribute in a material specified as a resource property
 ```lua
