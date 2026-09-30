@@ -4,14 +4,14 @@
 /// <reference types="lua-types/special/jit-only" />
 /// <reference types="./deprecated.d.ts" />
 
-// DEFOLD. stable version 1.13.1 (574678c7d44be490d874fbed2d0ae6211feec4d9)
+// DEFOLD. stable version 1.13.2 (055a6e163cb952d023ffe7becf9eab88d7e84a74)
 
 /**
  * Pretty printing of Lua values. This function prints Lua values
 in a manner similar to +print()+, but will also recurse into tables
 and pretty print them. There is a limit to how deep the function
 will recurse.
- * @param v value to print
+ * @param __ values to print
  * @example Pretty printing a Lua table with a nested table:
 ```lua
 local t2 = { 1, 2, 3, 4 }
@@ -34,7 +34,7 @@ Lua tables is undefined):
 }
 ```
  */
-declare function pprint(...v: any[]): void;
+declare function pprint(__: any): void;
 /**
  * All ids in the engine are represented as hashes, so a string needs to be hashed
 before it can be compared with an id.
@@ -89,61 +89,1098 @@ declare type bufferstream = LuaUserdata & number[] & object;
 
 /** @see {@link https://defold.com/ref/stable/b2d/|Box2D Documentation} @since 1.8.0 */
 declare namespace b2d {
-	/**
+	export namespace aabb {
+		/**
+		 * Lower bound.
+		 */
+		export let lower: vmath.vector3;
+		/**
+		 * Upper bound.
+		 */
+		export let upper: vmath.vector3;
+	}
+	export namespace chain_definition {
+		/**
+		 * Whether to enable sensor events.
+		 */
+		export let enable_sensor_events_: boolean;
+		/**
+		 * Collision filter fields to override.
+		 */
+		export let filter_: unknown;
+		/**
+		 * Segment friction.
+		 */
+		export let friction_: number;
+		/**
+		 * Whether the chain is closed.
+		 */
+		export let loop_: boolean;
+		/**
+		 * Segment material identifier.
+		 */
+		export let material_: number;
+		/**
+		 * Ghost vertex following an open chain.
+		 */
+		export let next_vertex_: vmath.vector3;
+		/**
+		 * Ghost vertex preceding an open chain.
+		 */
+		export let prev_vertex_: vmath.vector3;
+		/**
+		 * Segment restitution.
+		 */
+		export let restitution_: number;
+		/**
+		 * Chain vertices.
+		 */
+		export let vertices: unknown;
+	}
+	export namespace chain_geometry {
+		/**
+		 * Whether the chain is closed.
+		 */
+		export let loop: boolean;
+		/**
+		 * Ghost vertex following an open chain.
+		 */
+		export let next_vertex_: vmath.vector3;
+		/**
+		 * Ghost vertex preceding an open chain.
+		 */
+		export let prev_vertex_: vmath.vector3;
+		/**
+		 * Number of chain segments.
+		 */
+		export let segment_count: number;
+		/**
+		 * Chain vertices.
+		 */
+		export let vertices: unknown;
+	}
+	export namespace contact_data {
+		/**
+		 * Contact normal.
+		 */
+		export let normal: vmath.vector3;
+		/**
+		 * Number of manifold points.
+		 */
+		export let point_count: number;
+		/**
+		 * Contact manifold points.
+		 */
+		export let points: unknown;
+		/**
+		 * Rolling resistance impulse.
+		 */
+		export let rolling_impulse: number;
+		/**
+		 * First contact shape.
+		 */
+		export let shape_a: unknown;
+		/**
+		 * Second contact shape.
+		 */
+		export let shape_b: unknown;
+	}
+	export namespace contact_point {
+		/**
+		 * Contact anchor on the first body.
+		 */
+		export let anchor_a: vmath.vector3;
+		/**
+		 * Contact anchor on the second body.
+		 */
+		export let anchor_b: vmath.vector3;
+		/**
+		 * Contact point identifier.
+		 */
+		export let id: number;
+		/**
+		 * Normal impulse.
+		 */
+		export let normal_impulse: number;
+		/**
+		 * Relative normal velocity.
+		 */
+		export let normal_velocity: number;
+		/**
+		 * Whether the point persisted from the previous step.
+		 */
+		export let persisted: boolean;
+		/**
+		 * World contact point.
+		 */
+		export let point: vmath.vector3;
+		/**
+		 * Contact separation.
+		 */
+		export let separation: number;
+		/**
+		 * Tangent impulse.
+		 */
+		export let tangent_impulse: number;
+		/**
+		 * Total normal impulse.
+		 */
+		export let total_normal_impulse: number;
+	}
+	export namespace explosion_definition {
+		/**
+		 * Distance over which the impulse falls off.
+		 */
+		export let falloff: number;
+		/**
+		 * Impulse applied per unit length.
+		 */
+		export let impulse_per_length: number;
+		/**
+		 * Optional collision mask.
+		 */
+		export let mask_bits_: number;
+		/**
+		 * Explosion center.
+		 */
+		export let position: vmath.vector3;
+		/**
+		 * Explosion radius.
+		 */
+		export let radius: number;
+	}
+	export namespace filter {
+		/**
+		 * Collision category bits.
+		 */
+		export let category_bits: number;
+		/**
+		 * Collision group index.
+		 */
+		export let group_index: number;
+		/**
+		 * Collision mask bits.
+		 */
+		export let mask_bits: number;
+	}
+	export namespace filter_options {
+		/**
+		 * Collision category bits.
+		 */
+		export let category_bits_: number;
+		/**
+		 * Collision group index.
+		 */
+		export let group_index_: number;
+		/**
+		 * Collision mask bits.
+		 */
+		export let mask_bits_: number;
+	}
+	export namespace fixture_cast_hit {
+		/**
+		 * Hit fixture.
+		 */
+		export let fixture: unknown;
+		/**
+		 * Hit fraction.
+		 */
+		export let fraction: number;
+		/**
+		 * Number of tree leaves visited by a closest query.
+		 */
+		export let leaf_visits_: number;
+		/**
+		 * Number of tree nodes visited by a closest query.
+		 */
+		export let node_visits_: number;
+		/**
+		 * Hit normal.
+		 */
+		export let normal: vmath.vector3;
+		/**
+		 * Hit point.
+		 */
+		export let point: vmath.vector3;
+		/**
+		 * Hit fixture child shape.
+		 */
+		export let shape: unknown;
+	}
+	export namespace fixture_definition {
+		/**
+		 * Fixture density.
+		 */
+		export let density_: number;
+		/**
+		 * Collision filter.
+		 */
+		export let filter_: unknown;
+		/**
+		 * Fixture friction.
+		 */
+		export let friction_: number;
+		/**
+		 * Alias for `sensor`.
+		 */
+		export let is_sensor_: boolean;
+		/**
+		 * Fixture restitution.
+		 */
+		export let restitution_: number;
+		/**
+		 * Whether the fixture is a sensor.
+		 */
+		export let sensor_: boolean;
+		/**
+		 * Shape definition.
+		 */
+		export let shape: unknown;
+	}
+	export namespace fixture_info {
+		/**
+		 * Owning body, when returned from a world query.
+		 */
+		export let body_: typeof b2d.body;
+		/**
+		 * Number of child shapes.
+		 */
+		export let child_count: number;
+		/**
+		 * Child-shape index, when returned from a world query.
+		 */
+		export let child_index_: number;
+		/**
+		 * Fixture density.
+		 */
+		export let density: number;
+		/**
+		 * Fixture friction.
+		 */
+		export let friction: number;
+		/**
+		 * Fixture index on the body.
+		 */
+		export let index: number;
+		/**
+		 * Fixture restitution.
+		 */
+		export let restitution: number;
+		/**
+		 * Whether the fixture is a sensor.
+		 */
+		export let sensor: boolean;
+		/**
+		 * Shape type.
+		 */
+		export let type: unknown;
+	} /**
 	 * Get the Box2D body from a collision object
 	 * @param url the url to the game object collision component
-	 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_body|API Documentation}
 	 */
 	export function get_body(
 		url: hash | url | string,
 	): typeof b2d.body | undefined;
 	/**
 	 * Get the Box2D version information for the active backend.
-	 * @returns version info with fields `version`, `major`, `middle`, and `minor`
-	 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_version|API Documentation}
+	 * @returns version information
 	 */
-	export function get_version(): object;
+	export function get_version(): unknown;
 	/**
 	 * Get the Box2D world from the current collection
 	 * @returns the world if successful. Otherwise `nil`.
-	 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_world|API Documentation}
 	 */
-	export function get_world(): unknown;
+	export function get_world(): unknown | undefined;
+	export namespace mass_data {
+		/**
+		 * Local center of mass.
+		 */
+		export let center: vmath.vector3;
+		/**
+		 * Rotational inertia about the local origin.
+		 */
+		export let inertia: number;
+		/**
+		 * Body mass, usually in kilograms.
+		 */
+		export let mass: number;
+	}
+	export namespace mover_capsule {
+		/**
+		 * First capsule center.
+		 */
+		export let center1: vmath.vector3;
+		/**
+		 * Second capsule center.
+		 */
+		export let center2: vmath.vector3;
+		/**
+		 * Capsule radius.
+		 */
+		export let radius: number;
+	}
+	export namespace mover_plane {
+		/**
+		 * Whether the mover hit the plane.
+		 */
+		export let hit: boolean;
+		/**
+		 * Plane normal.
+		 */
+		export let normal: vmath.vector3;
+		/**
+		 * Plane offset.
+		 */
+		export let offset: number;
+		/**
+		 * Colliding shape.
+		 */
+		export let shape: unknown;
+	}
+	export namespace query_filter {
+		/**
+		 * Optional collision category bits.
+		 */
+		export let category_bits_: number;
+		/**
+		 * Optional collision group index. Supported by the Box2D 2.x backend.
+		 */
+		export let group_index_: number;
+		/**
+		 * Optional collision mask bits.
+		 */
+		export let mask_bits_: number;
+	}
+	export namespace shape_cast_hit {
+		/**
+		 * Hit fraction.
+		 */
+		export let fraction: number;
+		/**
+		 * Number of tree leaves visited by a closest query.
+		 */
+		export let leaf_visits_: number;
+		/**
+		 * Number of tree nodes visited by a closest query.
+		 */
+		export let node_visits_: number;
+		/**
+		 * Hit normal.
+		 */
+		export let normal: vmath.vector3;
+		/**
+		 * Hit point.
+		 */
+		export let point: vmath.vector3;
+		/**
+		 * Hit shape.
+		 */
+		export let shape: unknown;
+	}
+	export namespace shape_cast_output {
+		/**
+		 * Hit fraction.
+		 */
+		export let fraction: number;
+		/**
+		 * Number of cast iterations.
+		 */
+		export let iterations: number;
+		/**
+		 * Hit normal.
+		 */
+		export let normal: vmath.vector3;
+		/**
+		 * Hit point.
+		 */
+		export let point: vmath.vector3;
+	}
+	export namespace shape_info {
+		/**
+		 * Number of child shapes.
+		 */
+		export let child_count: number;
+		/**
+		 * Shape density.
+		 */
+		export let density: number;
+		/**
+		 * Shape friction.
+		 */
+		export let friction: number;
+		/**
+		 * Shape index on the body.
+		 */
+		export let index: number;
+		/**
+		 * Whether the shape belongs to a chain.
+		 */
+		export let is_chain_segment: boolean;
+		/**
+		 * Shape material identifier.
+		 */
+		export let material: number;
+		/**
+		 * Shape restitution.
+		 */
+		export let restitution: number;
+		/**
+		 * Whether the shape is a sensor.
+		 */
+		export let sensor: boolean;
+		/**
+		 * Shape handle.
+		 */
+		export let shape_id: unknown;
+		/**
+		 * Shape type.
+		 */
+		export let type: unknown;
+	}
+	export namespace transform {
+		/**
+		 * World rotation angle in radians.
+		 */
+		export let angle: number;
+		/**
+		 * World position of the body origin.
+		 */
+		export let position: vmath.vector3;
+	}
+	export namespace tree_stats {
+		/**
+		 * Number of tree leaves visited.
+		 */
+		export let leaf_visits: number;
+		/**
+		 * Number of tree nodes visited.
+		 */
+		export let node_visits: number;
+	}
+	export namespace version_info {
+		/**
+		 * Major version number.
+		 */
+		export let major: number;
+		/**
+		 * Middle version number.
+		 */
+		export let middle: number;
+		/**
+		 * Minor version number.
+		 */
+		export let minor: number;
+		/**
+		 * Full Box2D version string.
+		 */
+		export let version: string;
+	}
+	export namespace world_counters {
+		/**
+		 * Number of bodies.
+		 */
+		export let body_count: number;
+		/**
+		 * Allocated byte count.
+		 */
+		export let byte_count: number;
+		/**
+		 * Constraint graph color counts.
+		 */
+		export let color_counts: unknown;
+		/**
+		 * Number of contacts.
+		 */
+		export let contact_count: number;
+		/**
+		 * Number of islands.
+		 */
+		export let island_count: number;
+		/**
+		 * Number of joints.
+		 */
+		export let joint_count: number;
+		/**
+		 * Number of shapes.
+		 */
+		export let shape_count: number;
+		/**
+		 * Stack bytes in use.
+		 */
+		export let stack_used: number;
+		/**
+		 * Static broad-phase tree height.
+		 */
+		export let static_tree_height: number;
+		/**
+		 * Number of tasks.
+		 */
+		export let task_count: number;
+		/**
+		 * Dynamic broad-phase tree height.
+		 */
+		export let tree_height: number;
+	}
+	export namespace world_profile {
+		/**
+		 * Restitution time.
+		 */
+		export let apply_restitution: number;
+		/**
+		 * Bullet processing time.
+		 */
+		export let bullets: number;
+		/**
+		 * Collision time.
+		 */
+		export let collide: number;
+		/**
+		 * Hit-event generation time.
+		 */
+		export let hit_events: number;
+		/**
+		 * Position integration time.
+		 */
+		export let integrate_positions: number;
+		/**
+		 * Velocity integration time.
+		 */
+		export let integrate_velocities: number;
+		/**
+		 * Island merge time.
+		 */
+		export let merge_islands: number;
+		/**
+		 * Pair update time.
+		 */
+		export let pairs: number;
+		/**
+		 * Constraint preparation time.
+		 */
+		export let prepare_constraints: number;
+		/**
+		 * Stage preparation time.
+		 */
+		export let prepare_stages: number;
+		/**
+		 * Tree refit time.
+		 */
+		export let refit: number;
+		/**
+		 * Impulse relaxation time.
+		 */
+		export let relax_impulses: number;
+		/**
+		 * Sensor processing time.
+		 */
+		export let sensors: number;
+		/**
+		 * Island sleeping time.
+		 */
+		export let sleep_islands: number;
+		/**
+		 * Solver time.
+		 */
+		export let solve: number;
+		/**
+		 * Constraint solver time.
+		 */
+		export let solve_constraints: number;
+		/**
+		 * Impulse solver time.
+		 */
+		export let solve_impulses: number;
+		/**
+		 * Island splitting time.
+		 */
+		export let split_islands: number;
+		/**
+		 * Total step time.
+		 */
+		export let step: number;
+		/**
+		 * Impulse storage time.
+		 */
+		export let store_impulses: number;
+		/**
+		 * Transform update time.
+		 */
+		export let transforms: number;
+		/**
+		 * Warm-start time.
+		 */
+		export let warm_start: number;
+	}
+	export namespace joint {
+		export namespace distance_definition {
+			/**
+			 * Whether connected bodies collide.
+			 */
+			export let collide_connected_: boolean;
+			/**
+			 * Legacy spring damping-ratio alias.
+			 */
+			export let damping_: number;
+			/**
+			 * Spring damping ratio.
+			 */
+			export let damping_ratio_: number;
+			/**
+			 * Whether length limits are enabled.
+			 */
+			export let enable_limit_: boolean;
+			/**
+			 * Whether the motor is enabled.
+			 */
+			export let enable_motor_: boolean;
+			/**
+			 * Whether the spring is enabled.
+			 */
+			export let enable_spring_: boolean;
+			/**
+			 * Legacy spring frequency alias.
+			 */
+			export let frequency_: number;
+			/**
+			 * Spring frequency in hertz.
+			 */
+			export let hertz_: number;
+			/**
+			 * Rest length.
+			 */
+			export let length_: number;
+			/**
+			 * Local anchor on the first body.
+			 */
+			export let local_anchor_a_: vmath.vector3;
+			/**
+			 * Local anchor on the second body.
+			 */
+			export let local_anchor_b_: vmath.vector3;
+			/**
+			 * Maximum length.
+			 */
+			export let max_length_: number;
+			/**
+			 * Maximum motor force.
+			 */
+			export let max_motor_force_: number;
+			/**
+			 * Minimum length.
+			 */
+			export let min_length_: number;
+			/**
+			 * Motor speed.
+			 */
+			export let motor_speed_: number;
+		}
+		export namespace friction_definition {
+			/**
+			 * Whether connected bodies collide.
+			 */
+			export let collide_connected_: boolean;
+			/**
+			 * Local anchor on the first body.
+			 */
+			export let local_anchor_a_: vmath.vector3;
+			/**
+			 * Local anchor on the second body.
+			 */
+			export let local_anchor_b_: vmath.vector3;
+			/**
+			 * Maximum friction force.
+			 */
+			export let max_force_: number;
+			/**
+			 * Maximum friction torque.
+			 */
+			export let max_torque_: number;
+		}
+		export namespace gear_definition {
+			/**
+			 * Whether connected bodies collide.
+			 */
+			export let collide_connected_: boolean;
+			/**
+			 * Gear ratio.
+			 */
+			export let ratio_: number;
+		}
+		export namespace motor_definition {
+			/**
+			 * Angular target offset.
+			 */
+			export let angular_offset_: number;
+			/**
+			 * Whether connected bodies collide.
+			 */
+			export let collide_connected_: boolean;
+			/**
+			 * Position correction factor.
+			 */
+			export let correction_factor_: number;
+			/**
+			 * Linear target offset.
+			 */
+			export let linear_offset_: vmath.vector3;
+			/**
+			 * Maximum motor force.
+			 */
+			export let max_force_: number;
+			/**
+			 * Maximum motor torque.
+			 */
+			export let max_torque_: number;
+		}
+		export namespace mouse_definition {
+			/**
+			 * Whether connected bodies collide.
+			 */
+			export let collide_connected_: boolean;
+			/**
+			 * Legacy spring damping-ratio alias.
+			 */
+			export let damping_: number;
+			/**
+			 * Spring damping ratio.
+			 */
+			export let damping_ratio_: number;
+			/**
+			 * Legacy spring frequency alias.
+			 */
+			export let frequency_: number;
+			/**
+			 * Spring frequency in hertz.
+			 */
+			export let hertz_: number;
+			/**
+			 * Maximum force.
+			 */
+			export let max_force_: number;
+			/**
+			 * Target position.
+			 */
+			export let target_: vmath.vector3;
+		}
+		export namespace prismatic_definition {
+			/**
+			 * Whether connected bodies collide.
+			 */
+			export let collide_connected_: boolean;
+			/**
+			 * Legacy spring damping-ratio alias.
+			 */
+			export let damping_: number;
+			/**
+			 * Spring damping ratio.
+			 */
+			export let damping_ratio_: number;
+			/**
+			 * Whether translation limits are enabled.
+			 */
+			export let enable_limit_: boolean;
+			/**
+			 * Whether the motor is enabled.
+			 */
+			export let enable_motor_: boolean;
+			/**
+			 * Whether the spring is enabled.
+			 */
+			export let enable_spring_: boolean;
+			/**
+			 * Legacy spring frequency alias.
+			 */
+			export let frequency_: number;
+			/**
+			 * Spring frequency in hertz.
+			 */
+			export let hertz_: number;
+			/**
+			 * Local anchor on the first body.
+			 */
+			export let local_anchor_a_: vmath.vector3;
+			/**
+			 * Local anchor on the second body.
+			 */
+			export let local_anchor_b_: vmath.vector3;
+			/**
+			 * Local translation axis on the first body.
+			 */
+			export let local_axis_a_: vmath.vector3;
+			/**
+			 * Lower translation limit.
+			 */
+			export let lower_translation_: number;
+			/**
+			 * Maximum motor force.
+			 */
+			export let max_motor_force_: number;
+			/**
+			 * Motor speed.
+			 */
+			export let motor_speed_: number;
+			/**
+			 * Reference angle.
+			 */
+			export let reference_angle_: number;
+			/**
+			 * Upper translation limit.
+			 */
+			export let upper_translation_: number;
+		}
+		export namespace pulley_definition {
+			/**
+			 * Whether connected bodies collide.
+			 */
+			export let collide_connected_: boolean;
+			/**
+			 * First ground anchor.
+			 */
+			export let ground_anchor_a_: vmath.vector3;
+			/**
+			 * Second ground anchor.
+			 */
+			export let ground_anchor_b_: vmath.vector3;
+			/**
+			 * First segment length.
+			 */
+			export let length_a_: number;
+			/**
+			 * Second segment length.
+			 */
+			export let length_b_: number;
+			/**
+			 * Local anchor on the first body.
+			 */
+			export let local_anchor_a_: vmath.vector3;
+			/**
+			 * Local anchor on the second body.
+			 */
+			export let local_anchor_b_: vmath.vector3;
+			/**
+			 * Pulley ratio.
+			 */
+			export let ratio_: number;
+		}
+		export namespace revolute_definition {
+			/**
+			 * Whether connected bodies collide.
+			 */
+			export let collide_connected_: boolean;
+			/**
+			 * Legacy spring damping-ratio alias.
+			 */
+			export let damping_: number;
+			/**
+			 * Spring damping ratio.
+			 */
+			export let damping_ratio_: number;
+			/**
+			 * Whether angular limits are enabled.
+			 */
+			export let enable_limit_: boolean;
+			/**
+			 * Whether the motor is enabled.
+			 */
+			export let enable_motor_: boolean;
+			/**
+			 * Whether the spring is enabled.
+			 */
+			export let enable_spring_: boolean;
+			/**
+			 * Legacy spring frequency alias.
+			 */
+			export let frequency_: number;
+			/**
+			 * Spring frequency in hertz.
+			 */
+			export let hertz_: number;
+			/**
+			 * Local anchor on the first body.
+			 */
+			export let local_anchor_a_: vmath.vector3;
+			/**
+			 * Local anchor on the second body.
+			 */
+			export let local_anchor_b_: vmath.vector3;
+			/**
+			 * Lower angular limit.
+			 */
+			export let lower_angle_: number;
+			/**
+			 * Maximum motor torque.
+			 */
+			export let max_motor_torque_: number;
+			/**
+			 * Motor speed.
+			 */
+			export let motor_speed_: number;
+			/**
+			 * Reference angle.
+			 */
+			export let reference_angle_: number;
+			/**
+			 * Upper angular limit.
+			 */
+			export let upper_angle_: number;
+		}
+		export namespace rope_definition {
+			/**
+			 * Whether connected bodies collide.
+			 */
+			export let collide_connected_: boolean;
+			/**
+			 * Local anchor on the first body.
+			 */
+			export let local_anchor_a_: vmath.vector3;
+			/**
+			 * Local anchor on the second body.
+			 */
+			export let local_anchor_b_: vmath.vector3;
+			/**
+			 * Maximum rope length.
+			 */
+			export let max_length_: number;
+		}
+		export namespace weld_definition {
+			/**
+			 * Angular damping ratio.
+			 */
+			export let angular_damping_ratio_: number;
+			/**
+			 * Angular spring frequency in hertz.
+			 */
+			export let angular_hertz_: number;
+			/**
+			 * Whether connected bodies collide.
+			 */
+			export let collide_connected_: boolean;
+			/**
+			 * Legacy spring damping-ratio alias.
+			 */
+			export let damping_: number;
+			/**
+			 * Legacy spring damping ratio.
+			 */
+			export let damping_ratio_: number;
+			/**
+			 * Legacy spring frequency.
+			 */
+			export let frequency_: number;
+			/**
+			 * Legacy spring frequency in hertz.
+			 */
+			export let hertz_: number;
+			/**
+			 * Linear damping ratio.
+			 */
+			export let linear_damping_ratio_: number;
+			/**
+			 * Linear spring frequency in hertz.
+			 */
+			export let linear_hertz_: number;
+			/**
+			 * Local anchor on the first body.
+			 */
+			export let local_anchor_a_: vmath.vector3;
+			/**
+			 * Local anchor on the second body.
+			 */
+			export let local_anchor_b_: vmath.vector3;
+			/**
+			 * Reference angle.
+			 */
+			export let reference_angle_: number;
+		}
+		export namespace wheel_definition {
+			/**
+			 * Whether connected bodies collide.
+			 */
+			export let collide_connected_: boolean;
+			/**
+			 * Legacy spring damping-ratio alias.
+			 */
+			export let damping_: number;
+			/**
+			 * Spring damping ratio.
+			 */
+			export let damping_ratio_: number;
+			/**
+			 * Whether translation limits are enabled.
+			 */
+			export let enable_limit_: boolean;
+			/**
+			 * Whether the motor is enabled.
+			 */
+			export let enable_motor_: boolean;
+			/**
+			 * Whether the spring is enabled.
+			 */
+			export let enable_spring_: boolean;
+			/**
+			 * Legacy spring frequency alias.
+			 */
+			export let frequency_: number;
+			/**
+			 * Spring frequency in hertz.
+			 */
+			export let hertz_: number;
+			/**
+			 * Local anchor on the first body.
+			 */
+			export let local_anchor_a_: vmath.vector3;
+			/**
+			 * Local anchor on the second body.
+			 */
+			export let local_anchor_b_: vmath.vector3;
+			/**
+			 * Local suspension axis on the first body.
+			 */
+			export let local_axis_a_: vmath.vector3;
+			/**
+			 * Lower translation limit.
+			 */
+			export let lower_translation_: number;
+			/**
+			 * Maximum motor torque.
+			 */
+			export let max_motor_torque_: number;
+			/**
+			 * Motor speed.
+			 */
+			export let motor_speed_: number;
+			/**
+			 * Upper translation limit.
+			 */
+			export let upper_translation_: number;
+		}
+	}
 }
 
 declare namespace b2d {
 	/**
-	 * Get the next body in the world's body list.
+	 * Get the body transform for the body's origin.
 	 * @param body body
-	 * @returns the next body
+	 * @returns the body transform
 	 */
-	export function body_get_next(body: typeof b2d.body): typeof b2d.body;
+	export function body_get_transform(body: typeof b2d.body): unknown;
 	export namespace body {
-		/**
-		 * Dynamic body
-		 */
-		export const B2_DYNAMIC_BODY: number;
-		/**
-		 * Dynamic body
-		 */
-		export const B2_DYNAMIC_BODY: number;
-		/**
-		 * Kinematic body
-		 */
-		export const B2_KINEMATIC_BODY: number;
-		/**
-		 * Kinematic body
-		 */
-		export const B2_KINEMATIC_BODY: number;
-		/**
-		 * Static (immovable) body
-		 */
-		export const B2_STATIC_BODY: number;
-		/**
-		 * Static (immovable) body
-		 */
-		export const B2_STATIC_BODY: number;
-		/**
+		export namespace B2 {
+			export namespace body {
+				/**
+				 * Dynamic body
+				 */
+				export const B2_DYNAMIC_BODY: unknown;
+				/**
+				 * Kinematic body
+				 */
+				export const B2_KINEMATIC_BODY: unknown;
+				/**
+				 * Static (immovable) body
+				 */
+				export const B2_STATIC_BODY: unknown;
+			}
+		} /**
 		 * Apply an angular impulse.
 		 * @param body body
 		 * @param impulse impulse the angular impulse in units of kgmm/s
@@ -259,36 +1296,16 @@ This wakes up the body.
 		/**
 		 * Compute the world AABB of all body shapes.
 		 * @param body body
-		 * @returns table with `lower` and `upper` vector3 fields
+		 * @returns body bounds
 		 */
-		export function compute_aabb(body: typeof b2d.body): object;
+		export function compute_aabb(body: typeof b2d.body): unknown;
 		/**
  * Chains are one-sided connected segments with optional ghost vertices at
 the ends of open chains. Ghost vertices are creation-time chain data only and
 cannot be added to arbitrary shapes, bodies, or joints after creation.
-
-`definition.vertices`
-table array of local `vector3` vertices. Open chains require at least 2 vertices. Loop chains require at least 4 vertices.
-`definition.loop`
-boolean true to create a closed loop chain.
-`definition.prev_vertex`
-vector3 optional ghost vertex before the first vertex for open chains.
-`definition.next_vertex`
-vector3 optional ghost vertex after the last vertex for open chains.
-`definition.friction`
-number optional friction.
-`definition.restitution`
-number optional restitution.
-`definition.material`
-number optional material id.
-`definition.filter`
-table optional filter with `category_bits`, `mask_bits`, and `group_index`.
-`definition.enable_sensor_events`
-boolean true to enable sensor events for chain segments.
-
  * @param body body
  * @param definition the chain definition
- * @returns created chain handle & array of shape info tables for the chain segments
+ * @returns created chain handle & created chain segments
  * @example ```lua
 local chain, segments = b2d.body.create_chain(body, {
     vertices = {
@@ -304,22 +1321,8 @@ local chain, segments = b2d.body.create_chain(body, {
  */
 		export function create_chain(
 			body: typeof b2d.body,
-			definition: object,
-		): LuaMultiReturn<[unknown, object]>;
-		/**
- * Creates a fixture from a shape and attach it to this body.
-This is a convenience function. Use b2FixtureDef if you need to set parameters
-like friction, restitution, user data, or filtering.
-If the density is non-zero, this function automatically updates the mass of the body.
- * @param body body
- * @param shape the shape to be cloned.
- * @param density the shape density (set to zero for static bodies).
- */
-		export function create_fixture(
-			body: typeof b2d.body,
-			shape: any,
-			density: number,
-		): void;
+			definition: any,
+		): LuaMultiReturn<[unknown, unknown]>;
 		/**
  * Creates a fixture and attach it to this body. Use this function if you need
 to set some fixture parameters, like friction. Otherwise you can create the
@@ -327,16 +1330,8 @@ fixture directly from a shape.
 If the density is non-zero, this function automatically updates the mass of the body.
 Contacts are not created until the next time step.
  * @param body body
- * @param definition fixture definition table with:
-`shape` = shape table, `friction` = number, `restitution` = number,
-`density` = number, `sensor` = boolean, and optional `filter` table.
-Supported shape tables are:
-`circle` = `{ type = b2d.shape.SHAPE_TYPE_CIRCLE, radius = number, center = vector3_or_nil }`
-`edge` = `{ type = b2d.shape.SHAPE_TYPE_EDGE, v1 = vector3, v2 = vector3, v0 = vector3_or_nil, v3 = vector3_or_nil }`
-`polygon` = `{ type = b2d.shape.SHAPE_TYPE_POLYGON, vertices = { vector3, ... } }`
-`box` = `{ type = b2d.shape.SHAPE_TYPE_BOX, hx = number, hy = number, center = vector3_or_nil, angle = radians_or_nil }`
-`chain` = `{ type = b2d.shape.SHAPE_TYPE_CHAIN, vertices = { vector3, ... }, loop = boolean_or_nil, prev_vertex = vector3_or_nil, next_vertex = vector3_or_nil }`
- * @returns fixture info table with `index`, `type`, `sensor`, `density`, `friction`, `restitution`, and `child_count`
+ * @param definition fixture definition
+ * @returns fixture information
  * @example ```lua
 local body = b2d.get_body("#collisionobject")
 
@@ -356,26 +1351,34 @@ local triangle = b2d.body.create_fixture(body, {
  */
 		export function create_fixture(
 			body: typeof b2d.body,
-			definition: object,
-		): object;
+			definition: any,
+		): unknown;
+		/**
+ * Creates a fixture from a shape and attach it to this body.
+This is a convenience function. Use b2FixtureDef if you need to set parameters
+like friction, restitution, user data, or filtering.
+If the density is non-zero, this function automatically updates the mass of the body.
+ * @param body body
+ * @param shape the shape to be cloned.
+ * @param density the shape density (set to zero for static bodies).
+ */
+		export function create_fixture(
+			body: typeof b2d.body,
+			shape: any,
+			density: number,
+		): void;
 		/**
  * Creates a shape and attaches it to this body.
 If the density is non-zero, this function automatically updates the mass of the body.
 Contacts are not created until the next time step.
-The definition may include `density`, `friction`, `restitution`, `material`,
-`sensor` or `is_sensor`, `filter`, and the shape table itself. The shape table
-can be in `definition.shape` or directly in `definition`.
  * @param body body
  * @param definition the shape definition.
  */
-		export function create_shape(
-			body: typeof b2d.body,
-			definition: object,
-		): void;
+		export function create_shape(body: typeof b2d.body, definition: any): void;
 		/**
 		 * Destroy a fixture from a body.
 		 * @param body body
-		 * @param fixture_index 1-based fixture index from `b2d.body.get_fixtures`
+		 * @param fixture_index 1-based fixture index from b2d.body.get_fixtures
 		 */
 		export function destroy_fixture(
 			body: typeof b2d.body,
@@ -430,6 +1433,12 @@ All shapes attached to a body are implicitly destroyed when the body is destroye
 		 */
 		export function get_angle(body: typeof b2d.body): number;
 		/**
+		 * Get the angle in radians.
+		 * @param body body
+		 * @returns the current world rotation angle in radians.
+		 */
+		export function get_angle(body: typeof b2d.body): number;
+		/**
 		 * Get the angular damping of the body.
 		 * @param body body
 		 * @returns the damping
@@ -458,25 +1467,13 @@ All shapes attached to a body are implicitly destroyed when the body is destroye
 		 * @param body body
 		 * @returns array of contact tables
 		 */
-		export function get_contact_data(body: typeof b2d.body): object;
-		/**
-		 * Get the list of all contacts attached to this body.
-		 * @param body body
-		 * @returns the first edge
-		 */
-		export function get_contact_list(body: typeof b2d.body): unknown;
-		/**
-		 * Get the list of all contacts attached to this body.
-		 * @param body body
-		 * @returns the first edge
-		 */
-		export function get_contact_list(body: typeof b2d.body): unknown;
+		export function get_contact_data(body: typeof b2d.body): unknown;
 		/**
 		 * Get the fixtures attached to this body.
 		 * @param body body
-		 * @returns array of fixture info tables with `index`, `type`, `sensor`, `density`, `friction`, `restitution`, and `child_count`
+		 * @returns the attached fixtures
 		 */
-		export function get_fixtures(body: typeof b2d.body): object;
+		export function get_fixtures(body: typeof b2d.body): unknown;
 		/**
 		 * Get the total force currently applied on this object
 		 * @param body body
@@ -508,15 +1505,15 @@ All shapes attached to a body are implicitly destroyed when the body is destroye
 		/**
 		 * Get the joints attached to this body.
 		 * @param body body
-		 * @returns array of `b2Joint` handles created by `b2d.joint`
+		 * @returns joint handles created by b2d.joint
 		 */
-		export function get_joints(body: typeof b2d.body): object;
+		export function get_joints(body: typeof b2d.body): unknown;
 		/**
 		 * Get the joints attached to this body.
 		 * @param body body
-		 * @returns array of `b2Joint` handles created by `b2d.joint`
+		 * @returns joint handles created by b2d.joint
 		 */
-		export function get_joints(body: typeof b2d.body): object;
+		export function get_joints(body: typeof b2d.body): unknown;
 		/**
 		 * Get the linear damping of the body.
 		 * @param body body
@@ -650,9 +1647,9 @@ All shapes attached to a body are implicitly destroyed when the body is destroye
 		/**
 		 * Get the mass data of the body.
 		 * @param body body
-		 * @returns table with `mass`, `center` in local coordinates, and `inertia`.
+		 * @returns the mass data
 		 */
-		export function get_mass_data(body: typeof b2d.body): object;
+		export function get_mass_data(body: typeof b2d.body): unknown;
 		/**
 		 * Get the mass data of the body.
 		 * @param body body
@@ -662,9 +1659,17 @@ All shapes attached to a body are implicitly destroyed when the body is destroye
 		/**
 		 * Get the body name.
 		 * @param body body
-		 * @returns body name, or nil if no name is set
+		 * @returns body name, or `nil` if no name is set
 		 */
-		export function get_name(body: typeof b2d.body): string;
+		export function get_name(body: typeof b2d.body): string | undefined;
+		/**
+		 * Get the next body in the world's body list.
+		 * @param body body
+		 * @returns the next body, or `nil` if this is the last body
+		 */
+		export function get_next(
+			body: typeof b2d.body,
+		): typeof b2d.body | undefined;
 		/**
 		 * Get the world body origin position.
 		 * @param body body
@@ -686,9 +1691,9 @@ All shapes attached to a body are implicitly destroyed when the body is destroye
 		/**
 		 * Get the list of all shapes attached to this body.
 		 * @param body body
-		 * @returns a table of shape info entries. Each entry includes `shape_id` for use with `b2d.shape` functions.
+		 * @returns attached shapes
 		 */
-		export function get_shapes(body: typeof b2d.body): object;
+		export function get_shapes(body: typeof b2d.body): unknown;
 		/**
 		 * Get the sleep velocity threshold.
 		 * @param body body
@@ -701,12 +1706,6 @@ All shapes attached to a body are implicitly destroyed when the body is destroye
 		 * @returns the world position of the body's origin.
 		 */
 		export function get_transform(body: typeof b2d.body): unknown;
-		/**
-		 * Get the body transform for the body's origin.
-		 * @param body body
-		 * @returns table with `position` and `angle` in radians.
-		 */
-		export function get_transform(body: typeof b2d.body): object;
 		/**
 		 * Get the type of this body.
 		 * @param body body
@@ -735,12 +1734,6 @@ All shapes attached to a body are implicitly destroyed when the body is destroye
 		 * @param body body
 		 */
 		export function get_world(body: typeof b2d.body): unknown;
-		/**
-		 * Get the angle in radians.
-		 * @param body body
-		 * @returns the current world rotation angle in radians.
-		 */
-		export function get_world_center(body: typeof b2d.body): number;
 		/**
 		 * Get the world position of the center of mass.
 		 * @param body body
@@ -862,35 +1855,17 @@ All shapes attached to a body are implicitly destroyed when the body is destroye
 		 */
 		export function is_valid(body: typeof b2d.body): boolean;
 		/**
- * This resets the mass properties to the sum of the mass properties of the fixtures.
-This normally does not need to be called unless you called SetMassData to override
- * @param body body
- */
-		export function reset_mass_data(body: typeof b2d.body): void;
-		/**
  * This resets the mass properties to the sum of the mass properties of the shapes.
 This normally does not need to be called unless you called SetMassData to override
  * @param body body
  */
 		export function reset_mass_data(body: typeof b2d.body): void;
 		/**
- * Set the active state of the body. An inactive body is not
-simulated and cannot be collided with or woken up.
-If you pass a flag of true, all fixtures will be added to the
-broad-phase.
-If you pass a flag of false, all fixtures will be removed from
-the broad-phase and all contacts will be destroyed.
-Fixtures and joints are otherwise unaffected. You may continue
-to create/destroy fixtures and joints on inactive bodies.
-Fixtures on an inactive body are implicitly inactive and will
-not participate in collisions, ray-casts, or queries.
-Joints connected to an inactive body are implicitly inactive.
-An inactive body is still owned by a b2World object and remains
-in the body list.
+ * This resets the mass properties to the sum of the mass properties of the fixtures.
+This normally does not need to be called unless you called SetMassData to override
  * @param body body
- * @param enable true if the body should be active
  */
-		export function set_active(body: typeof b2d.body, enable: boolean): void;
+		export function reset_mass_data(body: typeof b2d.body): void;
 		/**
  * Set the active state of the body. An inactive body is not
 simulated and cannot be collided with or woken up.
@@ -910,6 +1885,24 @@ in the body list.
  */
 		export function set_active(body: typeof b2d.body, enable: boolean): void;
 		/**
+ * Set the active state of the body. An inactive body is not
+simulated and cannot be collided with or woken up.
+If you pass a flag of true, all fixtures will be added to the
+broad-phase.
+If you pass a flag of false, all fixtures will be removed from
+the broad-phase and all contacts will be destroyed.
+Fixtures and joints are otherwise unaffected. You may continue
+to create/destroy fixtures and joints on inactive bodies.
+Fixtures on an inactive body are implicitly inactive and will
+not participate in collisions, ray-casts, or queries.
+Joints connected to an inactive body are implicitly inactive.
+An inactive body is still owned by a b2World object and remains
+in the body list.
+ * @param body body
+ * @param enable true if the body should be active
+ */
+		export function set_active(body: typeof b2d.body, enable: boolean): void;
+		/**
 		 * Set the angular damping of the body.
 		 * @param body body
 		 * @param damping the damping
@@ -1041,16 +2034,16 @@ in the body list.
 			body: typeof b2d.body,
 			velocity: vmath.vector3,
 		): void;
-		/**
-		 * Set the mass properties to override the mass properties of the fixtures.
-		 * @param body body
-		 * @param data table with `mass`, `center` in local coordinates, and `inertia`.
-		 */
-		export function set_mass_data(body: typeof b2d.body, data: object): void;
 		/**
 		 * Set the mass properties to override the mass properties of the shapes.
 		 * @param body body
 		 * @param data the mass properties.
+		 */
+		export function set_mass_data(body: typeof b2d.body, data: any): void;
+		/**
+		 * Set the mass properties to override the mass properties of the fixtures.
+		 * @param body body
+		 * @param data the mass data
 		 */
 		export function set_mass_data(body: typeof b2d.body, data: any): void;
 		/**
@@ -1161,13 +2154,12 @@ any segment shape through `b2d.body.destroy_shape` also destroys its parent chai
 		 */
 		export function get_friction(chain: any): number;
 		/**
- * Returns a chain geometry table with `loop`, `segment_count`, and `vertices`.
-Open chains also include `prev_vertex` and `next_vertex` ghost vertices.
- * @param chain chain
- * @returns chain geometry table
-* @see {@link https://defold.com/ref/stable/b2d/#b2d.get_geometry|API Documentation}
- */
-		export function get_geometry(chain: any): object;
+		 * Get the chain geometry.
+		 * @param chain chain
+		 * @returns chain geometry
+		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_geometry|API Documentation}
+		 */
+		export function get_geometry(chain: any): unknown;
 		/**
 		 * Get chain material id.
 		 * @param chain chain
@@ -1192,10 +2184,10 @@ Open chains also include `prev_vertex` and `next_vertex` ghost vertices.
 		/**
 		 * Get the segment shapes owned by a chain.
 		 * @param chain chain
-		 * @returns array of shape info tables for the chain segments. Each entry includes `shape_id`.
+		 * @returns chain segment shapes
 		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_segments|API Documentation}
 		 */
-		export function get_segments(chain: any): object;
+		export function get_segments(chain: any): unknown;
 		/**
 		 * Get the world owning a chain.
 		 * @param chain chain
@@ -1239,19 +2231,19 @@ declare namespace b2d {
 		/**
 		 * Get fixture AABB for a child shape.
 		 * @param body body
-		 * @param fixture_index 1-based fixture index from `b2d.body.get_fixtures`
+		 * @param fixture_index 1-based fixture index from b2d.body.get_fixtures
 		 * @param child_index 1-based child shape index
-		 * @returns table with `lower` and `upper`
+		 * @returns the fixture AABB
 		 */
 		export function get_aabb(
 			body: typeof b2d.body,
 			fixture_index: number,
 			child_index: number,
-		): object;
+		): unknown;
 		/**
 		 * Get fixture density.
 		 * @param body body
-		 * @param fixture_index 1-based fixture index from `b2d.body.get_fixtures`
+		 * @param fixture_index 1-based fixture index from b2d.body.get_fixtures
 		 * @returns density in kg/m^2
 		 */
 		export function get_density(
@@ -1261,19 +2253,19 @@ declare namespace b2d {
 		/**
 		 * Get fixture filter data for a child shape.
 		 * @param body body
-		 * @param fixture_index 1-based fixture index from `b2d.body.get_fixtures`
+		 * @param fixture_index 1-based fixture index from b2d.body.get_fixtures
 		 * @param child_index 1-based child shape index
-		 * @returns table with `category_bits`, `mask_bits`, and `group_index`
+		 * @returns the filter data
 		 */
 		export function get_filter_data(
 			body: typeof b2d.body,
 			fixture_index: number,
 			child_index: number,
-		): object;
+		): unknown;
 		/**
 		 * Get fixture friction.
 		 * @param body body
-		 * @param fixture_index 1-based fixture index from `b2d.body.get_fixtures`
+		 * @param fixture_index 1-based fixture index from b2d.body.get_fixtures
 		 */
 		export function get_friction(
 			body: typeof b2d.body,
@@ -1282,39 +2274,35 @@ declare namespace b2d {
 		/**
 		 * Get fixture restitution.
 		 * @param body body
-		 * @param fixture_index 1-based fixture index from `b2d.body.get_fixtures`
+		 * @param fixture_index 1-based fixture index from b2d.body.get_fixtures
 		 */
 		export function get_restitution(
 			body: typeof b2d.body,
 			fixture_index: number,
 		): number;
 		/**
- * Get the fixture shape as a functional shape table.
- * @param body body
- * @param fixture_index 1-based fixture index from `b2d.body.get_fixtures`
- * @returns shape table with numeric `type` from `b2d.shape.SHAPE_TYPE_*`,
-suitable for reuse in `b2d.body.create_fixture`.
-Circle shapes use `radius` and `center`, edge shapes use `v1`, `v2`, optional `v0`, `v3`,
-polygon shapes use `vertices`, and chain shapes use `vertices`, `loop`, optional `prev_vertex`, and `next_vertex`.
-Any angle values are in radians.
- */
+		 * Get the fixture shape as a functional shape table.
+		 * @param body body
+		 * @param fixture_index 1-based fixture index from b2d.body.get_fixtures
+		 * @returns the shape definition, suitable for reuse in b2d.body.create_fixture
+		 */
 		export function get_shape(
 			body: typeof b2d.body,
 			fixture_index: number,
-		): object;
+		): unknown;
 		/**
 		 * Get the fixture type.
 		 * @param body body
-		 * @param fixture_index 1-based fixture index from `b2d.body.get_fixtures`
+		 * @param fixture_index 1-based fixture index from b2d.body.get_fixtures
 		 */
 		export function get_type(
 			body: typeof b2d.body,
 			fixture_index: number,
-		): number;
+		): unknown;
 		/**
 		 * Check if a fixture is a sensor.
 		 * @param body body
-		 * @param fixture_index 1-based fixture index from `b2d.body.get_fixtures`
+		 * @param fixture_index 1-based fixture index from b2d.body.get_fixtures
 		 */
 		export function is_sensor(
 			body: typeof b2d.body,
@@ -1323,7 +2311,7 @@ Any angle values are in radians.
 		/**
 		 * Refilter a fixture.
 		 * @param body body
-		 * @param fixture_index 1-based fixture index from `b2d.body.get_fixtures`
+		 * @param fixture_index 1-based fixture index from b2d.body.get_fixtures
 		 * @param touch_proxies if true, touch broad-phase proxies
 		 */
 		export function refilter(
@@ -1334,7 +2322,7 @@ Any angle values are in radians.
 		/**
 		 * Set fixture density.
 		 * @param body body
-		 * @param fixture_index 1-based fixture index from `b2d.body.get_fixtures`
+		 * @param fixture_index 1-based fixture index from b2d.body.get_fixtures
 		 * @param density density in kg/m^2
 		 * @param update_mass if true, reset body mass data after the change
 		 */
@@ -1347,20 +2335,20 @@ Any angle values are in radians.
 		/**
 		 * Set fixture filter data for a child shape.
 		 * @param body body
-		 * @param fixture_index 1-based fixture index from `b2d.body.get_fixtures`
+		 * @param fixture_index 1-based fixture index from b2d.body.get_fixtures
 		 * @param child_index 1-based child shape index
-		 * @param filter table with `category_bits`, `mask_bits`, and `group_index`
+		 * @param filter the filter data
 		 */
 		export function set_filter_data(
 			body: typeof b2d.body,
 			fixture_index: number,
 			child_index: number,
-			filter: object,
+			filter: any,
 		): void;
 		/**
 		 * Set fixture friction.
 		 * @param body body
-		 * @param fixture_index 1-based fixture index from `b2d.body.get_fixtures`
+		 * @param fixture_index 1-based fixture index from b2d.body.get_fixtures
 		 * @param friction
 		 */
 		export function set_friction(
@@ -1371,7 +2359,7 @@ Any angle values are in radians.
 		/**
 		 * Set fixture restitution.
 		 * @param body body
-		 * @param fixture_index 1-based fixture index from `b2d.body.get_fixtures`
+		 * @param fixture_index 1-based fixture index from b2d.body.get_fixtures
 		 * @param restitution
 		 */
 		export function set_restitution(
@@ -1382,7 +2370,7 @@ Any angle values are in radians.
 		/**
 		 * Set sensor mode for a fixture.
 		 * @param body body
-		 * @param fixture_index 1-based fixture index from `b2d.body.get_fixtures`
+		 * @param fixture_index 1-based fixture index from b2d.body.get_fixtures
 		 * @param enabled
 		 */
 		export function set_sensor(
@@ -1392,13 +2380,13 @@ Any angle values are in radians.
 		): void;
 		/**
  * This updates the existing Box2D v2 shape using the same table format as
-`b2d.body.create_fixture` and `b2d.fixture.get_shape`.
+b2d.body.create_fixture and b2d.fixture.get_shape.
 The shape type must match the current fixture shape type. Polygon updates must
 keep the same vertex count. Chain shape geometry cannot be updated in-place.
 The body mass is not updated unless `update_mass` is true.
  * @param body body
- * @param fixture_index 1-based fixture index from `b2d.body.get_fixtures`
- * @param shape shape table with numeric `type` from `b2d.shape.SHAPE_TYPE_*`
+ * @param fixture_index 1-based fixture index from b2d.body.get_fixtures
+ * @param shape the shape definition
  * @param update_mass if true, reset body mass data after the change
  * @example ```lua
 local body = b2d.get_body("#collisionobject")
@@ -1429,13 +2417,13 @@ b2d.fixture.set_shape(body, 3, {
 		export function set_shape(
 			body: typeof b2d.body,
 			fixture_index: number,
-			shape: object,
+			shape: any,
 			update_mass: boolean,
 		): void;
 		/**
 		 * Test a point against a fixture.
 		 * @param body body
-		 * @param fixture_index 1-based fixture index from `b2d.body.get_fixtures`
+		 * @param fixture_index 1-based fixture index from b2d.body.get_fixtures
 		 * @param point point in world coordinates
 		 */
 		export function test_point(
@@ -1448,137 +2436,121 @@ b2d.fixture.set_shape(body, 3, {
 
 declare namespace b2d {
 	/**
-	 * Get spring damping ratio.
-	 * @param joint distance, mouse, weld, or wheel joint
+	 * Get weld joint linear damping ratio.
+	 * @param joint weld joint
 	 * @returns damping ratio
-	 * @see {@link https://defold.com/ref/stable/b2d/#b2d.joint_get_damping_ratio|API Documentation}
 	 */
-	export function joint_get_damping_ratio(joint: any): number;
+	export function joint_get_linear_damping_ratio(joint: any): number;
 	/**
-	 * Get the world owning a joint.
-	 * @param joint joint
-	 * @returns owning world
-	 * @see {@link https://defold.com/ref/stable/b2d/#b2d.joint_get_world|API Documentation}
+	 * Set the distance joint length range.
+	 * @param joint distance joint
+	 * @param min_length minimum length in project units
+	 * @param max_length maximum length in project units
 	 */
-	export function joint_get_world(joint: any): unknown;
+	export function joint_set_length_range(
+		joint: any,
+		min_length: number,
+		max_length: number,
+	): void;
 	export namespace joint {
-		/**
-		 * Distance joint type.
-		 */
-		export const JOINT_TYPE_DISTANCE: number;
-		/**
-		 * Distance joint type.
-		 */
-		export const JOINT_TYPE_DISTANCE: number;
-		/**
-		 * Filter joint type.
-		 */
-		export const JOINT_TYPE_FILTER: number;
-		/**
-		 * Friction joint type.
-		 */
-		export const JOINT_TYPE_FRICTION: number;
-		/**
-		 * Gear joint type.
-		 */
-		export const JOINT_TYPE_GEAR: number;
-		/**
-		 * Motor joint type.
-		 */
-		export const JOINT_TYPE_MOTOR: number;
-		/**
-		 * Mouse joint type.
-		 */
-		export const JOINT_TYPE_MOUSE: number;
-		/**
-		 * Mouse joint type.
-		 */
-		export const JOINT_TYPE_MOUSE: number;
-		/**
-		 * Prismatic joint type.
-		 */
-		export const JOINT_TYPE_PRISMATIC: number;
-		/**
-		 * Prismatic joint type.
-		 */
-		export const JOINT_TYPE_PRISMATIC: number;
-		/**
-		 * Pulley joint type.
-		 */
-		export const JOINT_TYPE_PULLEY: number;
-		/**
-		 * Revolute joint type.
-		 */
-		export const JOINT_TYPE_REVOLUTE: number;
-		/**
-		 * Revolute joint type.
-		 */
-		export const JOINT_TYPE_REVOLUTE: number;
-		/**
-		 * Rope joint type.
-		 */
-		export const JOINT_TYPE_ROPE: number;
-		/**
-		 * Unknown joint type.
-		 */
-		export const JOINT_TYPE_UNKNOWN: number;
-		/**
-		 * Weld joint type.
-		 */
-		export const JOINT_TYPE_WELD: number;
-		/**
-		 * Weld joint type.
-		 */
-		export const JOINT_TYPE_WELD: number;
-		/**
-		 * Wheel joint type.
-		 */
-		export const JOINT_TYPE_WHEEL: number;
-		/**
-		 * Wheel joint type.
-		 */
-		export const JOINT_TYPE_WHEEL: number;
-		/**
-		 * At lower limit state.
-		 */
-		export const LIMIT_STATE_AT_LOWER: number;
-		/**
-		 * At upper limit state.
-		 */
-		export const LIMIT_STATE_AT_UPPER: number;
-		/**
-		 * Equal limits state.
-		 */
-		export const LIMIT_STATE_EQUAL: number;
-		/**
-		 * Inactive limit state.
-		 */
-		export const LIMIT_STATE_INACTIVE: number;
-		/**
+		export namespace JOINT_TYPE {
+			export namespace joint {
+				/**
+				 * Distance joint type.
+				 */
+				export const JOINT_TYPE_DISTANCE: unknown;
+				/**
+				 * Filter joint type.
+				 */
+				export const JOINT_TYPE_FILTER: unknown;
+				/**
+				 * Friction joint type.
+				 */
+				export const JOINT_TYPE_FRICTION: unknown;
+				/**
+				 * Gear joint type.
+				 */
+				export const JOINT_TYPE_GEAR: unknown;
+				/**
+				 * Motor joint type.
+				 */
+				export const JOINT_TYPE_MOTOR: unknown;
+				/**
+				 * Mouse joint type.
+				 */
+				export const JOINT_TYPE_MOUSE: unknown;
+				/**
+				 * Prismatic joint type.
+				 */
+				export const JOINT_TYPE_PRISMATIC: unknown;
+				/**
+				 * Pulley joint type.
+				 */
+				export const JOINT_TYPE_PULLEY: unknown;
+				/**
+				 * Revolute joint type.
+				 */
+				export const JOINT_TYPE_REVOLUTE: unknown;
+				/**
+				 * Rope joint type.
+				 */
+				export const JOINT_TYPE_ROPE: unknown;
+				/**
+				 * Unknown joint type.
+				 */
+				export const JOINT_TYPE_UNKNOWN: unknown;
+				/**
+				 * Weld joint type.
+				 */
+				export const JOINT_TYPE_WELD: unknown;
+				/**
+				 * Wheel joint type.
+				 */
+				export const JOINT_TYPE_WHEEL: unknown;
+			}
+		}
+		export namespace LIMIT_STATE {
+			export namespace joint {
+				/**
+				 * At lower limit state.
+				 */
+				export const LIMIT_STATE_AT_LOWER: unknown;
+				/**
+				 * At upper limit state.
+				 */
+				export const LIMIT_STATE_AT_UPPER: unknown;
+				/**
+				 * Equal limits state.
+				 */
+				export const LIMIT_STATE_EQUAL: unknown;
+				/**
+				 * Inactive limit state.
+				 */
+				export const LIMIT_STATE_INACTIVE: unknown;
+			}
+		} /**
 		 * Create a distance joint.
 		 * @param body_a first body
 		 * @param body_b second body
-		 * @param definition optional definition with `local_anchor_a`, `local_anchor_b`, `length`, `min_length`, `max_length`, `enable_spring`, `hertz` or `frequency`, `damping_ratio`, `enable_limit`, `enable_motor`, `max_motor_force`, `motor_speed`, and `collide_connected`
+		 * @param definition optional joint definition
 		 * @returns created joint
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.create_distance|API Documentation}
 		 */
 		export function create_distance(
 			body_a: typeof b2d.body,
 			body_b: typeof b2d.body,
-			definition: object,
+			definition?: any,
 		): unknown;
 		/**
 		 * Create a distance joint.
 		 * @param body_a first body
 		 * @param body_b second body
-		 * @param definition optional definition with `local_anchor_a`, `local_anchor_b`, `length`, `frequency`, `damping_ratio`, and `collide_connected`
+		 * @param definition optional joint definition
 		 * @returns created joint
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.create_distance|API Documentation}
 		 */
 		export function create_distance(
 			body_a: typeof b2d.body,
 			body_b: typeof b2d.body,
-			definition: object,
+			definition?: any,
 		): unknown;
 		/**
 		 * Create a filter joint.
@@ -1586,1141 +2558,988 @@ declare namespace b2d {
 		 * @param body_b second body
 		 * @param definition optional definition table
 		 * @returns created joint
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.create_filter|API Documentation}
 		 */
 		export function create_filter(
 			body_a: typeof b2d.body,
 			body_b: typeof b2d.body,
-			definition: object,
+			definition?: any,
 		): unknown;
 		/**
 		 * Create a friction joint.
 		 * @param body_a first body
 		 * @param body_b second body
-		 * @param definition optional definition with `local_anchor_a`, `local_anchor_b`, `max_force`, `max_torque`, and `collide_connected`
+		 * @param definition optional joint definition
 		 * @returns created joint
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.create_friction|API Documentation}
 		 */
 		export function create_friction(
 			body_a: typeof b2d.body,
 			body_b: typeof b2d.body,
-			definition: object,
+			definition?: any,
 		): unknown;
 		/**
 		 * Create a gear joint.
 		 * @param joint1 first revolute or prismatic joint
 		 * @param joint2 second revolute or prismatic joint
-		 * @param definition optional definition with `ratio`
+		 * @param definition optional joint definition
 		 * @returns created joint
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.create_gear|API Documentation}
 		 */
 		export function create_gear(
 			joint1: any,
 			joint2: any,
-			definition: object,
+			definition?: any,
 		): unknown;
 		/**
 		 * Create a motor joint.
 		 * @param body_a first body
 		 * @param body_b second body
-		 * @param definition optional definition with `linear_offset`, `angular_offset`, `max_force`, `max_torque`, `correction_factor`, and `collide_connected`
+		 * @param definition optional joint definition
 		 * @returns created joint
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.create_motor|API Documentation}
 		 */
 		export function create_motor(
 			body_a: typeof b2d.body,
 			body_b: typeof b2d.body,
-			definition: object,
+			definition?: any,
 		): unknown;
 		/**
 		 * Create a mouse joint.
 		 * @param body_a first body
 		 * @param body_b second body
-		 * @param definition optional definition with `target`, `hertz` or `frequency`, `damping_ratio`, `max_force`, and `collide_connected`
+		 * @param definition optional joint definition
 		 * @returns created joint
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.create_mouse|API Documentation}
 		 */
 		export function create_mouse(
 			body_a: typeof b2d.body,
 			body_b: typeof b2d.body,
-			definition: object,
+			definition?: any,
 		): unknown;
 		/**
 		 * Create a mouse joint.
 		 * @param body_a first body
 		 * @param body_b second body
-		 * @param definition optional definition with `target`, `max_force`, `frequency`, `damping_ratio`, and `collide_connected`
+		 * @param definition optional joint definition
 		 * @returns created joint
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.create_mouse|API Documentation}
 		 */
 		export function create_mouse(
 			body_a: typeof b2d.body,
 			body_b: typeof b2d.body,
-			definition: object,
+			definition?: any,
 		): unknown;
 		/**
 		 * Create a prismatic joint.
 		 * @param body_a first body
 		 * @param body_b second body
-		 * @param definition optional definition with `local_anchor_a`, `local_anchor_b`, `local_axis_a`, `reference_angle`, `enable_spring`, `hertz` or `frequency`, `damping_ratio`, `enable_limit`, `lower_translation`, `upper_translation`, `enable_motor`, `max_motor_force`, `motor_speed`, and `collide_connected`
+		 * @param definition optional joint definition
 		 * @returns created joint
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.create_prismatic|API Documentation}
 		 */
 		export function create_prismatic(
 			body_a: typeof b2d.body,
 			body_b: typeof b2d.body,
-			definition: object,
+			definition?: any,
 		): unknown;
 		/**
 		 * Create a prismatic joint.
 		 * @param body_a first body
 		 * @param body_b second body
-		 * @param definition optional definition with `local_anchor_a`, `local_anchor_b`, `local_axis_a`, `reference_angle`, `enable_limit`, `lower_translation`, `upper_translation`, `enable_motor`, `max_motor_force`, `motor_speed`, and `collide_connected`
+		 * @param definition optional joint definition
 		 * @returns created joint
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.create_prismatic|API Documentation}
 		 */
 		export function create_prismatic(
 			body_a: typeof b2d.body,
 			body_b: typeof b2d.body,
-			definition: object,
+			definition?: any,
 		): unknown;
 		/**
 		 * Create a pulley joint.
 		 * @param body_a first body
 		 * @param body_b second body
-		 * @param definition optional definition with `ground_anchor_a`, `ground_anchor_b`, `local_anchor_a`, `local_anchor_b`, `length_a`, `length_b`, `ratio`, and `collide_connected`
+		 * @param definition optional joint definition
 		 * @returns created joint
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.create_pulley|API Documentation}
 		 */
 		export function create_pulley(
 			body_a: typeof b2d.body,
 			body_b: typeof b2d.body,
-			definition: object,
+			definition?: any,
 		): unknown;
 		/**
 		 * Create a revolute joint.
 		 * @param body_a first body
 		 * @param body_b second body
-		 * @param definition optional definition with `local_anchor_a`, `local_anchor_b`, `reference_angle`, `enable_limit`, `lower_angle`, `upper_angle`, `enable_motor`, `max_motor_torque`, `motor_speed`, and `collide_connected`
+		 * @param definition optional joint definition
 		 * @returns created joint
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.create_revolute|API Documentation}
 		 */
 		export function create_revolute(
 			body_a: typeof b2d.body,
 			body_b: typeof b2d.body,
-			definition: object,
+			definition?: any,
 		): unknown;
 		/**
 		 * Create a revolute joint.
 		 * @param body_a first body
 		 * @param body_b second body
-		 * @param definition optional definition with `local_anchor_a`, `local_anchor_b`, `reference_angle`, `enable_spring`, `hertz` or `frequency`, `damping_ratio`, `enable_limit`, `lower_angle`, `upper_angle`, `enable_motor`, `max_motor_torque`, `motor_speed`, and `collide_connected`
+		 * @param definition optional joint definition
 		 * @returns created joint
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.create_revolute|API Documentation}
 		 */
 		export function create_revolute(
 			body_a: typeof b2d.body,
 			body_b: typeof b2d.body,
-			definition: object,
+			definition?: any,
 		): unknown;
 		/**
 		 * Create a rope joint.
 		 * @param body_a first body
 		 * @param body_b second body
-		 * @param definition optional definition with `local_anchor_a`, `local_anchor_b`, `max_length`, and `collide_connected`
+		 * @param definition optional joint definition
 		 * @returns created joint
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.create_rope|API Documentation}
 		 */
 		export function create_rope(
 			body_a: typeof b2d.body,
 			body_b: typeof b2d.body,
-			definition: object,
+			definition?: any,
 		): unknown;
 		/**
 		 * Create a weld joint.
 		 * @param body_a first body
 		 * @param body_b second body
-		 * @param definition optional definition with `local_anchor_a`, `local_anchor_b`, `reference_angle`, `linear_hertz`, `angular_hertz`, `linear_damping_ratio`, `angular_damping_ratio`, and `collide_connected`
+		 * @param definition optional joint definition
 		 * @returns created joint
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.create_weld|API Documentation}
 		 */
 		export function create_weld(
 			body_a: typeof b2d.body,
 			body_b: typeof b2d.body,
-			definition: object,
+			definition?: any,
 		): unknown;
 		/**
 		 * Create a weld joint.
 		 * @param body_a first body
 		 * @param body_b second body
-		 * @param definition optional definition with `local_anchor_a`, `local_anchor_b`, `reference_angle`, `frequency`, `damping_ratio`, and `collide_connected`
+		 * @param definition optional joint definition
 		 * @returns created joint
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.create_weld|API Documentation}
 		 */
 		export function create_weld(
 			body_a: typeof b2d.body,
 			body_b: typeof b2d.body,
-			definition: object,
+			definition?: any,
 		): unknown;
 		/**
 		 * Create a wheel joint.
 		 * @param body_a first body
 		 * @param body_b second body
-		 * @param definition optional definition with `local_anchor_a`, `local_anchor_b`, `local_axis_a`, `enable_spring`, `hertz` or `frequency`, `damping_ratio`, `enable_limit`, `lower_translation`, `upper_translation`, `enable_motor`, `max_motor_torque`, `motor_speed`, and `collide_connected`
+		 * @param definition optional joint definition
 		 * @returns created joint
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.create_wheel|API Documentation}
 		 */
 		export function create_wheel(
 			body_a: typeof b2d.body,
 			body_b: typeof b2d.body,
-			definition: object,
+			definition?: any,
 		): unknown;
 		/**
 		 * Create a wheel joint.
 		 * @param body_a first body
 		 * @param body_b second body
-		 * @param definition optional definition with `local_anchor_a`, `local_anchor_b`, `local_axis_a`, `enable_motor`, `max_motor_torque`, `motor_speed`, `frequency`, `damping_ratio`, and `collide_connected`
+		 * @param definition optional joint definition
 		 * @returns created joint
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.create_wheel|API Documentation}
 		 */
 		export function create_wheel(
 			body_a: typeof b2d.body,
 			body_b: typeof b2d.body,
-			definition: object,
+			definition?: any,
 		): unknown;
 		/**
 		 * Destroy a joint created by `b2d.joint`.
 		 * @param joint joint
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.destroy|API Documentation}
 		 */
 		export function destroy(joint: any): void;
 		/**
 		 * Destroy a joint created by `b2d.joint`.
 		 * @param joint joint
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.destroy|API Documentation}
 		 */
 		export function destroy(joint: any): void;
-		/**
-		 * Enable or disable joint limits.
-		 * @param joint distance, prismatic, revolute, or wheel joint
-		 * @param enable true to enable limits
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.enable_limit|API Documentation}
-		 */
-		export function enable_limit(joint: any, enable: boolean): void;
 		/**
 		 * Enable or disable joint limits.
 		 * @param joint prismatic or revolute joint
 		 * @param enable true to enable limits
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.enable_limit|API Documentation}
+		 */
+		export function enable_limit(joint: any, enable: boolean): void;
+		/**
+		 * Enable or disable joint limits.
+		 * @param joint distance, prismatic, revolute, or wheel joint
+		 * @param enable true to enable limits
 		 */
 		export function enable_limit(joint: any, enable: boolean): void;
 		/**
 		 * Enable or disable the joint motor.
-		 * @param joint distance, prismatic, revolute, or wheel joint
+		 * @param joint prismatic, revolute, or wheel joint
 		 * @param enable true to enable the motor
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.enable_motor|API Documentation}
 		 */
 		export function enable_motor(joint: any, enable: boolean): void;
 		/**
 		 * Enable or disable the joint motor.
-		 * @param joint prismatic, revolute, or wheel joint
+		 * @param joint distance, prismatic, revolute, or wheel joint
 		 * @param enable true to enable the motor
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.enable_motor|API Documentation}
 		 */
 		export function enable_motor(joint: any, enable: boolean): void;
 		/**
 		 * Enable or disable joint spring behavior.
 		 * @param joint distance, prismatic, revolute, or wheel joint
 		 * @param enable true to enable the spring
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.enable_spring|API Documentation}
 		 */
 		export function enable_spring(joint: any, enable: boolean): void;
 		/**
 		 * Get the world anchor on body A.
 		 * @param joint joint
 		 * @returns world anchor
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_anchor_a|API Documentation}
 		 */
 		export function get_anchor_a(joint: any): vmath.vector3;
 		/**
 		 * Get the world anchor on body A.
 		 * @param joint joint
 		 * @returns world anchor
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_anchor_a|API Documentation}
 		 */
 		export function get_anchor_a(joint: any): vmath.vector3;
 		/**
 		 * Get the world anchor on body B.
 		 * @param joint joint
 		 * @returns world anchor
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_anchor_b|API Documentation}
 		 */
 		export function get_anchor_b(joint: any): vmath.vector3;
 		/**
 		 * Get the world anchor on body B.
 		 * @param joint joint
 		 * @returns world anchor
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_anchor_b|API Documentation}
 		 */
 		export function get_anchor_b(joint: any): vmath.vector3;
 		/**
 		 * Get weld joint angular damping ratio.
 		 * @param joint weld joint
 		 * @returns damping ratio
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_angular_damping_ratio|API Documentation}
 		 */
 		export function get_angular_damping_ratio(joint: any): number;
 		/**
 		 * Get weld joint angular frequency.
 		 * @param joint weld joint
 		 * @returns frequency in hertz
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_angular_hertz|API Documentation}
 		 */
 		export function get_angular_hertz(joint: any): number;
 		/**
 		 * Get motor joint angular offset.
 		 * @param joint motor joint
 		 * @returns angular offset in radians
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_angular_offset|API Documentation}
 		 */
 		export function get_angular_offset(joint: any): number;
 		/**
 		 * Get the first body connected to a joint.
 		 * @param joint joint
 		 * @returns body A
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_body_a|API Documentation}
 		 */
 		export function get_body_a(joint: any): typeof b2d.body;
 		/**
 		 * Get the first body connected to a joint.
 		 * @param joint joint
 		 * @returns body A
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_body_a|API Documentation}
 		 */
 		export function get_body_a(joint: any): typeof b2d.body;
 		/**
 		 * Get the second body connected to a joint.
 		 * @param joint joint
 		 * @returns body B
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_body_b|API Documentation}
 		 */
 		export function get_body_b(joint: any): typeof b2d.body;
 		/**
 		 * Get the second body connected to a joint.
 		 * @param joint joint
 		 * @returns body B
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_body_b|API Documentation}
 		 */
 		export function get_body_b(joint: any): typeof b2d.body;
 		/**
 		 * Get whether connected bodies can collide.
 		 * @param joint joint
 		 * @returns true if connected bodies can collide
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_collide_connected|API Documentation}
 		 */
 		export function get_collide_connected(joint: any): boolean;
 		/**
 		 * Get whether connected bodies can collide.
 		 * @param joint joint
 		 * @returns true if connected bodies can collide
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_collide_connected|API Documentation}
 		 */
 		export function get_collide_connected(joint: any): boolean;
 		/**
 		 * Get motor joint correction factor.
 		 * @param joint motor joint
 		 * @returns correction factor
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_correction_factor|API Documentation}
 		 */
 		export function get_correction_factor(joint: any): number;
 		/**
 		 * Get the current distance joint length.
 		 * @param joint distance joint
 		 * @returns current length in project units
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_current_length|API Documentation}
 		 */
 		export function get_current_length(joint: any): number;
+		/**
+		 * Get spring damping ratio.
+		 * @param joint distance, mouse, weld, or wheel joint
+		 * @returns damping ratio
+		 */
+		export function get_damping_ratio(joint: any): number;
 		/**
 		 * Alias for `b2d.joint.get_spring_damping_ratio`.
 		 * @param joint distance, mouse, prismatic, revolute, or wheel joint
 		 * @returns damping ratio
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_damping_ratio|API Documentation}
 		 */
 		export function get_damping_ratio(joint: any): number;
-		/**
-		 * Alias for `b2d.joint.get_spring_hertz`.
-		 * @param joint distance, mouse, prismatic, revolute, or wheel joint
-		 * @returns frequency in hertz
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_frequency|API Documentation}
-		 */
-		export function get_frequency(joint: any): number;
 		/**
 		 * Get spring frequency.
 		 * @param joint distance, mouse, weld, or wheel joint
 		 * @returns frequency in hertz
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_frequency|API Documentation}
+		 */
+		export function get_frequency(joint: any): number;
+		/**
+		 * Alias for `b2d.joint.get_spring_hertz`.
+		 * @param joint distance, mouse, prismatic, revolute, or wheel joint
+		 * @returns frequency in hertz
 		 */
 		export function get_frequency(joint: any): number;
 		/**
 		 * Get pulley ground anchor A.
 		 * @param joint pulley joint
 		 * @returns world anchor
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_ground_anchor_a|API Documentation}
 		 */
 		export function get_ground_anchor_a(joint: any): vmath.vector3;
 		/**
 		 * Get pulley ground anchor B.
 		 * @param joint pulley joint
 		 * @returns world anchor
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_ground_anchor_b|API Documentation}
 		 */
 		export function get_ground_anchor_b(joint: any): vmath.vector3;
-		/**
-		 * Alias for `b2d.joint.get_spring_hertz`.
-		 * @param joint distance, mouse, prismatic, revolute, or wheel joint
-		 * @returns frequency in hertz
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_hertz|API Documentation}
-		 */
-		export function get_hertz(joint: any): number;
 		/**
 		 * Alias for `b2d.joint.get_frequency`.
 		 * @param joint distance, mouse, weld, or wheel joint
 		 * @returns frequency in hertz
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_hertz|API Documentation}
+		 */
+		export function get_hertz(joint: any): number;
+		/**
+		 * Alias for `b2d.joint.get_spring_hertz`.
+		 * @param joint distance, mouse, prismatic, revolute, or wheel joint
+		 * @returns frequency in hertz
 		 */
 		export function get_hertz(joint: any): number;
 		/**
 		 * Get the first joint connected to a gear joint.
 		 * @param joint gear joint
 		 * @returns first connected joint
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_joint1|API Documentation}
 		 */
 		export function get_joint1(joint: any): unknown;
 		/**
 		 * Get the second joint connected to a gear joint.
 		 * @param joint gear joint
 		 * @returns second connected joint
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_joint2|API Documentation}
 		 */
 		export function get_joint2(joint: any): unknown;
 		/**
 		 * Get revolute joint angle.
 		 * @param joint revolute joint
 		 * @returns angle in radians
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_joint_angle|API Documentation}
 		 */
 		export function get_joint_angle(joint: any): number;
 		/**
 		 * Get revolute joint angle.
 		 * @param joint revolute joint
 		 * @returns angle in radians
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_joint_angle|API Documentation}
 		 */
 		export function get_joint_angle(joint: any): number;
 		/**
 		 * Get joint speed.
-		 * @param joint prismatic joint
+		 * @param joint prismatic, revolute, or wheel joint
 		 * @returns joint speed
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_joint_speed|API Documentation}
 		 */
 		export function get_joint_speed(joint: any): number;
 		/**
 		 * Get joint speed.
-		 * @param joint prismatic, revolute, or wheel joint
+		 * @param joint prismatic joint
 		 * @returns joint speed
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_joint_speed|API Documentation}
 		 */
 		export function get_joint_speed(joint: any): number;
 		/**
 		 * Get joint translation.
-		 * @param joint prismatic joint
+		 * @param joint prismatic or wheel joint
 		 * @returns translation in project units
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_joint_translation|API Documentation}
 		 */
 		export function get_joint_translation(joint: any): number;
 		/**
 		 * Get joint translation.
-		 * @param joint prismatic or wheel joint
+		 * @param joint prismatic joint
 		 * @returns translation in project units
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_joint_translation|API Documentation}
 		 */
 		export function get_joint_translation(joint: any): number;
 		/**
 		 * Get the distance joint length.
 		 * @param joint distance joint
 		 * @returns length in project units
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_length|API Documentation}
 		 */
 		export function get_length(joint: any): number;
 		/**
 		 * Get the distance joint length.
 		 * @param joint distance joint
 		 * @returns length in project units
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_length|API Documentation}
 		 */
 		export function get_length(joint: any): number;
 		/**
 		 * Get pulley segment length A.
 		 * @param joint pulley joint
 		 * @returns length in project units
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_length_a|API Documentation}
 		 */
 		export function get_length_a(joint: any): number;
 		/**
 		 * Get pulley segment length B.
 		 * @param joint pulley joint
 		 * @returns length in project units
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_length_b|API Documentation}
 		 */
 		export function get_length_b(joint: any): number;
 		/**
 		 * Get rope limit state.
 		 * @param joint rope joint
 		 * @returns one of the `LIMIT_STATE_*` constants
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_limit_state|API Documentation}
 		 */
-		export function get_limit_state(joint: any): number;
-		/**
-		 * Get weld joint linear damping ratio.
-		 * @param joint weld joint
-		 * @returns damping ratio
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_linear_damping_ratio|API Documentation}
-		 */
-		export function get_linear_damping_ratio(joint: any): number;
+		export function get_limit_state(joint: any): unknown;
 		/**
 		 * Get weld joint linear frequency.
 		 * @param joint weld joint
 		 * @returns frequency in hertz
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_linear_hertz|API Documentation}
 		 */
 		export function get_linear_hertz(joint: any): number;
 		/**
 		 * Get motor joint linear offset.
 		 * @param joint motor joint
 		 * @returns linear offset in project units
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_linear_offset|API Documentation}
 		 */
 		export function get_linear_offset(joint: any): vmath.vector3;
 		/**
 		 * Get the local anchor on body A.
 		 * @param joint joint
 		 * @returns local anchor
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_local_anchor_a|API Documentation}
 		 */
 		export function get_local_anchor_a(joint: any): vmath.vector3;
 		/**
 		 * Get the local anchor on body A.
 		 * @param joint joint
 		 * @returns local anchor
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_local_anchor_a|API Documentation}
 		 */
 		export function get_local_anchor_a(joint: any): vmath.vector3;
 		/**
 		 * Get the local anchor on body B.
 		 * @param joint joint
 		 * @returns local anchor
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_local_anchor_b|API Documentation}
 		 */
 		export function get_local_anchor_b(joint: any): vmath.vector3;
 		/**
 		 * Get the local anchor on body B.
 		 * @param joint joint
 		 * @returns local anchor
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_local_anchor_b|API Documentation}
 		 */
 		export function get_local_anchor_b(joint: any): vmath.vector3;
 		/**
 		 * Get the local axis on body A.
 		 * @param joint prismatic or wheel joint
 		 * @returns local axis
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_local_axis_a|API Documentation}
 		 */
 		export function get_local_axis_a(joint: any): vmath.vector3;
 		/**
 		 * Get the lower joint limit.
-		 * @param joint prismatic or revolute joint
+		 * @param joint prismatic, revolute, or wheel joint
 		 * @returns lower limit
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_lower_limit|API Documentation}
 		 */
 		export function get_lower_limit(joint: any): number;
 		/**
 		 * Get the lower joint limit.
-		 * @param joint prismatic, revolute, or wheel joint
+		 * @param joint prismatic or revolute joint
 		 * @returns lower limit
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_lower_limit|API Documentation}
 		 */
 		export function get_lower_limit(joint: any): number;
 		/**
 		 * Get maximum force.
-		 * @param joint mouse or friction joint
+		 * @param joint mouse or motor joint
 		 * @returns maximum force
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_max_force|API Documentation}
 		 */
 		export function get_max_force(joint: any): number;
 		/**
 		 * Get maximum force.
-		 * @param joint mouse or motor joint
+		 * @param joint mouse or friction joint
 		 * @returns maximum force
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_max_force|API Documentation}
 		 */
 		export function get_max_force(joint: any): number;
-		/**
-		 * Get rope maximum length.
-		 * @param joint rope joint
-		 * @returns maximum length in project units
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_max_length|API Documentation}
-		 */
-		export function get_max_length(joint: any): number;
 		/**
 		 * Get the distance joint maximum length.
 		 * @param joint distance joint
 		 * @returns maximum length in project units
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_max_length|API Documentation}
+		 */
+		export function get_max_length(joint: any): number;
+		/**
+		 * Get rope maximum length.
+		 * @param joint rope joint
+		 * @returns maximum length in project units
 		 */
 		export function get_max_length(joint: any): number;
 		/**
 		 * Get maximum motor force.
-		 * @param joint prismatic joint
+		 * @param joint distance or prismatic joint
 		 * @returns maximum motor force
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_max_motor_force|API Documentation}
 		 */
 		export function get_max_motor_force(joint: any): number;
 		/**
 		 * Get maximum motor force.
-		 * @param joint distance or prismatic joint
+		 * @param joint prismatic joint
 		 * @returns maximum motor force
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_max_motor_force|API Documentation}
 		 */
 		export function get_max_motor_force(joint: any): number;
 		/**
 		 * Get maximum motor torque.
 		 * @param joint revolute or wheel joint
 		 * @returns maximum motor torque
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_max_motor_torque|API Documentation}
 		 */
 		export function get_max_motor_torque(joint: any): number;
 		/**
 		 * Get maximum motor torque.
 		 * @param joint revolute or wheel joint
 		 * @returns maximum motor torque
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_max_motor_torque|API Documentation}
 		 */
 		export function get_max_motor_torque(joint: any): number;
 		/**
 		 * Get maximum torque.
-		 * @param joint friction joint
+		 * @param joint motor joint
 		 * @returns maximum torque
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_max_torque|API Documentation}
 		 */
 		export function get_max_torque(joint: any): number;
 		/**
 		 * Get maximum torque.
-		 * @param joint motor joint
+		 * @param joint friction joint
 		 * @returns maximum torque
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_max_torque|API Documentation}
 		 */
 		export function get_max_torque(joint: any): number;
 		/**
 		 * Get the distance joint minimum length.
 		 * @param joint distance joint
 		 * @returns minimum length in project units
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_min_length|API Documentation}
 		 */
 		export function get_min_length(joint: any): number;
-		/**
-		 * Get current motor force.
-		 * @param joint distance or prismatic joint
-		 * @returns motor force
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_motor_force|API Documentation}
-		 */
-		export function get_motor_force(joint: any): number;
 		/**
 		 * Get current motor force.
 		 * @param joint prismatic joint
 		 * @param inv_dt inverse time step
 		 * @returns motor force
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_motor_force|API Documentation}
 		 */
 		export function get_motor_force(joint: any, inv_dt: number): number;
 		/**
-		 * Get motor speed.
-		 * @param joint distance, prismatic, revolute, or wheel joint
-		 * @returns motor speed
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_motor_speed|API Documentation}
+		 * Get current motor force.
+		 * @param joint distance or prismatic joint
+		 * @returns motor force
 		 */
-		export function get_motor_speed(joint: any): number;
+		export function get_motor_force(joint: any): number;
 		/**
 		 * Get motor speed.
 		 * @param joint prismatic, revolute, or wheel joint
 		 * @returns motor speed
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_motor_speed|API Documentation}
 		 */
 		export function get_motor_speed(joint: any): number;
 		/**
-		 * Get current motor torque.
-		 * @param joint revolute or wheel joint
-		 * @returns motor torque
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_motor_torque|API Documentation}
+		 * Get motor speed.
+		 * @param joint distance, prismatic, revolute, or wheel joint
+		 * @returns motor speed
 		 */
-		export function get_motor_torque(joint: any): number;
+		export function get_motor_speed(joint: any): number;
 		/**
 		 * Get current motor torque.
 		 * @param joint revolute or wheel joint
 		 * @param inv_dt inverse time step
 		 * @returns motor torque
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_motor_torque|API Documentation}
 		 */
 		export function get_motor_torque(joint: any, inv_dt: number): number;
+		/**
+		 * Get current motor torque.
+		 * @param joint revolute or wheel joint
+		 * @returns motor torque
+		 */
+		export function get_motor_torque(joint: any): number;
 		/**
 		 * Get the target for a mouse joint.
 		 * @param joint mouse joint
 		 * @returns world target
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_mouse_target|API Documentation}
 		 */
 		export function get_mouse_target(joint: any): vmath.vector3;
 		/**
 		 * Get the target for a mouse joint.
 		 * @param joint mouse joint
 		 * @returns world target
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_mouse_target|API Documentation}
 		 */
 		export function get_mouse_target(joint: any): vmath.vector3;
 		/**
 		 * Get joint ratio.
 		 * @param joint pulley or gear joint
 		 * @returns joint ratio
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_ratio|API Documentation}
 		 */
 		export function get_ratio(joint: any): number;
 		/**
 		 * Get reaction force.
 		 * @param joint joint
+		 * @returns reaction force
+		 */
+		export function get_reaction_force(joint: any): vmath.vector3;
+		/**
+		 * Get reaction force.
+		 * @param joint joint
 		 * @param inv_dt inverse time step
 		 * @returns reaction force
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_reaction_force|API Documentation}
 		 */
 		export function get_reaction_force(
 			joint: any,
 			inv_dt: number,
 		): vmath.vector3;
 		/**
-		 * Get reaction force.
+		 * Get reaction torque.
 		 * @param joint joint
-		 * @returns reaction force
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_reaction_force|API Documentation}
+		 * @returns reaction torque
 		 */
-		export function get_reaction_force(joint: any): vmath.vector3;
+		export function get_reaction_torque(joint: any): number;
 		/**
 		 * Get reaction torque.
 		 * @param joint joint
 		 * @param inv_dt inverse time step
 		 * @returns reaction torque
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_reaction_torque|API Documentation}
 		 */
 		export function get_reaction_torque(joint: any, inv_dt: number): number;
-		/**
-		 * Get reaction torque.
-		 * @param joint joint
-		 * @returns reaction torque
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_reaction_torque|API Documentation}
-		 */
-		export function get_reaction_torque(joint: any): number;
-		/**
-		 * Get the reference angle.
-		 * @param joint prismatic, revolute, or weld joint
-		 * @returns reference angle in radians
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_reference_angle|API Documentation}
-		 */
-		export function get_reference_angle(joint: any): number;
 		/**
 		 * Get weld joint reference angle.
 		 * @param joint weld joint
 		 * @returns reference angle in radians
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_reference_angle|API Documentation}
 		 */
 		export function get_reference_angle(joint: any): number;
 		/**
-		 * Alias for `b2d.joint.get_damping_ratio`.
-		 * @param joint distance, mouse, weld, or wheel joint
-		 * @returns damping ratio
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_spring_damping_ratio|API Documentation}
+		 * Get the reference angle.
+		 * @param joint prismatic, revolute, or weld joint
+		 * @returns reference angle in radians
 		 */
-		export function get_spring_damping_ratio(joint: any): number;
+		export function get_reference_angle(joint: any): number;
 		/**
 		 * Get spring damping ratio.
 		 * @param joint distance, mouse, prismatic, revolute, or wheel joint
 		 * @returns damping ratio
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_spring_damping_ratio|API Documentation}
+		 */
+		export function get_spring_damping_ratio(joint: any): number;
+		/**
+		 * Alias for `b2d.joint.get_damping_ratio`.
+		 * @param joint distance, mouse, weld, or wheel joint
+		 * @returns damping ratio
 		 */
 		export function get_spring_damping_ratio(joint: any): number;
 		/**
 		 * Get spring frequency.
 		 * @param joint distance, mouse, prismatic, revolute, or wheel joint
 		 * @returns frequency in hertz
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_spring_hertz|API Documentation}
 		 */
 		export function get_spring_hertz(joint: any): number;
 		/**
 		 * Get the joint type.
 		 * @param joint joint
 		 * @returns one of the `JOINT_TYPE_*` constants
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_type|API Documentation}
 		 */
-		export function get_type(joint: any): number;
+		export function get_type(joint: any): unknown;
 		/**
 		 * Get the joint type.
 		 * @param joint joint
 		 * @returns one of the `JOINT_TYPE_*` constants
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_type|API Documentation}
 		 */
-		export function get_type(joint: any): number;
-		/**
-		 * Get the upper joint limit.
-		 * @param joint prismatic, revolute, or wheel joint
-		 * @returns upper limit
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_upper_limit|API Documentation}
-		 */
-		export function get_upper_limit(joint: any): number;
+		export function get_type(joint: any): unknown;
 		/**
 		 * Get the upper joint limit.
 		 * @param joint prismatic or revolute joint
 		 * @returns upper limit
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_upper_limit|API Documentation}
 		 */
 		export function get_upper_limit(joint: any): number;
+		/**
+		 * Get the upper joint limit.
+		 * @param joint prismatic, revolute, or wheel joint
+		 * @returns upper limit
+		 */
+		export function get_upper_limit(joint: any): number;
+		/**
+		 * Get the world owning a joint.
+		 * @param joint joint
+		 * @returns owning world
+		 */
+		export function get_world(joint: any): unknown;
 		/**
 		 * Get whether the joint is active.
 		 * @param joint joint
 		 * @returns true if the joint is active
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.is_active|API Documentation}
 		 */
 		export function is_active(joint: any): boolean;
 		/**
 		 * Get whether joint limits are enabled.
-		 * @param joint distance, prismatic, revolute, or wheel joint
+		 * @param joint prismatic or revolute joint
 		 * @returns true if limits are enabled
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.is_limit_enabled|API Documentation}
 		 */
 		export function is_limit_enabled(joint: any): boolean;
 		/**
 		 * Get whether joint limits are enabled.
-		 * @param joint prismatic or revolute joint
+		 * @param joint distance, prismatic, revolute, or wheel joint
 		 * @returns true if limits are enabled
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.is_limit_enabled|API Documentation}
 		 */
 		export function is_limit_enabled(joint: any): boolean;
 		/**
 		 * Get whether the joint motor is enabled.
-		 * @param joint distance, prismatic, revolute, or wheel joint
+		 * @param joint prismatic, revolute, or wheel joint
 		 * @returns true if the motor is enabled
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.is_motor_enabled|API Documentation}
 		 */
 		export function is_motor_enabled(joint: any): boolean;
 		/**
 		 * Get whether the joint motor is enabled.
-		 * @param joint prismatic, revolute, or wheel joint
+		 * @param joint distance, prismatic, revolute, or wheel joint
 		 * @returns true if the motor is enabled
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.is_motor_enabled|API Documentation}
 		 */
 		export function is_motor_enabled(joint: any): boolean;
 		/**
 		 * Get whether joint spring behavior is enabled.
 		 * @param joint distance, prismatic, revolute, or wheel joint
 		 * @returns true if the spring is enabled
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.is_spring_enabled|API Documentation}
 		 */
 		export function is_spring_enabled(joint: any): boolean;
 		/**
 		 * Validate a joint handle.
 		 * @param joint joint
 		 * @returns true if the joint handle still refers to a live Box2D joint
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.is_valid|API Documentation}
 		 */
 		export function is_valid(joint: any): boolean;
 		/**
 		 * Set weld joint angular damping ratio.
 		 * @param joint weld joint
 		 * @param ratio damping ratio
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_angular_damping_ratio|API Documentation}
 		 */
 		export function set_angular_damping_ratio(joint: any, ratio: number): void;
 		/**
 		 * Set weld joint angular frequency.
 		 * @param joint weld joint
 		 * @param hertz frequency in hertz
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_angular_hertz|API Documentation}
 		 */
 		export function set_angular_hertz(joint: any, hertz: number): void;
 		/**
 		 * Set motor joint angular offset.
 		 * @param joint motor joint
 		 * @param offset angular offset in radians
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_angular_offset|API Documentation}
 		 */
 		export function set_angular_offset(joint: any, offset: number): void;
 		/**
 		 * Set whether connected bodies can collide.
 		 * @param joint joint
 		 * @param collide true if connected bodies can collide
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_collide_connected|API Documentation}
 		 */
 		export function set_collide_connected(joint: any, collide: boolean): void;
 		/**
 		 * Set motor joint correction factor.
 		 * @param joint motor joint
 		 * @param factor correction factor
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_correction_factor|API Documentation}
 		 */
 		export function set_correction_factor(joint: any, factor: number): void;
-		/**
-		 * Set spring damping ratio.
-		 * @param joint distance, mouse, weld, or wheel joint
-		 * @param ratio damping ratio
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_damping_ratio|API Documentation}
-		 */
-		export function set_damping_ratio(joint: any, ratio: number): void;
 		/**
 		 * Alias for `b2d.joint.set_spring_damping_ratio`.
 		 * @param joint distance, mouse, prismatic, revolute, or wheel joint
 		 * @param ratio damping ratio
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_damping_ratio|API Documentation}
 		 */
 		export function set_damping_ratio(joint: any, ratio: number): void;
+		/**
+		 * Set spring damping ratio.
+		 * @param joint distance, mouse, weld, or wheel joint
+		 * @param ratio damping ratio
+		 */
+		export function set_damping_ratio(joint: any, ratio: number): void;
+		/**
+		 * Alias for `b2d.joint.set_spring_hertz`.
+		 * @param joint distance, mouse, prismatic, revolute, or wheel joint
+		 * @param frequency frequency in hertz
+		 */
+		export function set_frequency(joint: any, frequency: number): void;
 		/**
 		 * Set spring frequency.
 		 * @param joint distance, mouse, weld, or wheel joint
 		 * @param frequency frequency in hertz
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_frequency|API Documentation}
 		 */
 		export function set_frequency(joint: any, frequency: number): void;
 		/**
 		 * Alias for `b2d.joint.set_spring_hertz`.
 		 * @param joint distance, mouse, prismatic, revolute, or wheel joint
-		 * @param frequency frequency in hertz
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_frequency|API Documentation}
+		 * @param hertz frequency in hertz
 		 */
-		export function set_frequency(joint: any, frequency: number): void;
+		export function set_hertz(joint: any, hertz: number): void;
 		/**
 		 * Alias for `b2d.joint.set_frequency`.
 		 * @param joint distance, mouse, weld, or wheel joint
 		 * @param hertz frequency in hertz
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_hertz|API Documentation}
-		 */
-		export function set_hertz(joint: any, hertz: number): void;
-		/**
-		 * Alias for `b2d.joint.set_spring_hertz`.
-		 * @param joint distance, mouse, prismatic, revolute, or wheel joint
-		 * @param hertz frequency in hertz
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_hertz|API Documentation}
 		 */
 		export function set_hertz(joint: any, hertz: number): void;
 		/**
 		 * Set the distance joint length.
 		 * @param joint distance joint
 		 * @param length length in project units
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_length|API Documentation}
 		 */
 		export function set_length(joint: any, length: number): void;
 		/**
 		 * Set the distance joint length.
 		 * @param joint distance joint
 		 * @param length length in project units
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_length|API Documentation}
 		 */
 		export function set_length(joint: any, length: number): void;
-		/**
-		 * Set the distance joint length range.
-		 * @param joint distance joint
-		 * @param min_length minimum length in project units
-		 * @param max_length maximum length in project units
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_length_range|API Documentation}
-		 */
-		export function set_length_range(
-			joint: any,
-			min_length: number,
-			max_length: number,
-		): void;
-		/**
-		 * Set joint limits.
-		 * @param joint prismatic, revolute, or wheel joint
-		 * @param lower lower limit
-		 * @param upper upper limit
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_limits|API Documentation}
-		 */
-		export function set_limits(joint: any, lower: number, upper: number): void;
 		/**
 		 * Set joint limits.
 		 * @param joint prismatic or revolute joint
 		 * @param lower lower limit
 		 * @param upper upper limit
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_limits|API Documentation}
+		 */
+		export function set_limits(joint: any, lower: number, upper: number): void;
+		/**
+		 * Set joint limits.
+		 * @param joint prismatic, revolute, or wheel joint
+		 * @param lower lower limit
+		 * @param upper upper limit
 		 */
 		export function set_limits(joint: any, lower: number, upper: number): void;
 		/**
 		 * Set weld joint linear damping ratio.
 		 * @param joint weld joint
 		 * @param ratio damping ratio
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_linear_damping_ratio|API Documentation}
 		 */
 		export function set_linear_damping_ratio(joint: any, ratio: number): void;
 		/**
 		 * Set weld joint linear frequency.
 		 * @param joint weld joint
 		 * @param hertz frequency in hertz
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_linear_hertz|API Documentation}
 		 */
 		export function set_linear_hertz(joint: any, hertz: number): void;
 		/**
 		 * Set motor joint linear offset.
 		 * @param joint motor joint
 		 * @param offset linear offset in project units
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_linear_offset|API Documentation}
 		 */
 		export function set_linear_offset(joint: any, offset: vmath.vector3): void;
 		/**
 		 * Set maximum force.
-		 * @param joint mouse or friction joint
+		 * @param joint mouse or motor joint
 		 * @param force maximum force
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_max_force|API Documentation}
 		 */
 		export function set_max_force(joint: any, force: number): void;
 		/**
 		 * Set maximum force.
-		 * @param joint mouse or motor joint
+		 * @param joint mouse or friction joint
 		 * @param force maximum force
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_max_force|API Documentation}
 		 */
 		export function set_max_force(joint: any, force: number): void;
-		/**
-		 * Set rope maximum length.
-		 * @param joint rope joint
-		 * @param length maximum length in project units
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_max_length|API Documentation}
-		 */
-		export function set_max_length(joint: any, length: number): void;
 		/**
 		 * Set the distance joint maximum length.
 		 * @param joint distance joint
 		 * @param length maximum length in project units
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_max_length|API Documentation}
+		 */
+		export function set_max_length(joint: any, length: number): void;
+		/**
+		 * Set rope maximum length.
+		 * @param joint rope joint
+		 * @param length maximum length in project units
 		 */
 		export function set_max_length(joint: any, length: number): void;
 		/**
 		 * Set maximum motor force.
-		 * @param joint prismatic joint
+		 * @param joint distance or prismatic joint
 		 * @param force maximum motor force
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_max_motor_force|API Documentation}
 		 */
 		export function set_max_motor_force(joint: any, force: number): void;
 		/**
 		 * Set maximum motor force.
-		 * @param joint distance or prismatic joint
+		 * @param joint prismatic joint
 		 * @param force maximum motor force
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_max_motor_force|API Documentation}
 		 */
 		export function set_max_motor_force(joint: any, force: number): void;
 		/**
 		 * Set maximum motor torque.
 		 * @param joint revolute or wheel joint
 		 * @param torque maximum motor torque
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_max_motor_torque|API Documentation}
 		 */
 		export function set_max_motor_torque(joint: any, torque: number): void;
 		/**
 		 * Set maximum motor torque.
 		 * @param joint revolute or wheel joint
 		 * @param torque maximum motor torque
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_max_motor_torque|API Documentation}
 		 */
 		export function set_max_motor_torque(joint: any, torque: number): void;
 		/**
 		 * Set maximum torque.
-		 * @param joint friction joint
+		 * @param joint motor joint
 		 * @param torque maximum torque
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_max_torque|API Documentation}
 		 */
 		export function set_max_torque(joint: any, torque: number): void;
 		/**
 		 * Set maximum torque.
-		 * @param joint motor joint
+		 * @param joint friction joint
 		 * @param torque maximum torque
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_max_torque|API Documentation}
 		 */
 		export function set_max_torque(joint: any, torque: number): void;
 		/**
 		 * Set the distance joint minimum length.
 		 * @param joint distance joint
 		 * @param length minimum length in project units
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_min_length|API Documentation}
 		 */
 		export function set_min_length(joint: any, length: number): void;
 		/**
 		 * Set motor speed.
-		 * @param joint distance, prismatic, revolute, or wheel joint
+		 * @param joint prismatic, revolute, or wheel joint
 		 * @param speed motor speed
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_motor_speed|API Documentation}
 		 */
 		export function set_motor_speed(joint: any, speed: number): void;
 		/**
 		 * Set motor speed.
-		 * @param joint prismatic, revolute, or wheel joint
+		 * @param joint distance, prismatic, revolute, or wheel joint
 		 * @param speed motor speed
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_motor_speed|API Documentation}
 		 */
 		export function set_motor_speed(joint: any, speed: number): void;
 		/**
 		 * Set the target for a mouse joint.
 		 * @param joint mouse joint
 		 * @param target world target
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_mouse_target|API Documentation}
 		 */
 		export function set_mouse_target(joint: any, target: vmath.vector3): void;
 		/**
 		 * Set the target for a mouse joint.
 		 * @param joint mouse joint
 		 * @param target world target
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_mouse_target|API Documentation}
 		 */
 		export function set_mouse_target(joint: any, target: vmath.vector3): void;
 		/**
 		 * Set gear joint ratio.
 		 * @param joint gear joint
 		 * @param ratio gear ratio
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_ratio|API Documentation}
 		 */
 		export function set_ratio(joint: any, ratio: number): void;
 		/**
 		 * Set weld joint reference angle.
 		 * @param joint weld joint
 		 * @param angle reference angle in radians
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_reference_angle|API Documentation}
 		 */
 		export function set_reference_angle(joint: any, angle: number): void;
-		/**
-		 * Set spring damping ratio.
-		 * @param joint distance, mouse, prismatic, revolute, or wheel joint
-		 * @param ratio damping ratio
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_spring_damping_ratio|API Documentation}
-		 */
-		export function set_spring_damping_ratio(joint: any, ratio: number): void;
 		/**
 		 * Alias for `b2d.joint.set_damping_ratio`.
 		 * @param joint distance, mouse, weld, or wheel joint
 		 * @param ratio damping ratio
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_spring_damping_ratio|API Documentation}
+		 */
+		export function set_spring_damping_ratio(joint: any, ratio: number): void;
+		/**
+		 * Set spring damping ratio.
+		 * @param joint distance, mouse, prismatic, revolute, or wheel joint
+		 * @param ratio damping ratio
 		 */
 		export function set_spring_damping_ratio(joint: any, ratio: number): void;
 		/**
 		 * Set spring frequency.
 		 * @param joint distance, mouse, prismatic, revolute, or wheel joint
 		 * @param hertz frequency in hertz
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.set_spring_hertz|API Documentation}
 		 */
 		export function set_spring_hertz(joint: any, hertz: number): void;
 		/**
 		 * Wake the bodies connected to a joint.
 		 * @param joint joint
-		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.wake_bodies|API Documentation}
 		 */
 		export function wake_bodies(joint: any): void;
 	}
@@ -2728,55 +3547,42 @@ declare namespace b2d {
 
 declare namespace b2d {
 	export namespace shape {
-		/**
-		 * Uses the polygon enum value, but indicates the `hx`/`hy` box convenience format.
-		 */
-		export const SHAPE_TYPE_BOX: number;
-		/**
-		 * Uses the polygon enum value, but indicates the `hx`/`hy` box convenience format.
-		 */
-		export const SHAPE_TYPE_BOX: number;
-		/**
-		 * Capsule shape type.
-		 */
-		export const SHAPE_TYPE_CAPSULE: number;
-		/**
-		 * Chain shape type.
-		 */
-		export const SHAPE_TYPE_CHAIN: number;
-		/**
-		 * Circle shape type.
-		 */
-		export const SHAPE_TYPE_CIRCLE: number;
-		/**
-		 * Circle shape type.
-		 */
-		export const SHAPE_TYPE_CIRCLE: number;
-		/**
-		 * Edge shape type.
-		 */
-		export const SHAPE_TYPE_EDGE: number;
-		/**
-		 * Compatibility alias for `b2d.shape.SHAPE_TYPE_SEGMENT`.
-		 */
-		export const SHAPE_TYPE_EDGE: number;
-		/**
-		 * Grid shape type.
-		 */
-		export const SHAPE_TYPE_GRID: number;
-		/**
-		 * Polygon shape type.
-		 */
-		export const SHAPE_TYPE_POLYGON: number;
-		/**
-		 * Polygon shape type.
-		 */
-		export const SHAPE_TYPE_POLYGON: number;
-		/**
-		 * Segment shape type.
-		 */
-		export const SHAPE_TYPE_SEGMENT: number;
-		/**
+		export namespace SHAPE_TYPE {
+			export namespace shape {
+				/**
+				 * Box shape type alias. Uses the polygon enum value, but indicates the `hx`/`hy` box convenience format.
+				 */
+				export const SHAPE_TYPE_BOX: unknown;
+				/**
+				 * Capsule shape type.
+				 */
+				export const SHAPE_TYPE_CAPSULE: unknown;
+				/**
+				 * Chain shape type.
+				 */
+				export const SHAPE_TYPE_CHAIN: unknown;
+				/**
+				 * Circle shape type.
+				 */
+				export const SHAPE_TYPE_CIRCLE: unknown;
+				/**
+				 * Edge shape type alias. Compatibility alias for `b2d.shape.SHAPE_TYPE_SEGMENT`.
+				 */
+				export const SHAPE_TYPE_EDGE: unknown;
+				/**
+				 * Grid shape type.
+				 */
+				export const SHAPE_TYPE_GRID: unknown;
+				/**
+				 * Polygon shape type.
+				 */
+				export const SHAPE_TYPE_POLYGON: unknown;
+				/**
+				 * Segment shape type.
+				 */
+				export const SHAPE_TYPE_SEGMENT: unknown;
+			}
+		} /**
 		 * Check if contact events are enabled for a shape.
 		 * @param shape_id shape handle from a shape info table, or pass `body, shape_index`
 		 * @returns true if contact events are enabled
@@ -2852,15 +3658,15 @@ declare namespace b2d {
 		/**
 		 * Get touching contact data for a shape.
 		 * @param shape_id shape handle from a shape info table, or pass `body, shape_index`
-		 * @returns array of contact tables
+		 * @returns touching contacts
 		 */
-		export function get_contact_data(shape_id: any): object;
+		export function get_contact_data(shape_id: any): unknown;
 		/**
 		 * Get mass data for a shape.
 		 * @param shape_id shape handle from a shape info table, or pass `body, shape_index`
-		 * @returns table with `mass`, `center`, and `inertia`
+		 * @returns shape mass data
 		 */
-		export function get_mass_data(shape_id: any): object;
+		export function get_mass_data(shape_id: any): unknown;
 		/**
 		 * Get shape material id.
 		 * @param shape_id shape handle from a shape info table, or pass `body, shape_index`
@@ -2876,15 +3682,15 @@ declare namespace b2d {
 		/**
 		 * Get sensor overlaps.
 		 * @param shape_id shape handle from a shape info table, or pass `body, shape_index`
-		 * @returns array of shape info tables
+		 * @returns overlapping shapes
 		 */
-		export function get_sensor_overlaps(shape_id: any): object;
+		export function get_sensor_overlaps(shape_id: any): unknown;
 		/**
 		 * Get a shape's geometry.
 		 * @param shape_id shape handle from a shape info table, or pass `body, shape_index`
 		 * @returns shape table with numeric `type` from `b2d.shape.SHAPE_TYPE_*`
 		 */
-		export function get_shape(shape_id: any): object;
+		export function get_shape(shape_id: any): unknown;
 		/**
 		 * Get the world owning a shape.
 		 * @param shape_id shape handle from a shape info table, or pass `body, shape_index`
@@ -2903,14 +3709,14 @@ declare namespace b2d {
 		 * @param origin world ray origin
 		 * @param translation world ray translation
 		 * @param max_fraction optional maximum translation fraction, defaults to 1
-		 * @returns hit table with `point`, `normal`, `fraction`, and `iterations`, or nil
+		 * @returns cast result, or `nil`
 		 */
 		export function ray_cast(
 			shape_id: any,
 			origin: vmath.vector3,
 			translation: vmath.vector3,
-			max_fraction: number,
-		): object;
+			max_fraction?: number,
+		): unknown | undefined;
 		/**
 		 * Set shape material id.
 		 * @param shape_id shape handle from a shape info table, or pass `body, shape_index`
@@ -2951,7 +3757,7 @@ b2d.shape.set_shape(body, 3, {
  */
 		export function set_shape(
 			shape_id: any,
-			definition: object,
+			definition: any,
 			update_mass: boolean,
 		): void;
 	}
@@ -2960,21 +3766,20 @@ b2d.shape.set_shape(body, 3, {
 declare namespace b2d {
 	export namespace world {
 		/**
- * The capsule table has `center1`, `center2`, and `radius` fields. The return
-value is the fraction of `translation` that can be traveled before collision,
+ * The return value is the fraction of `translation` that can be traveled before collision,
 or 1 if there is no hit.
  * @param world world
- * @param capsule capsule table with `center1`, `center2`, and `radius`
+ * @param capsule mover capsule
  * @param translation capsule displacement
- * @param filter optional query filter with `category_bits` and `mask_bits`
+ * @param filter optional query filter
  * @returns travel fraction before collision
 * @see {@link https://defold.com/ref/stable/b2d/#b2d.cast_mover|API Documentation}
  */
 		export function cast_mover(
 			world: any,
-			capsule: object,
+			capsule: any,
 			translation: vmath.vector3,
-			filter?: object,
+			filter?: any,
 		): number;
 		/**
  * The translation is the ray displacement from `origin`. Result order is not
@@ -2982,117 +3787,115 @@ guaranteed by Box2D.
  * @param world world
  * @param origin ray start position
  * @param translation ray displacement
- * @param filter optional query filter with `category_bits` and `mask_bits`
+ * @param filter optional query filter
  * @param max_results optional maximum result count. Omit or pass 0 for unlimited results.
- * @returns array of cast hit tables & tree stats table
+ * @returns ray-cast hits & broad-phase query statistics
 * @see {@link https://defold.com/ref/stable/b2d/#b2d.cast_ray|API Documentation}
  */
 		export function cast_ray(
 			world: any,
 			origin: vmath.vector3,
 			translation: vmath.vector3,
-			filter?: object,
+			filter?: any,
 			max_results?: number,
-		): LuaMultiReturn<[object, object]>;
+		): LuaMultiReturn<[unknown, unknown]>;
 		/**
 		 * Cast a ray.
-		 * @param world world from `b2d.get_world` or `b2d.body.get_world`
+		 * @param world world from b2d.get_world or b2d.body.get_world
 		 * @param origin world ray origin
 		 * @param translation world ray translation
-		 * @param filter optional query filter with `category_bits`, `mask_bits`, and optional `group_index`
+		 * @param filter optional query filter
 		 * @param max_results optional maximum result count
-		 * @returns array of hit tables with `fixture`, `shape`, `point`, `normal`, and `fraction` & table with `node_visits` and `leaf_visits`
+		 * @returns ray-cast hits & broad-phase query statistics
 		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.cast_ray|API Documentation}
 		 */
 		export function cast_ray(
 			world: any,
 			origin: vmath.vector3,
 			translation: vmath.vector3,
-			filter: object,
-			max_results: number,
-		): LuaMultiReturn<[object, object]>;
+			filter?: any,
+			max_results?: number,
+		): LuaMultiReturn<[unknown, unknown]>;
 		/**
 		 * The translation is the ray displacement from `origin`.
 		 * @param world world
 		 * @param origin ray start position
 		 * @param translation ray displacement
-		 * @param filter optional query filter with `category_bits` and `mask_bits`
-		 * @returns closest cast hit table with `node_visits` and `leaf_visits`, or `nil` on miss
+		 * @param filter optional query filter
+		 * @returns closest hit, or `nil`
 		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.cast_ray_closest|API Documentation}
 		 */
 		export function cast_ray_closest(
 			world: any,
 			origin: vmath.vector3,
 			translation: vmath.vector3,
-			filter?: object,
-		): object | undefined;
+			filter?: any,
+		): unknown | undefined;
 		/**
 		 * Cast a ray and return the closest hit.
-		 * @param world world from `b2d.get_world` or `b2d.body.get_world`
+		 * @param world world from b2d.get_world or b2d.body.get_world
 		 * @param origin world ray origin
 		 * @param translation world ray translation
-		 * @param filter optional query filter with `category_bits`, `mask_bits`, and optional `group_index`
-		 * @returns hit table with `fixture`, `shape`, `point`, `normal`, `fraction`, `node_visits`, and `leaf_visits`, or nil
+		 * @param filter optional query filter
+		 * @returns closest hit, or `nil`
 		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.cast_ray_closest|API Documentation}
 		 */
 		export function cast_ray_closest(
 			world: any,
 			origin: vmath.vector3,
 			translation: vmath.vector3,
-			filter: object,
-		): object;
+			filter?: any,
+		): unknown | undefined;
 		/**
- * The shape table uses the same circle, capsule, segment, polygon, and box formats
-as `b2d.body.create_shape`. The translation is the shape displacement.
- * @param world world
- * @param shape shape table
- * @param translation shape displacement
- * @param filter optional query filter with `category_bits` and `mask_bits`
- * @param max_results optional maximum result count. Omit or pass 0 for unlimited results.
- * @returns array of cast hit tables & tree stats table
-* @see {@link https://defold.com/ref/stable/b2d/#b2d.cast_shape|API Documentation}
- */
+		 * The translation is the shape displacement.
+		 * @param world world
+		 * @param shape cast shape
+		 * @param translation shape displacement
+		 * @param filter optional query filter
+		 * @param max_results optional maximum result count. Omit or pass 0 for unlimited results.
+		 * @returns shape-cast hits & broad-phase query statistics
+		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.cast_shape|API Documentation}
+		 */
 		export function cast_shape(
 			world: any,
-			shape: object,
+			shape: any,
 			translation: vmath.vector3,
-			filter?: object,
+			filter?: any,
 			max_results?: number,
-		): LuaMultiReturn<[object, object]>;
+		): LuaMultiReturn<[unknown, unknown]>;
 		/**
  * Uses Box2D v2 time-of-impact for fixture child shapes that support distance proxies.
 Grid fixture children are skipped.
- * @param world world from `b2d.get_world` or `b2d.body.get_world`
- * @param shape shape table using the same format as the `shape` field in `b2d.body.create_fixture`
+ * @param world world from b2d.get_world or b2d.body.get_world
+ * @param shape query shape
  * @param translation world shape translation
- * @param filter optional query filter with `category_bits`, `mask_bits`, and optional `group_index`
+ * @param filter optional query filter
  * @param max_results optional maximum result count
- * @returns array of hit tables with `fixture`, `shape`, `point`, `normal`, and `fraction` & table with `node_visits` and `leaf_visits`
+ * @returns shape-cast hits & broad-phase query statistics
 * @see {@link https://defold.com/ref/stable/b2d/#b2d.cast_shape|API Documentation}
  */
 		export function cast_shape(
 			world: any,
-			shape: object,
+			shape: any,
 			translation: vmath.vector3,
-			filter: object,
-			max_results: number,
-		): LuaMultiReturn<[object, object]>;
+			filter?: any,
+			max_results?: number,
+		): LuaMultiReturn<[unknown, unknown]>;
 		/**
- * The capsule table has `center1`, `center2`, and `radius` fields. Plane result
-tables include `shape`, `normal`, `offset`, and `hit`.
- * @param world world
- * @param capsule capsule table with `center1`, `center2`, and `radius`
- * @param filter optional query filter with `category_bits` and `mask_bits`
- * @param max_results optional maximum result count. Omit or pass 0 for unlimited results.
- * @returns array of plane result tables
-* @see {@link https://defold.com/ref/stable/b2d/#b2d.collide_mover|API Documentation}
- */
+		 * Collide a mover capsule against the world.
+		 * @param world world
+		 * @param capsule mover capsule
+		 * @param filter optional query filter
+		 * @param max_results optional maximum result count. Omit or pass 0 for unlimited results.
+		 * @returns collision planes
+		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.collide_mover|API Documentation}
+		 */
 		export function collide_mover(
 			world: any,
-			capsule: object,
-			filter?: object,
+			capsule: any,
+			filter?: any,
 			max_results?: number,
-		): object;
+		): unknown;
 		/**
 		 * Enable or disable continuous collision.
 		 * @param world world
@@ -3122,13 +3925,12 @@ tables include `shape`, `normal`, `offset`, and `hit`.
 		 */
 		export function enable_warm_starting(world: any, enable: boolean): void;
 		/**
- * The definition table requires `position`, `radius`, `falloff`, and
-`impulse_per_length`. It may also include `mask_bits`.
- * @param world world
- * @param definition explosion definition
-* @see {@link https://defold.com/ref/stable/b2d/#b2d.explode|API Documentation}
- */
-		export function explode(world: any, definition: object): void;
+		 * Apply an explosion impulse.
+		 * @param world world
+		 * @param definition explosion definition
+		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.explode|API Documentation}
+		 */
+		export function explode(world: any, definition: any): void;
 		/**
 		 * Get the number of awake bodies.
 		 * @param world world
@@ -3137,14 +3939,12 @@ tables include `shape`, `normal`, `offset`, and `hit`.
 		 */
 		export function get_awake_body_count(world: any): number;
 		/**
- * The returned table contains `body_count`, `shape_count`, `contact_count`,
-`joint_count`, `island_count`, `stack_used`, `static_tree_height`,
-`tree_height`, `byte_count`, `task_count`, and `color_counts`.
- * @param world world
- * @returns world counters
-* @see {@link https://defold.com/ref/stable/b2d/#b2d.get_counters|API Documentation}
- */
-		export function get_counters(world: any): object;
+		 * Get world counters.
+		 * @param world world
+		 * @returns world counters
+		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_counters|API Documentation}
+		 */
+		export function get_counters(world: any): unknown;
 		/**
 		 * Get world gravity.
 		 * @param world world
@@ -3167,17 +3967,12 @@ tables include `shape`, `normal`, `offset`, and `hit`.
 		 */
 		export function get_maximum_linear_speed(world: any): number;
 		/**
- * The returned table contains Box2D timing fields including `step`, `pairs`,
-`collide`, `solve`, `merge_islands`, `prepare_stages`, `solve_constraints`,
-`prepare_constraints`, `integrate_velocities`, `warm_start`,
-`solve_impulses`, `integrate_positions`, `relax_impulses`,
-`apply_restitution`, `store_impulses`, `split_islands`, `transforms`,
-`hit_events`, `refit`, `bullets`, `sleep_islands`, and `sensors`.
- * @param world world
- * @returns world profiling data
-* @see {@link https://defold.com/ref/stable/b2d/#b2d.get_profile|API Documentation}
- */
-		export function get_profile(world: any): object;
+		 * Get world profiling data.
+		 * @param world world
+		 * @returns world profiling data
+		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.get_profile|API Documentation}
+		 */
+		export function get_profile(world: any): unknown;
 		/**
 		 * Get the restitution threshold.
 		 * @param world world
@@ -3222,66 +4017,65 @@ marked as locked during callbacks cannot be called while this returns true.
 		 */
 		export function is_warm_starting_enabled(world: any): boolean;
 		/**
-		 * The AABB table has `lower` and `upper` `vector3` fields.
+		 * Find shapes overlapping an AABB.
 		 * @param world world
-		 * @param aabb AABB table with `lower` and `upper`
-		 * @param filter optional query filter with `category_bits` and `mask_bits`
+		 * @param aabb query bounds
+		 * @param filter optional query filter
 		 * @param max_results optional maximum result count. Omit or pass 0 for unlimited results.
-		 * @returns array of shape info tables & tree stats table
+		 * @returns overlapping shapes & broad-phase query statistics
 		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.overlap_aabb|API Documentation}
 		 */
 		export function overlap_aabb(
 			world: any,
-			aabb: object,
-			filter?: object,
+			aabb: any,
+			filter?: any,
 			max_results?: number,
-		): LuaMultiReturn<[object, object]>;
+		): LuaMultiReturn<[unknown, unknown]>;
 		/**
 		 * Overlap an AABB.
-		 * @param world world from `b2d.get_world` or `b2d.body.get_world`
-		 * @param aabb table with `lower` and `upper` vector3 fields
-		 * @param filter optional query filter with `category_bits`, `mask_bits`, and optional `group_index`
+		 * @param world world from b2d.get_world or b2d.body.get_world
+		 * @param aabb query bounds
+		 * @param filter optional query filter
 		 * @param max_results optional maximum result count
-		 * @returns array of fixture info tables & table with `node_visits` and `leaf_visits`
+		 * @returns overlapping fixtures & broad-phase query statistics
 		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.overlap_aabb|API Documentation}
 		 */
 		export function overlap_aabb(
 			world: any,
-			aabb: object,
-			filter: object,
-			max_results: number,
-		): LuaMultiReturn<[object, object]>;
-		/**
- * The shape table uses the same circle, capsule, segment, polygon, and box formats
-as `b2d.body.create_shape`.
- * @param world world
- * @param shape shape table
- * @param filter optional query filter with `category_bits` and `mask_bits`
- * @param max_results optional maximum result count. Omit or pass 0 for unlimited results.
- * @returns array of shape info tables & tree stats table
-* @see {@link https://defold.com/ref/stable/b2d/#b2d.overlap_shape|API Documentation}
- */
-		export function overlap_shape(
-			world: any,
-			shape: object,
-			filter?: object,
+			aabb: any,
+			filter?: any,
 			max_results?: number,
-		): LuaMultiReturn<[object, object]>;
+		): LuaMultiReturn<[unknown, unknown]>;
 		/**
-		 * Overlap a shape.
-		 * @param world world from `b2d.get_world` or `b2d.body.get_world`
-		 * @param shape shape table using the same format as the `shape` field in `b2d.body.create_fixture`
-		 * @param filter optional query filter with `category_bits`, `mask_bits`, and optional `group_index`
-		 * @param max_results optional maximum result count
-		 * @returns array of fixture info tables & table with `node_visits` and `leaf_visits`
+		 * Find shapes overlapping a shape proxy.
+		 * @param world world
+		 * @param shape query shape
+		 * @param filter optional query filter
+		 * @param max_results optional maximum result count. Omit or pass 0 for unlimited results.
+		 * @returns overlapping shapes & broad-phase query statistics
 		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.overlap_shape|API Documentation}
 		 */
 		export function overlap_shape(
 			world: any,
-			shape: object,
-			filter: object,
-			max_results: number,
-		): LuaMultiReturn<[object, object]>;
+			shape: any,
+			filter?: any,
+			max_results?: number,
+		): LuaMultiReturn<[unknown, unknown]>;
+		/**
+		 * Overlap a shape.
+		 * @param world world from b2d.get_world or b2d.body.get_world
+		 * @param shape query shape
+		 * @param filter optional query filter
+		 * @param max_results optional maximum result count
+		 * @returns overlapping fixtures & broad-phase query statistics
+		 * @see {@link https://defold.com/ref/stable/b2d/#b2d.overlap_shape|API Documentation}
+		 */
+		export function overlap_shape(
+			world: any,
+			shape: any,
+			filter?: any,
+			max_results?: number,
+		): LuaMultiReturn<[unknown, unknown]>;
 		/**
 		 * Rebuild the static broad-phase tree.
 		 * @param world world
@@ -3516,43 +4310,44 @@ print(bit.tohex(0x87654321, 4))  --> 4321
 
 /** @see {@link https://defold.com/ref/stable/buffer/|API Documentation} */
 declare namespace buffer {
-	/**
-	 * Float, single precision, 4 bytes
-	 */
-	export const VALUE_TYPE_FLOAT32: number;
-	/**
-	 * Signed integer, 2 bytes
-	 */
-	export const VALUE_TYPE_INT16: number;
-	/**
-	 * Signed integer, 4 bytes
-	 */
-	export const VALUE_TYPE_INT32: number;
-	/**
-	 * Signed integer, 8 bytes
-	 */
-	export const VALUE_TYPE_INT64: number;
-	/**
-	 * Signed integer, 1 byte
-	 */
-	export const VALUE_TYPE_INT8: number;
-	/**
-	 * Unsigned integer, 2 bytes
-	 */
-	export const VALUE_TYPE_UINT16: number;
-	/**
-	 * Unsigned integer, 4 bytes
-	 */
-	export const VALUE_TYPE_UINT32: number;
-	/**
-	 * Unsigned integer, 8 bytes
-	 */
-	export const VALUE_TYPE_UINT64: number;
-	/**
-	 * Unsigned integer, 1 byte
-	 */
-	export const VALUE_TYPE_UINT8: number;
-	/**
+	export namespace VALUE_TYPE {
+		/**
+		 * float32 Float, single precision, 4 bytes
+		 */
+		export const VALUE_TYPE_FLOAT32: unknown;
+		/**
+		 * int16 Signed integer, 2 bytes
+		 */
+		export const VALUE_TYPE_INT16: unknown;
+		/**
+		 * int32 Signed integer, 4 bytes
+		 */
+		export const VALUE_TYPE_INT32: unknown;
+		/**
+		 * int64 Signed integer, 8 bytes
+		 */
+		export const VALUE_TYPE_INT64: unknown;
+		/**
+		 * int8 Signed integer, 1 byte
+		 */
+		export const VALUE_TYPE_INT8: unknown;
+		/**
+		 * uint16 Unsigned integer, 2 bytes
+		 */
+		export const VALUE_TYPE_UINT16: unknown;
+		/**
+		 * uint32 Unsigned integer, 4 bytes
+		 */
+		export const VALUE_TYPE_UINT32: unknown;
+		/**
+		 * uint64 Unsigned integer, 8 bytes
+		 */
+		export const VALUE_TYPE_UINT64: unknown;
+		/**
+		 * uint8 Unsigned integer, 1 byte
+		 */
+		export const VALUE_TYPE_UINT8: unknown;
+	} /**
  * Copy all data streams from one buffer to another, element wise.
 ⚠ Each of the source streams must have a matching stream in the
 destination buffer. The streams must match in both type and size.
@@ -3572,9 +4367,9 @@ buffer.copy_buffer(dstbuffer, 0, srcbuffer, #srcbuffer - 10, 10)
 ```
  */
 	export function copy_buffer(
-		dst: buffer,
+		dst: any,
 		dstoffset: number,
-		src: buffer,
+		src: any,
 		srcoffset: number,
 		count: number,
 	): void;
@@ -3596,9 +4391,9 @@ buffer.copy_stream(dststream, 0, srcstream, 0, #srcstream)
 ```
  */
 	export function copy_stream(
-		dst: bufferstream,
+		dst: any,
 		dstoffset: number,
-		src: bufferstream,
+		src: any,
 		srcoffset: number,
 		count: number,
 	): void;
@@ -3611,7 +4406,7 @@ vertex position, color, normal etc.
  * @param declaration A table where each entry (table) describes a stream
 
 hash | string `name`: The name of the stream
-constant `type`: The data type of the stream
+buffer.VALUE_TYPE `type`: The data type of the stream
 number `count`: The number of values each element should hold
 
  * @returns the new buffer
@@ -3635,14 +4430,14 @@ function init(self)
 	export function create(
 		element_count: number,
 		declaration: { hash: hash | string; type: number; count: number },
-	): buffer;
+	): unknown;
 	/**
 	 * Get a copy of all the bytes from a specified stream as a Lua string.
 	 * @param buffer the source buffer
 	 * @param stream_name the name of the stream
 	 * @returns the buffer data as a Lua string
 	 */
-	export function get_bytes(buffer: buffer, stream_name: hash): string;
+	export function get_bytes(buffer: any, stream_name: hash): string;
 	/**
  * Get a named metadata entry from a buffer along with its type.
  * @param buf the buffer to get the metadata from
@@ -3656,19 +4451,16 @@ if metadata then print(#metadata.." values in 'somefloats'") end
 ```
  */
 	export function get_metadata(
-		buf: buffer,
+		buf: any,
 		metadata_name: hash | string,
-	): LuaMultiReturn<[object | undefined, number | undefined]>;
+	): LuaMultiReturn<[unknown | undefined, unknown | undefined]>;
 	/**
 	 * Get a specified stream from a buffer.
 	 * @param buffer the buffer to get the stream from
 	 * @param stream_name the stream name
 	 * @returns the data stream
 	 */
-	export function get_stream(
-		buffer: buffer,
-		stream_name: hash | string,
-	): bufferstream;
+	export function get_stream(buffer: any, stream_name: hash | string): unknown;
 	/**
  * Creates or updates a metadata array entry on a buffer.
 ⚠ The value type and count given when updating the entry should match those used when first creating it.
@@ -3686,32 +4478,2247 @@ buffer.set_metadata(buf, hash("somefloats"), {-2.5, 10.0, 32.2}, buffer.VALUE_TY
 ```
  */
 	export function set_metadata(
-		buf: buffer,
+		buf: any,
 		metadata_name: hash | string,
 		values: LuaSet<number> | number[],
-		value_type: number,
+		value_type: any,
 	): void;
+}
+
+declare namespace bullet3d {
+	/**
+ * This returns both rigid bodies and ghost trigger objects.
+This function raises an error unless the collection uses 3D physics.
+ * @param url collision object component URL
+ * @returns the collision object, or `nil`
+* @see {@link https://defold.com/ref/stable/bullet3d/#bullet3d.get_collision_object|API Documentation}
+ */
+	export function get_collision_object(
+		url: hash | url | string,
+	): unknown | undefined;
+	/**
+ * Trigger components are ghost objects, so this function returns `nil` for them.
+This function raises an error unless the collection uses 3D physics.
+ * @param url collision object component URL
+ * @returns the rigid body handle, or `nil`
+ * @example ```lua
+local world = bullet3d.get_world()
+local body = bullet3d.get_rigid_body("#collisionobject")
+if world and body and bullet3d.rigid_body.is_valid(body) then
+    bullet3d.rigid_body.apply_central_impulse(body, vmath.vector3(0, 10, 0))
+end
+
+-- A trigger is a collision object, not a rigid body.
+local trigger = bullet3d.get_collision_object("#trigger")
+assert(trigger and bullet3d.get_rigid_body("#trigger") == nil)
+```
+* @see {@link https://defold.com/ref/stable/bullet3d/#bullet3d.get_rigid_body|API Documentation}
+ */
+	export function get_rigid_body(url: hash | url | string): unknown | undefined;
+	/**
+	 * Get the Bullet version
+	 * @returns version information
+	 * @see {@link https://defold.com/ref/stable/bullet3d/#bullet3d.get_version|API Documentation}
+	 */
+	export function get_version(): unknown;
+	/**
+	 * This function raises an error unless the collection uses 3D physics.
+	 * @returns the world, or `nil` if the collection has no physics world
+	 * @see {@link https://defold.com/ref/stable/bullet3d/#bullet3d.get_world|API Documentation}
+	 */
+	export function get_world(): unknown | undefined;
+	export namespace version_info {
+		/**
+		 * major version number
+		 */
+		export let major: number;
+		/**
+		 * minor version number
+		 */
+		export let minor: number;
+		/**
+		 * compact numeric Bullet version
+		 */
+		export let number: number;
+		/**
+		 * full Bullet version string
+		 */
+		export let version: string;
+	}
+}
+
+declare namespace bullet3d {
+	export namespace collision_object {
+		export namespace ACTIVATION_STATE {
+			/**
+			 * Active simulation state.
+			 */
+			export const ACTIVE_TAG: unknown;
+			/**
+			 * Disable automatic deactivation.
+			 */
+			export const DISABLE_DEACTIVATION: unknown;
+			/**
+			 * Disable simulation.
+			 */
+			export const DISABLE_SIMULATION: unknown;
+			/**
+			 * Sleeping simulation state.
+			 */
+			export const ISLAND_SLEEPING: unknown;
+			/**
+			 * Wants-deactivation simulation state.
+			 */
+			export const WANTS_DEACTIVATION: unknown;
+		}
+		export namespace COLLISION_FLAG {
+			/**
+			 * Character collision object flag.
+			 */
+			export const CF_CHARACTER_OBJECT: unknown;
+			/**
+			 * Custom material callback flag.
+			 */
+			export const CF_CUSTOM_MATERIAL_CALLBACK: unknown;
+			/**
+			 * Disable SPU collision processing flag.
+			 */
+			export const CF_DISABLE_SPU_COLLISION_PROCESSING: unknown;
+			/**
+			 * Disable debug visualization flag.
+			 */
+			export const CF_DISABLE_VISUALIZE_OBJECT: unknown;
+			/**
+			 * Zero-valued default dynamic-object flag. Compare the complete collision-flags value with this constant; do not pass it to `has_collision_flag`, since zero is not a bit that can be tested.
+			 */
+			export const CF_DYNAMIC_OBJECT: unknown;
+			/**
+			 * Kinematic collision object flag.
+			 */
+			export const CF_KINEMATIC_OBJECT: unknown;
+			/**
+			 * Disable contact response flag.
+			 */
+			export const CF_NO_CONTACT_RESPONSE: unknown;
+			/**
+			 * Static collision object flag.
+			 */
+			export const CF_STATIC_OBJECT: unknown;
+		}
+		export namespace INTERNAL_TYPE {
+			/**
+			 * Generic collision object type.
+			 */
+			export const CO_COLLISION_OBJECT: unknown;
+			/**
+			 * Ghost collision object type.
+			 */
+			export const CO_GHOST_OBJECT: unknown;
+			/**
+			 * Height-field fluid collision object type.
+			 */
+			export const CO_HF_FLUID: unknown;
+			/**
+			 * Rigid body collision object type.
+			 */
+			export const CO_RIGID_BODY: unknown;
+			/**
+			 * Soft body collision object type.
+			 */
+			export const CO_SOFT_BODY: unknown;
+		} /**
+		 * Activate a collision object
+		 * @param object collision object
+		 * @param force force activation of a static or kinematic object; defaults to `false`
+		 */
+		export function activate(object: any, force?: boolean): void;
+		/**
+		 * Force the activation state
+		 * @param object collision object
+		 * @param state activation state
+		 */
+		export function force_activation_state(object: any, state: any): void;
+		/**
+		 * Get the activation state
+		 * @param object collision object
+		 * @returns activation state
+		 */
+		export function get_activation_state(object: any): unknown;
+		/**
+		 * Get the CCD motion threshold
+		 * @param object collision object
+		 * @returns threshold in Defold units
+		 */
+		export function get_ccd_motion_threshold(object: any): number;
+		/**
+		 * Get the CCD swept sphere radius
+		 * @param object collision object
+		 * @returns radius in Defold units
+		 */
+		export function get_ccd_swept_sphere_radius(object: any): number;
+		/**
+ * Returns the raw unsigned 16-bit filter group that Defold assigned to the
+object's Bullet broadphase proxy. Use this value as `category_bits` in a
+`bullet3d.world` query filter. Bullet applies reciprocal filtering: the
+query's `mask_bits` must include this group, and the query's `category_bits`
+must be included in the object's filter mask.
+ * @param object collision object in a Bullet world
+ * @returns raw unsigned 16-bit collision filter group
+ */
+		export function get_collision_filter_group(object: any): number;
+		/**
+ * Returns the raw unsigned 16-bit filter mask that Defold assigned to the
+object's Bullet broadphase proxy. Use this value as `mask_bits` in a
+`bullet3d.world` query filter. Bullet applies reciprocal filtering: the
+query's `category_bits` must be included in this mask, and the query's
+`mask_bits` must include the object's filter group.
+ * @param object collision object in a Bullet world
+ * @returns raw unsigned 16-bit collision filter mask
+ */
+		export function get_collision_filter_mask(object: any): number;
+		/**
+		 * Get collision flags
+		 * @param object collision object
+		 * @returns bit field of `CF_*` constants
+		 */
+		export function get_collision_flags(object: any): number;
+		/**
+		 * Get the contact processing threshold
+		 * @param object collision object
+		 * @returns threshold in Defold units
+		 */
+		export function get_contact_processing_threshold(object: any): number;
+		/**
+		 * Get deactivation time
+		 * @param object collision object
+		 * @returns deactivation time
+		 */
+		export function get_deactivation_time(object: any): number;
+		/**
+		 * Get friction
+		 * @param object collision object
+		 * @returns friction coefficient
+		 */
+		export function get_friction(object: any): number;
+		/**
+		 * Get the Bullet collision object type
+		 * @param object collision object
+		 * @returns native collision object type
+		 */
+		export function get_internal_type(object: any): unknown;
+		/**
+		 * Get the world position
+		 * @param object collision object
+		 * @returns world position in Defold units
+		 */
+		export function get_position(object: any): vmath.vector3;
+		/**
+		 * Get restitution
+		 * @param object collision object
+		 * @returns restitution coefficient
+		 */
+		export function get_restitution(object: any): number;
+		/**
+		 * Get the world rotation
+		 * @param object collision object
+		 * @returns world rotation
+		 */
+		export function get_rotation(object: any): vmath.quaternion;
+		/**
+		 * Get the world transform
+		 * @param object collision object
+		 * @returns world position in Defold units & world rotation
+		 */
+		export function get_world_transform(
+			object: any,
+		): LuaMultiReturn<[vmath.vector3, vmath.quaternion]>;
+		/**
+		 * Test a collision flag
+		 * @param object collision object
+		 * @param flag collision flag or mask
+		 * @returns `true` when all requested flag bits are set
+		 */
+		export function has_collision_flag(object: any, flag: number): boolean;
+		/**
+		 * Test whether the object responds to contacts
+		 * @param object collision object
+		 * @returns contact response state
+		 */
+		export function has_contact_response(object: any): boolean;
+		/**
+ * This exposes Bullet's native `btCollisionObject::isActive` result. It is
+`false` for `ISLAND_SLEEPING` and `DISABLE_SIMULATION`, and `true` for the
+other activation states available to Defold collision objects. It is
+unrelated to whether the Defold component is enabled.
+ * @param object collision object
+ * @returns active state
+ */
+		export function is_active(object: any): boolean;
+		/**
+ * Box2D-style name for the same simulation state returned by
+bullet3d.collision_object.is_active.
+ * @param object collision object
+ * @returns `false` when sleeping or simulation is disabled
+ */
+		export function is_awake(object: any): boolean;
+		/**
+		 * Test whether the object is a ghost trigger
+		 * @param object collision object
+		 * @returns ghost object state
+		 */
+		export function is_ghost_object(object: any): boolean;
+		/**
+		 * Test whether the object is kinematic
+		 * @param object collision object
+		 * @returns kinematic state
+		 */
+		export function is_kinematic(object: any): boolean;
+		/**
+		 * Test whether the object is a rigid body
+		 * @param object collision object
+		 * @returns rigid body state
+		 */
+		export function is_rigid_body(object: any): boolean;
+		/**
+		 * Test whether the object is static
+		 * @param object collision object
+		 * @returns static state
+		 */
+		export function is_static(object: any): boolean;
+		/**
+		 * Test whether the object is static or kinematic
+		 * @param object collision object
+		 * @returns static or kinematic state
+		 */
+		export function is_static_or_kinematic(object: any): boolean;
+		/**
+		 * Test whether a collision object handle is valid
+		 * @param object collision object
+		 * @returns `true` if the native object still exists
+		 */
+		export function is_valid(object: any): boolean;
+		/**
+		 * Set the activation state
+		 * @param object collision object
+		 * @param state activation state
+		 */
+		export function set_activation_state(object: any, state: any): void;
+		/**
+ * Passing `true` calls Bullet's `activate()`. Passing `false` requests the
+native `ISLAND_SLEEPING` state. As in Bullet, static or kinematic objects are
+not activated without force, and protected `DISABLE_DEACTIVATION` or
+`DISABLE_SIMULATION` states are not replaced by a sleeping request.
+ * @param object collision object
+ * @param awake requested awake state
+ */
+		export function set_awake(object: any, awake: boolean): void;
+		/**
+ * Set the CCD motion threshold
+ * @param object collision object
+ * @param threshold finite non-negative threshold in Defold units
+ * @example Enable continuous collision detection for a small, fast-moving body:
+```lua
+function init(self)
+    local body = bullet3d.get_rigid_body("#collisionobject")
+    bullet3d.collision_object.set_ccd_swept_sphere_radius(body, 0.25)
+    bullet3d.collision_object.set_ccd_motion_threshold(body, 0.5)
+end
+```
+ */
+		export function set_ccd_motion_threshold(
+			object: any,
+			threshold: number,
+		): void;
+		/**
+		 * Set the CCD swept sphere radius
+		 * @param object collision object
+		 * @param radius finite non-negative radius in Defold units
+		 */
+		export function set_ccd_swept_sphere_radius(
+			object: any,
+			radius: number,
+		): void;
+		/**
+		 * Set the contact processing threshold
+		 * @param object collision object
+		 * @param threshold finite threshold in Defold units
+		 */
+		export function set_contact_processing_threshold(
+			object: any,
+			threshold: number,
+		): void;
+		/**
+		 * Set deactivation time
+		 * @param object collision object
+		 * @param seconds finite deactivation time
+		 */
+		export function set_deactivation_time(object: any, seconds: number): void;
+		/**
+		 * Set friction
+		 * @param object collision object
+		 * @param friction finite friction coefficient
+		 */
+		export function set_friction(object: any, friction: number): void;
+		/**
+		 * The owning game object's position is updated as well.
+		 * @param object collision object
+		 * @param position finite world position in Defold units
+		 */
+		export function set_position(object: any, position: vmath.vector3): void;
+		/**
+		 * Set restitution
+		 * @param object collision object
+		 * @param restitution finite restitution coefficient
+		 */
+		export function set_restitution(object: any, restitution: number): void;
+		/**
+		 * The owning game object's rotation is updated as well.
+		 * @param object collision object
+		 * @param rotation finite, non-zero world rotation; normalized by the binding
+		 */
+		export function set_rotation(object: any, rotation: vmath.quaternion): void;
+		/**
+ * The owning game object's position and rotation are updated as well, so the
+transform persists when Defold synchronizes game objects into Bullet.
+ * @param object collision object
+ * @param position finite world position in Defold units
+ * @param rotation finite, non-zero world rotation; normalized by the binding
+ * @example Move a collision object while preserving its rotation:
+```lua
+function init(self)
+    local object = bullet3d.get_collision_object("#collisionobject")
+    local position, rotation = bullet3d.collision_object.get_world_transform(object)
+    bullet3d.collision_object.set_world_transform(
+        object,
+        position + vmath.vector3(0, 5, 0),
+        rotation)
+    bullet3d.collision_object.activate(object, true)
+end
+```
+ */
+		export function set_world_transform(
+			object: any,
+			position: vmath.vector3,
+			rotation: vmath.quaternion,
+		): void;
+	}
+}
+
+declare namespace bullet3d {
+	/**
+ * Generic spring 6-DOF constraints use a scale-independent damping factor from
+0 to 1, where 1 means no damping. Hinge2 constraints use a damping coefficient
+where 0 means no damping and any non-negative value is accepted. Hinge2
+angular damping is automatically converted using `physics.scale` squared.
+ * @param constraint spring 6-DOF or hinge2 constraint
+ * @param axis one-based axis from 1 to 6
+ * @param damping damping value in the range required by the constraint type
+ */
+	export function constraint_set_spring_damping(
+		constraint: any,
+		axis: number,
+		damping: number,
+	): void;
+	export namespace constraint {
+		export namespace CONSTRAINT_TYPE {
+			export namespace constraint {
+				/**
+				 * Cone-twist constraint type
+				 */
+				export const CONSTRAINT_TYPE_CONE_TWIST: unknown;
+				/**
+				 * Generic 6-DOF constraint type
+				 */
+				export const CONSTRAINT_TYPE_GENERIC_6DOF: unknown;
+				/**
+				 * Generic spring 6-DOF constraint type
+				 */
+				export const CONSTRAINT_TYPE_GENERIC_6DOF_SPRING: unknown;
+				/**
+				 * Hinge constraint type
+				 */
+				export const CONSTRAINT_TYPE_HINGE: unknown;
+				/**
+				 * Hinge2 constraint type
+				 */
+				export const CONSTRAINT_TYPE_HINGE2: unknown;
+				/**
+				 * Point-to-point constraint type
+				 */
+				export const CONSTRAINT_TYPE_POINT_TO_POINT: unknown;
+				/**
+				 * Slider constraint type
+				 */
+				export const CONSTRAINT_TYPE_SLIDER: unknown;
+				/**
+				 * Universal constraint type
+				 */
+				export const CONSTRAINT_TYPE_UNIVERSAL: unknown;
+			}
+		}
+		export namespace anchor_axes_params {
+			/**
+			 * world-space anchor
+			 */
+			export let anchor: vmath.vector3;
+			/**
+			 * first non-zero world-space axis
+			 */
+			export let axis1: vmath.vector3;
+			/**
+			 * second non-zero world-space axis, orthogonal to `axis1`
+			 */
+			export let axis2: vmath.vector3;
+			/**
+			 * whether connected bodies can collide; defaults to `false`
+			 */
+			export let collide_connected_: boolean;
+		}
+		export namespace cone_twist_params {
+			/**
+			 * whether to constrain angular motion only
+			 */
+			export let angular_only_: boolean;
+			/**
+			 * whether connected bodies can collide; defaults to `false`
+			 */
+			export let collide_connected_: boolean;
+			/**
+			 * local body-A frame position
+			 */
+			export let frame_a_position: vmath.vector3;
+			/**
+			 * local body-A frame rotation
+			 */
+			export let frame_a_rotation: vmath.quaternion;
+			/**
+			 * local body-B frame position
+			 */
+			export let frame_b_position_: vmath.vector3;
+			/**
+			 * local body-B frame rotation
+			 */
+			export let frame_b_rotation_: vmath.quaternion;
+		} /**
+		 * The world is derived from `body_a`.
+		 * @param body_a first body
+		 * @param body_b second body or world
+		 * @param params local frames and options
+		 * @returns cone-twist constraint
+		 */
+		export function create_cone_twist(
+			body_a: any,
+			body_b: any | undefined,
+			params: any,
+		): unknown;
+		/**
+ * The params table requires local frame A and, for a two-body constraint,
+local frame B. It optionally accepts `collide_connected`. The world is
+derived from `body_a`. The active 6-DOF solver ignores its legacy
+linear-reference-frame selector, so that field is rejected rather than
+silently accepted.
+ * @param body_a first body
+ * @param body_b second body or world
+ * @param params local frames and options
+ * @returns generic 6-DOF constraint
+ */
+		export function create_generic_6dof(
+			body_a: any,
+			body_b: any | undefined,
+			params: any,
+		): unknown;
+		/**
+ * Both bodies and both local frames are required. The params table optionally
+accepts `collide_connected`. The world is derived from `body_a`. The active
+spring 6-DOF solver ignores its legacy linear-reference-frame selector, so
+that field is rejected rather than silently accepted.
+ * @param body_a first body
+ * @param body_b second body
+ * @param params local frames and options
+ * @returns spring 6-DOF constraint
+ * @example Create a spring that moves along its first linear axis:
+```lua
+function init(self)
+    local body_a = bullet3d.get_rigid_body("/body_a#collisionobject")
+    local body_b = bullet3d.get_rigid_body("/body_b#collisionobject")
+    self.spring = bullet3d.constraint.create_generic_6dof_spring(body_a, body_b, {
+        frame_a_position = vmath.vector3(),
+        frame_a_rotation = vmath.quat(),
+        frame_b_position = vmath.vector3(),
+        frame_b_rotation = vmath.quat(),
+    })
+    bullet3d.constraint.set_limit(self.spring, 1, -1, 1)
+    bullet3d.constraint.enable_spring(self.spring, 1, true)
+    bullet3d.constraint.set_spring_stiffness(self.spring, 1, 20)
+    bullet3d.constraint.set_spring_damping(self.spring, 1, 0.5)
+    bullet3d.constraint.set_spring_equilibrium_point(self.spring, 1, 0)
+end
+
+function final(self)
+    if self.spring and bullet3d.constraint.is_valid(self.spring) then
+        bullet3d.constraint.destroy(self.spring)
+    end
+end
+```
+ */
+		export function create_generic_6dof_spring(
+			body_a: any,
+			body_b: any,
+			params: any,
+		): unknown;
+		/**
+ * The world is derived from `body_a`.
+ * @param body_a first body
+ * @param body_b second body or world
+ * @param params local frames and options
+ * @returns hinge constraint
+ * @example Create a motorized hinge with a 90-degree range:
+```lua
+function init(self)
+    local body_a = bullet3d.get_rigid_body("/door#collisionobject")
+    local body_b = bullet3d.get_rigid_body("/frame#collisionobject")
+    self.hinge = bullet3d.constraint.create_hinge(body_a, body_b, {
+        frame_a_position = vmath.vector3(-0.5, 0, 0),
+        frame_a_rotation = vmath.quat(),
+        frame_b_position = vmath.vector3(0.5, 0, 0),
+        frame_b_rotation = vmath.quat(),
+    })
+    bullet3d.constraint.set_hinge_limits(self.hinge, -math.pi / 4, math.pi / 4)
+    bullet3d.constraint.set_hinge_motor(self.hinge, true, 1.5, 2.5)
+end
+
+function final(self)
+    if self.hinge and bullet3d.constraint.is_valid(self.hinge) then
+        bullet3d.constraint.destroy(self.hinge)
+    end
+end
+```
+ */
+		export function create_hinge(
+			body_a: any,
+			body_b: any | undefined,
+			params: any,
+		): unknown;
+		/**
+ * Both bodies are required. Its initial linear suspension travel is one Defold
+unit in either direction. The world is derived from `body_a`.
+ * @param body_a first body
+ * @param body_b second body
+ * @param params anchor, axes, and options
+ * @returns hinge2 constraint
+ */
+		export function create_hinge2(
+			body_a: any,
+			body_b: any,
+			params: any,
+		): unknown;
+		/**
+ * The world is derived from `body_a`; both bodies must belong to that same world.
+ * @param body_a first body
+ * @param body_b second body or world
+ * @param params pivots and options
+ * @returns point-to-point constraint
+ * @example Join two bodies at matching local pivots and explicitly destroy the
+constraint when the script is finalized:
+```lua
+function init(self)
+    local body_a = bullet3d.get_rigid_body("/body_a#collisionobject")
+    local body_b = bullet3d.get_rigid_body("/body_b#collisionobject")
+    self.constraint = bullet3d.constraint.create_point_to_point(body_a, body_b, {
+        pivot_a = vmath.vector3(0.5, 0, 0),
+        pivot_b = vmath.vector3(-0.5, 0, 0),
+    })
+end
+
+function final(self)
+    if self.constraint and bullet3d.constraint.is_valid(self.constraint) then
+        bullet3d.constraint.destroy(self.constraint)
+    end
+end
+```
+ */
+		export function create_point_to_point(
+			body_a: any,
+			body_b: any | undefined,
+			params: any,
+		): unknown;
+		/**
+		 * The world is derived from `body_a`.
+		 * @param body_a first body
+		 * @param body_b second body or world
+		 * @param params local frames and options
+		 * @returns slider constraint
+		 */
+		export function create_slider(
+			body_a: any,
+			body_b: any | undefined,
+			params: any,
+		): unknown;
+		/**
+		 * Both bodies are required. The world is derived from `body_a`.
+		 * @param body_a first body
+		 * @param body_b second body
+		 * @param params anchor, axes, and options
+		 * @returns universal constraint
+		 */
+		export function create_universal(
+			body_a: any,
+			body_b: any,
+			params: any,
+		): unknown;
+		/**
+		 * Destroy a constraint
+		 * @param constraint constraint
+		 */
+		export function destroy(constraint: any): void;
+		/**
+		 * Enable or disable the cone-twist motor
+		 * @param constraint cone-twist constraint
+		 * @param enabled motor state
+		 */
+		export function enable_cone_twist_motor(
+			constraint: any,
+			enabled: boolean,
+		): void;
+		/**
+		 * Enable or disable a spring axis
+		 * @param constraint spring 6-DOF or hinge2 constraint
+		 * @param axis one-based axis from 1 to 6
+		 * @param enabled spring state
+		 */
+		export function enable_spring(
+			constraint: any,
+			axis: number,
+			enabled: boolean,
+		): void;
+		export namespace generic_6dof_params {
+			/**
+			 * whether connected bodies can collide; defaults to `false`
+			 */
+			export let collide_connected_: boolean;
+			/**
+			 * local body-A frame position
+			 */
+			export let frame_a_position: vmath.vector3;
+			/**
+			 * local body-A frame rotation
+			 */
+			export let frame_a_rotation: vmath.quaternion;
+			/**
+			 * local body-B frame position
+			 */
+			export let frame_b_position_: vmath.vector3;
+			/**
+			 * local body-B frame rotation
+			 */
+			export let frame_b_rotation_: vmath.quaternion;
+		}
+		export namespace generic_6dof_spring_params {
+			/**
+			 * whether connected bodies can collide; defaults to `false`
+			 */
+			export let collide_connected_: boolean;
+			/**
+			 * local body-A frame position
+			 */
+			export let frame_a_position: vmath.vector3;
+			/**
+			 * local body-A frame rotation
+			 */
+			export let frame_a_rotation: vmath.quaternion;
+			/**
+			 * local body-B frame position
+			 */
+			export let frame_b_position: vmath.vector3;
+			/**
+			 * local body-B frame rotation
+			 */
+			export let frame_b_rotation: vmath.quaternion;
+		} /**
+		 * Get a current 6-DOF angle
+		 * @param constraint 6-DOF-derived constraint
+		 * @param axis one-based angular-axis index from 1 to 3
+		 * @returns current angle in radians
+		 */
+		export function get_6dof_angle(constraint: any, axis: number): number;
+		/**
+		 * Get a current 6-DOF angular axis
+		 * @param constraint 6-DOF-derived constraint
+		 * @param axis one-based angular-axis index from 1 to 3
+		 * @returns world-space unit axis
+		 */
+		export function get_6dof_axis(constraint: any, axis: number): vmath.vector3;
+		/**
+ * Axes 1-3 are linear and axes 4-6 are angular. Generic 6-DOF, generic spring
+6-DOF, and universal constraints support bounce only on angular axes; hinge2
+supports it on every axis. Linear target velocity uses Defold units per
+second and angular target velocity uses radians per second. `max_force` is a
+force for linear axes and a torque in Defold squared units for angular axes.
+ * @param constraint 6-DOF-derived constraint
+ * @param axis one-based axis from 1 to 6
+ * @returns motor state & linear or angular target velocity & maximum motor force for linear axes or torque for angular axes & bounce from 0 to 1
+ */
+		export function get_6dof_motor(
+			constraint: any,
+			axis: number,
+		): LuaMultiReturn<[boolean, number, number, number]>;
+		/**
+		 * Get a current 6-DOF linear position
+		 * @param constraint 6-DOF-derived constraint
+		 * @param axis one-based linear-axis index from 1 to 3
+		 * @returns relative position in Defold units
+		 */
+		export function get_6dof_position(constraint: any, axis: number): number;
+		/**
+		 * Get universal or hinge2 anchors
+		 * @param constraint universal or hinge2 constraint
+		 * @returns world-space anchor on body A & world-space anchor on body B
+		 */
+		export function get_anchors(
+			constraint: any,
+		): LuaMultiReturn<[vmath.vector3, vmath.vector3]>;
+		/**
+		 * Get universal or hinge2 angles
+		 * @param constraint universal or hinge2 constraint
+		 * @returns first angle in radians & second angle in radians
+		 */
+		export function get_angles(
+			constraint: any,
+		): LuaMultiReturn<[number, number]>;
+		/**
+		 * Get universal or hinge2 axes
+		 * @param constraint universal or hinge2 constraint
+		 * @returns first world-space unit axis & second world-space unit axis
+		 */
+		export function get_axes(
+			constraint: any,
+		): LuaMultiReturn<[vmath.vector3, vmath.vector3]>;
+		/**
+		 * Get the first linked body
+		 * @param constraint constraint
+		 * @returns first body
+		 */
+		export function get_body_a(constraint: any): unknown;
+		/**
+		 * Get the second linked body
+		 * @param constraint constraint
+		 * @returns second body, or nil for a world constraint
+		 */
+		export function get_body_b(constraint: any): unknown | undefined;
+		/**
+		 * Get whether connected bodies can collide
+		 * @param constraint constraint
+		 * @returns whether connected bodies can collide
+		 */
+		export function get_collide_connected(constraint: any): boolean;
+		/**
+		 * Get cone-twist angular spans
+		 * @param constraint cone-twist constraint
+		 * @returns first swing span in radians & second swing span in radians & twist span in radians
+		 */
+		export function get_cone_twist_limits(
+			constraint: any,
+		): LuaMultiReturn<[number, number, number]>;
+		/**
+ * Supported constraint types are hinge, cone-twist, generic 6-DOF, generic
+spring 6-DOF, slider, universal, and hinge2. Point-to-point constraints use
+`get_pivots` instead.
+Returns position and rotation. For one-body generic 6-DOF and slider
+constraints this is the user-body frame, despite Bullet storing it as its
+native frame B.
+ * @param constraint framed constraint
+ * @returns local position & local rotation
+ */
+		export function get_frame_a(
+			constraint: any,
+		): LuaMultiReturn<[vmath.vector3, vmath.quaternion]>;
+		/**
+ * Supports the same constraint types as `get_frame_a`. For a one-body
+constraint, this is the frame attached to the fixed world body.
+ * @param constraint framed constraint
+ * @returns local position or world frame position & local rotation or world frame rotation
+ */
+		export function get_frame_b(
+			constraint: any,
+		): LuaMultiReturn<[vmath.vector3, vmath.quaternion]>;
+		/**
+		 * Get the current hinge angle
+		 * @param constraint hinge constraint
+		 * @returns angle in radians
+		 */
+		export function get_hinge_angle(constraint: any): number;
+		/**
+		 * Get hinge angular limits
+		 * @param constraint hinge constraint
+		 * @returns lower angle in radians & upper angle in radians
+		 */
+		export function get_hinge_limits(
+			constraint: any,
+		): LuaMultiReturn<[number, number]>;
+		/**
+		 * Get hinge motor settings
+		 * @param constraint hinge constraint
+		 * @returns motor state & angular target velocity in radians per second & maximum angular motor impulse in Defold squared units
+		 */
+		export function get_hinge_motor(
+			constraint: any,
+		): LuaMultiReturn<[boolean, number, number]>;
+		/**
+ * Axes 1-3 return linear limits in Defold units. Axes 4-6 return angular
+limits in radians.
+ * @param constraint 6-DOF-derived constraint
+ * @param axis one-based axis from 1 to 6
+ * @returns lower limit & upper limit
+ */
+		export function get_limit(
+			constraint: any,
+			axis: number,
+		): LuaMultiReturn<[number, number]>;
+		/**
+		 * Get point-to-point pivots
+		 * @param constraint point-to-point constraint
+		 * @returns local body-A pivot & local body-B pivot or world anchor
+		 */
+		export function get_pivots(
+			constraint: any,
+		): LuaMultiReturn<[vmath.vector3, vmath.vector3]>;
+		/**
+		 * Get slider limits
+		 * @param constraint slider constraint
+		 * @returns lower linear limit in Defold units & upper linear limit in Defold units & lower angular limit in radians & upper angular limit in radians
+		 */
+		export function get_slider_limits(
+			constraint: any,
+		): LuaMultiReturn<[number, number, number, number]>;
+		/**
+ * The linear motor uses Defold units per second and maximum force. The angular
+motor uses radians per second and maximum torque in Defold squared units.
+ * @param constraint slider constraint
+ * @param motor `linear` or `angular`
+ * @returns motor state & linear or angular target velocity & maximum linear force or angular torque
+ */
+		export function get_slider_motor(
+			constraint: any,
+			motor: string,
+		): LuaMultiReturn<[boolean, number, number]>;
+		/**
+		 * Get the current slider position
+		 * @param constraint slider constraint
+		 * @returns current linear position in Defold units
+		 */
+		export function get_slider_position(constraint: any): number;
+		/**
+		 * Get the current cone-twist twist angle
+		 * @param constraint cone-twist constraint
+		 * @returns twist angle in radians
+		 */
+		export function get_twist_angle(constraint: any): number;
+		/**
+		 * Get the constraint type
+		 * @param constraint constraint
+		 * @returns constraint type
+		 */
+		export function get_type(constraint: any): unknown;
+		/**
+ * Returns a stable lowercase diagnostic name such as `"hinge"` or
+`"generic_6dof_spring"`.
+ * @param constraint constraint
+ * @returns constraint type name
+ */
+		export function get_type_name(constraint: any): string;
+		/**
+		 * Get the slider linear reference-frame choice
+		 * @param constraint slider constraint
+		 * @returns true when linear calculations reference frame A
+		 */
+		export function get_use_linear_reference_frame_a(constraint: any): boolean;
+		/**
+		 * Get the owning world
+		 * @param constraint constraint
+		 * @returns owning world
+		 */
+		export function get_world(constraint: any): unknown;
+		export namespace hinge_params {
+			/**
+			 * whether to constrain angular motion only
+			 */
+			export let angular_only_: boolean;
+			/**
+			 * whether connected bodies can collide; defaults to `false`
+			 */
+			export let collide_connected_: boolean;
+			/**
+			 * local body-A frame position
+			 */
+			export let frame_a_position: vmath.vector3;
+			/**
+			 * local body-A frame rotation
+			 */
+			export let frame_a_rotation: vmath.quaternion;
+			/**
+			 * local body-B frame position
+			 */
+			export let frame_b_position_: vmath.vector3;
+			/**
+			 * local body-B frame rotation
+			 */
+			export let frame_b_rotation_: vmath.quaternion;
+			/**
+			 * whether angular calculations reference frame A
+			 */
+			export let use_reference_frame_a_: boolean;
+		} /**
+		 * Test whether a constraint is active in its world
+		 * @param constraint constraint
+		 * @returns false while a linked body is disabled
+		 */
+		export function is_active(constraint: any): boolean;
+		/**
+		 * Test angular-only mode
+		 * @param constraint hinge or cone-twist constraint
+		 * @returns angular-only state
+		 */
+		export function is_angular_only(constraint: any): boolean;
+		/**
+		 * Both a ranged and a locked axis are considered limited; a free axis is not.
+		 * @param constraint 6-DOF-derived constraint
+		 * @param axis one-based axis from 1 to 6
+		 * @returns limit state
+		 */
+		export function is_limited(constraint: any, axis: number): boolean;
+		/**
+		 * Test whether a cone-twist is past its swing limit
+		 * @param constraint cone-twist constraint
+		 * @returns swing-limit state
+		 */
+		export function is_past_swing_limit(constraint: any): boolean;
+		/**
+		 * Test whether a constraint handle is valid
+		 * @param constraint constraint handle
+		 * @returns true while the native constraint exists
+		 */
+		export function is_valid(constraint: any): boolean;
+		export namespace point_to_point_params {
+			/**
+			 * whether connected bodies can collide; defaults to `false`
+			 */
+			export let collide_connected_: boolean;
+			/**
+			 * local body-A pivot
+			 */
+			export let pivot_a: vmath.vector3;
+			/**
+			 * local body-B pivot or world-space anchor
+			 */
+			export let pivot_b_: vmath.vector3;
+		} /**
+		 * Linear and angular values use the units described by `get_6dof_motor`.
+		 * @param constraint 6-DOF-derived constraint
+		 * @param axis one-based axis from 1 to 6
+		 * @param enabled motor state
+		 * @param target_velocity linear or angular target velocity
+		 * @param max_force non-negative maximum motor force for linear axes or torque for angular axes
+		 * @param bounce optional bounce from 0 to 1; defaults to `0`
+		 */
+		export function set_6dof_motor(
+			constraint: any,
+			axis: number,
+			enabled: boolean,
+			target_velocity: number,
+			max_force: number,
+			bounce?: number  ,
+		): void;
+		/**
+		 * Set angular-only mode
+		 * @param constraint hinge or cone-twist constraint
+		 * @param angular_only angular-only state
+		 */
+		export function set_angular_only(
+			constraint: any,
+			angular_only: boolean,
+		): void;
+		/**
+		 * Set cone-twist angular spans
+		 * @param constraint cone-twist constraint
+		 * @param swing_span_1 non-negative first swing span in radians
+		 * @param swing_span_2 non-negative second swing span in radians
+		 * @param twist_span non-negative twist span in radians
+		 * @param softness optional softness from 0 to 1; defaults to `1`
+		 * @param bias optional bias from 0 to 1; defaults to `0.3`
+		 * @param relaxation optional relaxation from 0 to 1; defaults to `1`
+		 */
+		export function set_cone_twist_limits(
+			constraint: any,
+			swing_span_1: number,
+			swing_span_2: number,
+			twist_span: number,
+			softness?: number  ,
+			bias?: number  ,
+			relaxation?: number  ,
+		): void;
+		/**
+ * By default, `target` is the desired rotation of body A relative to body B.
+With `constraint_space` set, it is the desired rotation of frame A relative
+to frame B in constraint space.
+ * @param constraint cone-twist constraint
+ * @param target finite, non-zero target orientation; normalized by the binding
+ * @param constraint_space optional target-is-in-constraint-space flag; defaults to `false`
+ */
+		export function set_cone_twist_motor_target(
+			constraint: any,
+			target: vmath.quaternion,
+			constraint_space?: boolean  ,
+		): void;
+		/**
+ * Frame mutation is supported for hinge, generic 6-DOF, generic spring 6-DOF,
+and slider constraints. Cone-twist, universal, and hinge2 frames are
+read-only through this API.
+ * @param constraint mutable framed constraint
+ * @param position finite local position
+ * @param rotation finite, non-zero local rotation; normalized by the binding
+ */
+		export function set_frame_a(
+			constraint: any,
+			position: vmath.vector3,
+			rotation: vmath.quaternion,
+		): void;
+		/**
+ * Supports the same constraint types as `set_frame_a`. For a one-body
+constraint, this changes the frame attached to the fixed world body.
+ * @param constraint mutable framed constraint
+ * @param position finite local position or world frame position
+ * @param rotation finite, non-zero local or world frame rotation; normalized by the binding
+ */
+		export function set_frame_b(
+			constraint: any,
+			position: vmath.vector3,
+			rotation: vmath.quaternion,
+		): void;
+		/**
+ * This function only supports hinges attached to the world. For a two-body
+hinge, change both local frames with `set_frame_a` and `set_frame_b`.
+ * @param constraint one-body hinge constraint
+ * @param axis non-zero axis in body-A space
+ */
+		export function set_hinge_axis(constraint: any, axis: vmath.vector3): void;
+		/**
+		 * Set hinge angular limits
+		 * @param constraint hinge constraint
+		 * @param lower lower angle in radians
+		 * @param upper upper angle in radians
+		 * @param bias optional limit bias from 0 to 1; defaults to `0.3`
+		 * @param relaxation optional relaxation from 0 to 1; defaults to `1`
+		 */
+		export function set_hinge_limits(
+			constraint: any,
+			lower: number,
+			upper: number,
+			bias?: number  ,
+			relaxation?: number  ,
+		): void;
+		/**
+		 * Set hinge motor settings
+		 * @param constraint hinge constraint
+		 * @param enabled motor state
+		 * @param target_velocity angular target velocity in radians per second
+		 * @param max_impulse non-negative maximum angular motor impulse in Defold squared units
+		 */
+		export function set_hinge_motor(
+			constraint: any,
+			enabled: boolean,
+			target_velocity: number,
+			max_impulse: number,
+		): void;
+		/**
+		 * Set a hinge motor angle target
+		 * @param constraint hinge constraint
+		 * @param target_angle target angle in radians
+		 * @param time_step positive step duration in seconds
+		 */
+		export function set_hinge_motor_target(
+			constraint: any,
+			target_angle: number,
+			time_step: number,
+		): void;
+		/**
+ * Axes 1-3 use Defold units and axes 4-6 use radians. A lower value less than
+the upper value creates a limited range, equal values lock the axis, and a
+lower value greater than the upper value makes the axis free.
+ * @param constraint 6-DOF-derived constraint
+ * @param axis one-based axis from 1 to 6
+ * @param lower lower limit
+ * @param upper upper limit
+ */
+		export function set_limit(
+			constraint: any,
+			axis: number,
+			lower: number,
+			upper: number,
+		): void;
+		/**
+		 * Set point-to-point pivots
+		 * @param constraint point-to-point constraint
+		 * @param pivot_a local body-A pivot
+		 * @param pivot_b local body-B pivot or world anchor
+		 */
+		export function set_pivots(
+			constraint: any,
+			pivot_a: vmath.vector3,
+			pivot_b: vmath.vector3,
+		): void;
+		/**
+ * Each lower/upper pair follows Bullet's limit convention: lower less than
+upper creates a limited range, equal values lock that axis, and lower greater
+than upper makes it free. Bullet normalizes the angular limits.
+ * @param constraint slider constraint
+ * @param lower_linear lower linear limit in Defold units
+ * @param upper_linear upper linear limit in Defold units
+ * @param lower_angular lower angular limit in radians
+ * @param upper_angular upper angular limit in radians
+ */
+		export function set_slider_limits(
+			constraint: any,
+			lower_linear: number,
+			upper_linear: number,
+			lower_angular: number,
+			upper_angular: number,
+		): void;
+		/**
+		 * Linear and angular values use the units described by `get_slider_motor`.
+		 * @param constraint slider constraint
+		 * @param motor `linear` or `angular`
+		 * @param enabled motor state
+		 * @param target_velocity linear or angular target velocity
+		 * @param max_force non-negative maximum linear force or angular torque
+		 */
+		export function set_slider_motor(
+			constraint: any,
+			motor: string,
+			enabled: boolean,
+			target_velocity: number,
+			max_force: number,
+		): void;
+		/**
+ * With no axis, captures all current transforms. With an axis and no value,
+captures that axis. Linear values use Defold units and angular values use
+radians.
+ * @param constraint spring 6-DOF or hinge2 constraint
+ * @param axis optional one-based axis from 1 to 6
+ * @param value optional explicit equilibrium value
+ */
+		export function set_spring_equilibrium_point(
+			constraint: any,
+			axis?: number  ,
+			value?: number  ,
+		): void;
+		/**
+ * Linear stiffness values are independent of `physics.scale`. Angular
+stiffness values are automatically converted using `physics.scale` squared.
+ * @param constraint spring 6-DOF or hinge2 constraint
+ * @param axis one-based axis from 1 to 6
+ * @param stiffness non-negative stiffness
+ */
+		export function set_spring_stiffness(
+			constraint: any,
+			axis: number,
+			stiffness: number,
+		): void;
+		export namespace slider_params {
+			/**
+			 * whether connected bodies can collide; defaults to `false`
+			 */
+			export let collide_connected_: boolean;
+			/**
+			 * local body-A frame position
+			 */
+			export let frame_a_position: vmath.vector3;
+			/**
+			 * local body-A frame rotation
+			 */
+			export let frame_a_rotation: vmath.quaternion;
+			/**
+			 * local body-B frame position
+			 */
+			export let frame_b_position_: vmath.vector3;
+			/**
+			 * local body-B frame rotation
+			 */
+			export let frame_b_rotation_: vmath.quaternion;
+			/**
+			 * whether linear calculations reference frame A
+			 */
+			export let use_linear_reference_frame_a_: boolean;
+		}
+	}
+}
+
+declare namespace bullet3d {
+	export namespace rigid_body {
+		export namespace FLAG {
+			/**
+			 * Disable automatic world gravity. Set this bit before assigning custom body gravity that must survive later world-gravity changes or re-adding the body to a world.
+			 */
+			export const BT_DISABLE_WORLD_GRAVITY: unknown;
+			/**
+			 * Enable explicit gyroscopic force integration.
+			 */
+			export const BT_ENABLE_GYROSCOPIC_FORCE_EXPLICIT: unknown;
+			/**
+			 * Enable implicit body-space gyroscopic force integration. This flag is enabled by default for newly constructed rigid bodies.
+			 */
+			export const BT_ENABLE_GYROSCOPIC_FORCE_IMPLICIT_BODY: unknown;
+			/**
+			 * Enable implicit world-space gyroscopic force integration.
+			 */
+			export const BT_ENABLE_GYROSCOPIC_FORCE_IMPLICIT_WORLD: unknown;
+		} /**
+		 * Apply a force at the center of mass
+		 * @param body rigid body
+		 * @param force force in Defold units
+		 */
+		export function apply_central_force(body: any, force: vmath.vector3): void;
+		/**
+		 * Apply an impulse at the center of mass
+		 * @param body rigid body
+		 * @param impulse impulse in Defold units
+		 */
+		export function apply_central_impulse(
+			body: any,
+			impulse: vmath.vector3,
+		): void;
+		/**
+ * This has the same point semantics as `b2d.body.apply_force`: `world_position`
+is the point where the force is applied. The binding converts it to the
+center-of-mass-relative offset expected by Bullet's `applyForce` method.
+ * @param body rigid body
+ * @param force force in Defold units
+ * @param world_position application point in world space and Defold units
+ * @example Apply an upward force at the game object's current world position:
+```lua
+function init(self)
+    local body = bullet3d.get_rigid_body("#collisionobject")
+    local force = vmath.vector3(0, 100, 0)
+    bullet3d.rigid_body.apply_force(body, force, go.get_world_position())
+end
+```
+ */
+		export function apply_force(
+			body: any,
+			force: vmath.vector3,
+			world_position: vmath.vector3,
+		): void;
+		/**
+ * This exposes Bullet's `btRigidBody::applyForce` point convention directly.
+`relative_position` is an offset from the body's center of mass expressed in
+world axes, not a world position or body-local coordinate.
+ * @param body rigid body
+ * @param force force in Defold units
+ * @param relative_position center-of-mass-relative offset in world axes and Defold units
+ */
+		export function apply_force_at_relative_position(
+			body: any,
+			force: vmath.vector3,
+			relative_position: vmath.vector3,
+		): void;
+		/**
+ * This exposes Bullet's `btRigidBody::applyImpulse` point convention directly.
+`relative_position` is an offset from the body's center of mass expressed in
+world axes, not a world position or body-local coordinate.
+ * @param body rigid body
+ * @param impulse impulse in Defold units
+ * @param relative_position center-of-mass-relative offset in world axes and Defold units
+ */
+		export function apply_impulse(
+			body: any,
+			impulse: vmath.vector3,
+			relative_position: vmath.vector3,
+		): void;
+		/**
+ * This has the same point semantics as `b2d.body.apply_linear_impulse`.
+`world_position` is converted to the center-of-mass-relative offset expected
+by Bullet's `applyImpulse` method.
+ * @param body rigid body
+ * @param impulse impulse in Defold units
+ * @param world_position application point in world space and Defold units
+ */
+		export function apply_linear_impulse(
+			body: any,
+			impulse: vmath.vector3,
+			world_position: vmath.vector3,
+		): void;
+		/**
+		 * Apply torque
+		 * @param body rigid body
+		 * @param torque torque in Defold squared units
+		 */
+		export function apply_torque(body: any, torque: vmath.vector3): void;
+		/**
+		 * Apply a torque impulse
+		 * @param body rigid body
+		 * @param impulse angular impulse in Defold squared units
+		 */
+		export function apply_torque_impulse(
+			body: any,
+			impulse: vmath.vector3,
+		): void;
+		/**
+		 * Clear accumulated force and torque
+		 * @param body rigid body
+		 */
+		export function clear_forces(body: any): void;
+		/**
+ * Calls Bullet's native `btRigidBody::getAabb`, which immediately calculates
+the bounds from the body's current collision shape and world transform. This
+does not read the broadphase proxy's cached AABB.
+ * @param body rigid body
+ * @returns world-space bounds in Defold units
+ */
+		export function compute_aabb(body: any): unknown;
+		/**
+		 * Get angular damping
+		 * @param body rigid body
+		 * @returns angular damping
+		 */
+		export function get_angular_damping(body: any): number;
+		/**
+		 * Get the angular factor
+		 * @param body rigid body
+		 * @returns per-axis angular factor
+		 */
+		export function get_angular_factor(body: any): vmath.vector3;
+		/**
+		 * Get the angular sleeping threshold
+		 * @param body rigid body
+		 * @returns threshold in radians per second
+		 */
+		export function get_angular_sleeping_threshold(body: any): number;
+		/**
+		 * Get angular velocity
+		 * @param body rigid body
+		 * @returns angular velocity in radians per second
+		 */
+		export function get_angular_velocity(body: any): vmath.vector3;
+		/**
+		 * Get the center-of-mass world position
+		 * @param body rigid body
+		 * @returns center-of-mass position in Defold units
+		 */
+		export function get_center_of_mass_position(body: any): vmath.vector3;
+		/**
+		 * Get linear and angular damping
+		 * @param body rigid body
+		 * @returns linear damping & angular damping
+		 */
+		export function get_damping(body: any): LuaMultiReturn<[number, number]>;
+		/**
+		 * Get rigid body flags
+		 * @param body rigid body
+		 * @returns rigid body flags
+		 */
+		export function get_flags(body: any): number;
+		/**
+		 * Get body gravity
+		 * @param body rigid body
+		 * @returns gravity in Defold units per second squared
+		 */
+		export function get_gravity(body: any): vmath.vector3;
+		/**
+		 * Get inverse mass
+		 * @param body rigid body
+		 * @returns inverse mass
+		 */
+		export function get_inverse_mass(body: any): number;
+		/**
+		 * Get linear damping
+		 * @param body rigid body
+		 * @returns linear damping
+		 */
+		export function get_linear_damping(body: any): number;
+		/**
+		 * Get the linear factor
+		 * @param body rigid body
+		 * @returns per-axis linear factor
+		 */
+		export function get_linear_factor(body: any): vmath.vector3;
+		/**
+		 * Get the linear sleeping threshold
+		 * @param body rigid body
+		 * @returns threshold in Defold units per second
+		 */
+		export function get_linear_sleeping_threshold(body: any): number;
+		/**
+		 * Get linear velocity
+		 * @param body rigid body
+		 * @returns velocity in Defold units per second
+		 */
+		export function get_linear_velocity(body: any): vmath.vector3;
+		/**
+ * This has the same point semantics as
+`b2d.body.get_linear_velocity_from_local_point`. The local origin is the
+body's center of mass.
+ * @param body rigid body
+ * @param local_point point in body-local space and Defold units
+ * @returns point velocity in Defold units per second
+ */
+		export function get_linear_velocity_from_local_point(
+			body: any,
+			local_point: vmath.vector3,
+		): vmath.vector3;
+		/**
+ * This has the same point semantics as
+`b2d.body.get_linear_velocity_from_world_point`.
+ * @param body rigid body
+ * @param world_point point in world space and Defold units
+ * @returns point velocity in Defold units per second
+ */
+		export function get_linear_velocity_from_world_point(
+			body: any,
+			world_point: vmath.vector3,
+		): vmath.vector3;
+		/**
+ * Returns the diagonal local inertia in Defold mass-times-distance-squared
+units. A zero component denotes an axis with zero inverse inertia.
+ * @param body rigid body
+ * @returns diagonal local inertia
+ */
+		export function get_local_inertia(body: any): vmath.vector3;
+		/**
+		 * Get mass
+		 * @param body rigid body
+		 * @returns mass, or zero for an infinite-mass body
+		 */
+		export function get_mass(body: any): number;
+		/**
+		 * Get total accumulated force
+		 * @param body rigid body
+		 * @returns accumulated force in Defold units
+		 */
+		export function get_total_force(body: any): vmath.vector3;
+		/**
+		 * Get total accumulated torque
+		 * @param body rigid body
+		 * @returns accumulated torque in Defold squared units
+		 */
+		export function get_total_torque(body: any): vmath.vector3;
+		/**
+ * The relative position is expressed in world axes. Despite Bullet's function
+name, it is not a body-local coordinate.
+ * @param body rigid body
+ * @param relative_position center-of-mass-relative offset in world axes and Defold units
+ * @returns point velocity in Defold units per second
+ */
+		export function get_velocity_in_local_point(
+			body: any,
+			relative_position: vmath.vector3,
+		): vmath.vector3;
+		/**
+		 * Get the body's world
+		 * @param body rigid body
+		 * @returns owning world
+		 */
+		export function get_world(body: any): unknown;
+		/**
+		 * Test a rigid body flag
+		 * @param body rigid body
+		 * @param flag flag or mask
+		 * @returns `true` when all requested flag bits are set
+		 */
+		export function has_flag(body: any, flag: number): boolean;
+		/**
+		 * Test whether a handle refers to a valid rigid body
+		 * @param body rigid body
+		 * @returns rigid body validity
+		 */
+		export function is_valid(body: any): boolean;
+		/**
+		 * Set angular damping
+		 * @param body rigid body
+		 * @param damping finite angular damping in `[0, 1]`
+		 */
+		export function set_angular_damping(body: any, damping: number): void;
+		/**
+		 * Set the angular factor
+		 * @param body rigid body
+		 * @param factor per-axis angular factor
+		 */
+		export function set_angular_factor(body: any, factor: vmath.vector3): void;
+		/**
+		 * Set angular velocity
+		 * @param body rigid body
+		 * @param velocity finite angular velocity in radians per second
+		 */
+		export function set_angular_velocity(
+			body: any,
+			velocity: vmath.vector3,
+		): void;
+		/**
+		 * Set linear and angular damping
+		 * @param body rigid body
+		 * @param linear finite linear damping in `[0, 1]`
+		 * @param angular finite angular damping in `[0, 1]`
+		 */
+		export function set_damping(
+			body: any,
+			linear: number,
+			angular: number,
+		): void;
+		/**
+ * This replaces the complete flag mask. Every enabled gyroscopic mode is
+evaluated independently, so clear existing gyroscopic mode bits before
+selecting a different mode.
+ * @param body rigid body
+ * @param flags rigid body flags
+ */
+		export function set_flags(body: any, flags: number): void;
+		/**
+ * A later `bullet3d.world.set_gravity()` call, or removing and re-adding the
+body to a world, can overwrite custom body gravity unless the body's
+`BT_DISABLE_WORLD_GRAVITY` flag is set.
+ * @param body rigid body
+ * @param gravity gravity in Defold units per second squared
+ * @example Give one body persistent custom gravity without discarding its other flags:
+```lua
+function init(self)
+    local body = bullet3d.get_rigid_body("#collisionobject")
+    local flags = bullet3d.rigid_body.get_flags(body)
+    flags = bit.bor(flags, bullet3d.rigid_body.BT_DISABLE_WORLD_GRAVITY)
+    bullet3d.rigid_body.set_flags(body, flags)
+    bullet3d.rigid_body.set_gravity(body, vmath.vector3(0, 4, 0))
+end
+```
+ */
+		export function set_gravity(body: any, gravity: vmath.vector3): void;
+		/**
+		 * Set linear damping
+		 * @param body rigid body
+		 * @param damping finite linear damping in `[0, 1]`
+		 */
+		export function set_linear_damping(body: any, damping: number): void;
+		/**
+		 * Set the linear factor
+		 * @param body rigid body
+		 * @param factor per-axis linear factor
+		 */
+		export function set_linear_factor(body: any, factor: vmath.vector3): void;
+		/**
+		 * Set linear velocity
+		 * @param body rigid body
+		 * @param velocity finite velocity in Defold units per second
+		 */
+		export function set_linear_velocity(
+			body: any,
+			velocity: vmath.vector3,
+		): void;
+		/**
+ * Recalculates local inertia from the body's current collision shape. Only a
+dynamic body can be changed; zero mass cannot be used to convert it into a
+static body. Values too small to have a finite native inverse are rejected.
+The body is activated after the update.
+ * @param body dynamic rigid body
+ * @param mass finite mass greater than zero
+ * @example Change the mass of a dynamic collision object and inspect its recalculated inertia:
+```lua
+function init(self)
+    local body = bullet3d.get_rigid_body("#collisionobject")
+    bullet3d.rigid_body.set_mass(body, 5)
+    print("local inertia", bullet3d.rigid_body.get_local_inertia(body))
+end
+```
+ */
+		export function set_mass(body: any, mass: number): void;
+		/**
+ * Sets mass and diagonal local inertia together, updates the world-space
+inertia tensor, and activates the body. Only dynamic bodies are accepted.
+A zero inertia component is allowed and disables angular response on that
+local axis; negative, non-finite, or nonzero values too small to have a
+finite native inverse are rejected.
+ * @param body dynamic rigid body
+ * @param mass finite mass greater than zero
+ * @param local_inertia finite non-negative diagonal local inertia in Defold mass-times-distance-squared units
+ */
+		export function set_mass_properties(
+			body: any,
+			mass: number,
+			local_inertia: vmath.vector3,
+		): void;
+		/**
+		 * Set the sleeping thresholds
+		 * @param body rigid body
+		 * @param linear finite non-negative linear threshold in Defold units per second
+		 * @param angular finite non-negative angular threshold in radians per second
+		 */
+		export function set_sleeping_thresholds(
+			body: any,
+			linear: number,
+			angular: number,
+		): void;
+	}
+}
+
+declare namespace bullet3d {
+	export namespace collision_object {
+		/**
+		 * Get one attached shape by one-based index.
+		 * @param object collision object
+		 * @param shape_index one-based shape index
+		 * @returns borrowed logical shape handle
+		 */
+		export function get_shape(object: any, shape_index: number): unknown;
+		/**
+		 * Get the number of shapes attached to a collision object.
+		 * @param object collision object
+		 * @returns shape count
+		 */
+		export function get_shape_count(object: any): number;
+		/**
+ * Get all attached shapes.
+ * @param object collision object
+ * @returns array of borrowed shape handles
+ * @example Enumerate the logical shapes attached to a collision object:
+```lua
+function init(self)
+    local object = bullet3d.get_collision_object("#collisionobject")
+    for _, shape in ipairs(bullet3d.collision_object.get_shapes(object)) do
+        local index = bullet3d.shape.get_index(shape)
+        local data = bullet3d.shape.get_shape(shape)
+        print("shape", index, "type", data.type)
+    end
+end
+```
+ */
+		export function get_shapes(object: any): unknown;
+	}
+	export namespace shape {
+		export namespace SHAPE_TYPE {
+			export namespace shape {
+				/**
+				 * Box shape type Value `1`. Shape data contains positive vector3 `dimensions` in Defold units.
+				 */
+				export const SHAPE_TYPE_BOX: unknown;
+				/**
+				 * Capsule shape type Value `2`. Shape data contains a positive numeric `diameter` and positive numeric cylindrical-section `height` in Defold units.
+				 */
+				export const SHAPE_TYPE_CAPSULE: unknown;
+				/**
+				 * Convex hull shape type Value `3`. Shape data contains a `vertices` array with at least four finite vector3 values in Defold units.
+				 */
+				export const SHAPE_TYPE_HULL: unknown;
+				/**
+				 * Triangle mesh shape type Value `4`. Shape data contains only the `type`; triangle geometry is read-only.
+				 */
+				export const SHAPE_TYPE_MESH: unknown;
+				/**
+				 * Sphere shape type Value `0`. Shape data contains a positive numeric `diameter` in Defold units.
+				 */
+				export const SHAPE_TYPE_SPHERE: unknown;
+			}
+		} /**
+		 * Get the owning collision object.
+		 * @param shape shape handle
+		 * @returns owning collision object
+		 */
+		export function get_collision_object(shape: any): unknown;
+		/**
+		 * Get the one-based child index.
+		 * @param shape shape handle
+		 * @returns one-based shape index
+		 */
+		export function get_index(shape: any): number;
+		/**
+ * A non-compound collision object's only shape has no child transform, so this
+function returns the identity transform for it.
+ * @param shape shape handle
+ * @returns local position & local rotation
+ */
+		export function get_local_transform(
+			shape: any,
+		): LuaMultiReturn<[vmath.vector3, vmath.quaternion]>;
+		/**
+ * The returned table always contains `type`, one of `bullet3d.shape.SHAPE_TYPE_*`.
+A sphere also contains numeric `diameter`; a box contains vector3
+`dimensions`; a capsule contains numeric `diameter` and cylindrical-section
+`height`; a hull contains a `vertices` array of vector3 values; and a triangle
+mesh contains only `type`. Primitive and hull tables use Defold units and can
+be passed to a `bullet3d.world` shape query after adding the desired `position`
+and optional `rotation` fields.
+ * @param shape shape handle
+ * @returns typed shape geometry in Defold units
+ */
+		export function get_shape(shape: any): unknown;
+		/**
+		 * Get the normalized Defold shape type.
+		 * @param shape shape handle
+		 * @returns collision shape type
+		 */
+		export function get_type(shape: any): unknown;
+		/**
+		 * Test whether a shape handle and its owner still exist.
+		 * @param shape shape handle
+		 * @returns validity
+		 */
+		export function is_valid(shape: any): boolean;
+		/**
+ * A non-compound collision object's only shape has no child transform and is
+rejected. The binding normalizes the supplied rotation.
+ * @param shape shape handle
+ * @param position finite local position
+ * @param rotation finite non-zero local rotation
+ */
+		export function set_local_transform(
+			shape: any,
+			position: vmath.vector3,
+			rotation: vmath.quaternion,
+		): void;
+		/**
+ * The table uses the same format as `get_shape`. Its `type` must match the
+existing shape because changing native shape type is not supported. Primitive
+dimensions must be finite and greater than zero. Hulls require at least four
+finite vertices. Triangle mesh geometry cannot be changed with this function.
+ * @param shape shape handle
+ * @param data typed shape geometry in Defold units
+ * @example Increase the dimensions of the first box shape by 50 percent for this instance:
+```lua
+function init(self)
+    local object = bullet3d.get_collision_object("#collisionobject")
+    local shape = bullet3d.collision_object.get_shape(object, 1)
+    local data = bullet3d.shape.get_shape(shape)
+
+    if data.type == bullet3d.shape.SHAPE_TYPE_BOX then
+        data.dimensions = data.dimensions * 1.5
+        bullet3d.shape.set_shape(shape, data)
+    end
+end
+```
+ */
+		export function set_shape(shape: any, data: any): void;
+	}
+}
+
+declare namespace bullet3d {
+	export namespace world {
+		export namespace aabb {
+			/**
+			 * lower world-space bound in Defold units
+			 */
+			export let lower: vmath.vector3;
+			/**
+			 * upper world-space bound in Defold units
+			 */
+			export let upper: vmath.vector3;
+		} /**
+ * Casts immediately from `origin` to `origin + translation` and returns all
+matching hits sorted by fraction. Translation must be non-zero.
+Bullet's convex ray test normally does not report a ray whose start and end are both inside
+the same convex hull. Set `filter.report_initial_overlaps = true` to perform
+an exact point-overlap test at the origin and synthesize one deduplicated hit
+per initially touching or overlapping object with `fraction = 0`, zero `normal`,
+`point = origin`, `initial_overlap = true`, and `inside = true`. The point is
+the query origin, not a surface contact. This explicitly supports the
+inside-hull behavior requested by issue #5348. Fraction-zero native callbacks
+and starting overlaps are suppressed when the option is false.
+ * @param world world handle
+ * @param origin ray origin in world space
+ * @param translation non-zero ray displacement in world units
+ * @param filter query filter
+ * @param max_results maximum sorted hits, or zero for all
+ * @returns cast results sorted by ascending fraction
+ */
+		export function cast_ray(
+			world: any,
+			origin: vmath.vector3,
+			translation: vmath.vector3,
+			filter?: any,
+			max_results?: number,
+		): unknown;
+		/**
+ * Queues the same ray query as bullet3d.world.cast_ray and returns without
+executing it. After the next physics step, `callback(self, hits)` receives the
+cast-result array sorted by fraction. The query observes post-step world state.
+It is deferred on the main thread, not executed concurrently; use it to move
+work out of the current Lua call and to query the stepped state, not as a
+guarantee of lower total CPU time. Queued casts for the same world share one
+broadphase AABB refresh and all finish before their callbacks begin.
+ * @param world world handle
+ * @param origin ray origin in world space
+ * @param translation non-zero ray displacement in world units
+ * @param callback function called as `callback(self, hits)`
+ * @param filter query filter
+ * @param max_results maximum sorted hits, or zero for all
+ * @example Queue a downward cast and inspect only the closest non-trigger hit:
+```lua
+bullet3d.world.cast_ray_async(
+    bullet3d.get_world(),
+    go.get_world_position(),
+    vmath.vector3(0, -100, 0),
+    function(self, hits)
+        if hits[1] then
+            print("hit", hits[1].object)
+        end
+    end,
+    { include_triggers = false },
+    1)
+```
+ */
+		export function cast_ray_async(
+			world: any,
+			origin: vmath.vector3,
+			translation: vmath.vector3,
+			callback: any,
+			filter?: any,
+			max_results?: number,
+		): void;
+		/**
+ * Equivalent to bullet3d.world.cast_ray with one result, but returns the
+hit table directly or `nil` on a miss.
+ * @param world world handle
+ * @param origin ray origin in world space
+ * @param translation non-zero ray displacement in world units
+ * @param filter query filter
+ * @returns closest cast result, or `nil` on a miss
+ * @example Cast downward and report the closest non-trigger hit:
+```lua
+function init(self)
+    local world = bullet3d.get_world()
+    local origin = go.get_world_position()
+    local translation = vmath.vector3(0, -100, 0)
+    local filter = { include_triggers = false }
+
+    local hit = bullet3d.world.cast_ray_closest(
+        world, origin, translation, filter)
+    if hit then
+        local distance = vmath.length(translation) * hit.fraction
+        print("hit", hit.object, "after", distance, "units")
+    end
+end
+```
+ */
+		export function cast_ray_closest(
+			world: any,
+			origin: vmath.vector3,
+			translation: vmath.vector3,
+			filter?: any,
+		): unknown | undefined;
+		export namespace cast_result {
+			/**
+			 * fraction along the supplied translation in `[0, 1]`
+			 */
+			export let fraction: number;
+			/**
+			 * whether the hit was synthesized from an initial overlap
+			 */
+			export let initial_overlap: boolean;
+			/**
+			 * whether a synthesized ray-origin hit starts inside the object
+			 */
+			export let inside: boolean;
+			/**
+			 * outward unit surface normal
+			 */
+			export let normal: vmath.vector3;
+			/**
+			 * hit collision object
+			 */
+			export let object: unknown;
+			/**
+			 * hit point in world space and Defold units
+			 */
+			export let point: vmath.vector3;
+			/**
+			 * one-based compound child index
+			 */
+			export let shape_index_: number;
+		} /**
+ * Sweeps the temporary shape from `shape.position` by `translation`, while
+interpolating from `shape.rotation` to `shape.target_rotation`. Translation
+must be non-zero. The query executes immediately and returns all matching hits
+sorted by fraction. Bullet's convex sweep supports only convex query shapes.
+When `filter.report_initial_overlaps` is true, an exact contact test at the
+starting transform synthesizes one deduplicated hit per overlapping object
+with `fraction = 0`, `point = shape.position`, zero `normal`,
+`initial_overlap = true`, and `inside = false`. The point is the query-shape
+origin, not a surface contact, and the result does not report penetration depth.
+ * @param world world handle
+ * @param shape convex query shape with optional target rotation
+ * @param translation non-zero sweep displacement in world units
+ * @param filter query filter
+ * @param max_results maximum sorted hits, or zero for all
+ * @returns cast results sorted by ascending fraction
+ */
+		export function cast_shape(
+			world: any,
+			shape: any,
+			translation: vmath.vector3,
+			filter?: any,
+			max_results?: number,
+		): unknown;
+		/**
+ * Queues the same convex sweep as bullet3d.world.cast_shape and returns
+without executing it. After the next physics step, `callback(self, hits)`
+receives the sorted cast-result array from the post-step world state. The
+operation is deferred on the main thread rather than run concurrently. All
+queued casts for one world share one broadphase AABB refresh and all finish
+before their callbacks begin.
+ * @param world world handle
+ * @param shape convex query shape with optional target rotation
+ * @param translation non-zero sweep displacement in world units
+ * @param callback function called as `callback(self, hits)`
+ * @param filter query filter
+ * @param max_results maximum sorted hits, or zero for all
+ */
+		export function cast_shape_async(
+			world: any,
+			shape: any,
+			translation: vmath.vector3,
+			callback: any,
+			filter?: any,
+			max_results?: number,
+		): void;
+		/**
+ * Equivalent to bullet3d.world.cast_shape with one result, but returns
+the hit table directly or `nil` on a miss.
+ * @param world world handle
+ * @param shape convex query shape with optional target rotation
+ * @param translation non-zero sweep displacement in world units
+ * @param filter query filter
+ * @returns closest cast result, or `nil` on a miss
+ */
+		export function cast_shape_closest(
+			world: any,
+			shape: any,
+			translation: vmath.vector3,
+			filter?: any,
+		): unknown | undefined;
+		/**
+ * Runs Bullet's discrete pair contact algorithm without changing the simulation.
+Both borrowed handles must belong to `world` and must identify different
+objects. The output preserves the caller's A/B order even when Bullet's
+internal manifold order is reversed. Collision filters are not applied to an
+explicitly selected pair.
+ * @param world world handle
+ * @param object_a first collision object in the world
+ * @param object_b different second collision object in the world
+ * @param max_results maximum number of contact points, or zero for all
+ * @returns normalized contact results
+ */
+		export function contact_pair_test(
+			world: any,
+			object_a: any,
+			object_b: any,
+			max_results?: number,
+		): unknown;
+		export namespace contact_result {
+			/**
+			 * signed contact distance in Defold units
+			 */
+			export let distance: number;
+			/**
+			 * unit normal pointing from object B toward object A
+			 */
+			export let normal_on_b: vmath.vector3;
+			/**
+			 * first collision object
+			 */
+			export let object_a: unknown;
+			/**
+			 * second collision object
+			 */
+			export let object_b: unknown;
+			/**
+			 * contact point on object A in world space and Defold units
+			 */
+			export let position_a: vmath.vector3;
+			/**
+			 * contact point on object B in world space and Defold units
+			 */
+			export let position_b: vmath.vector3;
+		} /**
+ * Runs Bullet's discrete contact test between `object` and matching objects in
+the same world. The supplied object is always `object_a` in returned contacts.
+The borrowed collision-object handle must belong to `world`. Bullet may return
+several contact points for one object pair and may include small positive
+contact-margin distances.
+ * @param world world handle
+ * @param object collision object belonging to the world
+ * @param filter filter applied to candidate `object_b` values
+ * @param max_results maximum number of contact points, or zero for all
+ * @returns normalized contact results
+ * @example Inspect current contacts for this collision object:
+```lua
+function update(self, dt)
+    local world = bullet3d.get_world()
+    local object = bullet3d.get_collision_object("#collisionobject")
+    local filter = { include_triggers = false }
+    local contacts = bullet3d.world.contact_test(world, object, filter)
+
+    for _, contact in ipairs(contacts) do
+        if contact.distance < 0 then
+            print("penetration", -contact.distance, "against", contact.object_b)
+        end
+    end
+end
+```
+ */
+		export function contact_test(
+			world: any,
+			object: any,
+			filter?: any,
+			max_results?: number,
+		): unknown;
+		/**
+		 * Get the number of collision objects in the world
+		 * @param world world handle
+		 * @returns number of collision objects
+		 */
+		export function get_collision_object_count(world: any): number;
+		/**
+ * Returns the Defold-owned collision objects currently registered in the world.
+Internal or unmanaged Bullet objects without Defold ownership metadata are
+not exposed.
+ * @param world world handle
+ * @param max_results maximum number of results, or zero for all
+ * @returns array of collision-object handles
+ */
+		export function get_collision_objects(
+			world: any,
+			max_results?: number,
+		): unknown;
+		/**
+		 * Get world gravity
+		 * @param world world handle
+		 * @returns gravity in Defold units per second squared
+		 */
+		export function get_gravity(world: any): vmath.vector3;
+		/**
+		 * Test whether a world handle is valid
+		 * @param world world handle
+		 * @returns `true` if the native world still exists
+		 */
+		export function is_valid(world: any): boolean;
+		/**
+ * Finds collision objects whose Bullet broadphase bounds overlap the supplied
+world-space AABB. This is intentionally a broadphase query and can include
+objects whose actual collision geometry does not intersect the box. Use
+bullet3d.world.overlap_point or
+bullet3d.world.overlap_shape for exact narrow-phase overlap tests.
+ * @param world world handle
+ * @param aabb world-space bounds
+ * @param filter query filter
+ * @param max_results maximum number of results, or zero for all
+ * @returns array of overlapping collision-object handles
+ */
+		export function overlap_aabb(
+			world: any,
+			aabb: any,
+			filter?: any,
+			max_results?: number,
+		): unknown;
+		/**
+ * Performs an exact narrow-phase test using a temporary zero-radius Bullet
+sphere at the world-space point. A result is returned only for a contact with
+signed distance less than or equal to zero, so broadphase-only false positives
+are removed. Results on an exact surface follow Bullet's contact tolerance.
+ * @param world world handle
+ * @param point point in world space
+ * @param filter query filter
+ * @param max_results maximum number of results, or zero for all
+ * @returns array of overlapping collision-object handles
+ */
+		export function overlap_point(
+			world: any,
+			point: vmath.vector3,
+			filter?: any,
+			max_results?: number,
+		): unknown;
+		/**
+ * Performs an exact Bullet contact test for a temporary sphere, box, Y-axis
+capsule, or convex hull. Multiple native contact points for the same target
+object are deduplicated in the returned overlap array.
+ * @param world world handle
+ * @param shape convex query shape
+ * @param filter query filter
+ * @param max_results maximum number of results, or zero for all
+ * @returns array of overlapping collision-object handles
+ * @example Find non-trigger objects overlapping a two-unit sphere around this game object:
+```lua
+function init(self)
+    local world = bullet3d.get_world()
+    local shape = {
+        type = bullet3d.shape.SHAPE_TYPE_SPHERE,
+        diameter = 2,
+        position = go.get_world_position(),
+    }
+    local filter = { include_triggers = false }
+    local overlaps = bullet3d.world.overlap_shape(world, shape, filter)
+
+    for _, object in ipairs(overlaps) do
+        print("overlap", object)
+    end
+end
+```
+ */
+		export function overlap_shape(
+			world: any,
+			shape: any,
+			filter?: any,
+			max_results?: number,
+		): unknown;
+		export namespace query_filter {
+			/**
+			 * unsigned 16-bit category bits; defaults to `65535`
+			 */
+			export let category_bits_: number;
+			/**
+			 * one collision object or an array of collision objects to exclude
+			 */
+			export let ignore_: unknown  ;
+			/**
+			 * whether to include objects without contact response; defaults to `true`
+			 */
+			export let include_triggers_: boolean;
+			/**
+			 * unsigned 16-bit mask bits; defaults to `65535`
+			 */
+			export let mask_bits_: number;
+			/**
+			 * whether casts synthesize fraction-zero hits for initial overlaps; defaults to `false`
+			 */
+			export let report_initial_overlaps_: boolean;
+		} /**
+ * Bullet propagates the new value to active dynamic bodies unless they have
+`bullet3d.rigid_body.BT_DISABLE_WORLD_GRAVITY` set. Such bodies retain their
+custom body gravity.
+ * @param world world handle
+ * @param gravity finite gravity in Defold units per second squared
+ * @example Set gravity for the current collection's physics world:
+```lua
+function init(self)
+    local world = bullet3d.get_world()
+    if world then
+        bullet3d.world.set_gravity(world, vmath.vector3(0, -9.81, 0))
+    end
+end
+```
+ */
+		export function set_gravity(world: any, gravity: vmath.vector3): void;
+	}
 }
 
 /** @see {@link https://defold.com/ref/stable/camera/|API Documentation} */
 declare namespace camera {
-	/**
- * Computes zoom so the original display area covers the entire window while preserving aspect ratio.
-Equivalent to using max(window_width/width, window_height/height).
-The result is multiplied by the user-controlled orthographic zoom.
- */
-	export const ORTHO_MODE_AUTO_COVER: number;
-	/**
- * Computes zoom so the original display area (game.project width/height) fits inside the window
-while preserving aspect ratio. Equivalent to using min(window_width/width, window_height/height).
-The result is multiplied by the user-controlled orthographic zoom.
- */
-	export const ORTHO_MODE_AUTO_FIT: number;
-	/**
-	 * Uses the manually set orthographic zoom value (camera.set_orthographic_zoom).
-	 */
-	export const ORTHO_MODE_FIXED: number;
-	/**
+	export namespace ORTHO_MODE {
+		/**
+		 * auto-cover orthographic zoom mode Computes zoom so the original display area covers the entire window while preserving aspect ratio. Equivalent to using max(window_width/width, window_height/height). The result is multiplied by the user-controlled orthographic zoom.
+		 */
+		export const ORTHO_MODE_AUTO_COVER: unknown;
+		/**
+		 * auto-fit orthographic zoom mode Computes zoom so the original display area (game.project width/height) fits inside the window while preserving aspect ratio. Equivalent to using min(window_width/width, window_height/height). The result is multiplied by the user-controlled orthographic zoom.
+		 */
+		export const ORTHO_MODE_AUTO_FIT: unknown;
+		/**
+		 * fixed orthographic zoom mode Uses the manually set orthographic zoom value (camera.set_orthographic_zoom).
+		 */
+		export const ORTHO_MODE_FIXED: unknown;
+	} /**
  * Gets the effective aspect ratio of the camera. If auto aspect ratio is enabled,
 returns the aspect ratio calculated from the current render target dimensions.
 Otherwise returns the manually set aspect ratio.
@@ -3791,7 +6798,7 @@ camera.ORTHO_MODE_AUTO_COVER
  */
 	export function get_orthographic_mode(
 		camera: url | number | undefined,
-	): number;
+	): unknown;
 	/**
  * Gets the positive user-controlled orthographic zoom multiplier. In auto-fit and auto-cover
 modes, this value is multiplied with camera.get_orthographic_auto_zoom(camera).
@@ -3928,7 +6935,7 @@ When disabled (false), uses the manually set aspect ratio value.
 	 */
 	export function set_orthographic_mode(
 		camera: url | number | undefined,
-		mode: number,
+		mode: any,
 	): void;
 	/**
  * Sets the positive user-controlled orthographic zoom multiplier. In auto-fit and auto-cover
@@ -3966,19 +6973,20 @@ If a camera isn't specified, the last enabled camera is used.
 
 /** @see {@link https://defold.com/ref/stable/collectionfactory/|API Documentation} */
 declare namespace collectionfactory {
-	/**
-	 * loaded
-	 */
-	export const STATUS_LOADED: number;
-	/**
-	 * loading
-	 */
-	export const STATUS_LOADING: number;
-	/**
-	 * unloaded
-	 */
-	export const STATUS_UNLOADED: number;
-	/**
+	export namespace STATUS {
+		/**
+		 * The collection factory resources are loaded.
+		 */
+		export const STATUS_LOADED: unknown;
+		/**
+		 * The collection factory resources are loading.
+		 */
+		export const STATUS_LOADING: unknown;
+		/**
+		 * The collection factory resources are unloaded.
+		 */
+		export const STATUS_UNLOADED: unknown;
+	} /**
  * The URL identifies the collectionfactory component that should do the spawning.
 Spawning is instant, but spawned game objects get their first update calls the following frame. The supplied parameters for position, rotation and scale
 will be applied to the whole collection when spawned.
@@ -4038,7 +7046,7 @@ go.delete(self.enemy_ids)
 		url: hash | url | string,
 		position?: vmath.vector3,
 		rotation?: vmath.quaternion,
-		properties?: object,
+		properties?: any  ,
 		scale?: vmath.vector3 | number,
 	): LuaMap<hash, hash>;
 	/**
@@ -4046,14 +7054,9 @@ go.delete(self.enemy_ids)
 Calling this function when the factory is not marked as dynamic loading always returns COMP_COLLECTION_FACTORY_STATUS_LOADED.
  * @param url the collection factory component to get status from
  * @returns status of the collection factory component
-
-`collectionfactory.STATUS_UNLOADED`
-`collectionfactory.STATUS_LOADING`
-`collectionfactory.STATUS_LOADED`
 * @see {@link https://defold.com/ref/stable/collectionfactory/#collectionfactory.get_status|API Documentation}
-
  */
-	export function get_status(url?: hash | url | string): number;
+	export function get_status(url?: hash | url | string): unknown;
 	/**
  * Resources loaded are referenced by the collection factory component until the existing (parent) collection is destroyed or collectionfactory.unload is called.
 Calling this function when the factory is not marked as dynamic loading does nothing.
@@ -4061,7 +7064,7 @@ Calling this function when the factory is not marked as dynamic loading does not
  * @param complete_function function to call when resources are loaded.
 
 `self`
-object The current object.
+script_instance The current script instance.
 `url`
 url url of the collection factory component
 `result`
@@ -4109,19 +7112,20 @@ collectionfactory.unload("#factory")
 
 /** @see {@link https://defold.com/ref/stable/collectionproxy/|API Documentation} */
 declare namespace collectionproxy {
-	/**
-	 * It's impossible to change the collection if the collection is already loaded.
-	 */
-	export const RESULT_ALREADY_LOADED: number;
-	/**
-	 * It's impossible to change the collection while the collection proxy is loading.
-	 */
-	export const RESULT_LOADING: number;
-	/**
-	 * It's impossible to change the collection for a proxy that isn't excluded.
-	 */
-	export const RESULT_NOT_EXCLUDED: number;
-	/**
+	export namespace RESULT {
+		/**
+		 * The collection proxy is already loaded, so its collection cannot be changed.
+		 */
+		export const RESULT_ALREADY_LOADED: unknown;
+		/**
+		 * The collection proxy is loading, so its collection cannot be changed.
+		 */
+		export const RESULT_LOADING: unknown;
+		/**
+		 * The collection proxy is not excluded from the bundle; only excluded proxies can change collections.
+		 */
+		export const RESULT_NOT_EXCLUDED: unknown;
+	} /**
  * return an indexed table of resources for a collection proxy where the
 referenced collection has been excluded using LiveUpdate. Each entry is a
 hexadecimal string that represents the data of the specific resource.
@@ -4162,17 +7166,26 @@ end)
  */
 	export function load(
 		url: hash | url | string,
-		options: object | undefined,
-		callback: (this: any, message_id: any, message: any, sender: any) => void,
+		options: any | undefined,
+		callback: any,
 	): void;
-	/**
+	export namespace load_data {
+		/**
+		 * Error code for `proxy_error`.
+		 */
+		export let code_: number;
+		/**
+		 * Loading progress from 0 to 1 for `proxy_loading`.
+		 */
+		export let progress_: number;
+	} /**
  * The collection should be loaded by the collection proxy.
 Setting the collection to "nil" will revert it back to the original collection.
 The collection proxy shouldn't be loaded and should have the 'Exclude' checkbox checked.
 This functionality is designed to simplify the management of Live Update resources.
  * @param url the collection proxy component
  * @param prototype the path to the new collection, or `nil`
- * @returns collection change was successful & one of the collectionproxy.RESULT_* codes if unsuccessful
+ * @returns collection change was successful & the failure reason
  * @example The example assume the script belongs to an instance with collection-proxy-component with id "proxy".
 ```lua
 local ok, error = collectionproxy.set_collection("/go#collectionproxy", "/LU/3.collectionc")
@@ -4190,43 +7203,14 @@ local ok, error = collectionproxy.set_collection("/go#collectionproxy", "/LU/3.c
 	export function set_collection(
 		url?: hash | url | string,
 		prototype?: string  ,
-	): LuaMultiReturn<[boolean, number]>;
+	): LuaMultiReturn<[boolean, unknown]>;
 }
 
 declare namespace compute {
 	/**
  * Returns a table of all the shader constants in the compute program.
  * @param path The path to the resource
- * @returns A table of tables, where each entry contains info about the shader constants:
-
-`name`
-hash the hashed name of the constant
-`type`
-number the type of the constant. Supported values:
-
-
-`material.CONSTANT_TYPE_USER`
-`material.CONSTANT_TYPE_USER_MATRIX4`
-`material.CONSTANT_TYPE_VIEWPROJ`
-`material.CONSTANT_TYPE_WORLD`
-`material.CONSTANT_TYPE_TEXTURE`
-`material.CONSTANT_TYPE_VIEW`
-`material.CONSTANT_TYPE_PROJECTION`
-`material.CONSTANT_TYPE_NORMAL`
-`material.CONSTANT_TYPE_WORLDVIEW`
-`material.CONSTANT_TYPE_WORLDVIEWPROJ`
-`material.CONSTANT_TYPE_TIME`
-`material.CONSTANT_TYPE_WORLD_INVERSE`
-`material.CONSTANT_TYPE_VIEW_INVERSE`
-`material.CONSTANT_TYPE_PROJECTION_INVERSE`
-`material.CONSTANT_TYPE_VIEWPROJ_INVERSE`
-`material.CONSTANT_TYPE_WORLDVIEW_INVERSE`
-`material.CONSTANT_TYPE_WORLDVIEWPROJ_INVERSE`
-
-
-`value`
-vmath.vector4 | vmath.matrix4 the value(s) of the constant. If the constant is an array, the value will be a table of vmath.vector4 or vmath.matrix4 if the type is `material.CONSTANT_TYPE_USER_MATRIX4`.
-
+ * @returns Information about the shader constants.
  * @example Get the shader constants from a compute program resource
 ```lua
 function init(self)
@@ -4234,60 +7218,12 @@ function init(self)
 end
 ```
  */
-	export function get_constants(path: hash | string): object;
+	export function get_constants(path: hash | string): unknown;
 	/**
  * Returns a table of all the texture samplers in the compute program. This function will return all the texture samplers
 that are available, even the ones that have not been specified in the compute resource.
  * @param path The path to the resource
- * @returns A table of tables, where each entry contains info about the texture samplers:
-
-`name`
-hash the hashed name of the texture sampler
-`u_wrap`
-number the u wrap mode of the texture sampler. Supported values:
-
-
-`graphics.TEXTURE_WRAP_CLAMP_TO_BORDER`
-`graphics.TEXTURE_WRAP_CLAMP_TO_EDGE`
-`graphics.TEXTURE_WRAP_MIRRORED_REPEAT`
-`graphics.TEXTURE_WRAP_REPEAT`
-
-
-`v_wrap`
-number the v wrap mode of the texture sampler. Supported values:
-
-
-`graphics.TEXTURE_WRAP_CLAMP_TO_BORDER`
-`graphics.TEXTURE_WRAP_CLAMP_TO_EDGE`
-`graphics.TEXTURE_WRAP_MIRRORED_REPEAT`
-`graphics.TEXTURE_WRAP_REPEAT`
-
-
-`min_filter`
-number the min filter mode of the texture sampler. Supported values:
-
-
-`graphics.TEXTURE_FILTER_DEFAULT`
-`graphics.TEXTURE_FILTER_NEAREST`
-`graphics.TEXTURE_FILTER_LINEAR`
-`graphics.TEXTURE_FILTER_NEAREST_MIPMAP_NEAREST`
-`graphics.TEXTURE_FILTER_NEAREST_MIPMAP_LINEAR`
-`graphics.TEXTURE_FILTER_LINEAR_MIPMAP_NEAREST`
-`graphics.TEXTURE_FILTER_LINEAR_MIPMAP_LINEAR`
-
-
-`mag_filter`
-number the mag filter mode of the texture sampler
-
-
-`graphics.TEXTURE_FILTER_DEFAULT`
-`graphics.TEXTURE_FILTER_NEAREST`
-`graphics.TEXTURE_FILTER_LINEAR`
-
-
-`max_anisotropy`
-number the max anisotropy of the texture sampler
-
+ * @returns Information about the texture samplers.
  * @example Get the texture samplers from a compute program resource
 ```lua
 function init(self)
@@ -4295,46 +7231,11 @@ function init(self)
 end
 ```
  */
-	export function get_samplers(path: hash | string): object;
+	export function get_samplers(path: hash | string): unknown;
 	/**
  * Returns a table of all the textures from the compute program.
  * @param path The path to the resource
- * @returns A table of tables, where each entry contains info about the compute textures:
-
-`path`
-hash the resource path of the texture. Only available if the texture is a resource.
-`handle`
-hash the runtime handle of the texture.
-`width`
-number the width of the texture
-`height`
-number the height of the texture
-`depth`
-number the depth of the texture. Corresponds to the number of layers in an array texture.
-`mipmaps`
-number the number of mipmaps in the texture
-`type`
-number the type of the texture. Supported values:
-
-
-`graphics.TEXTURE_TYPE_2D`
-`graphics.TEXTURE_TYPE_2D_ARRAY`
-`graphics.TEXTURE_TYPE_CUBE_MAP`
-`graphics.TEXTURE_TYPE_IMAGE_2D`
-`graphics.TEXTURE_TYPE_3D`
-`graphics.TEXTURE_TYPE_IMAGE_3D`
-
-
-`flags`
-number the flags of the texture. This field is a bit mask of these supported flags:
-
-
-`graphics.TEXTURE_USAGE_FLAG_SAMPLE`
-`graphics.TEXTURE_USAGE_FLAG_MEMORYLESS`
-`graphics.TEXTURE_USAGE_FLAG_STORAGE`
-`graphics.TEXTURE_USAGE_FLAG_INPUT`
-`graphics.TEXTURE_USAGE_FLAG_COLOR`
-
+ * @returns Information about the compute textures.
  * @example Get the textures from a compute program resource
 ```lua
 function init(self)
@@ -4342,38 +7243,11 @@ function init(self)
 end
 ```
  */
-	export function get_textures(path: hash | string): object;
+	export function get_textures(path: hash | string): unknown;
 	/**
  * Sets shader constants in a compute program, if the constants exist.
  * @param path The path to the resource
- * @param constants A table keyed by constant name with args tables as values. Constants can be partially updated. Supported entries:
-
-`type`
-number the type of the constant. Supported values:
-
-
-`material.CONSTANT_TYPE_USER`
-`material.CONSTANT_TYPE_USER_MATRIX4`
-`material.CONSTANT_TYPE_VIEWPROJ`
-`material.CONSTANT_TYPE_WORLD`
-`material.CONSTANT_TYPE_TEXTURE`
-`material.CONSTANT_TYPE_VIEW`
-`material.CONSTANT_TYPE_PROJECTION`
-`material.CONSTANT_TYPE_NORMAL`
-`material.CONSTANT_TYPE_WORLDVIEW`
-`material.CONSTANT_TYPE_WORLDVIEWPROJ`
-`material.CONSTANT_TYPE_TIME`
-`material.CONSTANT_TYPE_WORLD_INVERSE`
-`material.CONSTANT_TYPE_VIEW_INVERSE`
-`material.CONSTANT_TYPE_PROJECTION_INVERSE`
-`material.CONSTANT_TYPE_VIEWPROJ_INVERSE`
-`material.CONSTANT_TYPE_WORLDVIEW_INVERSE`
-`material.CONSTANT_TYPE_WORLDVIEWPROJ_INVERSE`
-
-
-`value`
-vmath.vector4 | vmath.vector3 | vmath.matrix4 | number | table the value(s) of the constant. If the shader constant is an array, the amount of values to update depends on how many values that are passed in the 'value' field.
-
+ * @param constants Constant options keyed by constant name. Partial updates are supported.
  * @example Set a shader constant in a compute program
 ```lua
 function update(self)
@@ -4388,58 +7262,15 @@ function update(self)
 end
 ```
  */
-	export function set_constants(path: hash | string, constants: object): void;
+	export function set_constants(
+		path: hash | string,
+		constants: any  ,
+	): void;
 	/**
  * Sets texture samplers in a compute program, if the samplers exist. Use this function to change the settings of texture samplers.
 To set actual textures that should be bound to the samplers, use the `compute.set_textures` function instead.
  * @param path The path to the resource
- * @param samplers A table keyed by sampler name with args tables as values. Partial updates are supported. Supported entries:
-
-`u_wrap`
-number the u wrap mode of the texture sampler. Supported values:
-
-
-`graphics.TEXTURE_WRAP_CLAMP_TO_BORDER`
-`graphics.TEXTURE_WRAP_CLAMP_TO_EDGE`
-`graphics.TEXTURE_WRAP_MIRRORED_REPEAT`
-`graphics.TEXTURE_WRAP_REPEAT`
-
-
-`v_wrap`
-number the v wrap mode of the texture sampler. Supported values:
-
-
-`graphics.TEXTURE_WRAP_CLAMP_TO_BORDER`
-`graphics.TEXTURE_WRAP_CLAMP_TO_EDGE`
-`graphics.TEXTURE_WRAP_MIRRORED_REPEAT`
-`graphics.TEXTURE_WRAP_REPEAT`
-
-
-`min_filter`
-number the min filter mode of the texture sampler. Supported values:
-
-
-`graphics.TEXTURE_FILTER_DEFAULT`
-`graphics.TEXTURE_FILTER_NEAREST`
-`graphics.TEXTURE_FILTER_LINEAR`
-`graphics.TEXTURE_FILTER_NEAREST_MIPMAP_NEAREST`
-`graphics.TEXTURE_FILTER_NEAREST_MIPMAP_LINEAR`
-`graphics.TEXTURE_FILTER_LINEAR_MIPMAP_NEAREST`
-`graphics.TEXTURE_FILTER_LINEAR_MIPMAP_LINEAR`
-
-
-`mag_filter`
-number the mag filter mode of the texture sampler
-
-
-`graphics.TEXTURE_FILTER_DEFAULT`
-`graphics.TEXTURE_FILTER_NEAREST`
-`graphics.TEXTURE_FILTER_LINEAR`
-
-
-`max_anisotropy`
-number the max anisotropy of the texture sampler
-
+ * @param samplers Sampler options keyed by sampler name. Partial updates are supported.
  * @example Configures a sampler in a compute program
 ```lua
 function init(self)
@@ -4449,7 +7280,7 @@ function init(self)
 end
 ```
  */
-	export function set_samplers(path: hash | string, samplers: object): void;
+	export function set_samplers(path: hash | string, samplers: any  ): void;
 	/**
  * Sets textures in a compute program, if the samplers exist.
  * @param path The path to the resource
@@ -4465,61 +7296,68 @@ function init(self)
 end
 ```
  */
-	export function set_textures(path: hash | string, textures: object): void;
+	export function set_textures(
+		path: hash | string,
+		textures: any    ,
+	): void;
 }
 
 /** @see {@link https://defold.com/ref/stable/crash/|API Documentation} */
 declare namespace crash {
-	/**
-	 * android build fingerprint
-	 */
-	export const SYSFIELD_ANDROID_BUILD_FINGERPRINT: number;
-	/**
-	 * system device language as reported by sys.get_sys_info
-	 */
-	export const SYSFIELD_DEVICE_LANGUAGE: number;
-	/**
-	 * device model as reported by sys.get_sys_info
-	 */
-	export const SYSFIELD_DEVICE_MODEL: number;
-	/**
-	 * engine version as hash
-	 */
-	export const SYSFIELD_ENGINE_HASH: number;
-	/**
-	 * engine version as release number
-	 */
-	export const SYSFIELD_ENGINE_VERSION: number;
-	/**
-	 * system language as reported by sys.get_sys_info
-	 */
-	export const SYSFIELD_LANGUAGE: number;
-	/**
-	 * device manufacturer as reported by sys.get_sys_info
-	 */
-	export const SYSFIELD_MANUFACTURER: number;
-	/**
+	export namespace SYSFIELD {
+		/**
+		 * android build fingerprint
+		 */
+		export const SYSFIELD_ANDROID_BUILD_FINGERPRINT: unknown;
+		/**
+		 * system device language as reported by sys.get_sys_info
+		 */
+		export const SYSFIELD_DEVICE_LANGUAGE: unknown;
+		/**
+		 * device model as reported by sys.get_sys_info
+		 */
+		export const SYSFIELD_DEVICE_MODEL: unknown;
+		/**
+		 * engine version as hash
+		 */
+		export const SYSFIELD_ENGINE_HASH: unknown;
+		/**
+		 * engine version as release number
+		 */
+		export const SYSFIELD_ENGINE_VERSION: unknown;
+		/**
+		 * system language as reported by sys.get_sys_info
+		 */
+		export const SYSFIELD_LANGUAGE: unknown;
+		/**
+		 * device manufacturer as reported by sys.get_sys_info
+		 */
+		export const SYSFIELD_MANUFACTURER: unknown;
+		/**
+		 * system name as reported by sys.get_sys_info
+		 */
+		export const SYSFIELD_SYSTEM_NAME: unknown;
+		/**
+		 * system version as reported by sys.get_sys_info
+		 */
+		export const SYSFIELD_SYSTEM_VERSION: unknown;
+		/**
+		 * system territory as reported by sys.get_sys_info
+		 */
+		export const SYSFIELD_TERRITORY: unknown;
+	} /**
 	 * The max number of sysfields.
+	 * @param value
 	 */
 	export const SYSFIELD_MAX: number;
 	/**
-	 * system name as reported by sys.get_sys_info
-	 */
-	export const SYSFIELD_SYSTEM_NAME: number;
-	/**
-	 * system version as reported by sys.get_sys_info
-	 */
-	export const SYSFIELD_SYSTEM_VERSION: number;
-	/**
-	 * system territory as reported by sys.get_sys_info
-	 */
-	export const SYSFIELD_TERRITORY: number;
-	/**
 	 * The max number of user fields.
+	 * @param value
 	 */
 	export const USERFIELD_MAX: number;
 	/**
 	 * The max size of a single user field.
+	 * @param value
 	 */
 	export const USERFIELD_SIZE: number;
 	/**
@@ -4528,7 +7366,7 @@ declare namespace crash {
 	 * @returns table containing the backtrace
 	 * @see {@link https://defold.com/ref/stable/crash/#crash.get_backtrace|API Documentation}
 	 */
-	export function get_backtrace(handle: number): object;
+	export function get_backtrace(handle: number): unknown;
 	/**
  * The format of read text blob is platform specific
 and not guaranteed
@@ -4539,11 +7377,10 @@ but can be useful for manual inspection.
  */
 	export function get_extra_data(handle: number): string;
 	/**
- * The function returns a table containing entries with sub-tables that
-have fields 'name' and 'address' set for all loaded modules.
- * @param handle crash dump handle
-* @see {@link https://defold.com/ref/stable/crash/#crash.get_modules|API Documentation}
- */
+	 * get all loaded modules from when the crash occured
+	 * @param handle crash dump handle
+	 * @see {@link https://defold.com/ref/stable/crash/#crash.get_modules|API Documentation}
+	 */
 	export function get_modules(
 		handle: number,
 	): { name: unknown; address: unknown }[];
@@ -4561,10 +7398,7 @@ have fields 'name' and 'address' set for all loaded modules.
 	 * @returns value recorded in the crash dump, or `nil` if it didn't exist
 	 * @see {@link https://defold.com/ref/stable/crash/#crash.get_sys_field|API Documentation}
 	 */
-	export function get_sys_field(
-		handle: number,
-		index: number,
-	): string | undefined;
+	export function get_sys_field(handle: number, index: any): string | undefined;
 	/**
 	 * reads user field from a loaded crash dump
 	 * @param handle crash dump handle
@@ -4572,7 +7406,7 @@ have fields 'name' and 'address' set for all loaded modules.
 	 * @returns user data value recorded in the crash dump
 	 * @see {@link https://defold.com/ref/stable/crash/#crash.get_user_field|API Documentation}
 	 */
-	export function get_user_field(handle: number, index: number): string;
+	export function get_user_field(handle: number, index: any): string;
 	/**
  * The crash dump will be removed from disk upon a successful
 load, so loading is one-shot.
@@ -4580,7 +7414,16 @@ load, so loading is one-shot.
 * @see {@link https://defold.com/ref/stable/crash/#crash.load_previous|API Documentation}
  */
 	export function load_previous(): number | undefined;
-	/**
+	export namespace module_info {
+		/**
+		 * module load address
+		 */
+		export let address: string;
+		/**
+		 * module name
+		 */
+		export let name: string;
+	} /**
 	 * releases a previously loaded crash dump
 	 * @param handle handle to loaded crash dump
 	 * @see {@link https://defold.com/ref/stable/crash/#crash.release|API Documentation}
@@ -4600,7 +7443,7 @@ There are 32 slots indexed from 0. Each slot stores at most 255 characters.
  * @param value string value to store
 * @see {@link https://defold.com/ref/stable/crash/#crash.set_user_field|API Documentation}
  */
-	export function set_user_field(index: number, value: string): void;
+	export function set_user_field(index: any, value: string): void;
 	/**
  * Performs the same steps as if a crash had just occured but
 allows the program to continue.
@@ -4612,19 +7455,20 @@ The generated dump can be read by crash.load_previous
 
 /** @see {@link https://defold.com/ref/stable/factory/|API Documentation} */
 declare namespace factory {
-	/**
-	 * loaded
-	 */
-	export const STATUS_LOADED: number;
-	/**
-	 * loading
-	 */
-	export const STATUS_LOADING: number;
-	/**
-	 * unloaded
-	 */
-	export const STATUS_UNLOADED: number;
-	/**
+	export namespace STATUS {
+		/**
+		 * The factory resources are loaded.
+		 */
+		export const STATUS_LOADED: unknown;
+		/**
+		 * The factory resources are loading.
+		 */
+		export const STATUS_LOADING: unknown;
+		/**
+		 * The factory resources are unloaded.
+		 */
+		export const STATUS_UNLOADED: unknown;
+	} /**
  * The URL identifies which factory should create the game object.
 If the game object is created inside of the frame (e.g. from an update callback), the game object will be created instantly, but none of its component will be updated in the same frame.
 Properties defined in scripts in the created game object can be overridden through the properties-parameter below.
@@ -4661,7 +7505,7 @@ end
 		url: hash | url | string,
 		position?: vmath.vector3,
 		rotation?: vmath.quaternion,
-		properties?: object,
+		properties?: any  ,
 		scale?: vmath.vector3 | number,
 	): hash;
 	/**
@@ -4670,14 +7514,9 @@ Calling this function when the factory is not marked as dynamic loading always r
 factory.STATUS_LOADED.
  * @param url the factory component to get status from
  * @returns status of the factory component
-
-`factory.STATUS_UNLOADED`
-`factory.STATUS_LOADING`
-`factory.STATUS_LOADED`
 * @see {@link https://defold.com/ref/stable/factory/#factory.get_status|API Documentation}
-
  */
-	export function get_status(url?: hash | url | string): number;
+	export function get_status(url?: hash | url | string): unknown;
 	/**
  * Resources are referenced by the factory component until the existing (parent) collection is destroyed or factory.unload is called.
 Calling this function when the factory is not marked as dynamic loading does nothing.
@@ -4685,7 +7524,7 @@ Calling this function when the factory is not marked as dynamic loading does not
  * @param complete_function function to call when resources are loaded.
 
 `self`
-object The current object.
+script_instance The current script instance.
 `url`
 url url of the factory component
 `result`
@@ -4733,17 +7572,26 @@ factory.unload("#factory")
 /** @see {@link https://defold.com/ref/stable/font/|API Documentation} */
 declare namespace font {
 	/**
- * associates a ttf resource to a .fontc file.
+ * associates a TTF or OTF resource to a .fontc file.
  * @param fontc The path to the .fontc resource
- * @param ttf The path to the .ttf resource
+ * @param font The path to the .ttf or .otf resource
  * @example ```lua
 local font_hash = hash("/assets/fonts/roboto.fontc")
 local ttf_hash = hash("/assets/fonts/Roboto/Roboto-Bold.ttf")
 font.add_font(font_hash, ttf_hash)
 ```
  */
-	export function add_font(fontc: hash | string, ttf: hash | string): void;
-	/**
+	export function add_font(fontc: hash | string, font: hash | string): void;
+	export namespace file_info {
+		/**
+		 * path to the `.ttf` or `.otf` font file
+		 */
+		export let path: string;
+		/**
+		 * hashed font-file path
+		 */
+		export let path_hash: hash;
+	} /**
 	 * Gets information about a font, such as the associated font files
 	 * @param fontc The path to the .fontc resource
 	 */
@@ -4751,16 +7599,25 @@ font.add_font(font_hash, ttf_hash)
 		path: hash;
 		fonts: { path: string; path_hash: hash }[];
 	};
-	/**
+	export namespace info {
+		/**
+		 * associated font files
+		 */
+		export let fonts: unknown;
+		/**
+		 * path hash of the `.fontc` resource
+		 */
+		export let path: hash;
+	} /**
  * prepopulates the font glyph cache with rasterised glyphs
  * @param fontc The path to the .fontc resource
  * @param text The text to layout
  * @param callback (optional) A callback function that is called after the request is finished
 
 `self`
-object The current object.
+script_instance The current script instance.
 `request_id`
-number The request id
+integer The request id
 `result`
 boolean True if request was succesful
 `errstring`
@@ -4777,221 +7634,355 @@ font.prewarm_text(font_hash, "Some text", function (self, request_id, result, er
 	export function prewarm_text(
 		fontc: hash | string,
 		text: string,
-		callback?: (
-			this: any,
-			request_id: any,
-			result: any,
-			errstring: any,
-		) => void,
+		callback?: any,
 	): number;
 	/**
- * associates a ttf resource to a .fontc file
+ * associates a TTF or OTF resource to a .fontc file
  * @param fontc The path to the .fontc resource
- * @param ttf The path to the .ttf resource
+ * @param font The path to the .ttf or .otf resource
  * @example ```lua
 local font_hash = hash("/assets/fonts/roboto.fontc")
 local ttf_hash = hash("/assets/fonts/Roboto/Roboto-Bold.ttf")
 font.remove_font(font_hash, ttf_hash)
 ```
  */
-	export function remove_font(fontc: hash | string, ttf: hash | string): void;
+	export function remove_font(fontc: hash | string, font: hash | string): void;
+	/**
+ * Named object styles are resolved by text layouts without reshaping text.
+A `link` tag uses `link` by default. Callers may select another named style,
+such as `link:hover` or `link:active`, in response to input.
+Font collections initially define these named styles. Each default contains
+a normalized RGBA face-color multiplier and no effects. The default `link`
+style also uses a solid underline, which remains when hover or active colors
+are applied:
+
+`link`: `(0.10, 0.45, 0.90, 1.0)`, solid underline
+`link:hover`: `(0.30, 0.65, 1.00, 1.0)`
+`link:active`: `(0.05, 0.30, 0.70, 1.0)`
+
+The definition is an opening-only sequence of rich-text tags. Tags are
+implicitly closed in reverse order. Calling this function replaces the
+named render properties and effects. Resource-defined decorations, such as
+the default `link` underline, remain unchanged.
+ * @param fontc The path to the `.fontc` resource.
+ * @param name Style name, for example `link:hover`.
+ * @param style Opening-only render-style markup.
+ * @example ```lua
+font.set_style("/fonts/ui.fontc", "link:hover",
+    "<color=#66b3ff><outline color=#000000 size=1><shake amplitude=0.2>")
+```
+ */
+	export function set_style(
+		fontc: hash | string,
+		name: string,
+		style: string,
+	): void;
 }
 
 /** @see {@link https://defold.com/ref/stable/go/|API Documentation} */
 declare namespace go {
-	/**
-	 * in-back
-	 */
-	export const EASING_INBACK: number;
-	/**
-	 * in-bounce
-	 */
-	export const EASING_INBOUNCE: number;
-	/**
-	 * in-circlic
-	 */
-	export const EASING_INCIRC: number;
-	/**
-	 * in-cubic
-	 */
-	export const EASING_INCUBIC: number;
-	/**
-	 * in-elastic
-	 */
-	export const EASING_INELASTIC: number;
-	/**
-	 * in-exponential
-	 */
-	export const EASING_INEXPO: number;
-	/**
-	 * in-out-back
-	 */
-	export const EASING_INOUTBACK: number;
-	/**
-	 * in-out-bounce
-	 */
-	export const EASING_INOUTBOUNCE: number;
-	/**
-	 * in-out-circlic
-	 */
-	export const EASING_INOUTCIRC: number;
-	/**
-	 * in-out-cubic
-	 */
-	export const EASING_INOUTCUBIC: number;
-	/**
-	 * in-out-elastic
-	 */
-	export const EASING_INOUTELASTIC: number;
-	/**
-	 * in-out-exponential
-	 */
-	export const EASING_INOUTEXPO: number;
-	/**
-	 * in-out-quadratic
-	 */
-	export const EASING_INOUTQUAD: number;
-	/**
-	 * in-out-quartic
-	 */
-	export const EASING_INOUTQUART: number;
-	/**
-	 * in-out-quintic
-	 */
-	export const EASING_INOUTQUINT: number;
-	/**
-	 * in-out-sine
-	 */
-	export const EASING_INOUTSINE: number;
-	/**
-	 * in-quadratic
-	 */
-	export const EASING_INQUAD: number;
-	/**
-	 * in-quartic
-	 */
-	export const EASING_INQUART: number;
-	/**
-	 * in-quintic
-	 */
-	export const EASING_INQUINT: number;
-	/**
-	 * in-sine
-	 */
-	export const EASING_INSINE: number;
-	/**
-	 * linear interpolation
-	 */
-	export const EASING_LINEAR: number;
-	/**
-	 * out-back
-	 */
-	export const EASING_OUTBACK: number;
-	/**
-	 * out-bounce
-	 */
-	export const EASING_OUTBOUNCE: number;
-	/**
-	 * out-circlic
-	 */
-	export const EASING_OUTCIRC: number;
-	/**
-	 * out-cubic
-	 */
-	export const EASING_OUTCUBIC: number;
-	/**
-	 * out-elastic
-	 */
-	export const EASING_OUTELASTIC: number;
-	/**
-	 * out-exponential
-	 */
-	export const EASING_OUTEXPO: number;
-	/**
-	 * out-in-back
-	 */
-	export const EASING_OUTINBACK: number;
-	/**
-	 * out-in-bounce
-	 */
-	export const EASING_OUTINBOUNCE: number;
-	/**
-	 * out-in-circlic
-	 */
-	export const EASING_OUTINCIRC: number;
-	/**
-	 * out-in-cubic
-	 */
-	export const EASING_OUTINCUBIC: number;
-	/**
-	 * out-in-elastic
-	 */
-	export const EASING_OUTINELASTIC: number;
-	/**
-	 * out-in-exponential
-	 */
-	export const EASING_OUTINEXPO: number;
-	/**
-	 * out-in-quadratic
-	 */
-	export const EASING_OUTINQUAD: number;
-	/**
-	 * out-in-quartic
-	 */
-	export const EASING_OUTINQUART: number;
-	/**
-	 * out-in-quintic
-	 */
-	export const EASING_OUTINQUINT: number;
-	/**
-	 * out-in-sine
-	 */
-	export const EASING_OUTINSINE: number;
-	/**
-	 * out-quadratic
-	 */
-	export const EASING_OUTQUAD: number;
-	/**
-	 * out-quartic
-	 */
-	export const EASING_OUTQUART: number;
-	/**
-	 * out-quintic
-	 */
-	export const EASING_OUTQUINT: number;
-	/**
-	 * out-sine
-	 */
-	export const EASING_OUTSINE: number;
-	/**
-	 * loop backward
-	 */
-	export const PLAYBACK_LOOP_BACKWARD: number;
-	/**
-	 * loop forward
-	 */
-	export const PLAYBACK_LOOP_FORWARD: number;
-	/**
-	 * ping pong loop
-	 */
-	export const PLAYBACK_LOOP_PINGPONG: number;
-	/**
-	 * no playback
-	 */
-	export const PLAYBACK_NONE: number;
-	/**
-	 * once backward
-	 */
-	export const PLAYBACK_ONCE_BACKWARD: number;
-	/**
-	 * once forward
-	 */
-	export const PLAYBACK_ONCE_FORWARD: number;
-	/**
-	 * once ping pong
-	 */
-	export const PLAYBACK_ONCE_PINGPONG: number;
-	/**
+	export namespace EASING {
+		/**
+		 * in-back
+		 */
+		export const EASING_INBACK: unknown;
+		/**
+		 * in-bounce
+		 */
+		export const EASING_INBOUNCE: unknown;
+		/**
+		 * in-circlic
+		 */
+		export const EASING_INCIRC: unknown;
+		/**
+		 * in-cubic
+		 */
+		export const EASING_INCUBIC: unknown;
+		/**
+		 * in-elastic
+		 */
+		export const EASING_INELASTIC: unknown;
+		/**
+		 * in-exponential
+		 */
+		export const EASING_INEXPO: unknown;
+		/**
+		 * in-out-back
+		 */
+		export const EASING_INOUTBACK: unknown;
+		/**
+		 * in-out-bounce
+		 */
+		export const EASING_INOUTBOUNCE: unknown;
+		/**
+		 * in-out-circlic
+		 */
+		export const EASING_INOUTCIRC: unknown;
+		/**
+		 * in-out-cubic
+		 */
+		export const EASING_INOUTCUBIC: unknown;
+		/**
+		 * in-out-elastic
+		 */
+		export const EASING_INOUTELASTIC: unknown;
+		/**
+		 * in-out-exponential
+		 */
+		export const EASING_INOUTEXPO: unknown;
+		/**
+		 * in-out-quadratic
+		 */
+		export const EASING_INOUTQUAD: unknown;
+		/**
+		 * in-out-quartic
+		 */
+		export const EASING_INOUTQUART: unknown;
+		/**
+		 * in-out-quintic
+		 */
+		export const EASING_INOUTQUINT: unknown;
+		/**
+		 * in-out-sine
+		 */
+		export const EASING_INOUTSINE: unknown;
+		/**
+		 * in-quadratic
+		 */
+		export const EASING_INQUAD: unknown;
+		/**
+		 * in-quartic
+		 */
+		export const EASING_INQUART: unknown;
+		/**
+		 * in-quintic
+		 */
+		export const EASING_INQUINT: unknown;
+		/**
+		 * in-sine
+		 */
+		export const EASING_INSINE: unknown;
+		/**
+		 * linear interpolation
+		 */
+		export const EASING_LINEAR: unknown;
+		/**
+		 * out-back
+		 */
+		export const EASING_OUTBACK: unknown;
+		/**
+		 * out-bounce
+		 */
+		export const EASING_OUTBOUNCE: unknown;
+		/**
+		 * out-circlic
+		 */
+		export const EASING_OUTCIRC: unknown;
+		/**
+		 * out-cubic
+		 */
+		export const EASING_OUTCUBIC: unknown;
+		/**
+		 * out-elastic
+		 */
+		export const EASING_OUTELASTIC: unknown;
+		/**
+		 * out-exponential
+		 */
+		export const EASING_OUTEXPO: unknown;
+		/**
+		 * out-in-back
+		 */
+		export const EASING_OUTINBACK: unknown;
+		/**
+		 * out-in-bounce
+		 */
+		export const EASING_OUTINBOUNCE: unknown;
+		/**
+		 * out-in-circlic
+		 */
+		export const EASING_OUTINCIRC: unknown;
+		/**
+		 * out-in-cubic
+		 */
+		export const EASING_OUTINCUBIC: unknown;
+		/**
+		 * out-in-elastic
+		 */
+		export const EASING_OUTINELASTIC: unknown;
+		/**
+		 * out-in-exponential
+		 */
+		export const EASING_OUTINEXPO: unknown;
+		/**
+		 * out-in-quadratic
+		 */
+		export const EASING_OUTINQUAD: unknown;
+		/**
+		 * out-in-quartic
+		 */
+		export const EASING_OUTINQUART: unknown;
+		/**
+		 * out-in-quintic
+		 */
+		export const EASING_OUTINQUINT: unknown;
+		/**
+		 * out-in-sine
+		 */
+		export const EASING_OUTINSINE: unknown;
+		/**
+		 * out-quadratic
+		 */
+		export const EASING_OUTQUAD: unknown;
+		/**
+		 * out-quartic
+		 */
+		export const EASING_OUTQUART: unknown;
+		/**
+		 * out-quintic
+		 */
+		export const EASING_OUTQUINT: unknown;
+		/**
+		 * out-sine
+		 */
+		export const EASING_OUTSINE: unknown;
+	}
+	export namespace PLAYBACK {
+		/**
+		 * loop backward
+		 */
+		export const PLAYBACK_LOOP_BACKWARD: unknown;
+		/**
+		 * loop forward
+		 */
+		export const PLAYBACK_LOOP_FORWARD: unknown;
+		/**
+		 * ping pong loop
+		 */
+		export const PLAYBACK_LOOP_PINGPONG: unknown;
+		/**
+		 * no playback
+		 */
+		export const PLAYBACK_NONE: unknown;
+		/**
+		 * once backward
+		 */
+		export const PLAYBACK_ONCE_BACKWARD: unknown;
+		/**
+		 * once forward
+		 */
+		export const PLAYBACK_ONCE_FORWARD: unknown;
+		/**
+		 * once ping pong
+		 */
+		export const PLAYBACK_ONCE_PINGPONG: unknown;
+	}
+	export namespace action {
+		/**
+		 * Accelerometer x value, when present.
+		 */
+		export let acc_x_: number;
+		/**
+		 * Accelerometer y value, when present.
+		 */
+		export let acc_y_: number;
+		/**
+		 * Accelerometer z value, when present.
+		 */
+		export let acc_z_: number;
+		/**
+		 * Change in the pointer x-coordinate; absent for gamepad, key, and text input.
+		 */
+		export let dx_: number;
+		/**
+		 * Change in the pointer y-coordinate; absent for gamepad, key, and text input.
+		 */
+		export let dy_: number;
+		/**
+		 * Index of the gamepad that provided the input.
+		 */
+		export let gamepad_: number;
+		/**
+		 * Axis values, supplied only for raw gamepad input.
+		 */
+		export let gamepad_axis_: unknown;
+		/**
+		 * Button values, supplied only for raw gamepad input.
+		 */
+		export let gamepad_buttons_: unknown;
+		/**
+		 * SDL-compatible guid, supplied with a gamepad-connected action.
+		 */
+		export let gamepad_guid_: string;
+		/**
+		 * Parsed guid information, supplied with a gamepad-connected action.
+		 */
+		export let gamepad_guid_info_: unknown;
+		/**
+		 * Hat values, supplied only for raw gamepad input.
+		 */
+		export let gamepad_hats_: unknown;
+		/**
+		 * Name of a connected gamepad.
+		 */
+		export let gamepad_name_: string;
+		/**
+		 * Whether the input originated from an unknown or unmapped gamepad.
+		 */
+		export let gamepad_unknown_: boolean;
+		/**
+		 * Whether the input was pressed this frame; absent for pointer movement and text input.
+		 */
+		export let pressed_: boolean;
+		/**
+		 * Whether the input was released this frame; absent for pointer movement and text input.
+		 */
+		export let released_: boolean;
+		/**
+		 * Whether the input was repeated this frame; absent for pointer movement and text input.
+		 */
+		export let repeated_: boolean;
+		/**
+		 * Change in the pointer x-coordinate in screen space; absent for gamepad, key, and text input.
+		 */
+		export let screen_dx_: number;
+		/**
+		 * Change in the pointer y-coordinate in screen space; absent for gamepad, key, and text input.
+		 */
+		export let screen_dy_: number;
+		/**
+		 * Pointer x-coordinate in screen space; absent for gamepad, key, and text input.
+		 */
+		export let screen_x_: number;
+		/**
+		 * Pointer y-coordinate in screen space; absent for gamepad, key, and text input.
+		 */
+		export let screen_y_: number;
+		/**
+		 * Text entered by a text action, or the current sequence for marked-text composition such as Japanese Kana.
+		 */
+		export let text_: string;
+		/**
+		 * Touch inputs, one entry per finger.
+		 */
+		export let touch_: unknown;
+		/**
+		 * Id of the user associated with the controller.
+		 */
+		export let userid_: number;
+		/**
+		 * Amount of input, usually 1 for buttons or between 0 and 1 for analogue input; absent for pointer movement and text input.
+		 */
+		export let value_: number;
+		/**
+		 * Pointer x-coordinate; absent for gamepad, key, and text input.
+		 */
+		export let x_: number;
+		/**
+		 * Pointer y-coordinate; absent for gamepad, key, and text input.
+		 */
+		export let y_: number;
+	} /**
  * This is only supported for numerical properties. If the node property is already being
 animated, that animation will be canceled and replaced by the new one.
 If a `complete_function` (lua function) is specified, that function will be called when the animation has completed.
@@ -5019,7 +8010,7 @@ them.
 
 `self`
 
-object The current object.
+script_instance The current script instance.
 
 `url`
 
@@ -5058,14 +8049,13 @@ go.animate("go", "position.y", go.PLAYBACK_LOOP_PINGPONG, 100, vec, 2.0)
 	export function animate(
 		url: hash | url | string,
 		property: hash | string,
-		playback:
-			typeof go.PLAYBACK_LOOP_BACKWARD          ,
+		playback: any,
 		to: vmath.quaternion | vmath.vector3 | vmath.vector4 | number,
 		easing:
 			ReturnType<typeof vmath.vector> | vmath.quaternion | vmath.vector3 | vmath.vector4 | number,
 		duration: number,
 		delay?: number,
-		complete_function?: (this: any, url: any, property: any) => void,
+		complete_function?: any,
 	): void;
 	/**
  * By calling this function, all or specified stored property animations of the game object or component will be canceled.
@@ -5125,7 +8115,7 @@ go.delete(ids, true)
 ```
  */
 	export function delete_(
-		id?: hash | url | object | string,
+		id?: hash   | url | any   | string,
 		recursive?: boolean,
 	): void;
 	export { delete_ as delete };
@@ -5149,7 +8139,7 @@ go.exists("other_collection:/my_game_object")
  * This is a callback-function, which is called by the engine when a script component is finalized (destroyed). It can
 be used to e.g. take some last action, report the finalization to other game object instances, delete spawned objects
 or release user input focus (see release_input_focus).
- * @param this reference to the script state to be used for storing data
+ * @param this script instance used for storing state
  * @example ```lua
 function final(self)
     -- report finalization
@@ -5157,24 +8147,42 @@ function final(self)
 end
 ```
  */
-	export function final(this: LuaUserdata): void;
+	export function final(this: any): void;
 	/**
  * This is a callback-function, which is called by the engine at fixed intervals to update the state of a script
 component. The function will be called if 'Fixed Update Frequency' is enabled in the Engine section of game.project.
 It can for instance be used to update game logic with the physics simulation if using a fixed timestep for the
 physics (enabled by ticking 'Use Fixed Timestep' in the Physics section of game.project).
- * @param this reference to the script state to be used for storing data
+ * @param this script instance used for storing state
  * @param dt the time-step of the frame update
  */
-	export function fixed_update(this: LuaUserdata, dt: number): void;
-	/**
+	export function fixed_update(this: any, dt: number): void;
+	export namespace gamepad_guid_info {
+		/**
+		 * Bus used to communicate with the device.
+		 */
+		export let bus: number;
+		/**
+		 * SDL CRC16 signature.
+		 */
+		export let crc: number;
+		/**
+		 * USB product id.
+		 */
+		export let product: number;
+		/**
+		 * USB vendor id.
+		 */
+		export let vendor: number;
+		/**
+		 * Device or firmware version.
+		 */
+		export let version: number;
+	} /**
  * gets a named property of the specified game object or component
  * @param url url of the game object or component having the property
  * @param property id of the property to retrieve
- * @param options optional options table
-- index number index into array property (1 based)
-- key hash name of internal property
-- keys table array of internal component resources identified by key (e.g. a particle fx emitter, see examples below)
+ * @param options optional property access options
  * @example Get a property "speed" from a script "player", the property must be declared in the player-script:
 ```lua
 go.property("speed", 50)
@@ -5183,8 +8191,9 @@ go.property("speed", 50)
 Then in the calling script (assumed to belong to the same game object, but does not have to):
 ```lua
 local speed = go.get("#player", "speed")
-```Get a value in a material property array
+```
 
+Get a value in a material property array
 ```lua
 -- get the first vector4 in the array: example[0] (the glsl indices are 0-based)
 go.get(url, "example", {index=1})
@@ -5201,26 +8210,34 @@ Getting all values in a material property array as a table
 -- get all vector4's in the constant array
 go.get(url, "example")
 -- result: { vector4, vector4, ... }
+
 -- get all elements of the vector4's from an array
 go.get(url, "example.x")
 -- result: { number1, number2, ... }
-```Get a named property
+```
+
+Get a named property
 ```lua
-lua
 -- get the resource of a certain gui font
-local font_hash = go.get("#gui", "fonts", {key = "system_font_BIG"})```Get a property from a sub-component, using the "keys" options table
+local font_hash = go.get("#gui", "fonts", {key = "system_font_BIG"})
+```
+
+Get a property from a sub-component, using the "keys" options table
 ```lua
-lua
 -- Addressing the first level of a component:
-go.get("#particlefx", "material", { keys = { "cone_emitter" } })```Get a property into a deeper sub-hierarchy (if the component supports it).
+go.get("#particlefx", "material", { keys = { "cone_emitter" } })
+```
+
+Get a property into a deeper sub-hierarchy (if the component supports it).
 ```lua
 -- Note: There is currently no component that supports this, but a custom component could.
 go.get("#my_component", "some_property", { keys = { "root", "child_node" } })
+```
  */
 	export function get(
 		url: hash | url | string,
 		property: hash | string,
-		options?: object,
+		options?: any,
 	): unknown;
 	/**
  * Returns or constructs an instance identifier. The instance id is a hash
@@ -5411,7 +8428,7 @@ local m = go.get_world_transform("x")
 	/**
  * This is a callback-function, which is called by the engine when a script component is initialized. It can be used
 to set the initial state of the script.
- * @param this reference to the script state to be used for storing data
+ * @param this script instance used for storing state
  * @example ```lua
 function init(self)
     -- set up useful data
@@ -5419,14 +8436,14 @@ function init(self)
 end
 ```
  */
-	export function init(this: LuaUserdata): void;
+	export function init(this: any): void;
 	/**
  * This is a callback-function, which is called by the engine at the end of the frame to update the state of a script
 component. Use it to make final adjustments to the game object instance.
- * @param this reference to the script state to be used for storing data
+ * @param this script instance used for storing state
  * @param dt the time-step of the frame update
  */
-	export function late_update(this: LuaUserdata, dt: number): void;
+	export function late_update(this: any, dt: number): void;
 	/**
  * This is a callback-function, which is called by the engine when user input is sent to the game object instance of the script.
 It can be used to take action on the input, e.g. move the instance according to the input.
@@ -5438,224 +8455,9 @@ end of stack is reached, or a listener returns `true`
 to signal that it wants input to be consumed.
 See the documentation of acquire_input_focus for more
 information.
-The `action` parameter is a table containing data about the input mapped to the
-`action_id`.
-For mapped actions it specifies the value of the input and if it was just pressed or released.
-Actions are mapped to input in an input_binding-file.
-Mouse movement is specifically handled and uses `nil` as its `action_id`.
-The `action` only contains positional parameters in this case, such as x and y of the pointer.
-Here is a brief description of the available table fields:
-
-
-
-Field
-Description
-
-
-
-
-`value`
-The amount of input given by the user. This is usually 1 for buttons and 0-1 for analogue inputs. This is not present for mouse movement and text input.
-
-
-`pressed`
-If the input was pressed this frame. This is not present for mouse movement and text input.
-
-
-`released`
-If the input was released this frame. This is not present for mouse movement and text input.
-
-
-`repeated`
-If the input was repeated this frame. This is similar to how a key on a keyboard is repeated when you hold it down. This is not present for mouse movement and text input.
-
-
-`x`
-The x value of a pointer device, if present. This is not present for gamepad, key and text input.
-
-
-`y`
-The y value of a pointer device, if present. This is not present for gamepad, key and text input.
-
-
-`screen_x`
-The screen space x value of a pointer device, if present. This is not present for gamepad, key and text input.
-
-
-`screen_y`
-The screen space y value of a pointer device, if present. This is not present for gamepad, key and text input.
-
-
-`dx`
-The change in x value of a pointer device, if present. This is not present for gamepad, key and text input.
-
-
-`dy`
-The change in y value of a pointer device, if present. This is not present for gamepad, key and text input.
-
-
-`screen_dx`
-The change in screen space x value of a pointer device, if present. This is not present for gamepad, key and text input.
-
-
-`screen_dy`
-The change in screen space y value of a pointer device, if present. This is not present for gamepad, key and text input.
-
-
-`gamepad`
-The index of the gamepad device that provided the input. See table below about gamepad input.
-
-
-`touch`
-List of touch input, one element per finger, if present. See table below about touch input
-
-
-`text`
-Text input from a (virtual) keyboard or similar.
-
-
-`marked_text`
-Sequence of entered symbols while entering a symbol combination, for example Japanese Kana.
-
-
-
-Gamepad specific fields:
-
-
-
-Field
-Description
-
-
-
-
-`gamepad`
-The index of the gamepad device that provided the input.
-
-
-`userid`
-Id of the user associated with the controller. Usually only relevant on consoles.
-
-
-`gamepad_guid`
-The guid of the gamepad controller. Only passed with "connected" action.
-
-
-`gamepad_guid_info`
-Parsed guid info table. Only passed with "connected" action. See table below.
-
-
-`gamepad_unknown`
-True if the input originated from an unknown/unmapped gamepad.
-
-
-`gamepad_name`
-Name of the gamepad
-
-
-`gamepad_axis`
-List of gamepad axis values. For raw gamepad input only.
-
-
-`gamepadhats`
-List of gamepad hat values. For raw gamepad input only.
-
-
-`gamepad_buttons`
-List of gamepad button values. For raw gamepad input only.
-
-
-
-Touch input table:
-
-
-
-Field
-Description
-
-
-
-
-`id`
-A number identifying the touch input during its duration.
-
-
-`pressed`
-True if the finger was pressed this frame.
-
-
-`released`
-True if the finger was released this frame.
-
-
-`tap_count`
-Number of taps, one for single, two for double-tap, etc
-
-
-`x`
-The x touch location.
-
-
-`y`
-The y touch location.
-
-
-`dx`
-The change in x value.
-
-
-`dy`
-The change in y value.
-
-
-`acc_x`
-Accelerometer x value (if present).
-
-
-`acc_y`
-Accelerometer y value (if present).
-
-
-`acc_z`
-Accelerometer z value (if present).
-
-
-
-Guid info table:
-This info is only passed with a `connected` action.
-
-
-
-Field
-Description
-
-
-
-
-`vendor`
-USB vendor id. E.g. Nintendo 0x057e, Sony 0x054c, or Microsoft 0x045e
-
-
-`product`
-USB product id
-
-
-`bus`
-How device is communicating. E.g.0x0003 for USB devices and 0x0005 for Bluetooth devices.
-
-
-`crc`
-SDL CRC16 signature, typically used when vendor and product ids are unavailable
-
-
-`version`
-The device or firmware version
-
-
-
- * @param this reference to the script state to be used for storing data
- * @param action_id id of the received input action, as mapped in the input_binding-file
- * @param action a table containing the input data, see above for a description
+ * @param this script instance used for storing state
+ * @param action_id id of the received input action, as mapped in the input_binding-file, or `nil` for mouse movement
+ * @param action input data for the action
  * @returns optional boolean to signal if the input should be consumed (not passed on to others) or not, default is false
  * @example This example demonstrates how a game object instance can be moved as a response to user input.
 ```lua
@@ -5686,16 +8488,16 @@ end
 ```
  */
 	export function on_input(
-		this: LuaUserdata,
-		action_id: hash,
-		action: object,
+		this: any,
+		action_id: hash | undefined,
+		action: any,
 	): boolean | undefined;
 	/**
  * This is a callback-function, which is called by the engine whenever a message has been sent to the script component.
 It can be used to take action on the message, e.g. send a response back to the sender of the message.
 The `message` parameter is a table containing the message data. If the message is sent from the engine, the
 documentation of the message specifies which data is supplied.
- * @param this reference to the script state to be used for storing data
+ * @param this script instance used for storing state
  * @param message_id id of the received message
  * @param message a table containing the message data
  * @param sender address of the sender
@@ -5727,15 +8529,15 @@ end
 ```
  */
 	export function on_message(
-		this: LuaUserdata,
+		this: any,
 		message_id: hash,
-		message: object,
+		message: any,
 		sender: url,
 	): void;
 	/**
  * This is a callback-function, which is called by the engine when the script component is reloaded, e.g. from the editor.
 It can be used for live development, e.g. to tweak constants or set up the state properly for the instance.
- * @param this reference to the script state to be used for storing data
+ * @param this script instance used for storing state
  * @example This example demonstrates how to tweak the speed of a game object instance that is moved on user input.
 ```lua
 function init(self)
@@ -5769,7 +8571,7 @@ function on_reload(self)
 end
 ```
  */
-	export function on_reload(this: LuaUserdata): void;
+	export function on_reload(this: any): void;
 	/**
  * This function defines a property which can then be used in the script through the self-reference.
 The properties defined this way are automatically exposed in the editor in game objects and collections which use the script.
@@ -5793,21 +8595,37 @@ function on_message(self, message_id, message, sender)
     end
 end
 ```
+
+Text properties can contain UTF-8 and newline characters:
+```lua
+go.property("player_name", "Player One")
+go.property("dialogue", "First line\nSecond line")
+```
  */
 	export function property(
 		name: string,
 		value:
-			hash | url | vmath.quaternion | vmath.vector3 | vmath.vector4 | any | boolean | number,
+			hash | url | vmath.quaternion | vmath.vector3 | vmath.vector4 | any | boolean | number | string,
 	): void;
-	/**
+	export namespace property_options {
+		/**
+		 * Index into an array property, starting at one.
+		 */
+		export let index_: number;
+		/**
+		 * Name of an internal property.
+		 */
+		export let key_: hash;
+		/**
+		 * Internal component resources identified by key, such as particle FX emitters.
+		 */
+		export let keys_: unknown;
+	} /**
  * sets a named property of the specified game object or component, or a material constant
  * @param url url of the game object or component having the property
  * @param property id of the property to set
  * @param value the value to set
- * @param options optional options table
-- index integer index into array property (1 based)
-- key hash name of internal property
-- keys table array of internal component resources identified by key (e.g. a particle fx emitter, see examples below)
+ * @param options optional property access options
  * @example Set a property "speed" of a script "player", the property must be declared in the player-script:
 ```lua
 go.property("speed", 50)
@@ -5816,8 +8634,9 @@ go.property("speed", 50)
 Then in the calling script (assumed to belong to the same game object, but does not have to):
 ```lua
 go.set("#player", "speed", 100)
-```Set a vector4 in a material property array
+```
 
+Set a vector4 in a material property array
 ```lua
 -- set the first vector4 in the array: example[0] = v (the glsl indices are 0-based)
 go.set(url, "example", vmath.vector4(1,1,1,1), {index=1})
@@ -5831,32 +8650,40 @@ go.set(url, "example.x", 7, {index=1})
 
 Set a material property array by a table of vector4
 ```lua
-lua
 -- set the first two vector4's in the array
 -- if the array has more than two elements in the array they will not be set
-go.set(url, "example", { vmath.vector4(1,1,1,1), vmath.vector4(2,2,2,2) })```Set a named property
+go.set(url, "example", { vmath.vector4(1,1,1,1), vmath.vector4(2,2,2,2) })
+```
+
+Set a named property
 ```lua
 go.property("big_font", resource.font())
+
 function init(self)
     go.set("#gui", "fonts", self.big_font, {key = "system_font_BIG"})
 end
-```Set a property on a sub-component, using the "keys" options table
+```
+
+Set a property on a sub-component, using the "keys" options table
 ```lua
-lua
 go.property("my_material", resource.material)
 function init(self)
     go.set("#particlefx", "material", self.my_material, { keys = { "cone_emitter" } })
-end```Set a property in a deeper sub-hierarchy (if the component supports it).
+end
+```
+
+Set a property in a deeper sub-hierarchy (if the component supports it).
 ```lua
 -- Note: There is currently no component that supports this, but a custom component could.
 go.set("#my_component", "some_property", some_value, { keys = { "root", "child_node" } })
+```
  */
 	export function set(
 		url: hash | url | string,
 		property: hash | string,
 		value:
-			hash | url | vmath.quaternion | vmath.vector3 | vmath.vector4 | any | boolean | number,
-		options?: object,
+			hash | url | vmath.quaternion | vmath.vector3 | vmath.vector4 | any | boolean | number | string,
+		options?: any,
 	): void;
 	/**
  * Sets the parent for a game object instance. This means that the instance will exist in the geometrical space of its parent,
@@ -5970,10 +8797,59 @@ go.set_scale_xy(s, "obj_id") -- z will not be set here, only x and y
 		scale: vmath.vector3 | number,
 		id?: hash | url | string,
 	): void;
-	/**
+	export namespace touch {
+		/**
+		 * Change in the touch x-coordinate.
+		 */
+		export let dx: number;
+		/**
+		 * Change in the touch y-coordinate.
+		 */
+		export let dy: number;
+		/**
+		 * Identifier for the touch during its lifetime.
+		 */
+		export let id: number;
+		/**
+		 * Whether the finger was pressed this frame.
+		 */
+		export let pressed: boolean;
+		/**
+		 * Whether the finger was released this frame.
+		 */
+		export let released: boolean;
+		/**
+		 * Change in the touch x-coordinate in screen space.
+		 */
+		export let screen_dx: number;
+		/**
+		 * Change in the touch y-coordinate in screen space.
+		 */
+		export let screen_dy: number;
+		/**
+		 * Touch x-coordinate in screen space.
+		 */
+		export let screen_x: number;
+		/**
+		 * Touch y-coordinate in screen space.
+		 */
+		export let screen_y: number;
+		/**
+		 * Number of taps, such as one for a single tap and two for a double tap.
+		 */
+		export let tap_count: number;
+		/**
+		 * Touch x-coordinate.
+		 */
+		export let x: number;
+		/**
+		 * Touch y-coordinate.
+		 */
+		export let y: number;
+	} /**
  * This is a callback-function, which is called by the engine every frame to update the state of a script component.
 It can be used to perform any kind of game related tasks, e.g. moving the game object instance.
- * @param this reference to the script state to be used for storing data
+ * @param this script instance used for storing state
  * @param dt the time-step of the frame update
  * @example This example demonstrates how to move a game object instance through the script component:
 ```lua
@@ -5988,7 +8864,7 @@ function update(self, dt)
 end
 ```
  */
-	export function update(this: LuaUserdata, dt: number): void;
+	export function update(this: any, dt: number): void;
 	/**
  * Recalculates and updates the cached world transform immediately for the target instance
 and its ancestors (parent chain up to the collection root). Descendants (children) are
@@ -6093,741 +8969,1065 @@ declare namespace go {
 
 /** @see {@link https://defold.com/ref/stable/graphics/|API Documentation} */
 declare namespace graphics {
-	export const BLEND_EQUATION_ADD: number;
-	export const BLEND_EQUATION_MAX: number;
-	export const BLEND_EQUATION_MIN: number;
-	export const BLEND_EQUATION_REVERSE_SUBTRACT: number;
-	export const BLEND_EQUATION_SUBTRACT: number;
-	export const BLEND_FACTOR_CONSTANT_ALPHA: number;
-	export const BLEND_FACTOR_CONSTANT_COLOR: number;
-	export const BLEND_FACTOR_DST_ALPHA: number;
-	export const BLEND_FACTOR_DST_COLOR: number;
-	export const BLEND_FACTOR_ONE: number;
-	export const BLEND_FACTOR_ONE_MINUS_CONSTANT_ALPHA: number;
-	export const BLEND_FACTOR_ONE_MINUS_CONSTANT_COLOR: number;
-	export const BLEND_FACTOR_ONE_MINUS_DST_ALPHA: number;
-	export const BLEND_FACTOR_ONE_MINUS_DST_COLOR: number;
-	export const BLEND_FACTOR_ONE_MINUS_SRC_ALPHA: number;
-	export const BLEND_FACTOR_ONE_MINUS_SRC_COLOR: number;
-	export const BLEND_FACTOR_SRC_ALPHA: number;
-	export const BLEND_FACTOR_SRC_ALPHA_SATURATE: number;
-	export const BLEND_FACTOR_SRC_COLOR: number;
-	export const BLEND_FACTOR_ZERO: number;
-	export const BUFFER_TYPE_COLOR0_BIT: number;
-	/**
-	 * May be nil if multitarget rendering isn't supported
-	 */
-	export const BUFFER_TYPE_COLOR1_BIT: number;
-	/**
-	 * May be nil if multitarget rendering isn't supported
-	 */
-	export const BUFFER_TYPE_COLOR2_BIT: number;
-	/**
-	 * May be nil if multitarget rendering isn't supported
-	 */
-	export const BUFFER_TYPE_COLOR3_BIT: number;
-	export const BUFFER_TYPE_DEPTH_BIT: number;
-	export const BUFFER_TYPE_STENCIL_BIT: number;
-	export const COMPARE_FUNC_ALWAYS: number;
-	export const COMPARE_FUNC_EQUAL: number;
-	export const COMPARE_FUNC_GEQUAL: number;
-	export const COMPARE_FUNC_GREATER: number;
-	export const COMPARE_FUNC_LEQUAL: number;
-	export const COMPARE_FUNC_LESS: number;
-	export const COMPARE_FUNC_NEVER: number;
-	export const COMPARE_FUNC_NOTEQUAL: number;
-	export const COMPRESSION_TYPE_BASIS_ETC1S: number;
-	export const COMPRESSION_TYPE_BASIS_UASTC: number;
-	export const COMPRESSION_TYPE_DEFAULT: number;
-	export const COMPRESSION_TYPE_WEBP: number;
-	export const COMPRESSION_TYPE_WEBP_LOSSY: number;
-	/**
-	 * Context feature flag indicating support for 3D (volume) textures.
-	 */
-	export const CONTEXT_FEATURE_3D_TEXTURES: number;
-	/**
- * Context feature flag indicating support for ASTC compressed 2D array textures.
-Some WebGL/GLES drivers fail array texture ASTC uploads while 2D ASTC works.
- */
-	export const CONTEXT_FEATURE_ASTC_ARRAY_TEXTURES: number;
-	/**
- * Context feature flag indicating support for min/max blend equations.
-Requires GLES3+ or EXT_blend_minmax.
- */
-	export const CONTEXT_FEATURE_BLEND_EQUATION_MIN_MAX: number;
-	/**
-	 * Context feature flag indicating support for compute shaders.
-	 */
-	export const CONTEXT_FEATURE_COMPUTE_SHADER: number;
-	/**
-	 * Context feature flag indicating support for hardware instancing.
-	 */
-	export const CONTEXT_FEATURE_INSTANCING: number;
-	/**
-	 * Context feature flag indicating support for rendering to multiple color targets simultaneously.
-	 */
-	export const CONTEXT_FEATURE_MULTI_TARGET_RENDERING: number;
-	/**
-	 * Context feature flag indicating support for storage buffers.
-	 */
-	export const CONTEXT_FEATURE_STORAGE_BUFFER: number;
-	/**
-	 * Context feature flag indicating support for texture arrays.
-	 */
-	export const CONTEXT_FEATURE_TEXTURE_ARRAY: number;
-	/**
-	 * Context feature flag indicating support for vertical sync (vsync).
-	 */
-	export const CONTEXT_FEATURE_VSYNC: number;
-	export const FACE_TYPE_BACK: number;
-	export const FACE_TYPE_FRONT: number;
-	export const FACE_TYPE_FRONT_AND_BACK: number;
-	export const STATE_ALPHA_TEST: number;
-	export const STATE_ALPHA_TEST_SUPPORTED: number;
-	export const STATE_BLEND: number;
-	export const STATE_CULL_FACE: number;
-	export const STATE_DEPTH_TEST: number;
-	export const STATE_POLYGON_OFFSET_FILL: number;
-	export const STATE_SCISSOR_TEST: number;
-	export const STATE_STENCIL_TEST: number;
-	export const STENCIL_OP_DECR: number;
-	export const STENCIL_OP_DECR_WRAP: number;
-	export const STENCIL_OP_INCR: number;
-	export const STENCIL_OP_INCR_WRAP: number;
-	export const STENCIL_OP_INVERT: number;
-	export const STENCIL_OP_KEEP: number;
-	export const STENCIL_OP_REPLACE: number;
-	export const STENCIL_OP_ZERO: number;
-	export const TEXTURE_FILTER_DEFAULT: number;
-	export const TEXTURE_FILTER_LINEAR: number;
-	export const TEXTURE_FILTER_LINEAR_MIPMAP_LINEAR: number;
-	export const TEXTURE_FILTER_LINEAR_MIPMAP_NEAREST: number;
-	export const TEXTURE_FILTER_NEAREST: number;
-	export const TEXTURE_FILTER_NEAREST_MIPMAP_LINEAR: number;
-	export const TEXTURE_FILTER_NEAREST_MIPMAP_NEAREST: number;
-	/**
-	 * May be nil if the graphics driver doesn't support it
-	 */
-	export const TEXTURE_FORMAT_BGRA8U: number;
-	export const TEXTURE_FORMAT_DEPTH: number;
-	/**
-	 * May be nil if the graphics driver doesn't support it
-	 */
-	export const TEXTURE_FORMAT_LUMINANCE: number;
-	/**
-	 * May be nil if the graphics driver doesn't support it
-	 */
-	export const TEXTURE_FORMAT_LUMINANCE_ALPHA: number;
-	/**
-	 * May be nil if the graphics driver doesn't support it
-	 */
-	export const TEXTURE_FORMAT_R16F: number;
-	/**
-	 * May be nil if the graphics driver doesn't support it
-	 */
-	export const TEXTURE_FORMAT_R32F: number;
-	/**
-	 * May be nil if the graphics driver doesn't support it
-	 */
-	export const TEXTURE_FORMAT_R32UI: number;
-	/**
-	 * May be nil if the graphics driver doesn't support it
-	 */
-	export const TEXTURE_FORMAT_RG16F: number;
-	/**
-	 * May be nil if the graphics driver doesn't support it
-	 */
-	export const TEXTURE_FORMAT_RG32F: number;
-	/**
-	 * May be nil if the graphics driver doesn't support it
-	 */
-	export const TEXTURE_FORMAT_RGB: number;
-	/**
-	 * May be nil if the graphics driver doesn't support it
-	 */
-	export const TEXTURE_FORMAT_RGB16F: number;
-	/**
-	 * May be nil if the graphics driver doesn't support it
-	 */
-	export const TEXTURE_FORMAT_RGB32F: number;
-	/**
-	 * May be nil if the graphics driver doesn't support it
-	 */
-	export const TEXTURE_FORMAT_RGBA: number;
-	/**
-	 * May be nil if the graphics driver doesn't support it
-	 */
-	export const TEXTURE_FORMAT_RGBA16F: number;
-	/**
-	 * May be nil if the graphics driver doesn't support it
-	 */
-	export const TEXTURE_FORMAT_RGBA32F: number;
-	/**
-	 * May be nil if the graphics driver doesn't support it
-	 */
-	export const TEXTURE_FORMAT_RGBA32UI: number;
-	/**
-	 * May be nil if the graphics driver doesn't support it
-	 */
-	export const TEXTURE_FORMAT_RGBA_16BPP: number;
-	/**
-	 * May be nil if the graphics driver doesn't support it
-	 */
-	export const TEXTURE_FORMAT_RGBA_ASTC_4X4: number;
-	/**
-	 * May be nil if the graphics driver doesn't support it
-	 */
-	export const TEXTURE_FORMAT_RGBA_BC3: number;
-	/**
-	 * May be nil if the graphics driver doesn't support it
-	 */
-	export const TEXTURE_FORMAT_RGBA_BC7: number;
-	/**
-	 * May be nil if the graphics driver doesn't support it
-	 */
-	export const TEXTURE_FORMAT_RGBA_ETC2: number;
-	/**
-	 * May be nil if the graphics driver doesn't support it
-	 */
-	export const TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1: number;
-	/**
-	 * May be nil if the graphics driver doesn't support it
-	 */
-	export const TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1: number;
-	/**
-	 * May be nil if the graphics driver doesn't support it
-	 */
-	export const TEXTURE_FORMAT_RGB_16BPP: number;
-	/**
-	 * May be nil if the graphics driver doesn't support it
-	 */
-	export const TEXTURE_FORMAT_RGB_BC1: number;
-	/**
-	 * May be nil if the graphics driver doesn't support it
-	 */
-	export const TEXTURE_FORMAT_RGB_ETC1: number;
-	/**
-	 * May be nil if the graphics driver doesn't support it
-	 */
-	export const TEXTURE_FORMAT_RGB_PVRTC_2BPPV1: number;
-	/**
-	 * May be nil if the graphics driver doesn't support it
-	 */
-	export const TEXTURE_FORMAT_RGB_PVRTC_4BPPV1: number;
-	/**
-	 * May be nil if the graphics driver doesn't support it
-	 */
-	export const TEXTURE_FORMAT_RG_BC5: number;
-	/**
-	 * May be nil if the graphics driver doesn't support it
-	 */
-	export const TEXTURE_FORMAT_RG_ETC2: number;
-	/**
-	 * May be nil if the graphics driver doesn't support it
-	 */
-	export const TEXTURE_FORMAT_R_BC4: number;
-	/**
-	 * May be nil if the graphics driver doesn't support it
-	 */
-	export const TEXTURE_FORMAT_R_ETC2: number;
-	export const TEXTURE_FORMAT_STENCIL: number;
-	export const TEXTURE_TYPE_2D: number;
-	export const TEXTURE_TYPE_2D_ARRAY: number;
-	/**
-	 * May be nil if the graphics driver doesn't support it
-	 */
-	export const TEXTURE_TYPE_3D: number;
-	export const TEXTURE_TYPE_CUBE_MAP: number;
-	export const TEXTURE_TYPE_IMAGE_2D: number;
-	/**
-	 * May be nil if the graphics driver doesn't support it
-	 */
-	export const TEXTURE_TYPE_IMAGE_3D: number;
-	export const TEXTURE_USAGE_FLAG_COLOR: number;
-	export const TEXTURE_USAGE_FLAG_INPUT: number;
-	export const TEXTURE_USAGE_FLAG_MEMORYLESS: number;
-	export const TEXTURE_USAGE_FLAG_SAMPLE: number;
-	export const TEXTURE_USAGE_FLAG_STORAGE: number;
-	export const TEXTURE_WRAP_CLAMP_TO_BORDER: number;
-	export const TEXTURE_WRAP_CLAMP_TO_EDGE: number;
-	export const TEXTURE_WRAP_MIRRORED_REPEAT: number;
-	export const TEXTURE_WRAP_REPEAT: number;
-	/**
+	export namespace BLEND_EQUATION {
+		export const BLEND_EQUATION_ADD: unknown;
+		export const BLEND_EQUATION_MAX: unknown;
+		export const BLEND_EQUATION_MIN: unknown;
+		export const BLEND_EQUATION_REVERSE_SUBTRACT: unknown;
+		export const BLEND_EQUATION_SUBTRACT: unknown;
+	}
+	export namespace BLEND_FACTOR {
+		/**
+		 * constant blend alpha for every component
+		 */
+		export const BLEND_FACTOR_CONSTANT_ALPHA: unknown;
+		/**
+		 * constant blend color
+		 */
+		export const BLEND_FACTOR_CONSTANT_COLOR: unknown;
+		/**
+		 * destination alpha for every component
+		 */
+		export const BLEND_FACTOR_DST_ALPHA: unknown;
+		/**
+		 * destination color
+		 */
+		export const BLEND_FACTOR_DST_COLOR: unknown;
+		/**
+		 * one for every component
+		 */
+		export const BLEND_FACTOR_ONE: unknown;
+		/**
+		 * one minus the constant blend alpha for every component
+		 */
+		export const BLEND_FACTOR_ONE_MINUS_CONSTANT_ALPHA: unknown;
+		/**
+		 * one minus the constant blend color
+		 */
+		export const BLEND_FACTOR_ONE_MINUS_CONSTANT_COLOR: unknown;
+		/**
+		 * one minus the destination alpha for every component
+		 */
+		export const BLEND_FACTOR_ONE_MINUS_DST_ALPHA: unknown;
+		/**
+		 * one minus the destination color
+		 */
+		export const BLEND_FACTOR_ONE_MINUS_DST_COLOR: unknown;
+		/**
+		 * one minus the source alpha for every component
+		 */
+		export const BLEND_FACTOR_ONE_MINUS_SRC_ALPHA: unknown;
+		/**
+		 * one minus the source color
+		 */
+		export const BLEND_FACTOR_ONE_MINUS_SRC_COLOR: unknown;
+		/**
+		 * source alpha for every component
+		 */
+		export const BLEND_FACTOR_SRC_ALPHA: unknown;
+		/**
+		 * minimum of source alpha and one minus destination alpha for color, and one for alpha
+		 */
+		export const BLEND_FACTOR_SRC_ALPHA_SATURATE: unknown;
+		/**
+		 * source color
+		 */
+		export const BLEND_FACTOR_SRC_COLOR: unknown;
+		/**
+		 * zero for every component
+		 */
+		export const BLEND_FACTOR_ZERO: unknown;
+	}
+	export namespace BUFFER_TYPE {
+		/**
+		 * first color attachment
+		 */
+		export const BUFFER_TYPE_COLOR0_BIT: unknown;
+		/**
+		 * second color attachment; may be nil if multiple render targets are unsupported
+		 */
+		export const BUFFER_TYPE_COLOR1_BIT: unknown | undefined;
+		/**
+		 * third color attachment; may be nil if multiple render targets are unsupported
+		 */
+		export const BUFFER_TYPE_COLOR2_BIT: unknown | undefined;
+		/**
+		 * fourth color attachment; may be nil if multiple render targets are unsupported
+		 */
+		export const BUFFER_TYPE_COLOR3_BIT: unknown | undefined;
+		/**
+		 * depth attachment
+		 */
+		export const BUFFER_TYPE_DEPTH_BIT: unknown;
+		/**
+		 * stencil attachment
+		 */
+		export const BUFFER_TYPE_STENCIL_BIT: unknown;
+	}
+	export namespace COMPARE_FUNC {
+		/**
+		 * always passes
+		 */
+		export const COMPARE_FUNC_ALWAYS: unknown;
+		/**
+		 * passes when the values are equal
+		 */
+		export const COMPARE_FUNC_EQUAL: unknown;
+		/**
+		 * passes when the incoming value is greater than or equal to the stored value
+		 */
+		export const COMPARE_FUNC_GEQUAL: unknown;
+		/**
+		 * passes when the incoming value is greater than the stored value
+		 */
+		export const COMPARE_FUNC_GREATER: unknown;
+		/**
+		 * passes when the incoming value is less than or equal to the stored value
+		 */
+		export const COMPARE_FUNC_LEQUAL: unknown;
+		/**
+		 * passes when the incoming value is less than the stored value
+		 */
+		export const COMPARE_FUNC_LESS: unknown;
+		/**
+		 * never passes
+		 */
+		export const COMPARE_FUNC_NEVER: unknown;
+		/**
+		 * passes when the values are not equal
+		 */
+		export const COMPARE_FUNC_NOTEQUAL: unknown;
+	}
+	export namespace COMPRESSION_TYPE {
+		export const COMPRESSION_TYPE_BASIS_ETC1S: unknown;
+		export const COMPRESSION_TYPE_BASIS_UASTC: unknown;
+		export const COMPRESSION_TYPE_DEFAULT: unknown;
+		export const COMPRESSION_TYPE_WEBP: unknown;
+		export const COMPRESSION_TYPE_WEBP_LOSSY: unknown;
+	}
+	export namespace CONTEXT_FEATURE {
+		/**
+		 * Context feature flag indicating support for 3D (volume) textures.
+		 */
+		export const CONTEXT_FEATURE_3D_TEXTURES: unknown;
+		/**
+		 * Context feature flag indicating support for ASTC compressed 2D array textures. Some WebGL/GLES drivers fail array texture ASTC uploads while 2D ASTC works.
+		 */
+		export const CONTEXT_FEATURE_ASTC_ARRAY_TEXTURES: unknown;
+		/**
+		 * Context feature flag indicating support for BC (S3TC/RGTC/BPTC) compressed 2D array and 3D textures. WebGL2 forbids these compressed families on array/3D targets while allowing them on 2D.
+		 */
+		export const CONTEXT_FEATURE_BC_ARRAY_TEXTURES: unknown;
+		/**
+		 * Context feature flag indicating support for min/max blend equations. Requires GLES3+ or EXT_blend_minmax.
+		 */
+		export const CONTEXT_FEATURE_BLEND_EQUATION_MIN_MAX: unknown;
+		/**
+		 * Context feature flag indicating support for compute shaders.
+		 */
+		export const CONTEXT_FEATURE_COMPUTE_SHADER: unknown;
+		/**
+		 * Context feature flag indicating support for hardware instancing.
+		 */
+		export const CONTEXT_FEATURE_INSTANCING: unknown;
+		/**
+		 * Context feature flag indicating support for rendering to multiple color targets simultaneously.
+		 */
+		export const CONTEXT_FEATURE_MULTI_TARGET_RENDERING: unknown;
+		/**
+		 * Context feature flag indicating support for storage buffers.
+		 */
+		export const CONTEXT_FEATURE_STORAGE_BUFFER: unknown;
+		/**
+		 * Context feature flag indicating support for texture arrays.
+		 */
+		export const CONTEXT_FEATURE_TEXTURE_ARRAY: unknown;
+		/**
+		 * Context feature flag indicating support for vertical sync (vsync).
+		 */
+		export const CONTEXT_FEATURE_VSYNC: unknown;
+	}
+	export namespace COORDINATE_SPACE {
+		/**
+		 * Default vertex attribute coordinate space.
+		 */
+		export const COORDINATE_SPACE_DEFAULT: unknown;
+		/**
+		 * Local vertex attribute coordinate space.
+		 */
+		export const COORDINATE_SPACE_LOCAL: unknown;
+		/**
+		 * World vertex attribute coordinate space.
+		 */
+		export const COORDINATE_SPACE_WORLD: unknown;
+	}
+	export namespace DATA_TYPE {
+		/**
+		 * Signed 8-bit vertex attribute data.
+		 */
+		export const DATA_TYPE_BYTE: unknown;
+		/**
+		 * 32-bit floating-point vertex attribute data.
+		 */
+		export const DATA_TYPE_FLOAT: unknown;
+		/**
+		 * Signed 32-bit vertex attribute data.
+		 */
+		export const DATA_TYPE_INT: unknown;
+		/**
+		 * Signed 16-bit vertex attribute data.
+		 */
+		export const DATA_TYPE_SHORT: unknown;
+		/**
+		 * Unsigned 8-bit vertex attribute data.
+		 */
+		export const DATA_TYPE_UNSIGNED_BYTE: unknown;
+		/**
+		 * Unsigned 32-bit vertex attribute data.
+		 */
+		export const DATA_TYPE_UNSIGNED_INT: unknown;
+		/**
+		 * Unsigned 16-bit vertex attribute data.
+		 */
+		export const DATA_TYPE_UNSIGNED_SHORT: unknown;
+	}
+	export namespace FACE_TYPE {
+		/**
+		 * back-facing polygons
+		 */
+		export const FACE_TYPE_BACK: unknown;
+		/**
+		 * front-facing polygons
+		 */
+		export const FACE_TYPE_FRONT: unknown;
+		/**
+		 * both front- and back-facing polygons
+		 */
+		export const FACE_TYPE_FRONT_AND_BACK: unknown;
+	}
+	export namespace SEMANTIC_TYPE {
+		/**
+		 * Bone-index vertex attribute.
+		 */
+		export const SEMANTIC_TYPE_BONE_INDICES: unknown;
+		/**
+		 * Bone-weight vertex attribute.
+		 */
+		export const SEMANTIC_TYPE_BONE_WEIGHTS: unknown;
+		/**
+		 * Color vertex attribute.
+		 */
+		export const SEMANTIC_TYPE_COLOR: unknown;
+		/**
+		 * Morph-target-weight vertex attribute.
+		 */
+		export const SEMANTIC_TYPE_MORPH_TARGET_WEIGHTS: unknown;
+		/**
+		 * Vertex attribute without a predefined semantic.
+		 */
+		export const SEMANTIC_TYPE_NONE: unknown;
+		/**
+		 * Normal vertex attribute.
+		 */
+		export const SEMANTIC_TYPE_NORMAL: unknown;
+		/**
+		 * Normal-matrix vertex attribute.
+		 */
+		export const SEMANTIC_TYPE_NORMAL_MATRIX: unknown;
+		/**
+		 * Texture page-index vertex attribute.
+		 */
+		export const SEMANTIC_TYPE_PAGE_INDEX: unknown;
+		/**
+		 * Position vertex attribute.
+		 */
+		export const SEMANTIC_TYPE_POSITION: unknown;
+		/**
+		 * Tangent vertex attribute.
+		 */
+		export const SEMANTIC_TYPE_TANGENT: unknown;
+		/**
+		 * Texture-coordinate vertex attribute.
+		 */
+		export const SEMANTIC_TYPE_TEXCOORD: unknown;
+		/**
+		 * 2D texture-transform vertex attribute.
+		 */
+		export const SEMANTIC_TYPE_TEXTURE_TRANSFORM_2D: unknown;
+		/**
+		 * World-matrix vertex attribute.
+		 */
+		export const SEMANTIC_TYPE_WORLD_MATRIX: unknown;
+	}
+	export namespace STATE {
+		export const STATE_ALPHA_TEST: unknown;
+		export const STATE_ALPHA_TEST_SUPPORTED: unknown;
+		export const STATE_BLEND: unknown;
+		export const STATE_CULL_FACE: unknown;
+		export const STATE_DEPTH_TEST: unknown;
+		export const STATE_POLYGON_OFFSET_FILL: unknown;
+		export const STATE_SCISSOR_TEST: unknown;
+		export const STATE_STENCIL_TEST: unknown;
+	}
+	export namespace STENCIL_OP {
+		/**
+		 * decrement and clamp at zero
+		 */
+		export const STENCIL_OP_DECR: unknown;
+		/**
+		 * decrement and wrap zero to the maximum unsigned value
+		 */
+		export const STENCIL_OP_DECR_WRAP: unknown;
+		/**
+		 * increment and clamp at the maximum unsigned value
+		 */
+		export const STENCIL_OP_INCR: unknown;
+		/**
+		 * increment and wrap the maximum unsigned value to zero
+		 */
+		export const STENCIL_OP_INCR_WRAP: unknown;
+		/**
+		 * bitwise invert
+		 */
+		export const STENCIL_OP_INVERT: unknown;
+		/**
+		 * keep the current value
+		 */
+		export const STENCIL_OP_KEEP: unknown;
+		/**
+		 * replace with the reference value from render.set_stencil_func
+		 */
+		export const STENCIL_OP_REPLACE: unknown;
+		/**
+		 * set to zero
+		 */
+		export const STENCIL_OP_ZERO: unknown;
+	}
+	export namespace TEXTURE_FILTER {
+		export const TEXTURE_FILTER_DEFAULT: unknown;
+		export const TEXTURE_FILTER_LINEAR: unknown;
+		export const TEXTURE_FILTER_LINEAR_MIPMAP_LINEAR: unknown;
+		export const TEXTURE_FILTER_LINEAR_MIPMAP_NEAREST: unknown;
+		export const TEXTURE_FILTER_NEAREST: unknown;
+		export const TEXTURE_FILTER_NEAREST_MIPMAP_LINEAR: unknown;
+		export const TEXTURE_FILTER_NEAREST_MIPMAP_NEAREST: unknown;
+	}
+	export namespace TEXTURE_FORMAT {
+		/**
+		 * May be nil if the graphics driver doesn't support it
+		 */
+		export const TEXTURE_FORMAT_BGRA8U: unknown | undefined;
+		export const TEXTURE_FORMAT_DEPTH: unknown;
+		/**
+		 * May be nil if the graphics driver doesn't support it
+		 */
+		export const TEXTURE_FORMAT_LUMINANCE: unknown | undefined;
+		/**
+		 * May be nil if the graphics driver doesn't support it
+		 */
+		export const TEXTURE_FORMAT_LUMINANCE_ALPHA: unknown | undefined;
+		/**
+		 * May be nil if the graphics driver doesn't support it
+		 */
+		export const TEXTURE_FORMAT_R16F: unknown | undefined;
+		/**
+		 * May be nil if the graphics driver doesn't support it
+		 */
+		export const TEXTURE_FORMAT_R32F: unknown | undefined;
+		/**
+		 * May be nil if the graphics driver doesn't support it
+		 */
+		export const TEXTURE_FORMAT_R32UI: unknown | undefined;
+		/**
+		 * May be nil if the graphics driver doesn't support it
+		 */
+		export const TEXTURE_FORMAT_RG16F: unknown | undefined;
+		/**
+		 * May be nil if the graphics driver doesn't support it
+		 */
+		export const TEXTURE_FORMAT_RG32F: unknown | undefined;
+		/**
+		 * May be nil if the graphics driver doesn't support it
+		 */
+		export const TEXTURE_FORMAT_RGB: unknown | undefined;
+		/**
+		 * May be nil if the graphics driver doesn't support it
+		 */
+		export const TEXTURE_FORMAT_RGB16F: unknown | undefined;
+		/**
+		 * May be nil if the graphics driver doesn't support it
+		 */
+		export const TEXTURE_FORMAT_RGB32F: unknown | undefined;
+		/**
+		 * May be nil if the graphics driver doesn't support it
+		 */
+		export const TEXTURE_FORMAT_RGBA: unknown | undefined;
+		/**
+		 * May be nil if the graphics driver doesn't support it
+		 */
+		export const TEXTURE_FORMAT_RGBA16F: unknown | undefined;
+		/**
+		 * May be nil if the graphics driver doesn't support it
+		 */
+		export const TEXTURE_FORMAT_RGBA32F: unknown | undefined;
+		/**
+		 * May be nil if the graphics driver doesn't support it
+		 */
+		export const TEXTURE_FORMAT_RGBA32UI: unknown | undefined;
+		/**
+		 * May be nil if the graphics driver doesn't support it
+		 */
+		export const TEXTURE_FORMAT_RGBA_16BPP: unknown | undefined;
+		/**
+		 * May be nil if the graphics driver doesn't support it
+		 */
+		export const TEXTURE_FORMAT_RGBA_ASTC_4X4: unknown | undefined;
+		/**
+		 * May be nil if the graphics driver doesn't support it
+		 */
+		export const TEXTURE_FORMAT_RGBA_BC3: unknown | undefined;
+		/**
+		 * May be nil if the graphics driver doesn't support it
+		 */
+		export const TEXTURE_FORMAT_RGBA_BC7: unknown | undefined;
+		/**
+		 * May be nil if the graphics driver doesn't support it
+		 */
+		export const TEXTURE_FORMAT_RGBA_ETC2: unknown | undefined;
+		/**
+		 * May be nil if the graphics driver doesn't support it
+		 */
+		export const TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1: unknown | undefined;
+		/**
+		 * May be nil if the graphics driver doesn't support it
+		 */
+		export const TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1: unknown | undefined;
+		/**
+		 * May be nil if the graphics driver doesn't support it
+		 */
+		export const TEXTURE_FORMAT_RGB_16BPP: unknown | undefined;
+		/**
+		 * May be nil if the graphics driver doesn't support it
+		 */
+		export const TEXTURE_FORMAT_RGB_BC1: unknown | undefined;
+		/**
+		 * May be nil if the graphics driver doesn't support it
+		 */
+		export const TEXTURE_FORMAT_RGB_ETC1: unknown | undefined;
+		/**
+		 * May be nil if the graphics driver doesn't support it
+		 */
+		export const TEXTURE_FORMAT_RGB_PVRTC_2BPPV1: unknown | undefined;
+		/**
+		 * May be nil if the graphics driver doesn't support it
+		 */
+		export const TEXTURE_FORMAT_RGB_PVRTC_4BPPV1: unknown | undefined;
+		/**
+		 * May be nil if the graphics driver doesn't support it
+		 */
+		export const TEXTURE_FORMAT_RG_BC5: unknown | undefined;
+		/**
+		 * May be nil if the graphics driver doesn't support it
+		 */
+		export const TEXTURE_FORMAT_RG_ETC2: unknown | undefined;
+		/**
+		 * May be nil if the graphics driver doesn't support it
+		 */
+		export const TEXTURE_FORMAT_R_BC4: unknown | undefined;
+		/**
+		 * May be nil if the graphics driver doesn't support it
+		 */
+		export const TEXTURE_FORMAT_R_ETC2: unknown | undefined;
+		export const TEXTURE_FORMAT_STENCIL: unknown;
+	}
+	export namespace TEXTURE_TYPE {
+		export const TEXTURE_TYPE_2D: unknown;
+		export const TEXTURE_TYPE_2D_ARRAY: unknown;
+		/**
+		 * May be nil if the graphics driver doesn't support it
+		 */
+		export const TEXTURE_TYPE_3D: unknown | undefined;
+		export const TEXTURE_TYPE_CUBE_MAP: unknown;
+		export const TEXTURE_TYPE_IMAGE_2D: unknown;
+		/**
+		 * May be nil if the graphics driver doesn't support it
+		 */
+		export const TEXTURE_TYPE_IMAGE_3D: unknown | undefined;
+	}
+	export namespace TEXTURE_USAGE_FLAG {
+		export const TEXTURE_USAGE_FLAG_COLOR: unknown;
+		export const TEXTURE_USAGE_FLAG_INPUT: unknown;
+		export const TEXTURE_USAGE_FLAG_MEMORYLESS: unknown;
+		export const TEXTURE_USAGE_FLAG_SAMPLE: unknown;
+		export const TEXTURE_USAGE_FLAG_STORAGE: unknown;
+	}
+	export namespace TEXTURE_WRAP {
+		export const TEXTURE_WRAP_CLAMP_TO_BORDER: unknown;
+		export const TEXTURE_WRAP_CLAMP_TO_EDGE: unknown;
+		export const TEXTURE_WRAP_MIRRORED_REPEAT: unknown;
+		export const TEXTURE_WRAP_REPEAT: unknown;
+	}
+	export namespace adapter_info {
+		/**
+		 * Driver-reported extension names.
+		 */
+		export let extensions: unknown;
+		/**
+		 * Adapter family name.
+		 */
+		export let family: string;
+		/**
+		 * Supported optional context features.
+		 */
+		export let features: unknown;
+		/**
+		 * Hardware and driver limits.
+		 */
+		export let limits: unknown;
+		/**
+		 * Adapter API major version.
+		 */
+		export let version_major: number;
+		/**
+		 * Adapter API minor version.
+		 */
+		export let version_minor: number;
+	}
+	export namespace adapter_limits {
+		/**
+		 * Maximum number of simultaneous color attachments.
+		 */
+		export let max_color_attachments: number;
+		/**
+		 * Maximum shared memory per compute workgroup in bytes.
+		 */
+		export let max_compute_shared_memory_size: number;
+		/**
+		 * Maximum invocations per compute workgroup.
+		 */
+		export let max_compute_workgroup_invocations: number;
+		/**
+		 * Maximum compute workgroup size on the X axis.
+		 */
+		export let max_compute_workgroup_size_x: number;
+		/**
+		 * Maximum compute workgroup size on the Y axis.
+		 */
+		export let max_compute_workgroup_size_y: number;
+		/**
+		 * Maximum compute workgroup size on the Z axis.
+		 */
+		export let max_compute_workgroup_size_z: number;
+		/**
+		 * Maximum framebuffer height in pixels.
+		 */
+		export let max_framebuffer_height: number;
+		/**
+		 * Maximum framebuffer width in pixels.
+		 */
+		export let max_framebuffer_width: number;
+		/**
+		 * Maximum number of texture samplers per shader stage.
+		 */
+		export let max_samplers_per_stage: number;
+		/**
+		 * Maximum bindable storage-buffer range in bytes.
+		 */
+		export let max_storage_buffer_range: number;
+		/**
+		 * Maximum number of array texture layers.
+		 */
+		export let max_texture_array_layers: number;
+		/**
+		 * Maximum 2D texture dimension in texels.
+		 */
+		export let max_texture_size_2d: number;
+		/**
+		 * Maximum 3D texture dimension in texels.
+		 */
+		export let max_texture_size_3d: number;
+		/**
+		 * Maximum cube-map face dimension in texels.
+		 */
+		export let max_texture_size_cube: number;
+		/**
+		 * Maximum number of sampled textures per shader stage.
+		 */
+		export let max_textures_per_stage: number;
+		/**
+		 * Maximum bindable uniform-buffer range in bytes.
+		 */
+		export let max_uniform_buffer_range: number;
+		/**
+		 * Maximum number of vertex attributes.
+		 */
+		export let max_vertex_attributes: number;
+		/**
+		 * Maximum number of vertex-buffer bindings.
+		 */
+		export let max_vertex_buffers: number;
+	} /**
  * Returns a table describing the active graphics context: the adapter family,
 its hardware limits, the list of driver-reported extensions, and the set of
 optional context features supported by the backend.
- * @returns table with the following fields:
-`family`         string   adapter family name (e.g. "opengl", "vulkan")
-  `version_major`  number   adapter API major version (e.g. 1 for Vulkan 1.4)
-  `version_minor`  number   adapter API minor version (e.g. 4 for Vulkan 1.4)
-`limits`         table    hardware/driver limits:
-``max_texture_size_2d`              [type:number]  max 2D texture dimension in texels
-`max_texture_size_3d`              [type:number]  max 3D (volume) texture dimension in texels
-`max_texture_size_cube`            [type:number]  max cube map face dimension in texels
-`max_texture_array_layers`         [type:number]  max layers in an array texture
-`max_framebuffer_width`            [type:number]  max framebuffer width in pixels
-`max_framebuffer_height`           [type:number]  max framebuffer height in pixels
-`max_color_attachments`            [type:number]  max simultaneous color attachments
-`max_samplers_per_stage`           [type:number]  max texture samplers per shader stage
-`max_textures_per_stage`           [type:number]  max sampled textures per shader stage
-`max_vertex_attributes`            [type:number]  max vertex attributes
-`max_vertex_buffers`               [type:number]  max vertex buffer bindings
-`max_compute_workgroup_size_x`     [type:number]  max compute workgroup size (X)
-`max_compute_workgroup_size_y`     [type:number]  max compute workgroup size (Y)
-`max_compute_workgroup_size_z`     [type:number]  max compute workgroup size (Z)
-`max_compute_workgroup_invocations` [type:number] max invocations per compute workgroup
-`max_compute_shared_memory_size`   [type:number]  max shared memory per compute workgroup (bytes)
-`max_uniform_buffer_range`         [type:number]  max bindable uniform buffer range (bytes)
-`max_storage_buffer_range`         [type:number]  max bindable storage buffer range (bytes)
-`
-
-`extensions`     table    array of driver-reported extension name strings
-`features`       table    array of supported context feature ids:
-``graphics.CONTEXT_FEATURE_MULTI_TARGET_RENDERING`  multi-target rendering
-`graphics.CONTEXT_FEATURE_TEXTURE_ARRAY`           texture arrays
-`graphics.CONTEXT_FEATURE_COMPUTE_SHADER`          compute shaders
-`graphics.CONTEXT_FEATURE_STORAGE_BUFFER`          storage buffers
-`graphics.CONTEXT_FEATURE_VSYNC`                   vertical sync
-`graphics.CONTEXT_FEATURE_INSTANCING`              hardware instancing
-`graphics.CONTEXT_FEATURE_3D_TEXTURES`             3D (volume) textures
-`graphics.CONTEXT_FEATURE_ASTC_ARRAY_TEXTURES`     ASTC compressed 2D array textures
-`graphics.CONTEXT_FEATURE_BLEND_EQUATION_MIN_MAX`  min/max blend equations
-`
+ * @returns information about the active graphics adapter and context
 * @see {@link https://defold.com/ref/stable/graphics/#graphics.get_adapter_info|API Documentation}
  */
-	export function get_adapter_info(): object;
+	export function get_adapter_info(): unknown;
 	/**
 	 * get the list of graphics adapters that have been registered with the engine
 	 * @returns array of adapter family name strings (e.g. "opengl", "vulkan", "webgpu")
 	 * @see {@link https://defold.com/ref/stable/graphics/#graphics.get_engine_adapters|API Documentation}
 	 */
-	export function get_engine_adapters(): object;
+	export function get_engine_adapters(): unknown;
 }
 
 /** @see {@link https://defold.com/ref/stable/gui/|API Documentation} */
 declare namespace gui {
-	/**
- * Adjust mode is used when the screen resolution differs from the project settings.
-The fit mode ensures that the entire node is visible in the adjusted gui scene.
- */
-	export const ADJUST_FIT: number;
-	/**
- * Adjust mode is used when the screen resolution differs from the project settings.
-The stretch mode ensures that the node is displayed as is in the adjusted gui scene, which might scale it non-uniformally.
- */
-	export const ADJUST_STRETCH: number;
-	/**
- * Adjust mode is used when the screen resolution differs from the project settings.
-The zoom mode ensures that the node fills its entire area and might make the node exceed it.
- */
-	export const ADJUST_ZOOM: number;
-	/**
-	 * bottom y-anchor
-	 */
-	export const ANCHOR_BOTTOM: number;
-	/**
-	 * left x-anchor
-	 */
-	export const ANCHOR_LEFT: number;
-	/**
-	 * no anchor
-	 */
-	export const ANCHOR_NONE: number;
-	/**
-	 * right x-anchor
-	 */
-	export const ANCHOR_RIGHT: number;
-	/**
-	 * top y-anchor
-	 */
-	export const ANCHOR_TOP: number;
-	/**
-	 * additive blending
-	 */
-	export const BLEND_ADD: number;
-	/**
-	 * additive alpha blending
-	 */
-	export const BLEND_ADD_ALPHA: number;
-	/**
-	 * alpha blending
-	 */
-	export const BLEND_ALPHA: number;
-	/**
-	 * multiply blending
-	 */
-	export const BLEND_MULT: number;
-	/**
-	 * screen blending
-	 */
-	export const BLEND_SCREEN: number;
-	/**
-	 * clipping mode none
-	 */
-	export const CLIPPING_MODE_NONE: number;
-	/**
-	 * clipping mode stencil
-	 */
-	export const CLIPPING_MODE_STENCIL: number;
-	/**
-	 * in-back
-	 */
-	export const EASING_INBACK: number;
-	/**
-	 * in-bounce
-	 */
-	export const EASING_INBOUNCE: number;
-	/**
-	 * in-circlic
-	 */
-	export const EASING_INCIRC: number;
-	/**
-	 * in-cubic
-	 */
-	export const EASING_INCUBIC: number;
-	/**
-	 * in-elastic
-	 */
-	export const EASING_INELASTIC: number;
-	/**
-	 * in-exponential
-	 */
-	export const EASING_INEXPO: number;
-	/**
-	 * in-out-back
-	 */
-	export const EASING_INOUTBACK: number;
-	/**
-	 * in-out-bounce
-	 */
-	export const EASING_INOUTBOUNCE: number;
-	/**
-	 * in-out-circlic
-	 */
-	export const EASING_INOUTCIRC: number;
-	/**
-	 * in-out-cubic
-	 */
-	export const EASING_INOUTCUBIC: number;
-	/**
-	 * in-out-elastic
-	 */
-	export const EASING_INOUTELASTIC: number;
-	/**
-	 * in-out-exponential
-	 */
-	export const EASING_INOUTEXPO: number;
-	/**
-	 * in-out-quadratic
-	 */
-	export const EASING_INOUTQUAD: number;
-	/**
-	 * in-out-quartic
-	 */
-	export const EASING_INOUTQUART: number;
-	/**
-	 * in-out-quintic
-	 */
-	export const EASING_INOUTQUINT: number;
-	/**
-	 * in-out-sine
-	 */
-	export const EASING_INOUTSINE: number;
-	/**
-	 * in-quadratic
-	 */
-	export const EASING_INQUAD: number;
-	/**
-	 * in-quartic
-	 */
-	export const EASING_INQUART: number;
-	/**
-	 * in-quintic
-	 */
-	export const EASING_INQUINT: number;
-	/**
-	 * in-sine
-	 */
-	export const EASING_INSINE: number;
-	/**
-	 * linear interpolation
-	 */
-	export const EASING_LINEAR: number;
-	/**
-	 * out-back
-	 */
-	export const EASING_OUTBACK: number;
-	/**
-	 * out-bounce
-	 */
-	export const EASING_OUTBOUNCE: number;
-	/**
-	 * out-circlic
-	 */
-	export const EASING_OUTCIRC: number;
-	/**
-	 * out-cubic
-	 */
-	export const EASING_OUTCUBIC: number;
-	/**
-	 * out-elastic
-	 */
-	export const EASING_OUTELASTIC: number;
-	/**
-	 * out-exponential
-	 */
-	export const EASING_OUTEXPO: number;
-	/**
-	 * out-in-back
-	 */
-	export const EASING_OUTINBACK: number;
-	/**
-	 * out-in-bounce
-	 */
-	export const EASING_OUTINBOUNCE: number;
-	/**
-	 * out-in-circlic
-	 */
-	export const EASING_OUTINCIRC: number;
-	/**
-	 * out-in-cubic
-	 */
-	export const EASING_OUTINCUBIC: number;
-	/**
-	 * out-in-elastic
-	 */
-	export const EASING_OUTINELASTIC: number;
-	/**
-	 * out-in-exponential
-	 */
-	export const EASING_OUTINEXPO: number;
-	/**
-	 * out-in-quadratic
-	 */
-	export const EASING_OUTINQUAD: number;
-	/**
-	 * out-in-quartic
-	 */
-	export const EASING_OUTINQUART: number;
-	/**
-	 * out-in-quintic
-	 */
-	export const EASING_OUTINQUINT: number;
-	/**
-	 * out-in-sine
-	 */
-	export const EASING_OUTINSINE: number;
-	/**
-	 * out-quadratic
-	 */
-	export const EASING_OUTQUAD: number;
-	/**
-	 * out-quartic
-	 */
-	export const EASING_OUTQUART: number;
-	/**
-	 * out-quintic
-	 */
-	export const EASING_OUTQUINT: number;
-	/**
-	 * out-sine
-	 */
-	export const EASING_OUTSINE: number;
-	/**
-	 * default keyboard
-	 */
-	export const KEYBOARD_TYPE_DEFAULT: number;
-	/**
-	 * email keyboard
-	 */
-	export const KEYBOARD_TYPE_EMAIL: number;
-	/**
-	 * number input keyboard
-	 */
-	export const KEYBOARD_TYPE_NUMBER_PAD: number;
-	/**
-	 * password keyboard
-	 */
-	export const KEYBOARD_TYPE_PASSWORD: number;
-	/**
-	 * elliptical pie node bounds
-	 */
-	export const PIEBOUNDS_ELLIPSE: number;
-	/**
-	 * rectangular pie node bounds
-	 */
-	export const PIEBOUNDS_RECTANGLE: number;
-	/**
-	 * center pivot
-	 */
-	export const PIVOT_CENTER: number;
-	/**
-	 * east pivot
-	 */
-	export const PIVOT_E: number;
-	/**
-	 * north pivot
-	 */
-	export const PIVOT_N: number;
-	/**
-	 * north-east pivot
-	 */
-	export const PIVOT_NE: number;
-	/**
-	 * north-west pivot
-	 */
-	export const PIVOT_NW: number;
-	/**
-	 * south pivot
-	 */
-	export const PIVOT_S: number;
-	/**
-	 * south-east pivot
-	 */
-	export const PIVOT_SE: number;
-	/**
-	 * south-west pivot
-	 */
-	export const PIVOT_SW: number;
-	/**
-	 * west pivot
-	 */
-	export const PIVOT_W: number;
-	/**
-	 * loop backward
-	 */
-	export const PLAYBACK_LOOP_BACKWARD: number;
-	/**
-	 * loop forward
-	 */
-	export const PLAYBACK_LOOP_FORWARD: number;
-	/**
-	 * ping pong loop
-	 */
-	export const PLAYBACK_LOOP_PINGPONG: number;
-	/**
-	 * once backward
-	 */
-	export const PLAYBACK_ONCE_BACKWARD: number;
-	/**
-	 * once forward
-	 */
-	export const PLAYBACK_ONCE_FORWARD: number;
-	/**
-	 * once forward and then backward
-	 */
-	export const PLAYBACK_ONCE_PINGPONG: number;
-	/**
-	 * color property
-	 */
-	export const PROP_COLOR: number;
-	/**
-	 * euler property
-	 */
-	export const PROP_EULER: number;
-	/**
-	 * fill_angle property
-	 */
-	export const PROP_FILL_ANGLE: number;
-	/**
-	 * inner_radius property
-	 */
-	export const PROP_INNER_RADIUS: number;
-	/**
-	 * leading property
-	 */
-	export const PROP_LEADING: number;
-	/**
-	 * outline color property
-	 */
-	export const PROP_OUTLINE: number;
-	/**
-	 * position property
-	 */
-	export const PROP_POSITION: number;
-	/**
-	 * rotation property
-	 */
-	export const PROP_ROTATION: number;
-	/**
-	 * scale property
-	 */
-	export const PROP_SCALE: number;
-	/**
-	 * shadow color property
-	 */
-	export const PROP_SHADOW: number;
-	/**
-	 * size property
-	 */
-	export const PROP_SIZE: number;
-	/**
-	 * slice9 property
-	 */
-	export const PROP_SLICE9: number;
-	/**
-	 * tracking property
-	 */
-	export const PROP_TRACKING: number;
-	/**
- * The provided data is not in the expected format or is in some other way
-incorrect, for instance the image data provided to gui.new_texture().
- */
-	export const RESULT_DATA_ERROR: number;
-	/**
- * The system is out of resources, for instance when trying to create a new
-texture using gui.new_texture().
- */
-	export const RESULT_OUT_OF_RESOURCES: number;
-	/**
-	 * The texture id already exists when trying to use gui.new_texture().
-	 */
-	export const RESULT_TEXTURE_ALREADY_EXISTS: number;
-	/**
-	 * Safe area mode that applies insets on all edges.
-	 */
-	export const SAFE_AREA_BOTH: number;
-	/**
-	 * Safe area mode that applies insets only on the long edges.
-	 */
-	export const SAFE_AREA_LONG: number;
-	/**
-	 * Safe area mode that ignores safe area insets.
-	 */
-	export const SAFE_AREA_NONE: number;
-	/**
-	 * Safe area mode that applies insets only on the short edges.
-	 */
-	export const SAFE_AREA_SHORT: number;
-	/**
-	 * The size of the node is determined by the currently assigned texture.
-	 */
-	export const SIZE_MODE_AUTO: number;
-	/**
-	 * The size of the node is determined by the size set in the editor, the constructor or by gui.set_size()
-	 */
-	export const SIZE_MODE_MANUAL: number;
-	/**
-	 * box type
-	 */
-	export const TYPE_BOX: number;
-	/**
-	 * custom type
-	 */
-	export const TYPE_CUSTOM: number;
-	/**
-	 * particlefx type
-	 */
-	export const TYPE_PARTICLEFX: number;
-	/**
-	 * pie type
-	 */
-	export const TYPE_PIE: number;
-	/**
-	 * text type
-	 */
-	export const TYPE_TEXT: number;
-	/**
+	export namespace ADJUST {
+		/**
+		 * fit adjust mode Adjust mode is used when the screen resolution differs from the project settings. The fit mode ensures that the entire node is visible in the adjusted gui scene.
+		 */
+		export const ADJUST_FIT: unknown;
+		/**
+		 * stretch adjust mode Adjust mode is used when the screen resolution differs from the project settings. The stretch mode ensures that the node is displayed as is in the adjusted gui scene, which might scale it non-uniformally.
+		 */
+		export const ADJUST_STRETCH: unknown;
+		/**
+		 * zoom adjust mode Adjust mode is used when the screen resolution differs from the project settings. The zoom mode ensures that the node fills its entire area and might make the node exceed it.
+		 */
+		export const ADJUST_ZOOM: unknown;
+	}
+	export namespace ANCHOR {
+		/**
+		 * bottom y-anchor
+		 */
+		export const ANCHOR_BOTTOM: unknown;
+		/**
+		 * left x-anchor
+		 */
+		export const ANCHOR_LEFT: unknown;
+		/**
+		 * no anchor
+		 */
+		export const ANCHOR_NONE: unknown;
+		/**
+		 * right x-anchor
+		 */
+		export const ANCHOR_RIGHT: unknown;
+		/**
+		 * top y-anchor
+		 */
+		export const ANCHOR_TOP: unknown;
+	}
+	export namespace BLEND {
+		/**
+		 * additive blending
+		 */
+		export const BLEND_ADD: unknown;
+		/**
+		 * additive alpha blending
+		 */
+		export const BLEND_ADD_ALPHA: unknown;
+		/**
+		 * alpha blending
+		 */
+		export const BLEND_ALPHA: unknown;
+		/**
+		 * multiply blending
+		 */
+		export const BLEND_MULT: unknown;
+		/**
+		 * screen blending
+		 */
+		export const BLEND_SCREEN: unknown;
+	}
+	export namespace CLIPPING_MODE {
+		/**
+		 * clipping mode none
+		 */
+		export const CLIPPING_MODE_NONE: unknown;
+		/**
+		 * clipping mode stencil
+		 */
+		export const CLIPPING_MODE_STENCIL: unknown;
+	}
+	export namespace EASING {
+		/**
+		 * in-back
+		 */
+		export const EASING_INBACK: unknown;
+		/**
+		 * in-bounce
+		 */
+		export const EASING_INBOUNCE: unknown;
+		/**
+		 * in-circlic
+		 */
+		export const EASING_INCIRC: unknown;
+		/**
+		 * in-cubic
+		 */
+		export const EASING_INCUBIC: unknown;
+		/**
+		 * in-elastic
+		 */
+		export const EASING_INELASTIC: unknown;
+		/**
+		 * in-exponential
+		 */
+		export const EASING_INEXPO: unknown;
+		/**
+		 * in-out-back
+		 */
+		export const EASING_INOUTBACK: unknown;
+		/**
+		 * in-out-bounce
+		 */
+		export const EASING_INOUTBOUNCE: unknown;
+		/**
+		 * in-out-circlic
+		 */
+		export const EASING_INOUTCIRC: unknown;
+		/**
+		 * in-out-cubic
+		 */
+		export const EASING_INOUTCUBIC: unknown;
+		/**
+		 * in-out-elastic
+		 */
+		export const EASING_INOUTELASTIC: unknown;
+		/**
+		 * in-out-exponential
+		 */
+		export const EASING_INOUTEXPO: unknown;
+		/**
+		 * in-out-quadratic
+		 */
+		export const EASING_INOUTQUAD: unknown;
+		/**
+		 * in-out-quartic
+		 */
+		export const EASING_INOUTQUART: unknown;
+		/**
+		 * in-out-quintic
+		 */
+		export const EASING_INOUTQUINT: unknown;
+		/**
+		 * in-out-sine
+		 */
+		export const EASING_INOUTSINE: unknown;
+		/**
+		 * in-quadratic
+		 */
+		export const EASING_INQUAD: unknown;
+		/**
+		 * in-quartic
+		 */
+		export const EASING_INQUART: unknown;
+		/**
+		 * in-quintic
+		 */
+		export const EASING_INQUINT: unknown;
+		/**
+		 * in-sine
+		 */
+		export const EASING_INSINE: unknown;
+		/**
+		 * linear interpolation
+		 */
+		export const EASING_LINEAR: unknown;
+		/**
+		 * out-back
+		 */
+		export const EASING_OUTBACK: unknown;
+		/**
+		 * out-bounce
+		 */
+		export const EASING_OUTBOUNCE: unknown;
+		/**
+		 * out-circlic
+		 */
+		export const EASING_OUTCIRC: unknown;
+		/**
+		 * out-cubic
+		 */
+		export const EASING_OUTCUBIC: unknown;
+		/**
+		 * out-elastic
+		 */
+		export const EASING_OUTELASTIC: unknown;
+		/**
+		 * out-exponential
+		 */
+		export const EASING_OUTEXPO: unknown;
+		/**
+		 * out-in-back
+		 */
+		export const EASING_OUTINBACK: unknown;
+		/**
+		 * out-in-bounce
+		 */
+		export const EASING_OUTINBOUNCE: unknown;
+		/**
+		 * out-in-circlic
+		 */
+		export const EASING_OUTINCIRC: unknown;
+		/**
+		 * out-in-cubic
+		 */
+		export const EASING_OUTINCUBIC: unknown;
+		/**
+		 * out-in-elastic
+		 */
+		export const EASING_OUTINELASTIC: unknown;
+		/**
+		 * out-in-exponential
+		 */
+		export const EASING_OUTINEXPO: unknown;
+		/**
+		 * out-in-quadratic
+		 */
+		export const EASING_OUTINQUAD: unknown;
+		/**
+		 * out-in-quartic
+		 */
+		export const EASING_OUTINQUART: unknown;
+		/**
+		 * out-in-quintic
+		 */
+		export const EASING_OUTINQUINT: unknown;
+		/**
+		 * out-in-sine
+		 */
+		export const EASING_OUTINSINE: unknown;
+		/**
+		 * out-quadratic
+		 */
+		export const EASING_OUTQUAD: unknown;
+		/**
+		 * out-quartic
+		 */
+		export const EASING_OUTQUART: unknown;
+		/**
+		 * out-quintic
+		 */
+		export const EASING_OUTQUINT: unknown;
+		/**
+		 * out-sine
+		 */
+		export const EASING_OUTSINE: unknown;
+	}
+	export namespace KEYBOARD_TYPE {
+		/**
+		 * default keyboard
+		 */
+		export const KEYBOARD_TYPE_DEFAULT: unknown;
+		/**
+		 * email keyboard
+		 */
+		export const KEYBOARD_TYPE_EMAIL: unknown;
+		/**
+		 * number input keyboard
+		 */
+		export const KEYBOARD_TYPE_NUMBER_PAD: unknown;
+		/**
+		 * password keyboard
+		 */
+		export const KEYBOARD_TYPE_PASSWORD: unknown;
+	}
+	export namespace PIEBOUNDS {
+		/**
+		 * elliptical pie node bounds
+		 */
+		export const PIEBOUNDS_ELLIPSE: unknown;
+		/**
+		 * rectangular pie node bounds
+		 */
+		export const PIEBOUNDS_RECTANGLE: unknown;
+	}
+	export namespace PIVOT {
+		/**
+		 * center pivot
+		 */
+		export const PIVOT_CENTER: unknown;
+		/**
+		 * east pivot
+		 */
+		export const PIVOT_E: unknown;
+		/**
+		 * north pivot
+		 */
+		export const PIVOT_N: unknown;
+		/**
+		 * north-east pivot
+		 */
+		export const PIVOT_NE: unknown;
+		/**
+		 * north-west pivot
+		 */
+		export const PIVOT_NW: unknown;
+		/**
+		 * south pivot
+		 */
+		export const PIVOT_S: unknown;
+		/**
+		 * south-east pivot
+		 */
+		export const PIVOT_SE: unknown;
+		/**
+		 * south-west pivot
+		 */
+		export const PIVOT_SW: unknown;
+		/**
+		 * west pivot
+		 */
+		export const PIVOT_W: unknown;
+	}
+	export namespace PLAYBACK {
+		/**
+		 * loop backward
+		 */
+		export const PLAYBACK_LOOP_BACKWARD: unknown;
+		/**
+		 * loop forward
+		 */
+		export const PLAYBACK_LOOP_FORWARD: unknown;
+		/**
+		 * ping pong loop
+		 */
+		export const PLAYBACK_LOOP_PINGPONG: unknown;
+		/**
+		 * once backward
+		 */
+		export const PLAYBACK_ONCE_BACKWARD: unknown;
+		/**
+		 * once forward
+		 */
+		export const PLAYBACK_ONCE_FORWARD: unknown;
+		/**
+		 * once forward and then backward
+		 */
+		export const PLAYBACK_ONCE_PINGPONG: unknown;
+	}
+	export namespace PROP {
+		/**
+		 * color property
+		 */
+		export const PROP_COLOR: unknown;
+		/**
+		 * euler property
+		 */
+		export const PROP_EULER: unknown;
+		/**
+		 * fill_angle property
+		 */
+		export const PROP_FILL_ANGLE: unknown;
+		/**
+		 * inner_radius property
+		 */
+		export const PROP_INNER_RADIUS: unknown;
+		/**
+		 * leading property
+		 */
+		export const PROP_LEADING: unknown;
+		/**
+		 * outline color property
+		 */
+		export const PROP_OUTLINE: unknown;
+		/**
+		 * position property
+		 */
+		export const PROP_POSITION: unknown;
+		/**
+		 * rotation property
+		 */
+		export const PROP_ROTATION: unknown;
+		/**
+		 * scale property
+		 */
+		export const PROP_SCALE: unknown;
+		/**
+		 * shadow color property
+		 */
+		export const PROP_SHADOW: unknown;
+		/**
+		 * size property
+		 */
+		export const PROP_SIZE: unknown;
+		/**
+		 * slice9 property
+		 */
+		export const PROP_SLICE9: unknown;
+		/**
+		 * tracking property
+		 */
+		export const PROP_TRACKING: unknown;
+	}
+	export namespace RESULT {
+		/**
+		 * data error The provided data is not in the expected format or is in some other way incorrect, for instance the image data provided to gui.new_texture().
+		 */
+		export const RESULT_DATA_ERROR: unknown;
+		/**
+		 * out of resource The system is out of resources, for instance when trying to create a new texture using gui.new_texture().
+		 */
+		export const RESULT_OUT_OF_RESOURCES: unknown;
+		/**
+		 * texture already exists The texture id already exists when trying to use gui.new_texture().
+		 */
+		export const RESULT_TEXTURE_ALREADY_EXISTS: unknown;
+	}
+	export namespace SAFE_AREA {
+		/**
+		 * both sides safe area Safe area mode that applies insets on all edges.
+		 */
+		export const SAFE_AREA_BOTH: unknown;
+		/**
+		 * long side safe area Safe area mode that applies insets only on the long edges.
+		 */
+		export const SAFE_AREA_LONG: unknown;
+		/**
+		 * no safe area Safe area mode that ignores safe area insets.
+		 */
+		export const SAFE_AREA_NONE: unknown;
+		/**
+		 * short side safe area Safe area mode that applies insets only on the short edges.
+		 */
+		export const SAFE_AREA_SHORT: unknown;
+	}
+	export namespace SIZE_MODE {
+		/**
+		 * automatic size mode The size of the node is determined by the currently assigned texture.
+		 */
+		export const SIZE_MODE_AUTO: unknown;
+		/**
+		 * manual size mode The size of the node is determined by the size set in the editor, the constructor or by gui.set_size()
+		 */
+		export const SIZE_MODE_MANUAL: unknown;
+	}
+	export namespace TYPE {
+		/**
+		 * box type
+		 */
+		export const TYPE_BOX: unknown;
+		/**
+		 * custom type
+		 */
+		export const TYPE_CUSTOM: unknown;
+		/**
+		 * particlefx type
+		 */
+		export const TYPE_PARTICLEFX: unknown;
+		/**
+		 * pie type
+		 */
+		export const TYPE_PIE: unknown;
+		/**
+		 * text type
+		 */
+		export const TYPE_TEXT: unknown;
+	} /**
  * This starts an animation of a node property according to the specified parameters.
 If the node property is already being animated, that animation will be canceled and
 replaced by the new one. Note however that several different node properties
@@ -6844,38 +10044,7 @@ when the animation has completed.
 By starting a new animation in that function, several animations can be sequenced
 together. See the examples below for more information.
  * @param node node to animate
- * @param property property to animate
-
-`"position"`
-`"rotation"`
-`"euler"`
-`"scale"`
-`"color"`
-`"outline"`
-`"shadow"`
-`"size"`
-`"fill_angle"` (pie)
-`"inner_radius"` (pie)
-`"leading"` (text)
-`"tracking"` (text)
-`"slice9"` (slice9)
-
-The following property constants are defined equaling the corresponding property string names.
-
-`gui.PROP_POSITION`
-`gui.PROP_ROTATION`
-`gui.PROP_EULER`
-`gui.PROP_SCALE`
-`gui.PROP_COLOR`
-`gui.PROP_OUTLINE`
-`gui.PROP_SHADOW`
-`gui.PROP_SIZE`
-`gui.PROP_FILL_ANGLE`
-`gui.PROP_INNER_RADIUS`
-`gui.PROP_LEADING`
-`gui.PROP_TRACKING`
-`gui.PROP_SLICE9`
-
+ * @param property property to animate; each gui.PROP member equals its corresponding property name string
  * @param to target property value
  * @param easing easing to use during animation.
      Either specify one of the `gui.EASING_*` constants or provide a
@@ -6885,14 +10054,6 @@ The following property constants are defined equaling the corresponding property
  * @param complete_function function to call when the
      animation has completed
  * @param playback playback mode
-
-`gui.PLAYBACK_ONCE_FORWARD`
-`gui.PLAYBACK_ONCE_BACKWARD`
-`gui.PLAYBACK_ONCE_PINGPONG`
-`gui.PLAYBACK_LOOP_FORWARD`
-`gui.PLAYBACK_LOOP_BACKWARD`
-`gui.PLAYBACK_LOOP_PINGPONG`
-
  * @example How to start a simple color animation, where the node fades in to white during 0.5 seconds:
 ```lua
 gui.set_color(node, vmath.vector4(0, 0, 0, 0)) -- node is fully transparent
@@ -6936,14 +10097,14 @@ end
  */
 	export function animate(
 		node: node,
-		property: number | string,
+		property: hash | any | string,
 		to: vmath.quaternion | vmath.vector3 | vmath.vector4 | number,
 		easing:
 			ReturnType<typeof vmath.vector> | vmath.quaternion | vmath.vector3 | vmath.vector4 | number,
 		duration: number,
 		delay?: number,
 		complete_function?: (this: any, node: node) => void,
-		playback?: number,
+		playback?: any,
 	): void;
 	/**
  * If one or more animations of the specified node is currently running (started by `gui.animate`), they will immediately be canceled.
@@ -6990,7 +10151,7 @@ gui.cancel_animations(node)
  */
 	export function cancel_animations(
 		node: node,
-		property?:   number | string,
+		property?:   hash | any | string,
 	): void;
 	/**
  * Cancels any running flipbook animation on the specified node.
@@ -7020,7 +10181,7 @@ Use gui.clone to clone a node excluding its children.
  * @returns a table mapping node ids to the corresponding cloned nodes
 * @see {@link https://defold.com/ref/stable/gui/#gui.clone_tree|API Documentation}
  */
-	export function clone_tree(node: node): object;
+	export function clone_tree(node: node): unknown;
 	/**
  * Deletes the specified node. Any child nodes of the specified node will be
 recursively deleted.
@@ -7056,7 +10217,7 @@ end
 be used to e.g. take some last action, report the finalization to other game object instances
 or release user input focus (see `release_input_focus`). There is no use in starting any animations or similar
 from this function since the gui component is about to be destroyed.
- * @param this reference to the script state to be used for storing data
+ * @param this script instance used for storing state
  * @example ```lua
 function final(self)
     -- report finalization
@@ -7065,7 +10226,7 @@ end
 ```
 * @see {@link https://defold.com/ref/stable/gui/#gui.final|API Documentation}
  */
-	export function final(this: LuaUserdata): void;
+	export function final(this: any): void;
 	/**
  * Instead of using specific getters such as gui.get_position or gui.get_scale,
 you can use gui.get instead and supply the property as a string or a hash.
@@ -7092,7 +10253,7 @@ You can also use this function to get material constants.
  * @param node node to get the property for
  * @param property the property to retrieve
  * @param options optional options table (only applicable for material constants)
-- `index` number index into array property (1 based)
+- `index` integer index into array property (1 based)
  * @example Get properties on existing nodes:
 ```lua
 local node = gui.get_node("my_box_node")
@@ -7102,8 +10263,8 @@ local node_position = gui.get(node, "position")
  */
 	export function get(
 		node: node,
-		property: hash | number | string,
-		options?: object,
+		property: hash | any | string,
+		options?: any,
 	): unknown;
 	/**
  * Returns the adjust mode of a node.
@@ -7111,14 +10272,9 @@ The adjust mode defines how the node will adjust itself to screen
 resolutions that differs from the one in the project settings.
  * @param node node from which to get the adjust mode (node)
  * @returns the current adjust mode
-
-`gui.ADJUST_FIT`
-`gui.ADJUST_ZOOM`
-`gui.ADJUST_STRETCH`
 * @see {@link https://defold.com/ref/stable/gui/#gui.get_adjust_mode|API Documentation}
-
  */
-	export function get_adjust_mode(node: node): number;
+	export function get_adjust_mode(node: node): unknown;
 	/**
 	 * gets the node alpha
 	 * @param node node from which to get alpha
@@ -7131,16 +10287,9 @@ resolutions that differs from the one in the project settings.
 Blend mode defines how the node will be blended with the background.
  * @param node node from which to get the blend mode
  * @returns blend mode
-
-`gui.BLEND_ALPHA`
-`gui.BLEND_ADD`
-`gui.BLEND_ADD_ALPHA`
-`gui.BLEND_MULT`
-`gui.BLEND_SCREEN`
 * @see {@link https://defold.com/ref/stable/gui/#gui.get_blend_mode|API Documentation}
-
  */
-	export function get_blend_mode(node: node): number;
+	export function get_blend_mode(node: node): unknown;
 	/**
 	 * If node is set as an inverted clipping node, it will clip anything inside as opposed to outside.
 	 * @param node node from which to get the clipping inverted state
@@ -7158,7 +10307,7 @@ Blend mode defines how the node will be blended with the background.
 * @see {@link https://defold.com/ref/stable/gui/#gui.get_clipping_mode|API Documentation}
 
  */
-	export function get_clipping_mode(node: node): number;
+	export function get_clipping_mode(node: node): unknown;
 	/**
 	 * If node is set as visible clipping node, it will be shown as well as clipping. Otherwise, it will only clip but not show visually.
 	 * @param node node from which to get the clipping visibility state
@@ -7328,6 +10477,15 @@ The radius is defined along the x-axis.
 	 */
 	export function get_layout(): hash;
 	/**
+ * Returns the sprites and links found in the text node's current layout.
+Each object's `x` and `y` identify its lower-left corner relative to the
+text node's upper-left layout origin.
+ * @param node text node to inspect
+ * @returns layout objects in source order
+* @see {@link https://defold.com/ref/stable/gui/#gui.get_layout_objects|API Documentation}
+ */
+	export function get_layout_objects(node: node): unknown;
+	/**
  * Returns a table mapping each layout id hash to a vector3(width, height, 0). For the default layout,
 the current scene resolution is returned. If a layout name is not present in the Display Profiles (or when
 no display profiles are assigned), the width/height pair is 0.
@@ -7378,16 +10536,12 @@ gui.set_color(node, red)
  */
 	export function get_node(id: hash | string): node;
 	/**
- * Returns the outer bounds mode for a pie node.
- * @param node node from where to get the outer bounds mode
- * @returns the outer bounds mode of the pie node:
-
-`gui.PIEBOUNDS_RECTANGLE`
-`gui.PIEBOUNDS_ELLIPSE`
-* @see {@link https://defold.com/ref/stable/gui/#gui.get_outer_bounds|API Documentation}
-
- */
-	export function get_outer_bounds(node: node): number;
+	 * Returns the outer bounds mode for a pie node.
+	 * @param node node from where to get the outer bounds mode
+	 * @returns the outer bounds mode of the pie node
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_outer_bounds|API Documentation}
+	 */
+	export function get_outer_bounds(node: node): unknown;
 	/**
  * Returns the outline color of the supplied node.
 See gui.get_color for info how vectors encode color values.
@@ -7436,7 +10590,7 @@ of a pie node.
 * @see {@link https://defold.com/ref/stable/gui/#gui.get_pivot|API Documentation}
 
  */
-	export function get_pivot(node: node): number;
+	export function get_pivot(node: node): unknown;
 	/**
 	 * Returns the position of the supplied node.
 	 * @param node node to get the position from
@@ -7492,13 +10646,9 @@ to match the assigned image. Particle fx and Text nodes will ignore
 any size mode setting.
  * @param node node from which to get the size mode (node)
  * @returns the current size mode
-
-`gui.SIZE_MODE_MANUAL`
-`gui.SIZE_MODE_AUTO`
 * @see {@link https://defold.com/ref/stable/gui/#gui.get_size_mode|API Documentation}
-
  */
-	export function get_size_mode(node: node): number;
+	export function get_size_mode(node: node): unknown;
 	/**
 	 * Returns the slice9 configuration values for the node.
 	 * @param node node to manipulate
@@ -7535,23 +10685,16 @@ The texture must be mapped to the gui scene in the gui editor.
 	 * @returns a table mapping node ids to the corresponding nodes
 	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_tree|API Documentation}
 	 */
-	export function get_tree(node: node): object;
+	export function get_tree(node: node): unknown;
 	/**
- * gets the node type
- * @param node node from which to get the type
- * @returns type
-
-`gui.TYPE_BOX`
-`gui.TYPE_TEXT`
-`gui.TYPE_PIE`
-`gui.TYPE_PARTICLEFX`
-`gui.TYPE_CUSTOM`
- & id of the custom type
-* @see {@link https://defold.com/ref/stable/gui/#gui.get_type|API Documentation}
- */
+	 * gets the node type
+	 * @param node node from which to get the type
+	 * @returns type & id of the custom type
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.get_type|API Documentation}
+	 */
 	export function get_type(
 		node: node,
-	): LuaMultiReturn<[number, number | undefined]>;
+	): LuaMultiReturn<[unknown, number | undefined]>;
 	/**
  * Returns `true` if a node is visible and `false` if it's not.
 Invisible nodes are not rendered.
@@ -7577,7 +10720,7 @@ Invisible nodes are not rendered.
 * @see {@link https://defold.com/ref/stable/gui/#gui.get_xanchor|API Documentation}
 
  */
-	export function get_xanchor(node: node): number;
+	export function get_xanchor(node: node): unknown;
 	/**
  * The y-anchor specifies how the node is moved when the game is run in a different resolution.
  * @param node node to get y-anchor from
@@ -7589,7 +10732,7 @@ Invisible nodes are not rendered.
 * @see {@link https://defold.com/ref/stable/gui/#gui.get_yanchor|API Documentation}
 
  */
-	export function get_yanchor(node: node): number;
+	export function get_yanchor(node: node): unknown;
 	/**
 	 * Hides the on-display touch keyboard on the device.
 	 * @see {@link https://defold.com/ref/stable/gui/#gui.hide_keyboard|API Documentation}
@@ -7598,7 +10741,7 @@ Invisible nodes are not rendered.
 	/**
  * This is a callback-function, which is called by the engine when a gui component is initialized. It can be used
 to set the initial state of the script and gui scene.
- * @param this reference to the script state to be used for storing data
+ * @param this script instance used for storing state
  * @example ```lua
 function init(self)
     -- set up useful data
@@ -7607,7 +10750,7 @@ end
 ```
 * @see {@link https://defold.com/ref/stable/gui/#gui.init|API Documentation}
  */
-	export function init(this: LuaUserdata): void;
+	export function init(this: any): void;
 	/**
  * Returns `true` if a node is enabled and `false` if it's not.
 Disabled nodes are not rendered and animations acting on them are not evaluated.
@@ -7617,7 +10760,44 @@ Disabled nodes are not rendered and animations acting on them are not evaluated.
 * @see {@link https://defold.com/ref/stable/gui/#gui.is_enabled|API Documentation}
  */
 	export function is_enabled(node: node, recursive?: boolean): boolean;
-	/**
+	export namespace layout_object {
+		/**
+		 * markup attributes keyed by name
+		 */
+		export let attributes: unknown;
+		/**
+		 * resolved object height
+		 */
+		export let height: number;
+		/**
+		 * the object's `id` attribute, or its generated layout object id
+		 */
+		export let id: hash;
+		/**
+		 * visible UTF-32 text length covered by the object
+		 */
+		export let text_length: number;
+		/**
+		 * zero-based UTF-32 offset in the visible text
+		 */
+		export let text_offset: number;
+		/**
+		 * object type, currently `link` or `sprite`
+		 */
+		export let type: string;
+		/**
+		 * resolved object width
+		 */
+		export let width: number;
+		/**
+		 * lower-left x-coordinate relative to the text node's upper-left layout origin
+		 */
+		export let x: number;
+		/**
+		 * lower-left y-coordinate relative to the text node's upper-left layout origin
+		 */
+		export let y: number;
+	} /**
  * Alters the ordering of the two supplied nodes by moving the first node
 above the second.
 If the second argument is `nil` the first node is moved to the top.
@@ -7686,9 +10866,9 @@ If the second argument is `nil` the first node is moved to the bottom.
  * @param height texture height
  * @param type texture type
 
-`"rgb"` - RGB
-`"rgba"` - RGBA
-`"l"` - LUMINANCE
+`"rgb"` or `image.TYPE_RGB` - RGB
+`"rgba"` or `image.TYPE_RGBA` - RGBA
+`"l"` or `image.TYPE_LUMINANCE` - LUMINANCE
 `"astc"` - ASTC compressed format
 
  * @param buffer texture data
@@ -7718,8 +10898,9 @@ function init(self)
          end
      end
 end
-```How to create a texture using .astc format
+```
 
+How to create a texture using .astc format
 ```lua
 local path = "/assets/images/logo_4x4.astc"
 local buffer = sys.load_resource(path)
@@ -7735,10 +10916,10 @@ gui.set_texture(n, path)
 		texture_id: hash | string,
 		width: number,
 		height: number,
-		type: number | string,
+		type: any | string,
 		buffer: string,
 		flip: boolean,
-	): LuaMultiReturn<[boolean, number]>;
+	): LuaMultiReturn<[boolean, unknown | undefined]>;
 	/**
  * This is a callback-function, which is called by the engine when user input is sent to the instance of the gui component.
 It can be used to take action on the input, e.g. modify the gui according to the input.
@@ -7750,184 +10931,9 @@ end of stack is reached, or a listener returns `true`
 to signal that it wants input to be consumed.
 See the documentation of acquire_input_focus for more
 information.
-The `action` parameter is a table containing data about the input mapped to the
-`action_id`.
-For mapped actions it specifies the value of the input and if it was just pressed or released.
-Actions are mapped to input in an input_binding-file.
-Mouse movement is specifically handled and uses `nil` as its `action_id`.
-The `action` only contains positional parameters in this case, such as x and y of the pointer.
-Here is a brief description of the available table fields:
-
-
-
-Field
-Description
-
-
-
-
-`value`
-The amount of input given by the user. This is usually 1 for buttons and 0-1 for analogue inputs. This is not present for mouse movement and text input.
-
-
-`pressed`
-If the input was pressed this frame. This is not present for mouse movement and text input.
-
-
-`released`
-If the input was released this frame. This is not present for mouse movement and text input.
-
-
-`repeated`
-If the input was repeated this frame. This is similar to how a key on a keyboard is repeated when you hold it down. This is not present for mouse movement and text input.
-
-
-`x`
-The x value of a pointer device, if present. This is not present for gamepad, key and text input.
-
-
-`y`
-The y value of a pointer device, if present. This is not present for gamepad, key and text input.
-
-
-`screen_x`
-The screen space x value of a pointer device, if present. This is not present for gamepad, key and text input.
-
-
-`screen_y`
-The screen space y value of a pointer device, if present. This is not present for gamepad, key and text input.
-
-
-`dx`
-The change in x value of a pointer device, if present. This is not present for gamepad, key and text input.
-
-
-`dy`
-The change in y value of a pointer device, if present. This is not present for gamepad, key and text input.
-
-
-`screen_dx`
-The change in screen space x value of a pointer device, if present. This is not present for gamepad, key and text input.
-
-
-`screen_dy`
-The change in screen space y value of a pointer device, if present. This is not present for gamepad, key and text input.
-
-
-`gamepad`
-The index of the gamepad device that provided the input. See table below about gamepad input.
-
-
-`touch`
-List of touch input, one element per finger, if present. See table below about touch input
-
-
-`text`
-Text input from a (virtual) keyboard or similar.
-
-
-`marked_text`
-Sequence of entered symbols while entering a symbol combination, for example Japanese Kana.
-
-
-
-Gamepad specific fields:
-
-
-
-Field
-Description
-
-
-
-
-`gamepad`
-The index of the gamepad device that provided the input.
-
-
-`userid`
-Id of the user associated with the controller. Usually only relevant on consoles.
-
-
-`gamepad_unknown`
-True if the inout originated from an unknown/unmapped gamepad.
-
-
-`gamepad_name`
-Name of the gamepad
-
-
-`gamepad_axis`
-List of gamepad axis values. For raw gamepad input only.
-
-
-`gamepadhats`
-List of gamepad hat values. For raw gamepad input only.
-
-
-`gamepad_buttons`
-List of gamepad button values. For raw gamepad input only.
-
-
-
-Touch input table:
-
-
-
-Field
-Description
-
-
-
-
-`id`
-A number identifying the touch input during its duration.
-
-
-`pressed`
-True if the finger was pressed this frame.
-
-
-`released`
-True if the finger was released this frame.
-
-
-`tap_count`
-Number of taps, one for single, two for double-tap, etc
-
-
-`x`
-The x touch location.
-
-
-`y`
-The y touch location.
-
-
-`dx`
-The change in x value.
-
-
-`dy`
-The change in y value.
-
-
-`acc_x`
-Accelerometer x value (if present).
-
-
-`acc_y`
-Accelerometer y value (if present).
-
-
-`acc_z`
-Accelerometer z value (if present).
-
-
-
- * @param this reference to the script state to be used for storing data
- * @param action_id id of the received input action, as mapped in the input_binding-file
- * @param action a table containing the input data, see above for a description
+ * @param this script instance used for storing state
+ * @param action_id id of the received input action, as mapped in the input_binding-file, or `nil` for mouse movement
+ * @param action input data for the action
  * @returns optional boolean to signal if the input should be consumed (not passed on to others) or not, default is false
  * @example ```lua
 function on_input(self, action_id, action)
@@ -7943,9 +10949,9 @@ end
 * @see {@link https://defold.com/ref/stable/gui/#gui.on_input|API Documentation}
  */
 	export function on_input(
-		this: LuaUserdata,
-		action_id: hash,
-		action: object,
+		this: any,
+		action_id: hash | undefined,
+		action: any,
 	): boolean | undefined;
 	/**
  * This is a callback-function, which is called by the engine whenever a message has been sent to the gui component.
@@ -7953,22 +10959,24 @@ It can be used to take action on the message, e.g. update the gui or send a resp
 The `message` parameter is a table containing the message data. If the message is sent from the engine, the
 documentation of the message specifies which data is supplied.
 See the update function for examples on how to use this callback-function.
- * @param this reference to the script state to be used for storing data
+ * @param this script instance used for storing state
  * @param message_id id of the received message
  * @param message a table containing the message data
+ * @param sender address of the sender
 * @see {@link https://defold.com/ref/stable/gui/#gui.on_message|API Documentation}
  */
 	export function on_message(
-		this: LuaUserdata,
+		this: any,
 		message_id: hash,
-		message: object,
+		message: any,
+		sender: url,
 	): void;
 	/**
  * 
 This is a callback-function, which is called by the engine when the gui script is reloaded, e.g. from the editor.
 It can be used for live development, e.g. to tweak constants or set up the state properly for the script.
 
- * @param this reference to the script state to be used for storing data
+ * @param this script instance used for storing state
  * @example ```lua
 function on_reload(self)
     -- restore some color (or similar)
@@ -7977,7 +10985,7 @@ end
 ```
 * @see {@link https://defold.com/ref/stable/gui/#gui.on_reload|API Documentation}
  */
-	export function on_reload(this: LuaUserdata): void;
+	export function on_reload(this: any): void;
 	/**
  * Tests whether a coordinate is within the bounding box of a
 node.
@@ -7998,20 +11006,14 @@ Use this function to set one-frame still images on the node.
 
 `self`
 
-object The current object.
+script_instance The current script instance.
 
 `node`
 
 node The node that is animated.
 
 
- * @param play_properties optional table with properties
-
-`offset`
-number The normalized initial value of the animation cursor when the animation starts playing
-`playback_rate`
-number The rate with which the animation will be played. Must be positive
-
+ * @param play_properties optional playback properties
  * @example Set the texture of a node to a flipbook animation from an atlas:
 ```lua
 local function anim_callback(self, node)
@@ -8045,22 +11047,6 @@ gui.play_flipbook(node, "button")
  * Plays the paricle fx for a gui node
  * @param node node to play particle fx for
  * @param emitter_state_function optional callback function that will be called when an emitter attached to this particlefx changes state.
-
-`self`
-object The current object
-`node`
-hash The particle fx node, or `nil` if the node was deleted
-`emitter`
-hash The id of the emitter
-`state`
-constant the new state of the emitter:
-
-
-`particlefx.EMITTER_STATE_SLEEPING`
-`particlefx.EMITTER_STATE_PRESPAWN`
-`particlefx.EMITTER_STATE_SPAWNING`
-`particlefx.EMITTER_STATE_POSTSPAWN`
-
  * @example How to play a particle fx when a gui node is created.
 The callback receives the gui node, the hash of the id
 of the emitter, and the new state of the emitter as particlefx.EMITTER_STATE_.
@@ -8079,14 +11065,18 @@ end
  */
 	export function play_particlefx(
 		node: node,
-		emitter_state_function?: (
-			this: any,
-			node: any,
-			emitter: any,
-			state: any,
-		) => void,
+		emitter_state_function?: any  ,
 	): void;
-	/**
+	export namespace play_properties {
+		/**
+		 * Normalized initial animation cursor.
+		 */
+		export let offset_: number;
+		/**
+		 * Positive animation playback rate.
+		 */
+		export let playback_rate_: number;
+	} /**
 	 * Resets the input context of keyboard. This will clear marked text.
 	 * @see {@link https://defold.com/ref/stable/gui/#gui.reset_keyboard|API Documentation}
 	 */
@@ -8170,9 +11160,7 @@ If the material has a constant array called 'tint_array' specified in the materi
  * @param node node to set the property for, or msg.url() to the gui itself
  * @param property the property to set
  * @param value the property to set. `nil` is only supported for removing runtime texture mappings with `gui.set(msg.url(), "textures", nil, {key = ...})`.
- * @param options optional options table (only applicable for material constants)
-- `index` number index into array property (1 based)
-- `key` hash name of internal property
+ * @param options optional material-constant options
  * @example Updates the position property on an existing node:
 ```lua
 local node = gui.get_node("my_box_node")
@@ -8238,10 +11226,10 @@ resource.release(atlas_id)
  */
 	export function set(
 		node: node | url,
-		property: hash | number | string,
+		property: hash | any | string,
 		value:
 			vmath.quaternion | vmath.vector3 | vmath.vector4 | number | undefined,
-		options?: object,
+		options?: any,
 	): void;
 	/**
  * Sets the adjust mode on a node.
@@ -8249,14 +11237,9 @@ The adjust mode defines how the node will adjust itself to screen
 resolutions that differs from the one in the project settings.
  * @param node node to set adjust mode for
  * @param adjust_mode adjust mode to set
-
-`gui.ADJUST_FIT`
-`gui.ADJUST_ZOOM`
-`gui.ADJUST_STRETCH`
 * @see {@link https://defold.com/ref/stable/gui/#gui.set_adjust_mode|API Documentation}
-
  */
-	export function set_adjust_mode(node: node, adjust_mode: number): void;
+	export function set_adjust_mode(node: node, adjust_mode: any): void;
 	/**
 	 * sets the node alpha
 	 * @param node node for which to set alpha
@@ -8269,16 +11252,9 @@ resolutions that differs from the one in the project settings.
 Blend mode defines how the node will be blended with the background.
  * @param node node to set blend mode for
  * @param blend_mode blend mode to set
-
-`gui.BLEND_ALPHA`
-`gui.BLEND_ADD`
-`gui.BLEND_ADD_ALPHA`
-`gui.BLEND_MULT`
-`gui.BLEND_SCREEN`
 * @see {@link https://defold.com/ref/stable/gui/#gui.set_blend_mode|API Documentation}
-
  */
-	export function set_blend_mode(node: node, blend_mode: number): void;
+	export function set_blend_mode(node: node, blend_mode: any): void;
 	/**
 	 * If node is set as an inverted clipping node, it will clip anything inside as opposed to outside.
 	 * @param node node to set clipping inverted state for
@@ -8296,7 +11272,7 @@ Blend mode defines how the node will be blended with the background.
 * @see {@link https://defold.com/ref/stable/gui/#gui.set_clipping_mode|API Documentation}
 
  */
-	export function set_clipping_mode(node: node, clipping_mode: number): void;
+	export function set_clipping_mode(node: node, clipping_mode: any): void;
 	/**
 	 * If node is set as an visible clipping node, it will be shown as well as clipping. Otherwise, it will only clip but not show visually.
 	 * @param node node to set clipping visibility for
@@ -8472,17 +11448,22 @@ gui.set_material(node, "my_material")
 * @see {@link https://defold.com/ref/stable/gui/#gui.set_material|API Documentation}
  */
 	export function set_material(node: node, material: hash | string): void;
-	/**
- * Sets the outer bounds mode for a pie node.
- * @param node node for which to set the outer bounds mode
- * @param bounds_mode the outer bounds mode of the pie node:
-
-`gui.PIEBOUNDS_RECTANGLE`
-`gui.PIEBOUNDS_ELLIPSE`
-* @see {@link https://defold.com/ref/stable/gui/#gui.set_outer_bounds|API Documentation}
-
- */
-	export function set_outer_bounds(node: node, bounds_mode: number): void;
+	export namespace set_options {
+		/**
+		 * One-based material-constant array index.
+		 */
+		export let index_: number;
+		/**
+		 * Internal property name.
+		 */
+		export let key_: hash;
+	} /**
+	 * Sets the outer bounds mode for a pie node.
+	 * @param node node for which to set the outer bounds mode
+	 * @param bounds_mode the outer bounds mode of the pie node
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.set_outer_bounds|API Documentation}
+	 */
+	export function set_outer_bounds(node: node, bounds_mode: any): void;
 	/**
  * Sets the outline color of the supplied node.
 See gui.set_color for info how vectors encode color values.
@@ -8537,7 +11518,7 @@ See gui.set_color for info how vectors encode color values.
 * @see {@link https://defold.com/ref/stable/gui/#gui.set_pivot|API Documentation}
 
  */
-	export function set_pivot(node: node, pivot: number): void;
+	export function set_pivot(node: node, pivot: any): void;
 	/**
 	 * Sets the position of the supplied node.
 	 * @param node node to set the position for
@@ -8570,17 +11551,11 @@ The rotation is expressed as a quaternion
 		rotation: vmath.quaternion | vmath.vector4,
 	): void;
 	/**
- * Sets how the safe area is applied to this gui scene.
- * @param mode safe area mode
-
-`gui.SAFE_AREA_NONE`
-`gui.SAFE_AREA_LONG`
-`gui.SAFE_AREA_SHORT`
-`gui.SAFE_AREA_BOTH`
-* @see {@link https://defold.com/ref/stable/gui/#gui.set_safe_area_mode|API Documentation}
-
- */
-	export function set_safe_area_mode(mode: number): void;
+	 * Sets how the safe area is applied to this gui scene.
+	 * @param mode safe area mode
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.set_safe_area_mode|API Documentation}
+	 */
+	export function set_safe_area_mode(mode: any): void;
 	/**
 	 * Sets the scaling of the supplied node.
 	 * @param node node to set the scale for
@@ -8632,13 +11607,9 @@ to match the assigned image. Particle fx and Text nodes will ignore
 any size mode setting.
  * @param node node to set size mode for
  * @param size_mode size mode to set
-
-`gui.SIZE_MODE_MANUAL`
-`gui.SIZE_MODE_AUTO`
 * @see {@link https://defold.com/ref/stable/gui/#gui.set_size_mode|API Documentation}
-
  */
-	export function set_size_mode(node: node, size_mode: number): void;
+	export function set_size_mode(node: node, size_mode: any): void;
 	/**
 	 * Set the slice9 configuration values for the node.
 	 * @param node node to manipulate
@@ -8694,9 +11665,9 @@ end
  * @param height texture height
  * @param type texture type
 
-  `"rgb"` - RGB
-  `"rgba"` - RGBA
-  `"l"` - LUMINANCE
+  `"rgb"` or `image.TYPE_RGB` - RGB
+  `"rgba"` or `image.TYPE_RGBA` - RGBA
+  `"l"` or `image.TYPE_LUMINANCE` - LUMINANCE
   `"astc"` - ASTC compressed format
 
  * @param buffer texture data
@@ -8733,7 +11704,7 @@ end
 		texture: hash | string,
 		width: number,
 		height: number,
-		type: number | string,
+		type: any | string,
 		buffer: string,
 		flip: boolean,
 	): boolean;
@@ -8763,7 +11734,7 @@ adjust the vertical spacing of characters in the text.
 * @see {@link https://defold.com/ref/stable/gui/#gui.set_xanchor|API Documentation}
 
  */
-	export function set_xanchor(node: node, anchor: number): void;
+	export function set_xanchor(node: node, anchor: any): void;
 	/**
  * The y-anchor specifies how the node is moved when the game is run in a different resolution.
  * @param node node to set y-anchor for
@@ -8775,32 +11746,23 @@ adjust the vertical spacing of characters in the text.
 * @see {@link https://defold.com/ref/stable/gui/#gui.set_yanchor|API Documentation}
 
  */
-	export function set_yanchor(node: node, anchor: number): void;
+	export function set_yanchor(node: node, anchor: any): void;
 	/**
  * Shows the on-display touch keyboard.
 The specified type of keyboard is displayed if it is available on
 the device.
 This function is only available on iOS and Android.  🤖.
  * @param type keyboard type
-
-`gui.KEYBOARD_TYPE_DEFAULT`
-`gui.KEYBOARD_TYPE_EMAIL`
-`gui.KEYBOARD_TYPE_NUMBER_PAD`
-`gui.KEYBOARD_TYPE_PASSWORD`
-
  * @param autoclose if the keyboard should automatically close when clicking outside
 * @see {@link https://defold.com/ref/stable/gui/#gui.show_keyboard|API Documentation}
  */
-	export function show_keyboard(type: number, autoclose: boolean): void;
+	export function show_keyboard(type: any, autoclose: boolean): void;
 	/**
- * Stops the particle fx for a gui node
- * @param node node to stop particle fx for
- * @param options options when stopping the particle fx. Supported options:
-
-boolean `clear`: instantly clear spawned particles
-* @see {@link https://defold.com/ref/stable/gui/#gui.stop_particlefx|API Documentation}
-
- */
+	 * Stops the particle fx for a gui node
+	 * @param node node to stop particle fx for
+	 * @param options options used when stopping the particle fx
+	 * @see {@link https://defold.com/ref/stable/gui/#gui.stop_particlefx|API Documentation}
+	 */
 	export function stop_particlefx(
 		node: node,
 		options?: { clear: boolean },
@@ -8808,7 +11770,7 @@ boolean `clear`: instantly clear spawned particles
 	/**
  * This is a callback-function, which is called by the engine every frame to update the state of a gui component.
 It can be used to perform any kind of gui related tasks, e.g. animating nodes.
- * @param this reference to the script state to be used for storing data
+ * @param this script instance used for storing state
  * @param dt the time-step of the frame update
  * @example This example demonstrates how to update a text node that displays game score in a counting fashion.
 It is assumed that the gui component receives messages from the game when a new score is to be shown.
@@ -8847,7 +11809,7 @@ end
 ```
 * @see {@link https://defold.com/ref/stable/gui/#gui.update|API Documentation}
  */
-	export function update(this: LuaUserdata, dt: number): void;
+	export function update(this: any, dt: number): void;
 }
 declare namespace gui {
 	export type final = (this: any) => void;
@@ -8892,7 +11854,7 @@ or start playing sounds the first time the callback is invoked.
  * @param callback The interaction callback. Pass an empty function or `nil` if you no longer wish to receive callbacks.
 
 `self`
-object The calling script
+script_instance The calling script instance
 
  * @example ```lua
 local function on_interaction(self)
@@ -8906,9 +11868,7 @@ end
 ```
 * @see {@link https://defold.com/ref/stable/html5/#html5.set_interaction_listener|API Documentation}
  */
-	export function set_interaction_listener(
-		callback: ((this: any) => void) | undefined,
-	): void;
+	export function set_interaction_listener(callback: any | undefined): void;
 }
 
 /** @see {@link https://defold.com/ref/stable/http/|API Documentation} */
@@ -8921,34 +11881,13 @@ declare namespace http {
  * @param callback response callback function
 
 `self`
-object The script instance
+script_instance The current script instance
 `id`
 hash Internal message identifier. Do not use!
-`response`
-table The response data. Contains the fields:
-
-
-number `status`: the status of the response
-string `response`: the response data (if not saved on disc)
-table `headers`: all the returned headers (if status is 200 or 206)
-string `path`: the stored path (if saved to disc)
-string `error`: if any unforeseen errors occurred (e.g. file I/O)
-number `bytes_received`: the amount of bytes received/sent for a request, only if option `report_progress` is true
-number `bytes_total`: the total amount of bytes for a request, only if option `report_progress` is true
-number `range_start`: the start offset into the requested file
-number `range_end`: the end offset into the requested file (inclusive)
-number `document_size`: the full size of the requested file
 
  * @param headers optional table with custom headers
  * @param post_data optional data to send
- * @param options optional table with request parameters. Supported entries:
-
-number `timeout`: timeout in seconds
-string `path`: path on disc where to download the file. Only overwrites the path if status is 200. ⚠ Path should be absolute
-boolean `ignore_cache`: don't return cached data if we get a 304. ⚠ Not available in HTML5 build
-boolean `chunked_transfer`: use chunked transfer encoding for https requests larger than 16kb. Defaults to true. ⚠ Not available in HTML5 build
-boolean `report_progress`: when it is true, the amount of bytes sent and/or received for a request will be passed into the callback function
-
+ * @param options optional request options
  * @example Basic HTTP-GET request. The callback receives a table with the response
 in the fields status, the response (the data) and headers (a table).
 ```lua
@@ -8971,39 +11910,123 @@ end
 	export function request(
 		url: string,
 		method: string,
-		callback: (this: any, id: any, response: any) => void,
+		callback: any,
 		headers?: { [key: string]: number | string },
 		post_data?: string,
-		options?: {
-			timeout?: number;
-			path?: string;
-			ignore_cache?: boolean;
-			chunked_transfer?: boolean;
-			report_progress?: boolean;
-			proxy?: string;
-		},
+		options?: any,
 	): void;
+	export namespace request_options {
+		/**
+		 * use chunked transfer encoding for HTTPS requests larger than 16 KB; defaults to true and is unavailable on HTML5
+		 */
+		export let chunked_transfer_: boolean;
+		/**
+		 * do not return cached data for status 304; unavailable on HTML5
+		 */
+		export let ignore_cache_: boolean;
+		/**
+		 * absolute destination path; overwritten only for status 200
+		 */
+		export let path_: string;
+		/**
+		 * report transferred and total byte counts to the callback
+		 */
+		export let report_progress_: boolean;
+		/**
+		 * timeout in seconds
+		 */
+		export let timeout_: number;
+	}
+	export namespace response {
+		/**
+		 * bytes transferred when progress reporting is enabled
+		 */
+		export let bytes_received_: number;
+		/**
+		 * total request size when progress reporting is enabled
+		 */
+		export let bytes_total_: number;
+		/**
+		 * full requested-file size
+		 */
+		export let document_size_: number;
+		/**
+		 * unexpected error, such as a file I/O error
+		 */
+		export let error_: string;
+		/**
+		 * response headers for status 200 or 206
+		 */
+		export let headers_: unknown;
+		/**
+		 * destination path when the response is saved to disk
+		 */
+		export let path_: string;
+		/**
+		 * requested-file end offset, inclusive
+		 */
+		export let range_end_: number;
+		/**
+		 * requested-file start offset
+		 */
+		export let range_start_: number;
+		/**
+		 * response data when it is not saved to disk
+		 */
+		export let response_: string;
+		/**
+		 * response status
+		 */
+		export let status: number;
+	}
 }
 
 /** @see {@link https://defold.com/ref/stable/image/|API Documentation} */
 declare namespace image {
-	/**
-	 * luminance image type
-	 */
-	export const TYPE_LUMINANCE: number;
-	/**
-	 * luminance image type
-	 */
-	export const TYPE_LUMINANCE_ALPHA: number;
-	/**
-	 * RGB image type
-	 */
-	export const TYPE_RGB: number;
-	/**
-	 * RGBA image type
-	 */
-	export const TYPE_RGBA: number;
-	/**
+	export namespace TYPE {
+		/**
+		 * RGB image type.
+		 */
+		export const TYPE_RGB: unknown;
+		/**
+		 * RGBA image type.
+		 */
+		export const TYPE_RGBA: unknown;
+		/**
+		 * Luminance image type.
+		 */
+		export const TYPE_LUMINANCE: unknown;
+		/**
+		 * Luminance-alpha image type.
+		 */
+		export const TYPE_LUMINANCE_ALPHA: unknown;
+	}
+	export namespace astc_header {
+		/**
+		 * Block size on the x-axis.
+		 */
+		export let block_size_x: number;
+		/**
+		 * Block size on the y-axis.
+		 */
+		export let block_size_y: number;
+		/**
+		 * Block size on the z-axis.
+		 */
+		export let block_size_z: number;
+		/**
+		 * Image depth.
+		 */
+		export let depth: number;
+		/**
+		 * Image height.
+		 */
+		export let height: number;
+		/**
+		 * Image width.
+		 */
+		export let width: number;
+	} /**
  * get the header of an .astc buffer
  * @param buffer .astc file data buffer
  * @example How to get the block size and dimensions from a .astc file
@@ -9027,13 +12050,7 @@ pprint(s)
 	/**
  * Load image (PNG or JPEG) from buffer.
  * @param buffer image data buffer
- * @param options An optional table containing parameters for loading the image. Supported entries:
-
-`premultiply_alpha`
-boolean True if alpha should be premultiplied into the color components. Defaults to `false`.
-`flip_vertically`
-boolean True if the image contents should be flipped vertically. Defaults to `false`.
-
+ * @param options Optional loading parameters. A boolean is accepted for backwards compatibility and controls `premultiply_alpha`.
  * @example How to load an image from an URL and create a GUI texture from it:
 ```lua
 local imgurl = "http://www.site.com/image.png"
@@ -9046,7 +12063,7 @@ http.request(imgurl, "GET", function(self, id, response)
  */
 	export function load(
 		buffer: string,
-		options?: { premultiply_alpha?: boolean; flip_vertically?: boolean },
+		options?: any | boolean,
 	):
 		| {
 				width: number;
@@ -9058,13 +12075,7 @@ http.request(imgurl, "GET", function(self, id, response)
 	/**
  * Load image (PNG or JPEG) from a string buffer.
  * @param buffer image data buffer
- * @param options An optional table containing parameters for loading the image. Supported entries:
-
-`premultiply_alpha`
-boolean True if alpha should be premultiplied into the color components. Defaults to `false`.
-`flip_vertically`
-boolean True if the image contents should be flipped vertically. Defaults to `false`.
-
+ * @param options Optional loading parameters. A boolean is accepted for backwards compatibility and controls `premultiply_alpha`.
  * @example Load an image from an URL as a buffer and create a texture resource from it:
 ```lua
 local imgurl = "http://www.site.com/image.png"
@@ -9085,7 +12096,7 @@ http.request(imgurl, "GET", function(self, id, response)
  */
 	export function load_buffer(
 		buffer: string,
-		options?: { premultiply_alpha?: boolean; flip_vertically?: boolean },
+		options?: any | boolean,
 	):
 		| {
 				width: number;
@@ -9094,6 +12105,52 @@ http.request(imgurl, "GET", function(self, id, response)
 				buffer: string;
 		  }
 		| undefined;
+	export namespace load_buffer_result {
+		/**
+		 * Script buffer containing the decompressed image data.
+		 */
+		export let buffer: unknown;
+		/**
+		 * Image height.
+		 */
+		export let height: number;
+		/**
+		 * Image type.
+		 */
+		export let type: unknown;
+		/**
+		 * Image width.
+		 */
+		export let width: number;
+	}
+	export namespace load_options {
+		/**
+		 * Whether to flip the image contents vertically. Defaults to `false`.
+		 */
+		export let flip_vertically_: boolean;
+		/**
+		 * Whether to premultiply alpha into the color components. Defaults to `false`.
+		 */
+		export let premultiply_alpha_: boolean;
+	}
+	export namespace load_result {
+		/**
+		 * Raw image data.
+		 */
+		export let buffer: string;
+		/**
+		 * Image height.
+		 */
+		export let height: number;
+		/**
+		 * Image type.
+		 */
+		export let type: unknown;
+		/**
+		 * Image width.
+		 */
+		export let width: number;
+	}
 }
 
 /** @see {@link https://defold.com/ref/stable/json/|API Documentation} */
@@ -9102,10 +12159,7 @@ declare namespace json {
  * Decode a string of JSON data into a Lua table.
 A Lua error is raised for syntax errors.
  * @param json json data
- * @param options table with decode options
-
-boolean `decode_null_as_userdata`: whether to decode a JSON null value as json.null or nil (default is nil)
-
+ * @param options optional decoding options
  * @example Converting a string containing JSON data into a Lua table:
 ```lua
 function init(self)
@@ -9129,18 +12183,17 @@ Results in the following printout:
 }
 ```
  */
-	export function decode(
-		json: string,
-		options?: { decode_null_as_userdata: boolean },
-	): unknown;
-	/**
+	export function decode(json: string, options?: any): unknown;
+	export namespace decode_options {
+		/**
+		 * Decode JSON `null` as json.null instead of `nil`.
+		 */
+		export let decode_null_as_userdata_: boolean;
+	} /**
  * Encode a lua table to a JSON string.
 A Lua error is raised for syntax errors.
- * @param tbl lua table to encode
- * @param options table with encode options
-
-string `encode_empty_table_as_object`: whether to encode an empty table as an JSON object or array (default is object)
-
+ * @param tbl Lua value to encode
+ * @param options optional encoding options
  * @returns encoded json
  * @example Convert a lua table to a JSON string:
 ```lua
@@ -9161,11 +12214,13 @@ Results in the following printout:
 {"persons":[{"name":"John Doe"},{"name":"Darth Vader"}]}
 ```
  */
-	export function encode(
-		tbl: object,
-		options?: { encode_empty_table_as_object: boolean },
-	): string;
-	/**
+	export function encode(tbl: any, options?: any): string;
+	export namespace encode_options {
+		/**
+		 * Encode an empty table as an object instead of an array. The default is true.
+		 */
+		export let encode_empty_table_as_object_: boolean;
+	} /**
 	 * Represents the null primitive from a json file
 	 */
 	export let null_: number;
@@ -9175,27 +12230,89 @@ Results in the following printout:
 /** @see {@link https://defold.com/ref/stable/label/|API Documentation} */
 declare namespace label {
 	/**
+ * Returns the sprites and links found in the label's current layout.
+Each entry contains `type`, `id`, the zero-based UTF-32 `text_offset`,
+`text_length`, resolved `x`, `y`, `width`
+and `height`, and an `attributes` table. The position is the lower-left
+object corner relative to the label's upper-left layout origin.
+Inline resource rendering is not part of this MVP; sprites use their explicit
+dimensions or a one-em square fallback.
+ * @param url the label to inspect
+ * @returns layout objects in source order
+ * @example ```lua
+local objects = label.get_layout_objects("#label")
+for _, object in ipairs(objects) do
+    if object.type == "link" then
+        print(object.attributes.src, object.text_offset, object.text_length)
+    elseif object.type == "sprite" then
+        print(object.attributes.src, object.x, object.y, object.width, object.height)
+    end
+end
+```
+* @see {@link https://defold.com/ref/stable/label/#label.get_layout_objects|API Documentation}
+ */
+	export function get_layout_objects(url: hash | url | string): unknown;
+	/**
  * Gets the text from a label component
+⚠ This function is deprecated. Use `go.get("#label", "text")` instead.
  * @param url the label to get the text from
  * @returns the label text
  * @example ```lua
 function init(self)
-    local text = label.get_text("#label")
+    local text = go.get("#label", "text")
     print(text)
 end
 ```
 * @see {@link https://defold.com/ref/stable/label/#label.get_text|API Documentation}
  */
 	export function get_text(url: hash | url | string): string;
-	/**
+	export namespace layout_object {
+		/**
+		 * markup attributes keyed by name
+		 */
+		export let attributes: unknown;
+		/**
+		 * resolved object height
+		 */
+		export let height: number;
+		/**
+		 * the object's `id` attribute, or its generated layout object id
+		 */
+		export let id: hash;
+		/**
+		 * visible UTF-32 text length covered by the object
+		 */
+		export let text_length: number;
+		/**
+		 * zero-based UTF-32 offset in the visible text
+		 */
+		export let text_offset: number;
+		/**
+		 * object type, currently `link` or `sprite`
+		 */
+		export let type: string;
+		/**
+		 * resolved object width
+		 */
+		export let width: number;
+		/**
+		 * lower-left x-coordinate relative to the label's upper-left layout origin
+		 */
+		export let x: number;
+		/**
+		 * lower-left y-coordinate relative to the label's upper-left layout origin
+		 */
+		export let y: number;
+	} /**
  * Sets the text of a label component
+⚠ This function is deprecated. Use `go.set("#label", "text", value)` instead.
 ⚠ This method uses the message passing that means the value will be set after `dispatch messages` step.
 More information is available in the Application Lifecycle manual.
  * @param url the label that should have a constant set
  * @param text the text
  * @example ```lua
 function init(self)
-    label.set_text("#label", "Hello World!")
+    go.set("#label", "text", "Hello World!")
 end
 ```
 * @see {@link https://defold.com/ref/stable/label/#label.set_text|API Documentation}
@@ -9207,59 +12324,60 @@ end
 }
 
 declare namespace liveupdate {
-	/**
-	 * Mismatch between between expected bundled resources and actual bundled resources. The manifest expects a resource to be in the bundle, but it was not found in the bundle. This is typically the case when a non-excluded resource was modified between publishing the bundle and publishing the manifest.
-	 */
-	export const LIVEUPDATE_BUNDLED_RESOURCE_MISMATCH: number;
-	/**
-	 * Mismatch between running engine version and engine versions supported by manifest.
-	 */
-	export const LIVEUPDATE_ENGINE_VERSION_MISMATCH: number;
-	/**
-	 * Failed to parse manifest data buffer. The manifest was probably produced by a different engine version.
-	 */
-	export const LIVEUPDATE_FORMAT_ERROR: number;
-	/**
-	 * Argument was invalid
-	 */
-	export const LIVEUPDATE_INVAL: number;
-	/**
-	 * The handled resource is invalid.
-	 */
-	export const LIVEUPDATE_INVALID_HEADER: number;
-	/**
-	 * The header of the resource is invalid.
-	 */
-	export const LIVEUPDATE_INVALID_RESOURCE: number;
-	/**
-	 * I/O operation failed
-	 */
-	export const LIVEUPDATE_IO_ERROR: number;
-	/**
-	 * Memory wasn't allocated
-	 */
-	export const LIVEUPDATE_MEM_ERROR: number;
-	/**
-	 * LIVEUPDATE_OK
-	 */
-	export const LIVEUPDATE_OK: number;
-	/**
-	 * Mismatch between scheme used to load resources. Resources are loaded with a different scheme than from manifest, for example over HTTP or directly from file. This is typically the case when running the game directly from the editor instead of from a bundle.
-	 */
-	export const LIVEUPDATE_SCHEME_MISMATCH: number;
-	/**
-	 * Mismatch between expected and actual integrity data for legacy liveupdate verification.
-	 */
-	export const LIVEUPDATE_SIGNATURE_MISMATCH: number;
-	/**
-	 * Unspecified error
-	 */
-	export const LIVEUPDATE_UNKNOWN: number;
-	/**
-	 * Mismatch between manifest expected version and actual version.
-	 */
-	export const LIVEUPDATE_VERSION_MISMATCH: number;
-	/**
+	export namespace LIVEUPDATE {
+		/**
+		 * Mismatch between between expected bundled resources and actual bundled resources. The manifest expects a resource to be in the bundle, but it was not found in the bundle. This is typically the case when a non-excluded resource was modified between publishing the bundle and publishing the manifest.
+		 */
+		export const LIVEUPDATE_BUNDLED_RESOURCE_MISMATCH: unknown;
+		/**
+		 * Mismatch between running engine version and engine versions supported by manifest.
+		 */
+		export const LIVEUPDATE_ENGINE_VERSION_MISMATCH: unknown;
+		/**
+		 * Failed to parse manifest data buffer. The manifest was probably produced by a different engine version.
+		 */
+		export const LIVEUPDATE_FORMAT_ERROR: unknown;
+		/**
+		 * Argument was invalid
+		 */
+		export const LIVEUPDATE_INVAL: unknown;
+		/**
+		 * The handled resource is invalid.
+		 */
+		export const LIVEUPDATE_INVALID_HEADER: unknown;
+		/**
+		 * The header of the resource is invalid.
+		 */
+		export const LIVEUPDATE_INVALID_RESOURCE: unknown;
+		/**
+		 * I/O operation failed
+		 */
+		export const LIVEUPDATE_IO_ERROR: unknown;
+		/**
+		 * Memory wasn't allocated
+		 */
+		export const LIVEUPDATE_MEM_ERROR: unknown;
+		/**
+		 * Operation completed successfully.
+		 */
+		export const LIVEUPDATE_OK: unknown;
+		/**
+		 * Mismatch between scheme used to load resources. Resources are loaded with a different scheme than from manifest, for example over HTTP or directly from file. This is typically the case when running the game directly from the editor instead of from a bundle.
+		 */
+		export const LIVEUPDATE_SCHEME_MISMATCH: unknown;
+		/**
+		 * Mismatch between expected and actual integrity data for legacy liveupdate verification.
+		 */
+		export const LIVEUPDATE_SIGNATURE_MISMATCH: unknown;
+		/**
+		 * Unspecified error
+		 */
+		export const LIVEUPDATE_UNKNOWN: unknown;
+		/**
+		 * Mismatch between manifest expected version and actual version.
+		 */
+		export const LIVEUPDATE_VERSION_MISMATCH: unknown;
+	} /**
  * Adds a resource mount to the resource system.
 After the mount succeeded, the resources are available to load. (i.e. no reboot required)
  * @param name Unique name of the mount
@@ -9268,7 +12386,7 @@ After the mount succeeded, the resources are available to load. (i.e. no reboot 
  * @param callback Callback after the asynchronous request completed
 - `name` hash Unique name of the mount
 - `uri` string The uri of the mount
-- `result` number The result of the request
+- `result` liveupdate.LIVEUPDATE The result of the request
  * @returns The result of the request
  * @example Add multiple mounts. Higher priority takes precedence.
 ```lua
@@ -9281,8 +12399,8 @@ liveupdate.add_mount("season_pack_1", "zip:/path/to/easter_pack_1.zip", 30, func
 		name: hash | string,
 		uri: string,
 		priority: number,
-		callback: (this: any, name: any, uri: any, result: any) => void,
-	): number;
+		callback: any,
+	): unknown;
 	/**
  * Get an array of the current mounts
 This can be used to determine if a new mount is needed or not
@@ -9309,7 +12427,7 @@ DEBUG:SCRIPT: MOUNTS,
 }
 ```
  */
-	export function get_mounts(): object;
+	export function get_mounts(): unknown;
 	/**
  * Checks if the bundled application was built with one or more resources
 excluded from the main bundle, through a collection proxy with
@@ -9335,44 +12453,112 @@ Removing a mount does not affect any loaded resources.
 liveupdate.remove_mount("season_pack_1")
 ```
  */
-	export function remove_mount(name: hash | string): number;
+	export function remove_mount(name: hash | string): unknown;
 }
 
 declare namespace material {
-	/**
+	export namespace CONSTANT_TYPE {
+		/**
+		 * Normal matrix constant.
+		 */
+		export const CONSTANT_TYPE_NORMAL: unknown;
+		/**
+		 * Projection matrix constant.
+		 */
+		export const CONSTANT_TYPE_PROJECTION: unknown;
+		/**
+		 * Inverse projection matrix constant.
+		 */
+		export const CONSTANT_TYPE_PROJECTION_INVERSE: unknown;
+		/**
+		 * Texture matrix constant.
+		 */
+		export const CONSTANT_TYPE_TEXTURE: unknown;
+		/**
+		 * Time constant.
+		 */
+		export const CONSTANT_TYPE_TIME: unknown;
+		/**
+		 * User vector constant.
+		 */
+		export const CONSTANT_TYPE_USER: unknown;
+		/**
+		 * User color constant.
+		 */
+		export const CONSTANT_TYPE_USER_COLOR: unknown;
+		/**
+		 * User matrix constant.
+		 */
+		export const CONSTANT_TYPE_USER_MATRIX4: unknown;
+		/**
+		 * View matrix constant.
+		 */
+		export const CONSTANT_TYPE_VIEW: unknown;
+		/**
+		 * View-projection matrix constant.
+		 */
+		export const CONSTANT_TYPE_VIEWPROJ: unknown;
+		/**
+		 * Inverse view-projection matrix constant.
+		 */
+		export const CONSTANT_TYPE_VIEWPROJ_INVERSE: unknown;
+		/**
+		 * Inverse view matrix constant.
+		 */
+		export const CONSTANT_TYPE_VIEW_INVERSE: unknown;
+		/**
+		 * World matrix constant.
+		 */
+		export const CONSTANT_TYPE_WORLD: unknown;
+		/**
+		 * World-view matrix constant.
+		 */
+		export const CONSTANT_TYPE_WORLDVIEW: unknown;
+		/**
+		 * World-view-projection matrix constant.
+		 */
+		export const CONSTANT_TYPE_WORLDVIEWPROJ: unknown;
+		/**
+		 * Inverse world-view-projection matrix constant.
+		 */
+		export const CONSTANT_TYPE_WORLDVIEWPROJ_INVERSE: unknown;
+		/**
+		 * Inverse world-view matrix constant.
+		 */
+		export const CONSTANT_TYPE_WORLDVIEW_INVERSE: unknown;
+		/**
+		 * Inverse world matrix constant.
+		 */
+		export const CONSTANT_TYPE_WORLD_INVERSE: unknown;
+	}
+	export namespace constant_info {
+		/**
+		 * Constant name.
+		 */
+		export let name: hash;
+		/**
+		 * Constant type.
+		 */
+		export let type: unknown;
+		/**
+		 * Constant value or values. Present for user constants.
+		 */
+		export let value_: unknown;
+	}
+	export namespace constant_options {
+		/**
+		 * Constant type.
+		 */
+		export let type_: unknown;
+		/**
+		 * Constant value or values.
+		 */
+		export let value_: unknown;
+	} /**
  * Returns a table of all the shader constants in the material. This function will return all the shader constants
 that are used in both the vertex and the fragment shaders.
  * @param path The path to the resource
- * @returns A table of tables, where each entry contains info about the shader constants:
-
-`name`
-hash the hashed name of the constant
-`type`
-number the type of the constant. Supported values:
-
-
-`material.CONSTANT_TYPE_USER`
-`material.CONSTANT_TYPE_USER_MATRIX4`
-`material.CONSTANT_TYPE_VIEWPROJ`
-`material.CONSTANT_TYPE_WORLD`
-`material.CONSTANT_TYPE_TEXTURE`
-`material.CONSTANT_TYPE_VIEW`
-`material.CONSTANT_TYPE_PROJECTION`
-`material.CONSTANT_TYPE_NORMAL`
-`material.CONSTANT_TYPE_WORLDVIEW`
-`material.CONSTANT_TYPE_WORLDVIEWPROJ`
-`material.CONSTANT_TYPE_TIME`
-`material.CONSTANT_TYPE_WORLD_INVERSE`
-`material.CONSTANT_TYPE_VIEW_INVERSE`
-`material.CONSTANT_TYPE_PROJECTION_INVERSE`
-`material.CONSTANT_TYPE_VIEWPROJ_INVERSE`
-`material.CONSTANT_TYPE_WORLDVIEW_INVERSE`
-`material.CONSTANT_TYPE_WORLDVIEWPROJ_INVERSE`
-
-
-`value`
-vmath.vector4 | vmath.matrix4 the value(s) of the constant. If the constant is an array, the value will be a table of vmath.vector4 or vmath.matrix4 if the type is `material.CONSTANT_TYPE_USER_MATRIX4`.
-
+ * @returns Shader constant information.
  * @example Get the shader constants from a material specified as a resource property
 ```lua
 go.property("my_material", resource.material())
@@ -9382,60 +12568,12 @@ function init(self)
 end
 ```
  */
-	export function get_constants(path: hash | string): object;
+	export function get_constants(path: hash | string): unknown;
 	/**
  * Returns a table of all the texture samplers in the material. This function will return all the texture samplers
 that are used in both the vertex and the fragment shaders.
  * @param path The path to the resource
- * @returns A table of tables, where each entry contains info about the texture samplers:
-
-`name`
-hash the hashed name of the texture sampler
-`u_wrap`
-number the u wrap mode of the texture sampler. Supported values:
-
-
-`graphics.TEXTURE_WRAP_CLAMP_TO_BORDER`
-`graphics.TEXTURE_WRAP_CLAMP_TO_EDGE`
-`graphics.TEXTURE_WRAP_MIRRORED_REPEAT`
-`graphics.TEXTURE_WRAP_REPEAT`
-
-
-`v_wrap`
-number the v wrap mode of the texture sampler. Supported values:
-
-
-`graphics.TEXTURE_WRAP_CLAMP_TO_BORDER`
-`graphics.TEXTURE_WRAP_CLAMP_TO_EDGE`
-`graphics.TEXTURE_WRAP_MIRRORED_REPEAT`
-`graphics.TEXTURE_WRAP_REPEAT`
-
-
-`min_filter`
-number the min filter mode of the texture sampler. Supported values:
-
-
-`graphics.TEXTURE_FILTER_DEFAULT`
-`graphics.TEXTURE_FILTER_NEAREST`
-`graphics.TEXTURE_FILTER_LINEAR`
-`graphics.TEXTURE_FILTER_NEAREST_MIPMAP_NEAREST`
-`graphics.TEXTURE_FILTER_NEAREST_MIPMAP_LINEAR`
-`graphics.TEXTURE_FILTER_LINEAR_MIPMAP_NEAREST`
-`graphics.TEXTURE_FILTER_LINEAR_MIPMAP_LINEAR`
-
-
-`mag_filter`
-number the mag filter mode of the texture sampler
-
-
-`graphics.TEXTURE_FILTER_DEFAULT`
-`graphics.TEXTURE_FILTER_NEAREST`
-`graphics.TEXTURE_FILTER_LINEAR`
-
-
-`max_anisotropy`
-number the max anisotropy of the texture sampler
-
+ * @returns texture sampler information
  * @example Get the texture samplers from a material specified as a resource property
 ```lua
 go.property("my_material", resource.material())
@@ -9445,46 +12583,11 @@ function init(self)
 end
 ```
  */
-	export function get_samplers(path: hash | string): object;
+	export function get_samplers(path: hash | string): unknown;
 	/**
  * Returns a table of all the textures from the material.
  * @param path The path to the resource
- * @returns A table of tables, where each entry contains info about the material textures:
-
-`path`
-hash the resource path of the texture. Only available if the texture is a resource.
-`handle`
-hash the runtime handle of the texture.
-`width`
-number the width of the texture
-`height`
-number the height of the texture
-`depth`
-number the depth of the texture. Corresponds to the number of layers in an array texture.
-`mipmaps`
-number the number of mipmaps in the texture
-`type`
-number the type of the texture. Supported values:
-
-
-`graphics.TEXTURE_TYPE_2D`
-`graphics.TEXTURE_TYPE_2D_ARRAY`
-`graphics.TEXTURE_TYPE_CUBE_MAP`
-`graphics.TEXTURE_TYPE_IMAGE_2D`
-`graphics.TEXTURE_TYPE_3D`
-`graphics.TEXTURE_TYPE_IMAGE_3D`
-
-
-`flags`
-number the flags of the texture. This field is a bit mask of these supported flags:
-
-
-`graphics.TEXTURE_USAGE_FLAG_SAMPLE`
-`graphics.TEXTURE_USAGE_FLAG_MEMORYLESS`
-`graphics.TEXTURE_USAGE_FLAG_STORAGE`
-`graphics.TEXTURE_USAGE_FLAG_INPUT`
-`graphics.TEXTURE_USAGE_FLAG_COLOR`
-
+ * @returns material texture information
  * @example Get the textures from a material specified as a resource property
 ```lua
 go.property("my_material", resource.material())
@@ -9494,58 +12597,12 @@ function init(self)
 end
 ```
  */
-	export function get_textures(path: hash | string): object;
+	export function get_textures(path: hash | string): unknown;
 	/**
  * Returns a table of all the vertex attributes in the material. This function will return all the vertex attributes
 that are used in the vertex shader of the material.
  * @param path The path to the resource
- * @returns A table of tables, where each entry contains info about the vertex attributes:
-
-`name`
-hash the hashed name of the vertex attribute
-`value`
-vmath.vector4 | vmath.vector3 | vmath.matrix4 | number | table the value of the vertex attribute. Matrix attributes that do not map to `vmath.matrix4` are returned as a table of numbers.
-`normalize`
-boolean whether the value is normalized when passed into the shader
-`data_type`
-number the data type of the vertex attribute. Supported values:
-
-
-`graphics.DATA_TYPE_BYTE`
-`graphics.DATA_TYPE_UNSIGNED_BYTE`
-`graphics.DATA_TYPE_SHORT`
-`graphics.DATA_TYPE_UNSIGNED_SHORT`
-`graphics.DATA_TYPE_INT`
-`graphics.DATA_TYPE_UNSIGNED_INT`
-`graphics.DATA_TYPE_FLOAT`
-
-
-`coordinate_space`
-number the coordinate space of the vertex attribute. Supported values:
-
-
-`graphics.COORDINATE_SPACE_WORLD`
-`graphics.COORDINATE_SPACE_LOCAL`
-
-
-`semantic_type`
-number the semantic type of the vertex attribute. Supported values:
-
-
-`graphics.SEMANTIC_TYPE_NONE`
-`graphics.SEMANTIC_TYPE_POSITION`
-`graphics.SEMANTIC_TYPE_TEXCOORD`
-`graphics.SEMANTIC_TYPE_PAGE_INDEX`
-`graphics.SEMANTIC_TYPE_COLOR`
-`graphics.SEMANTIC_TYPE_NORMAL`
-`graphics.SEMANTIC_TYPE_TANGENT`
-`graphics.SEMANTIC_TYPE_WORLD_MATRIX`
-`graphics.SEMANTIC_TYPE_NORMAL_MATRIX`
-`graphics.SEMANTIC_TYPE_BONE_WEIGHTS`
-`graphics.SEMANTIC_TYPE_BONE_INDICES`
-`graphics.SEMANTIC_TYPE_TEXTURE_TRANSFORM_2D`
-`graphics.SEMANTIC_TYPE_MORPH_TARGET_WEIGHTS`
-
+ * @returns vertex attribute information
  * @example Get the vertex attributes from a material specified as a resource property
 ```lua
 go.property("my_material", resource.material())
@@ -9555,38 +12612,96 @@ function init(self)
 end
 ```
  */
-	export function get_vertex_attributes(path: hash | string): object;
-	/**
+	export function get_vertex_attributes(path: hash | string): unknown;
+	export namespace named_vertex_attribute_options {
+		/**
+		 * Attribute coordinate space.
+		 */
+		export let coordinate_space_: unknown;
+		/**
+		 * Attribute data type.
+		 */
+		export let data_type_: unknown;
+		/**
+		 * Attribute name.
+		 */
+		export let name: hash | string;
+		/**
+		 * Whether integer data is normalized.
+		 */
+		export let normalize_: boolean;
+		/**
+		 * Attribute semantic.
+		 */
+		export let semantic_type_: unknown;
+		/**
+		 * Attribute value.
+		 */
+		export let value_: unknown;
+	}
+	export namespace sampler_info {
+		/**
+		 * Magnification filter.
+		 */
+		export let mag_filter: unknown;
+		/**
+		 * Maximum anisotropy.
+		 */
+		export let max_anisotropy: number;
+		/**
+		 * Minification filter.
+		 */
+		export let min_filter: unknown;
+		/**
+		 * Sampler name.
+		 */
+		export let name: hash;
+		/**
+		 * Sampler texture type.
+		 */
+		export let type: unknown;
+		/**
+		 * Horizontal wrap mode.
+		 */
+		export let u_wrap: unknown;
+		/**
+		 * Vertical wrap mode.
+		 */
+		export let v_wrap: unknown;
+		/**
+		 * Depth wrap mode.
+		 */
+		export let w_wrap: unknown;
+	}
+	export namespace sampler_options {
+		/**
+		 * Magnification filter.
+		 */
+		export let mag_filter_: unknown;
+		/**
+		 * Maximum anisotropy.
+		 */
+		export let max_anisotropy_: number;
+		/**
+		 * Minification filter.
+		 */
+		export let min_filter_: unknown;
+		/**
+		 * Horizontal wrap mode.
+		 */
+		export let u_wrap_: unknown;
+		/**
+		 * Vertical wrap mode.
+		 */
+		export let v_wrap_: unknown;
+		/**
+		 * Depth wrap mode.
+		 */
+		export let w_wrap_: unknown;
+	} /**
  * Sets shader constants in a material, if the constants exist.
  * @param path The path to the resource
- * @param constants A table keyed by constant name with args tables as values. Constants can be partially updated. Supported entries:
-
-`type`
-number the type of the constant. Supported values:
-
-
-`material.CONSTANT_TYPE_USER`
-`material.CONSTANT_TYPE_USER_MATRIX4`
-`material.CONSTANT_TYPE_VIEWPROJ`
-`material.CONSTANT_TYPE_WORLD`
-`material.CONSTANT_TYPE_TEXTURE`
-`material.CONSTANT_TYPE_VIEW`
-`material.CONSTANT_TYPE_PROJECTION`
-`material.CONSTANT_TYPE_NORMAL`
-`material.CONSTANT_TYPE_WORLDVIEW`
-`material.CONSTANT_TYPE_WORLDVIEWPROJ`
-`material.CONSTANT_TYPE_TIME`
-`material.CONSTANT_TYPE_WORLD_INVERSE`
-`material.CONSTANT_TYPE_VIEW_INVERSE`
-`material.CONSTANT_TYPE_PROJECTION_INVERSE`
-`material.CONSTANT_TYPE_VIEWPROJ_INVERSE`
-`material.CONSTANT_TYPE_WORLDVIEW_INVERSE`
-`material.CONSTANT_TYPE_WORLDVIEWPROJ_INVERSE`
-
-
-`value`
-vmath.vector4 | vmath.vector3 | vmath.matrix4 | number | table the value(s) of the constant. If the shader constant is an array, the amount of values to update depends on how many values that are passed in the 'value' field.
-
+ * @param constants Shader constant updates keyed by constant name. Partial updates are supported.
  * @example Set a shader constant in a material specified as a resource property
 ```lua
 go.property("my_material", resource.material())
@@ -9603,58 +12718,15 @@ function update(self)
 end
 ```
  */
-	export function set_constants(path: hash | string, constants: object): void;
+	export function set_constants(
+		path: hash | string,
+		constants: any  ,
+	): void;
 	/**
  * Sets texture samplers in a material, if the samplers exist. Use this function to change the settings of texture samplers.
 To set actual textures that should be bound to the samplers, use the `material.set_textures` function instead.
  * @param path The path to the resource
- * @param samplers A table keyed by sampler name with args tables as values. Partial updates are supported. Supported entries:
-
-`u_wrap`
-number the u wrap mode of the texture sampler. Supported values:
-
-
-`graphics.TEXTURE_WRAP_CLAMP_TO_BORDER`
-`graphics.TEXTURE_WRAP_CLAMP_TO_EDGE`
-`graphics.TEXTURE_WRAP_MIRRORED_REPEAT`
-`graphics.TEXTURE_WRAP_REPEAT`
-
-
-`v_wrap`
-number the v wrap mode of the texture sampler. Supported values:
-
-
-`graphics.TEXTURE_WRAP_CLAMP_TO_BORDER`
-`graphics.TEXTURE_WRAP_CLAMP_TO_EDGE`
-`graphics.TEXTURE_WRAP_MIRRORED_REPEAT`
-`graphics.TEXTURE_WRAP_REPEAT`
-
-
-`min_filter`
-number the min filter mode of the texture sampler. Supported values:
-
-
-`graphics.TEXTURE_FILTER_DEFAULT`
-`graphics.TEXTURE_FILTER_NEAREST`
-`graphics.TEXTURE_FILTER_LINEAR`
-`graphics.TEXTURE_FILTER_NEAREST_MIPMAP_NEAREST`
-`graphics.TEXTURE_FILTER_NEAREST_MIPMAP_LINEAR`
-`graphics.TEXTURE_FILTER_LINEAR_MIPMAP_NEAREST`
-`graphics.TEXTURE_FILTER_LINEAR_MIPMAP_LINEAR`
-
-
-`mag_filter`
-number the mag filter mode of the texture sampler
-
-
-`graphics.TEXTURE_FILTER_DEFAULT`
-`graphics.TEXTURE_FILTER_NEAREST`
-`graphics.TEXTURE_FILTER_LINEAR`
-
-
-`max_anisotropy`
-number the max anisotropy of the texture sampler
-
+ * @param samplers Sampler updates keyed by sampler name. Partial updates are supported.
  * @example Configures a sampler in a material specified as a resource property
 ```lua
 go.property("my_material", resource.material())
@@ -9666,7 +12738,7 @@ function init(self)
 end
 ```
  */
-	export function set_samplers(path: hash | string, samplers: object): void;
+	export function set_samplers(path: hash | string, samplers: any  ): void;
 	/**
  * Sets textures in a material, if the samplers exist.
  * @param path The path to the resource
@@ -9683,56 +12755,14 @@ function init(self)
 end
 ```
  */
-	export function set_textures(path: hash | string, textures: object): void;
+	export function set_textures(
+		path: hash | string,
+		textures: any    ,
+	): void;
 	/**
  * Sets vertex attributes in a material, if the vertex attributes exist.
  * @param path The path to the resource
- * @param attributes A table keyed by vertex attribute name with args tables as values. Partial updates are supported. Supported entries:
-
-`value`
-vmath.vector4 | vmath.vector3 | vmath.matrix4 | number | table the value of the vertex attribute. Use a table of numbers for matrix attributes that do not map to `vmath.matrix4`.
-`normalize`
-boolean whether the value is normalized when passed into the shader
-`data_type`
-number the data type of the vertex attribute. Supported values:
-
-
-`graphics.DATA_TYPE_BYTE`
-`graphics.DATA_TYPE_UNSIGNED_BYTE`
-`graphics.DATA_TYPE_SHORT`
-`graphics.DATA_TYPE_UNSIGNED_SHORT`
-`graphics.DATA_TYPE_INT`
-`graphics.DATA_TYPE_UNSIGNED_INT`
-`graphics.DATA_TYPE_FLOAT`
-
-
-`coordinate_space`
-number the coordinate space of the vertex attribute. Supported values:
-
-
-`graphics.COORDINATE_SPACE_DEFAULT`
-`graphics.COORDINATE_SPACE_WORLD`
-`graphics.COORDINATE_SPACE_LOCAL`
-
-
-`semantic_type`
-number the semantic type of the vertex attribute. Supported values:
-
-
-`graphics.SEMANTIC_TYPE_NONE`
-`graphics.SEMANTIC_TYPE_POSITION`
-`graphics.SEMANTIC_TYPE_TEXCOORD`
-`graphics.SEMANTIC_TYPE_PAGE_INDEX`
-`graphics.SEMANTIC_TYPE_COLOR`
-`graphics.SEMANTIC_TYPE_NORMAL`
-`graphics.SEMANTIC_TYPE_TANGENT`
-`graphics.SEMANTIC_TYPE_WORLD_MATRIX`
-`graphics.SEMANTIC_TYPE_NORMAL_MATRIX`
-`graphics.SEMANTIC_TYPE_BONE_WEIGHTS`
-`graphics.SEMANTIC_TYPE_BONE_INDICES`
-`graphics.SEMANTIC_TYPE_TEXTURE_TRANSFORM_2D`
-`graphics.SEMANTIC_TYPE_MORPH_TARGET_WEIGHTS`
-
+ * @param attributes Vertex attributes keyed by name, or an array with explicit `name` fields. Partial updates are supported.
  * @example Configures a vertex attribute in a material specified as a resource property
 ```lua
 go.property("my_material", resource.material())
@@ -9747,20 +12777,114 @@ end
  */
 	export function set_vertex_attributes(
 		path: hash | string,
-		attributes: object,
+		attributes: any    ,
 	): void;
+	export namespace texture_info {
+		/**
+		 * Texture depth or layer count.
+		 */
+		export let depth: number;
+		/**
+		 * Texture usage flags.
+		 */
+		export let flags: unknown;
+		/**
+		 * Runtime texture handle.
+		 */
+		export let handle: number;
+		/**
+		 * Texture height.
+		 */
+		export let height: number;
+		/**
+		 * Mipmap count.
+		 */
+		export let mipmaps: number;
+		/**
+		 * Texture page count.
+		 */
+		export let page_count: number;
+		/**
+		 * Texture resource path, if backed by a resource.
+		 */
+		export let path_: hash;
+		/**
+		 * Texture type.
+		 */
+		export let type: unknown;
+		/**
+		 * Texture width.
+		 */
+		export let width: number;
+	}
+	export namespace vertex_attribute_info {
+		/**
+		 * Attribute coordinate space.
+		 */
+		export let coordinate_space: unknown;
+		/**
+		 * Attribute data type.
+		 */
+		export let data_type: unknown;
+		/**
+		 * Attribute name.
+		 */
+		export let name: hash;
+		/**
+		 * Whether integer data is normalized.
+		 */
+		export let normalize: boolean;
+		/**
+		 * Attribute semantic.
+		 */
+		export let semantic_type: unknown;
+		/**
+		 * Attribute value.
+		 */
+		export let value: unknown;
+	}
+	export namespace vertex_attribute_options {
+		/**
+		 * Attribute coordinate space.
+		 */
+		export let coordinate_space_: unknown;
+		/**
+		 * Attribute data type.
+		 */
+		export let data_type_: unknown;
+		/**
+		 * Whether integer data is normalized.
+		 */
+		export let normalize_: boolean;
+		/**
+		 * Attribute semantic.
+		 */
+		export let semantic_type_: unknown;
+		/**
+		 * Attribute value.
+		 */
+		export let value_: unknown;
+	}
 }
 
 /** @see {@link https://defold.com/ref/stable/model/|API Documentation} */
 declare namespace model {
-	/**
+	export namespace aabb {
+		/**
+		 * maximum local-space bounds
+		 */
+		export let max: vmath.vector3;
+		/**
+		 * minimum local-space bounds
+		 */
+		export let min: vmath.vector3;
+	} /**
 	 * Cancels all animation on a model component.
 	 * @param url the model for which to cancel the animation
 	 */
 	export function cancel(url: hash | url | string): void;
 	/**
  * Get AABB of the whole model in local coordinate space.
-AABB information return as a table with `min` and `max` fields, where `min` and `max` has type `vmath.vector3`.
  * @param url the model
  * @example ```lua
 model.get_aabb("#model") -> { min = vmath.vector3(-2.5, -3.0, 0), max = vmath.vector3(1.5, 5.5, 0) }
@@ -9787,7 +12911,7 @@ w[2] = 0.25
 model.set_blend_weights("#model", w)
 ```
  */
-	export function get_blend_weights(url: hash | url | string): object;
+	export function get_blend_weights(url: hash | url | string): unknown;
 	/**
  * Gets the id of the game object that corresponds to a model skeleton bone.
 The returned game object can be used for parenting and transform queries.
@@ -9811,7 +12935,6 @@ end
 	): hash;
 	/**
  * Get AABB of all meshes.
-AABB information return as a table with `min` and `max` fields, where `min` and `max` has type `vmath.vector3`.
  * @param url the model
  * @example ```lua
 model.get_mesh_aabb("#model") -> { hash("Sword") = { min = vmath.vector3(-0.5, -0.5, 0), max = vmath.vector3(0.5, 0.5, 0) }, hash("Shield") = { min = vmath.vector3(-0.5, -0.5, -0.5), max = vmath.vector3(0.5, 0.5, 0.5) } }
@@ -9855,38 +12978,15 @@ animations that play with the following playback modes:
  * @param url the model for which to play the animation
  * @param anim_id id of the animation to play
  * @param playback playback mode of the animation
-
-`go.PLAYBACK_ONCE_FORWARD`
-`go.PLAYBACK_ONCE_BACKWARD`
-`go.PLAYBACK_ONCE_PINGPONG`
-`go.PLAYBACK_LOOP_FORWARD`
-`go.PLAYBACK_LOOP_BACKWARD`
-`go.PLAYBACK_LOOP_PINGPONG`
-
- * @param play_properties optional table with properties
-Play properties table:
-
-`blend_duration`
-number Duration of a linear blend between the current and new animation.
-`offset`
-number The normalized initial value of the animation cursor when the animation starts playing.
-`playback_rate`
-number The rate with which the animation will be played. Must be positive.
-
+ * @param play_properties optional playback properties
  * @param complete_function function to call when the animation has completed.
 
 `self`
-object The current object.
+script_instance The current script instance.
 `message_id`
 hash The name of the completion message, `"model_animation_done"`.
 `message`
-table Information about the completion:
-
-
-hash `animation_id` - the animation that was completed.
-constant `playback` - the playback mode for the animation.
-
-
+message.model.model_animation_done Information about the completion.
 `sender`
 url The invoker of the callback: the model component.
 
@@ -9914,20 +13014,28 @@ end
 	export function play_anim(
 		url: hash | url | string,
 		anim_id: hash | string,
-		playback: number,
+		playback: any,
 		play_properties?: {
 			blend_duration?: number;
 			offset?: number;
 			playback_rate?: number;
 		},
-		complete_function?: (
-			this: any,
-			message_id: any,
-			message: any,
-			sender: any,
-		) => void,
+		complete_function?: any,
 	): void;
-	/**
+	export namespace play_properties {
+		/**
+		 * duration of a linear blend from the current animation
+		 */
+		export let blend_duration_: number;
+		/**
+		 * normalized initial animation cursor
+		 */
+		export let offset_: number;
+		/**
+		 * positive animation playback rate
+		 */
+		export let playback_rate_: number;
+	} /**
  * Resets a shader constant for a model component.
 The constant must be defined in the material assigned to the model.
 Resetting a constant through this function implies that the value defined in the material will be used.
@@ -9964,7 +13072,7 @@ model.set_blend_weights("#model") -- clear script override
  */
 	export function set_blend_weights(
 		url: hash | url | string,
-		weights: object | undefined,
+		weights?: any  ,
 	): void;
 	/**
  * Enable or disable visibility of a mesh
@@ -10015,9 +13123,22 @@ msg.post(my_url, "my_message", params)
 	export function post(
 		receiver: hash | url | string,
 		message_id: hash | string,
-		message?: object  ,
+		message?: any  ,
 	): void;
-	/**
+	export namespace url {
+		/**
+		 * fragment component
+		 */
+		export let fragment: hash;
+		/**
+		 * path component
+		 */
+		export let path: hash;
+		/**
+		 * socket component
+		 */
+		export let socket: hash;
+	} /**
  * This is equivalent to `msg.url(nil)` or `msg.url("#")`, which creates an url to the current
 script component.
  * @returns a new URL
@@ -10088,45 +13209,30 @@ declare namespace msg {
 
 /** @see {@link https://defold.com/ref/stable/particlefx/|API Documentation} */
 declare namespace particlefx {
-	/**
-	 * The emitter is not spawning any particles, but has particles that are still alive.
-	 */
-	export const EMITTER_STATE_POSTSPAWN: number;
-	/**
-	 * The emitter will be in this state when it has been started but before spawning any particles. Normally the emitter is in this state for a short time, depending on if a start delay has been set for this emitter or not.
-	 */
-	export const EMITTER_STATE_PRESPAWN: number;
-	/**
-	 * The emitter does not have any living particles and will not spawn any particles in this state.
-	 */
-	export const EMITTER_STATE_SLEEPING: number;
-	/**
-	 * The emitter is spawning particles.
-	 */
-	export const EMITTER_STATE_SPAWNING: number;
-	/**
+	export namespace EMITTER_STATE {
+		/**
+		 * postspawn state The emitter is not spawning any particles, but has particles that are still alive.
+		 */
+		export const EMITTER_STATE_POSTSPAWN: unknown;
+		/**
+		 * prespawn state The emitter will be in this state when it has been started but before spawning any particles. Normally the emitter is in this state for a short time, depending on if a start delay has been set for this emitter or not.
+		 */
+		export const EMITTER_STATE_PRESPAWN: unknown;
+		/**
+		 * sleeping state The emitter does not have any living particles and will not spawn any particles in this state.
+		 */
+		export const EMITTER_STATE_SLEEPING: unknown;
+		/**
+		 * spawning state The emitter is spawning particles.
+		 */
+		export const EMITTER_STATE_SPAWNING: unknown;
+	} /**
  * Starts playing a particle FX component.
 Particle FX started this way need to be manually stopped through `particlefx.stop()`.
 Which particle FX to play is identified by the URL.
 ⚠ A particle FX will continue to emit particles even if the game object the particle FX component belonged to is deleted. You can call `particlefx.stop()` to stop it from emitting more particles.
  * @param url the particle fx that should start playing.
  * @param emitter_state_function optional callback function that will be called when an emitter attached to this particlefx changes state.
-
-`self`
-object The current object
-`id`
-hash The id of the particle fx component
-`emitter`
-hash The id of the emitter
-`state`
-constant the new state of the emitter:
-
-
-`particlefx.EMITTER_STATE_SLEEPING`
-`particlefx.EMITTER_STATE_PRESPAWN`
-`particlefx.EMITTER_STATE_SPAWNING`
-`particlefx.EMITTER_STATE_POSTSPAWN`
-
  * @example How to play a particle fx when a game object is created.
 The callback receives the hash of the path to the particlefx, the hash of the id
 of the emitter, and the new state of the emitter as particlefx.EMITTER_STATE_.
@@ -10145,12 +13251,7 @@ end
  */
 	export function play(
 		url: hash | url | string,
-		emitter_state_function?: (
-			this: any,
-			id: any,
-			emitter: any,
-			state: any,
-		) => void,
+		emitter_state_function?: any,
 	): void;
 	/**
  * Resets a shader constant for a particle FX component emitter.
@@ -10208,10 +13309,7 @@ end
 Stopping a particle FX does not remove already spawned particles.
 Which particle FX to stop is identified by the URL.
  * @param url the particle fx that should stop playing
- * @param options Options when stopping the particle fx. Supported options:
-
-boolean `clear`: instantly clear spawned particles
-
+ * @param options options used when stopping the particle fx
  * @example How to stop a particle fx when a game object is deleted and immediately also clear
 any spawned particles:
 ```lua
@@ -10225,79 +13323,64 @@ end
 		url: hash | url | string,
 		options?: { clear: boolean },
 	): void;
+	export namespace stop_options {
+		/**
+		 * Instantly clear spawned particles.
+		 */
+		export let clear_: boolean;
+	}
 }
 
 /** @see {@link https://defold.com/ref/stable/physics/|API Documentation} */
 declare namespace physics {
-	/**
-	 * The following properties are available when connecting a joint of `JOINT_TYPE_FIXED` type:
-	 * @param max_length The maximum length of the rope.
-	 */
-	export const JOINT_TYPE_FIXED: number;
-	/**
- * The following properties are available when connecting a joint of `JOINT_TYPE_HINGE` type:
- * @param reference_angle The bodyB angle minus bodyA angle in the reference state (radians).
- * @param lower_angle The lower angle for the joint limit (radians).
- * @param upper_angle The upper angle for the joint limit (radians).
- * @param max_motor_torque The maximum motor torque used to achieve the desired motor speed. Usually in N-m.
- * @param motor_speed The desired motor speed. Usually in radians per second.
- * @param enable_limit A flag to enable joint limits.
- * @param enable_motor A flag to enable the joint motor.
- * @param joint_angle READ ONLYCurrent joint angle in radians.
-(Read only field, available from `physics.get_joint_properties()`)
- * @param joint_speed READ ONLYCurrent joint angle speed in radians per second.
-(Read only field, available from `physics.get_joint_properties()`)
- */
-	export const JOINT_TYPE_HINGE: number;
-	/**
- * The following properties are available when connecting a joint of `JOINT_TYPE_SLIDER` type:
- * @param local_axis_a The local translation unit axis in bodyA.
- * @param reference_angle The constrained angle between the bodies: bodyB_angle - bodyA_angle.
- * @param enable_limit Enable/disable the joint limit.
- * @param lower_translation The lower translation limit, usually in meters.
- * @param upper_translation The upper translation limit, usually in meters.
- * @param enable_motor Enable/disable the joint motor.
- * @param max_motor_force The maximum motor torque, usually in N-m.
- * @param motor_speed The desired motor speed in radians per second.
- * @param joint_translation READ ONLYCurrent joint translation, usually in meters.
-(Read only field, available from `physics.get_joint_properties()`)
- * @param joint_speed READ ONLYCurrent joint translation speed, usually in meters per second.
-(Read only field, available from `physics.get_joint_properties()`)
- */
-	export const JOINT_TYPE_SLIDER: number;
-	/**
-	 * The following properties are available when connecting a joint of `JOINT_TYPE_SPRING` type:
-	 * @param length The natural length between the anchor points.
-	 * @param frequency The mass-spring-damper frequency in Hertz. A value of 0 disables softness.
-	 * @param damping The damping ratio. 0 = no damping, 1 = critical damping.
-	 */
-	export const JOINT_TYPE_SPRING: number;
-	/**
-	 * The following properties are available when connecting a joint of `JOINT_TYPE_WELD` type:
-	 * @param reference_angle READ ONLYThe bodyB angle minus bodyA angle in the reference state (radians).
-	 * @param frequency The mass-spring-damper frequency in Hertz. Rotation only. Disable softness with a value of 0.
-	 * @param damping The damping ratio. 0 = no damping, 1 = critical damping.
-	 */
-	export const JOINT_TYPE_WELD: number;
-	/**
- * The following properties are available when connecting a joint of `JOINT_TYPE_WHEEL` type:
- * @param local_axis_a The local translation unit axis in bodyA.
- * @param max_motor_torque The maximum motor torque used to achieve the desired motor speed. Usually in N-m.
- * @param motor_speed The desired motor speed in radians per second.
- * @param enable_motor Enable/disable the joint motor.
- * @param frequency The mass-spring-damper frequency in Hertz. Rotation only. Disable softness with a value of 0.
- * @param damping The spring damping ratio. 0 = no damping, 1 = critical damping.
- * @param joint_translation READ ONLYCurrent joint translation, usually in meters.
-(Read only field, available from `physics.get_joint_properties()`)
- * @param joint_speed READ ONLYCurrent joint translation speed, usually in meters per second.
-(Read only field, available from `physics.get_joint_properties()`)
- */
-	export const JOINT_TYPE_WHEEL: number;
-	export const SHAPE_TYPE_BOX: number;
-	export const SHAPE_TYPE_CAPSULE: number;
-	export const SHAPE_TYPE_HULL: number;
-	export const SHAPE_TYPE_SPHERE: number;
-	/**
+	export namespace JOINT_TYPE {
+		/**
+		 * Fixed joint; uses `max_length` from physics.joint_properties.
+		 */
+		export const JOINT_TYPE_FIXED: unknown;
+		/**
+		 * Hinge joint; uses the angular-limit and motor fields from physics.joint_properties.
+		 */
+		export const JOINT_TYPE_HINGE: unknown;
+		/**
+		 * Slider joint; uses the translation-limit and motor fields from physics.joint_properties.
+		 */
+		export const JOINT_TYPE_SLIDER: unknown;
+		/**
+		 * Spring joint; uses `length`, `frequency`, and `damping` from physics.joint_properties.
+		 */
+		export const JOINT_TYPE_SPRING: unknown;
+		/**
+		 * Weld joint; uses `reference_angle`, `frequency`, and `damping` from physics.joint_properties.
+		 */
+		export const JOINT_TYPE_WELD: unknown;
+		/**
+		 * Wheel joint; uses the axis, motor, frequency, and damping fields from physics.joint_properties.
+		 */
+		export const JOINT_TYPE_WHEEL: unknown;
+	}
+	export namespace SHAPE_TYPE {
+		/**
+		 * Box shape.
+		 */
+		export const SHAPE_TYPE_BOX: unknown;
+		/**
+		 * Capsule shape; supported only by 3D physics.
+		 */
+		export const SHAPE_TYPE_CAPSULE: unknown;
+		/**
+		 * Convex hull shape.
+		 */
+		export const SHAPE_TYPE_HULL: unknown;
+		/**
+		 * Triangle mesh shape; supported only by the Bullet 3D backend.
+		 */
+		export const SHAPE_TYPE_MESH: unknown;
+		/**
+		 * Sphere shape.
+		 */
+		export const SHAPE_TYPE_SPHERE: unknown;
+	} /**
  * Create a physics joint between two collision object components.
 Note: Currently only supported in 2D physics.
  * @param joint_type the joint type
@@ -10306,12 +13389,10 @@ Note: Currently only supported in 2D physics.
  * @param position_a local position where to attach the joint on the first collision object
  * @param collisionobject_b second collision object
  * @param position_b local position where to attach the joint on the second collision object
- * @param properties optional joint specific properties table
-See each joint type for possible properties field. The one field that is accepted for all joint types is:
-- boolean `collide_connected`: Set this flag to true if the attached bodies should collide.
+ * @param properties optional joint-specific properties
  */
 	export function create_joint(
-		joint_type: number,
+		joint_type: any,
 		collisionobject_a: hash | url | string,
 		joint_id: hash | string,
 		position_a: vmath.vector3,
@@ -10350,11 +13431,12 @@ end
  * Returns the group name of a collision object as a hash.
  * @param url the collision object to return the group of.
  * @returns hash value of the group.
-`local function check_is_enemy()
+ * @example ```lua
+local function check_is_enemy()
     local group = physics.get_group("#collisionobject")
     return group == hash("enemy")
 end
-`
+```
  */
 	export function get_group(url: hash | url | string): hash;
 	/**
@@ -10398,19 +13480,27 @@ object, false otherwise.
  * @param url the collision object to check the mask of.
  * @param group the name of the group to check for.
  * @returns boolean value of the maskbit. 'true' if present, 'false' otherwise.
-`local function is_invincible()
+ * @example ```lua
+local function is_invincible()
     -- check if the collisionobject would collide with the "bullet" group
     local invincible = physics.get_maskbit("#collisionobject", "bullet")
     return invincible
 end
-`
+```
  */
 	export function get_maskbit(url: hash | url | string, group: string): boolean;
 	/**
-	 * Gets collision shape data from a collision object
-	 * @param url the collision object.
-	 * @param shape the name of the shape to get data for.
-	 */
+ * Gets collision shape data from a collision object
+ * @param url the collision object.
+ * @param shape the name of the shape to get data for.
+ * @example ```lua
+local function get_shape_meta()
+    local sphere = physics.get_shape("#collisionobject", "my_sphere_shape")
+    -- returns a table with sphere.diameter
+    return sphere
+end
+```
+ */
 	export function get_shape(
 		url: hash | url | string,
 		shape: hash | string,
@@ -10420,7 +13510,150 @@ end
 		height?: number;
 		dimensions?: vmath.vector3;
 	};
-	/**
+	export namespace joint_properties {
+		/**
+		 * whether the connected objects should collide
+		 */
+		export let collide_connected_: boolean;
+		/**
+		 * Damping ratio, where zero is no damping and one is critical damping.
+		 */
+		export let damping_: number;
+		/**
+		 * Whether joint limits are enabled.
+		 */
+		export let enable_limit_: boolean;
+		/**
+		 * Whether the joint motor is enabled.
+		 */
+		export let enable_motor_: boolean;
+		/**
+		 * Mass-spring-damper frequency in Hertz; zero disables softness.
+		 */
+		export let frequency_: number;
+		/**
+		 * Natural spring length between the anchor points.
+		 */
+		export let length_: number;
+		/**
+		 * Local translation unit axis in the first body.
+		 */
+		export let local_axis_a_: vmath.vector3;
+		/**
+		 * Lower angular limit in radians.
+		 */
+		export let lower_angle_: number;
+		/**
+		 * Lower translation limit, usually in meters.
+		 */
+		export let lower_translation_: number;
+		/**
+		 * Maximum fixed-joint rope length.
+		 */
+		export let max_length_: number;
+		/**
+		 * Maximum motor force used to reach the desired speed.
+		 */
+		export let max_motor_force_: number;
+		/**
+		 * Maximum motor torque used to reach the desired speed, usually in N-m.
+		 */
+		export let max_motor_torque_: number;
+		/**
+		 * Desired motor speed.
+		 */
+		export let motor_speed_: number;
+		/**
+		 * Angle of the second body relative to the first body, in radians.
+		 */
+		export let reference_angle_: number;
+		/**
+		 * Upper angular limit in radians.
+		 */
+		export let upper_angle_: number;
+		/**
+		 * Upper translation limit, usually in meters.
+		 */
+		export let upper_translation_: number;
+	}
+	export namespace joint_properties_info {
+		/**
+		 * whether the connected objects collide
+		 */
+		export let collide_connected: boolean;
+		/**
+		 * damping ratio
+		 */
+		export let damping_: number;
+		/**
+		 * whether limits are enabled
+		 */
+		export let enable_limit_: boolean;
+		/**
+		 * whether the motor is enabled
+		 */
+		export let enable_motor_: boolean;
+		/**
+		 * spring frequency
+		 */
+		export let frequency_: number;
+		/**
+		 * Read-only current hinge angle in radians.
+		 */
+		export let joint_angle_: number;
+		/**
+		 * Read-only current hinge angular speed or slider/wheel translation speed.
+		 */
+		export let joint_speed_: number;
+		/**
+		 * Read-only current slider or wheel translation, usually in meters.
+		 */
+		export let joint_translation_: number;
+		/**
+		 * spring length
+		 */
+		export let length_: number;
+		/**
+		 * local joint axis
+		 */
+		export let local_axis_a_: vmath.vector3;
+		/**
+		 * lower angular limit
+		 */
+		export let lower_angle_: number;
+		/**
+		 * lower translation limit
+		 */
+		export let lower_translation_: number;
+		/**
+		 * fixed-joint maximum length
+		 */
+		export let max_length_: number;
+		/**
+		 * maximum motor force
+		 */
+		export let max_motor_force_: number;
+		/**
+		 * maximum motor torque
+		 */
+		export let max_motor_torque_: number;
+		/**
+		 * motor speed
+		 */
+		export let motor_speed_: number;
+		/**
+		 * reference angle
+		 */
+		export let reference_angle_: number;
+		/**
+		 * upper angular limit
+		 */
+		export let upper_angle_: number;
+		/**
+		 * upper translation limit
+		 */
+		export let upper_translation_: number;
+	} /**
  * Ray casts are used to test for intersections against collision objects in the physics world.
 Collision objects of types kinematic, dynamic and static are tested against. Trigger objects
 do not intersect with ray casts.
@@ -10430,11 +13663,7 @@ NOTE: Ray casts will ignore collision objects that contain the starting point of
  * @param from the world position of the start of the ray
  * @param to the world position of the end of the ray
  * @param groups a lua table containing the hashed groups for which to test collisions against
- * @param options a lua table containing options for the raycast.
-
-`all`
-boolean Set to `true` to return all ray cast hits. If `false`, it will only return the closest hit.
-
+ * @param options optional ray-cast options
  * @example How to perform a ray cast synchronously:
 ```lua
 function init(self)
@@ -10511,14 +13740,19 @@ end
 		groups: hash[] | LuaSet<hash>,
 		request_id?: number,
 	): void;
-	/**
+	export namespace raycast_options {
+		/**
+		 * Return every hit instead of only the closest hit.
+		 */
+		export let all_: boolean;
+	} /**
  * Only one physics world event listener can be set at a time.
- * @param callback A callback that receives an information about all the physics interactions in this physics world.
+ * @param callback A callback that receives information about all physics interactions in this physics world. Pass `nil` to remove the listener.
 
 `self`
-object The calling script
-`event`
-constant The type of event. Can be one of these messages:
+script_instance The calling script instance
+`events`
+physics.event[] An array of event tables. Each event table contains a `type` field with the hashed name of one of these messages, together with fields specific to that event type:
 
 
 contact_point_event
@@ -10526,10 +13760,6 @@ collision_event
 trigger_event
 ray_cast_response
 ray_cast_missed
-
-
-`data`
-table The callback value data is a table that contains event-related data. See the documentation for details on the messages.
 
  * @example ```lua
 local function physics_world_listener(self, events)
@@ -10609,9 +13839,7 @@ function init(self)
 end
 ```
  */
-	export function set_event_listener(
-		callback: ((this: any, events: any) => void) | undefined,
-	): void;
+	export function set_event_listener(callback: any | undefined): void;
 	/**
  * Set the gravity in runtime. The gravity change is not global, it will only affect
 the collection that the function is called from.
@@ -10631,10 +13859,11 @@ string value. The group name should exist i.e. have been used in
 a collision object in the editor.
  * @param url the collision object affected.
  * @param group the new group name to be assigned.
-`local function change_collision_group()
+ * @example ```lua
+local function change_collision_group()
      physics.set_group("#collisionobject", "enemy")
 end
-`
+```
  */
 	export function set_group(
 		url: hash | url | string,
@@ -10672,11 +13901,12 @@ Note: The `collide_connected` field cannot be updated/changed after a connection
  * @param url the collision object to change the mask of.
  * @param group the name of the group (maskbit) to modify in the mask.
  * @param maskbit boolean value of the new maskbit. 'true' to enable, 'false' to disable.
-`local function make_invincible()
+ * @example ```lua
+local function make_invincible()
     -- no longer collide with the "bullet" group
     physics.set_maskbit("#collisionobject", "bullet", false)
 end
-`
+```
  */
 	export function set_maskbit(
 		url: hash | url | string,
@@ -10689,9 +13919,10 @@ can be quite costly for box and capsules. Because of the physics engine, the cos
 comes from having to recreate the shape objects when certain shapes needs to be updated.
  * @param url the collision object.
  * @param shape the name of the shape to get data for.
- * @param table the shape data to update the shape with.
-See physics.get_shape for a detailed description of each field in the data table.
-`local function set_shape_data()
+ * @param table updated collision shape data
+Hull and mesh geometry cannot be changed with this function.
+ * @example ```lua
+local function set_shape_data()
     -- set capsule shape data
     local data = {}
     data.type = physics.SHAPE_TYPE_CAPSULE
@@ -10711,7 +13942,7 @@ See physics.get_shape for a detailed description of each field in the data table
     data.dimensions = vmath.vector3(10, 10, 5)
     physics.set_shape("#collisionobject", "my_box_shape", data)
 end
-`
+```
  */
 	export function set_shape(
 		url: hash | url | string,
@@ -10735,7 +13966,24 @@ end
 ```
  */
 	export function set_vflip(url: hash | url | string, flip: boolean): void;
-	/**
+	export namespace shape_data {
+		/**
+		 * sphere diameter or capsule pole diameter
+		 */
+		export let diameter_: number;
+		/**
+		 * box dimensions
+		 */
+		export let dimensions_: vmath.vector3;
+		/**
+		 * capsule height
+		 */
+		export let height_: number;
+		/**
+		 * shape type
+		 */
+		export let type: unknown;
+	} /**
  * The function recalculates the density of each shape based on the total area of all shapes and the specified mass, then updates the mass of the body accordingly.
 Note: Currently only supported in 2D physics.
  * @param collisionobject the collision object whose mass needs to be updated.
@@ -10752,43 +14000,103 @@ Note: Currently only supported in 2D physics.
  * Collision objects tend to fall asleep when inactive for a small period of time for
 efficiency reasons. This function wakes them up.
  * @param url the collision object to wake.
-`function on_input(self, action_id, action)
+ * @example ```lua
+function on_input(self, action_id, action)
     if action_id == hash("test") and action.pressed then
         physics.wakeup("#collisionobject")
     end
 end
-`
+```
  */
 	export function wakeup(url: hash | url | string): void;
+	export namespace physics {
+		export namespace collision_info {
+			/**
+			 * object collision group
+			 */
+			export let group: hash;
+			/**
+			 * object identifier
+			 */
+			export let id: hash;
+			/**
+			 * object position in world space
+			 */
+			export let position: vmath.vector3;
+		}
+		export namespace contact_point_info {
+			/**
+			 * object collision group
+			 */
+			export let group: hash;
+			/**
+			 * object identifier
+			 */
+			export let id: hash;
+			/**
+			 * object position in world space
+			 */
+			export let instance_position: vmath.vector3;
+			/**
+			 * object mass in kilograms
+			 */
+			export let mass: number;
+			/**
+			 * contact normal pointing from the other object toward this object
+			 */
+			export let normal: vmath.vector3;
+			/**
+			 * contact point position in world space
+			 */
+			export let position: vmath.vector3;
+			/**
+			 * object velocity relative to the other object
+			 */
+			export let relative_velocity: vmath.vector3;
+		}
+		export namespace trigger_info {
+			/**
+			 * object collision group
+			 */
+			export let group: hash;
+			/**
+			 * object identifier
+			 */
+			export let id: hash;
+		}
+	}
 }
 
 /** @see {@link https://defold.com/ref/stable/profiler/|API Documentation} */
 declare namespace profiler {
-	/**
-	 * pause on current frame
-	 */
-	export const MODE_PAUSE: number;
-	/**
-	 * start recording
-	 */
-	export const MODE_RECORD: number;
-	/**
-	 * continously show latest frame
-	 */
-	export const MODE_RUN: number;
-	/**
-	 * pause at peak frame
-	 */
-	export const MODE_SHOW_PEAK_FRAME: number;
-	/**
-	 * show full profiler ui
-	 */
-	export const VIEW_MODE_FULL: number;
-	/**
-	 * show mimimal profiler ui
-	 */
-	export const VIEW_MODE_MINIMIZED: number;
-	/**
+	export namespace MODE {
+		/**
+		 * pause on the currently displayed frame
+		 */
+		export const MODE_PAUSE: unknown;
+		/**
+		 * record incoming frames to the recording buffer
+		 */
+		export const MODE_RECORD: unknown;
+		/**
+		 * continuously show the latest frame
+		 */
+		export const MODE_RUN: unknown;
+		/**
+		 * pause on the displayed frame, replacing it when a slower frame arrives
+		 */
+		export const MODE_SHOW_PEAK_FRAME: unknown;
+	}
+	export namespace VIEW_MODE {
+		/**
+		 * show all profiler details
+		 */
+		export const VIEW_MODE_FULL: unknown;
+		/**
+		 * show only the header with FPS counters and profiler mode
+		 */
+		export const VIEW_MODE_MINIMIZED: unknown;
+	} /**
  * logs the current frame to the console
  * @example ```lua
 profiler.dump_frame()
@@ -10908,12 +14216,6 @@ profiler.scope_end()
 	/**
  * Set the on-screen profile mode - run, pause, record or show peak frame
  * @param mode the mode to set the ui profiler in
-
-`profiler.MODE_RUN` This is default mode that continously shows the last frame
-`profiler.MODE_PAUSE` Pauses on the currently displayed frame
-`profiler.MODE_SHOW_PEAK_FRAME` Pauses on the currently displayed frame but shows a new frame if that frame is slower
-`profiler.MODE_RECORD` Records all incoming frames to the recording buffer
-
 To stop recording, switch to a different mode such as `MODE_PAUSE` or `MODE_RUN`.
 You can also use the `view_recorded_frame` function to display a recorded frame. Doing so stops the recording as well.
 Every time you switch to recording mode the recording buffer is cleared.
@@ -10928,21 +14230,17 @@ end
 ```
 * @see {@link https://defold.com/ref/stable/profiler/#profiler.set_ui_mode|API Documentation}
  */
-	export function set_ui_mode(mode: number): void;
+	export function set_ui_mode(mode: any): void;
 	/**
  * Set the on-screen profile view mode - minimized or expanded
  * @param mode the view mode to set the ui profiler in
-
-`profiler.VIEW_MODE_FULL` The default mode which displays all the ui profiler details
-`profiler.VIEW_MODE_MINIMIZED` Minimized mode which only shows the top header (fps counters and ui profiler mode)
-
  * @example ```lua
 -- Minimize the profiler view
 profiler.set_ui_view_mode(profiler.VIEW_MODE_MINIMIZED)
 ```
 * @see {@link https://defold.com/ref/stable/profiler/#profiler.set_ui_view_mode|API Documentation}
  */
-	export function set_ui_view_mode(mode: number): void;
+	export function set_ui_view_mode(mode: any): void;
 	/**
  * Shows or hides the time the engine waits for vsync in the on-screen profiler
 Each frame the engine waits for vsync and depending on your vsync settings and how much time
@@ -10984,22 +14282,56 @@ profiler.view_recorded_frame({distance = -1})
 
 /** @see {@link https://defold.com/ref/stable/render/|API Documentation} */
 declare namespace render {
-	export const FRUSTUM_PLANES_ALL: number;
-	export const FRUSTUM_PLANES_SIDES: number;
+	export namespace CONTEXT_EVENT {
+		/**
+		 * rendering context was lost; rendering pauses and graphics resources become invalid
+		 */
+		export const CONTEXT_EVENT_CONTEXT_LOST: unknown;
+		/**
+		 * rendering context was restored; rendering remains paused while resources can be reloaded
+		 */
+		export const CONTEXT_EVENT_CONTEXT_RESTORED: unknown;
+	}
+	export namespace FRUSTUM_PLANES {
+		/**
+		 * All six frustum planes.
+		 */
+		export const FRUSTUM_PLANES_ALL: unknown;
+		/**
+		 * Left, right, top, and bottom frustum planes.
+		 */
+		export const FRUSTUM_PLANES_SIDES: unknown;
+	} /**
+	 *
+	 * @param value
+	 */
 	export const RENDER_TARGET_DEFAULT: number;
-	/**
-	 * Depth sort far-to-near (default; good for transparent passes).
-	 */
-	export const SORT_BACK_TO_FRONT: number;
-	/**
-	 * Depth sort near-to-far (good for opaque passes to reduce overdraw).
-	 */
-	export const SORT_FRONT_TO_BACK: number;
-	/**
-	 * No per-call sorting; draw entries in insertion order.
-	 */
-	export const SORT_NONE: number;
-	/**
+	export namespace RENDER_TARGET_FLAG {
+		/**
+		 * Create a texture-backed depth or stencil attachment.
+		 */
+		export const TEXTURE_BIT: unknown;
+	}
+	export namespace SORT {
+		/**
+		 * Depth sort far-to-near (default; good for transparent passes).
+		 */
+		export const SORT_BACK_TO_FRONT: unknown;
+		/**
+		 * Depth sort near-to-far (good for opaque passes to reduce overdraw).
+		 */
+		export const SORT_FRONT_TO_BACK: unknown;
+		/**
+		 * No per-call sorting; draw entries in insertion order.
+		 */
+		export const SORT_NONE: unknown;
+	}
+	export namespace camera_options {
+		/**
+		 * Use the camera view-projection matrix for frustum culling. The default is false.
+		 */
+		export let use_frustum_: boolean;
+	} /**
  * Clear buffers in the currently enabled render target with specified value. If the render target has been created with multiple
 color attachments, all buffers will be cleared with the same value.
  * @param buffers table with keys specifying which buffers to clear and values set to clear values. Available keys are:
@@ -11053,7 +14385,16 @@ constants.light_colors[4] = vmath.vector4(1, 1, 1, 1)
 ```
  */
 	export function constant_buffer(): constant_buffer;
-	/**
+	export namespace debug_draw_options {
+		/**
+		 * Frustum matrix used for culling renderable items.
+		 */
+		export let frustum_: vmath.matrix4;
+		/**
+		 * Frustum planes used for culling. The default is render.FRUSTUM_PLANES_SIDES.
+		 */
+		export let frustum_planes_: unknown;
+	} /**
  * Deletes a render target created by a render script.
 You cannot delete a render target resource.
  * @param render_target render target to delete
@@ -11092,7 +14433,7 @@ render.disable_state(graphics.STATE_CULL_FACE)
 render.draw(self.tile_pred)
 ```
  */
-	export function disable_state(state: number): void;
+	export function disable_state(state: any): void;
 	/**
  * Disables a texture that has previourly been enabled.
  * @param binding texture binding, either by texture unit, string or hash that should be disabled
@@ -11117,11 +14458,7 @@ system constants buffer is used containing constants as defined in the compute p
  * @param x global work group size X
  * @param y global work group size Y
  * @param z global work group size Z
- * @param options optional table with properties:
-
-`constants`
-constant_buffer optional constants to use while rendering
-
+ * @param options optional compute-dispatch options
  * @example ```lua
 function init(self)
     local color_params = { format = graphics.TEXTURE_FORMAT_RGBA,
@@ -11152,29 +14489,18 @@ render.dispatch_compute(32, 32, 32, {constants = constants})
 		z: number,
 		options?: { constants: constant_buffer },
 	): void;
-	/**
+	export namespace dispatch_options {
+		/**
+		 * Constants used by the compute program. The values are copied when `render.dispatch_compute()` is called.
+		 */
+		export let constants_: LuaUserdata;
+	} /**
  * Draws all objects that match a specified predicate. An optional constant buffer can be
 provided to override the default constants. If no constants buffer is provided, a default
 system constants buffer is used containing constants as defined in materials and set through
 go.set (or particlefx.set_constant) on visual components.
  * @param predicate predicate to draw for
- * @param options optional table with properties:
-
-`frustum`
-matrix4 A frustum matrix used to cull renderable items. (E.g. `local frustum = proj * view`). default=nil
-`frustum_planes`
-int Determines which sides of the frustum will be used. Default is render.FRUSTUM_PLANES_SIDES.
-
-
-render.FRUSTUM_PLANES_SIDES : The left, right, top and bottom sides of the frustum.
-render.FRUSTUM_PLANES_ALL : All 6 sides of the frustum.
-
-
-`constants`
-constant_buffer optional constants to use while rendering
-`sort_order`
-int How to sort draw order for world-ordered entries. Default uses the renderer's preferred world sorting (back-to-front).
-
+ * @param options optional draw options
  * @example ```lua
 function init(self)
     -- define a predicate matching anything with material tag "my_tag"
@@ -11207,7 +14533,7 @@ render.draw(self.my_pred, {frustum = frustum, frustum_planes = render.FRUSTUM_PL
 ```
  */
 	export function draw(
-		predicate: number,
+		predicate: any,
 		options?: {
 			frustum?: vmath.matrix4;
 			frustum_planes?: number;
@@ -11216,17 +14542,7 @@ render.draw(self.my_pred, {frustum = frustum, frustum_planes = render.FRUSTUM_PL
 	): void;
 	/**
  * Draws all 3d debug graphics such as lines drawn with "draw_line" messages and physics visualization.
- * @param options optional table with properties:
-
-`frustum`
-matrix4 A frustum matrix used to cull renderable items. (E.g. `local frustum = proj * view`). May be nil.
-`frustum_planes`
-int Determines which sides of the frustum will be used. Default is render.FRUSTUM_PLANES_SIDES.
-
-
-render.FRUSTUM_PLANES_SIDES : The left, right, top and bottom sides of the frustum.
-render.FRUSTUM_PLANES_ALL : All sides of the frustum.
-
+ * @param options optional debug-draw options
  * @example ```lua
 function update(self, dt)
     -- draw debug visualization
@@ -11238,7 +14554,24 @@ end
 		frustum?: vmath.matrix4;
 		frustum_planes?: number;
 	}): void;
-	/**
+	export namespace draw_options {
+		/**
+		 * Constants used while rendering. The values are copied when `render.draw()` is called.
+		 */
+		export let constants_: LuaUserdata;
+		/**
+		 * Frustum matrix used for culling renderable items.
+		 */
+		export let frustum_: vmath.matrix4;
+		/**
+		 * Frustum planes used for culling. The default is render.FRUSTUM_PLANES_SIDES.
+		 */
+		export let frustum_planes_: unknown;
+		/**
+		 * World-entry sort order. The default is the renderer's preferred back-to-front order.
+		 */
+		export let sort_order_: unknown;
+	} /**
  * If another material was already enabled, it will be automatically disabled
 and the specified material is used instead.
 The name of the material must be specified in the ".render" resource set
@@ -11270,7 +14603,7 @@ render.draw(self.gui_pred)
 render.disable_state(graphics.STATE_STENCIL_TEST)
 ```
  */
-	export function enable_state(state: number): void;
+	export function enable_state(state: any): void;
 	/**
  * Sets the specified texture handle for a render target attachment or a regular texture
 that should be used for rendering. The texture can be bound to either a texture unit
@@ -11285,23 +14618,7 @@ the same texture for differnt use-cases. It is however recommended that you use 
 everywhere for the textures that should be shared across different materials.
  * @param binding texture binding, either by texture unit, string or hash for the sampler name that the texture should be bound to
  * @param handle_or_name render target or texture handle that should be bound, or a named resource in the "Render Resource" table in the currently assigned .render file
- * @param buffer_type optional buffer type from which to enable the texture. Note that this argument only applies to render targets. Defaults to `graphics.BUFFER_TYPE_COLOR0_BIT`. These values are supported:
-
-`graphics.BUFFER_TYPE_COLOR0_BIT`
-
-If The render target has been created as depth and/or stencil textures, these buffer types can be used:
-
-`graphics.BUFFER_TYPE_DEPTH_BIT`
-`graphics.BUFFER_TYPE_STENCIL_BIT`
-
-If the render target has been created with multiple color attachments, these buffer types can be used
-to enable those textures as well. Currently 4 color attachments are supported:
-
-`graphics.BUFFER_TYPE_COLOR0_BIT`
-`graphics.BUFFER_TYPE_COLOR1_BIT`
-`graphics.BUFFER_TYPE_COLOR2_BIT`
-`graphics.BUFFER_TYPE_COLOR3_BIT`
-
+ * @param buffer_type optional render-target attachment. Defaults to `graphics.BUFFER_TYPE_COLOR0_BIT`. Depth and stencil attachments must have been created as textures; color attachments beyond the first require a render target with multiple color attachments (up to four are supported).
  * @example ```lua
 function update(self, dt)
     -- enable target so all drawing is done to it
@@ -11346,13 +14663,7 @@ end
 	export function enable_texture(
 		binding: hash | number | string,
 		handle_or_name: hash | number | string,
-		buffer_type?:
-			| typeof graphics.BUFFER_TYPE_COLOR0_BIT
-			 
-			 
-			 
-			 
-			 ,
+		buffer_type?: any,
 	): void;
 	/**
  * Returns the logical window height that is set in the "game.project" settings.
@@ -11384,13 +14695,7 @@ local w = render.get_render_target_height('my_rt_resource', graphics.BUFFER_TYPE
  */
 	export function get_render_target_height(
 		render_target: render_target,
-		buffer_type:
-			| typeof graphics.BUFFER_TYPE_COLOR0_BIT
-			 
-			 
-			 
-			 
-			 ,
+		buffer_type: any,
 	): number;
 	/**
  * Returns the specified buffer width from a render target.
@@ -11412,19 +14717,13 @@ local w = render.get_render_target_width('my_rt_resource', graphics.BUFFER_TYPE_
  */
 	export function get_render_target_width(
 		render_target: render_target,
-		buffer_type:
-			| typeof graphics.BUFFER_TYPE_COLOR0_BIT
-			 
-			 
-			 
-			 
-			 ,
+		buffer_type: any,
 	): number;
 	/**
  * Returns the logical window width that is set in the "game.project" settings.
 Note that the actual window pixel size can change, either by device constraints
 or user input.
- * @returns specified window width (number)
+ * @returns specified window width
  * @example Get the width of the window.
 ```lua
 local w = render.get_width()
@@ -11469,55 +14768,10 @@ local p = render.predicate({hash("opaque"), hash("smoke")})
  */
 	export function predicate(
 		tags: Array<hash | string> | LuaSet<hash | string>,
-	): number;
+	): unknown;
 	/**
  * Creates a new render target according to the supplied
 specification table.
-The table should contain keys specifying which buffers should be created
-with what parameters. Each buffer key should have a table value consisting
-of parameters. The following parameter keys are available:
-
-
-
-Key
-Values
-
-
-
-
-`format`
-`graphics.TEXTURE_FORMAT_LUMINANCE``graphics.TEXTURE_FORMAT_RGB``graphics.TEXTURE_FORMAT_RGBA``graphics.TEXTURE_FORMAT_DEPTH``graphics.TEXTURE_FORMAT_STENCIL``graphics.TEXTURE_FORMAT_RGBA32F``graphics.TEXTURE_FORMAT_RGBA16F`
-
-
-`width`
-number
-
-
-`height`
-number
-
-
-`min_filter` (optional)
-`graphics.TEXTURE_FILTER_LINEAR``graphics.TEXTURE_FILTER_NEAREST`
-
-
-`mag_filter` (optional)
-`graphics.TEXTURE_FILTER_LINEAR``graphics.TEXTURE_FILTER_NEAREST`
-
-
-`u_wrap`     (optional)
-`graphics.TEXTURE_WRAP_CLAMP_TO_BORDER``graphics.TEXTURE_WRAP_CLAMP_TO_EDGE``graphics.TEXTURE_WRAP_MIRRORED_REPEAT``graphics.TEXTURE_WRAP_REPEAT`
-
-
-`v_wrap`     (optional)
-`graphics.TEXTURE_WRAP_CLAMP_TO_BORDER``graphics.TEXTURE_WRAP_CLAMP_TO_EDGE``graphics.TEXTURE_WRAP_MIRRORED_REPEAT``graphics.TEXTURE_WRAP_REPEAT`
-
-
-`flags`      (optional)
-`render.TEXTURE_BIT` (only applicable to depth and stencil buffers)
-
-
-
 The render target can be created to support multiple color attachments. Each attachment can have different format settings and texture filters,
 but attachments must be added in sequence, meaning you cannot create a render target at slot 0 and 3.
 Instead it has to be created with all four buffer types ranging from [0..3] (as denoted by graphics.BUFFER_TYPE_COLORX_BIT where 'X' is the attachment you want to create).
@@ -11529,8 +14783,7 @@ you can check if the `render` table contains any of the `BUFFER_TYPE_COLOR1_BIT`
     end
 end
 `
- * @param name render target name
- * @param parameters table of buffer parameters, see the description for available keys and values
+ * @param parameters render-target parameters
  * @example How to create a new render target and draw to it:
 ```lua
 function init(self)
@@ -11547,7 +14800,7 @@ function init(self)
                            height = render.get_window_height(),
                            u_wrap = graphics.TEXTURE_WRAP_CLAMP_TO_EDGE,
                            v_wrap = graphics.TEXTURE_WRAP_CLAMP_TO_EDGE }
-    self.my_render_target = render.render_target({[graphics.BUFFER_TYPE_COLOR0_BIT] = color_params, [graphics.BUFFER_TYPE_DEPTH_BIT] = depth_params })
+    self.my_render_target = render.render_target({sample_count = 4, [graphics.BUFFER_TYPE_COLOR0_BIT] = color_params, [graphics.BUFFER_TYPE_DEPTH_BIT] = depth_params })
 end
 
 function update(self, dt)
@@ -11596,22 +14849,56 @@ function update(self, dt)
 end
 ```
  */
-	export function render_target(
-		name: string,
-		parameters: {
-			[key: number]: {
-				format: number;
-				width: number;
-				height: number;
-				min_filter?: number;
-				mag_filter?: number;
-				u_wrap?: number;
-				v_wrap?: number;
-				flags?: number;
-			};
-		},
-	): render_target;
-	/**
+	export function render_target(parameters: {
+		[key: number]: {
+			format: number;
+			width: number;
+			height: number;
+			min_filter?: number;
+			mag_filter?: number;
+			u_wrap?: number;
+			v_wrap?: number;
+			flags?: number;
+		};
+	}): render_target;
+	export namespace render_target_buffer_params {
+		/**
+		 * Attachment creation flags, applicable only to depth and stencil buffers.
+		 */
+		export let flags_: unknown;
+		/**
+		 * Attachment texture format.
+		 */
+		export let format: unknown;
+		/**
+		 * Attachment height.
+		 */
+		export let height: number;
+		/**
+		 * Magnification filter.
+		 */
+		export let mag_filter_: unknown;
+		/**
+		 * Minification filter.
+		 */
+		export let min_filter_: unknown;
+		/**
+		 * Horizontal wrap mode.
+		 */
+		export let u_wrap_: unknown;
+		/**
+		 * Vertical wrap mode.
+		 */
+		export let v_wrap_: unknown;
+		/**
+		 * Depth wrap mode.
+		 */
+		export let w_wrap_: unknown;
+		/**
+		 * Attachment width.
+		 */
+		export let width: number;
+	} /**
  * Sets the blend equation with separate equations for the color and alpha channels.
  * @param equation_color color blend equation
  * @param equation_alpha alpha blend equation
@@ -11622,8 +14909,8 @@ render.set_blend_equation_separate(graphics.BLEND_EQUATION_ADD,
 ```
  */
 	export function set_blend_equation_separate(
-		equation_color: number,
-		equation_alpha: number,
+		equation_color: any,
+		equation_alpha: any,
 	): void;
 	/**
  * Specifies the arithmetic used when computing pixel values that are written to the frame
@@ -11639,77 +14926,6 @@ The color specified by setting the blendcolor is referred to as (Rc,Gc,Bc,Ac).
 The source scale factor is referred to as (sR,sG,sB,sA).
 The destination scale factor is referred to as (dR,dG,dB,dA).
 The color values have integer values between 0 and (kR,kG,kB,kA), where kc = 2mc - 1 and mc is the number of bitplanes for that color. I.e for 8 bit color depth, color values are between `0` and `255`.
-Available factor constants and corresponding scale factors:
-
-
-
-Factor constant
-Scale factor (fR,fG,fB,fA)
-
-
-
-
-`graphics.BLEND_FACTOR_ZERO`
-(0,0,0,0)
-
-
-`graphics.BLEND_FACTOR_ONE`
-(1,1,1,1)
-
-
-`graphics.BLEND_FACTOR_SRC_COLOR`
-(Rs/kR,Gs/kG,Bs/kB,As/kA)
-
-
-`graphics.BLEND_FACTOR_ONE_MINUS_SRC_COLOR`
-(1,1,1,1) - (Rs/kR,Gs/kG,Bs/kB,As/kA)
-
-
-`graphics.BLEND_FACTOR_DST_COLOR`
-(Rd/kR,Gd/kG,Bd/kB,Ad/kA)
-
-
-`graphics.BLEND_FACTOR_ONE_MINUS_DST_COLOR`
-(1,1,1,1) - (Rd/kR,Gd/kG,Bd/kB,Ad/kA)
-
-
-`graphics.BLEND_FACTOR_SRC_ALPHA`
-(As/kA,As/kA,As/kA,As/kA)
-
-
-`graphics.BLEND_FACTOR_ONE_MINUS_SRC_ALPHA`
-(1,1,1,1) - (As/kA,As/kA,As/kA,As/kA)
-
-
-`graphics.BLEND_FACTOR_DST_ALPHA`
-(Ad/kA,Ad/kA,Ad/kA,Ad/kA)
-
-
-`graphics.BLEND_FACTOR_ONE_MINUS_DST_ALPHA`
-(1,1,1,1) - (Ad/kA,Ad/kA,Ad/kA,Ad/kA)
-
-
-`graphics.BLEND_FACTOR_CONSTANT_COLOR`
-(Rc,Gc,Bc,Ac)
-
-
-`graphics.BLEND_FACTOR_ONE_MINUS_CONSTANT_COLOR`
-(1,1,1,1) - (Rc,Gc,Bc,Ac)
-
-
-`graphics.BLEND_FACTOR_CONSTANT_ALPHA`
-(Ac,Ac,Ac,Ac)
-
-
-`graphics.BLEND_FACTOR_ONE_MINUS_CONSTANT_ALPHA`
-(1,1,1,1) - (Ac,Ac,Ac,Ac)
-
-
-`graphics.BLEND_FACTOR_SRC_ALPHA_SATURATE`
-(i,i,i,1) where i = min(As, kA - Ad) /kA
-
-
-
 The blended RGBA values of a pixel comes from the following equations:
 
 Rd = min(kR, Rs * sR + Rd * dR)
@@ -11728,8 +14944,8 @@ render.set_blend_func(graphics.BLEND_FACTOR_SRC_ALPHA, graphics.BLEND_FACTOR_ONE
 ```
  */
 	export function set_blend_func(
-		source_factor: number,
-		destination_factor: number,
+		source_factor: any,
+		destination_factor: any,
 	): void;
 	/**
  * Sets the blend function with separate blend factors for the color and alpha channels.
@@ -11760,11 +14976,7 @@ If the 'use_frustum' flag in the options table has been set to true, the rendere
 camera frustum for frustum culling regardless of what frustum is being passed into the render.draw() function.
 Note that the frustum plane option in render.draw can still be used together with the camera.
  * @param camera camera id to use, or nil to reset
- * @param options optional table with properties:
-
-`use_frustum`
-boolean If true, the renderer will use the cameras view-projection matrix for frustum culling (default: false)
-
+ * @param options optional camera options
  * @example Set the current camera to be used for rendering
 ```lua
 render.set_camera("main:/my_go#camera")
@@ -11824,34 +15036,18 @@ If mode is `graphics.FACE_TYPE_FRONT_AND_BACK`, no polygons are drawn, but other
 primitives such as points and lines are drawn. The initial value for
 `face_type` is `graphics.FACE_TYPE_BACK`.
  * @param face_type face type
-
-`graphics.FACE_TYPE_FRONT`
-`graphics.FACE_TYPE_BACK`
-`graphics.FACE_TYPE_FRONT_AND_BACK`
-
  * @example How to enable polygon culling and set front face culling:
 ```lua
 render.enable_state(graphics.STATE_CULL_FACE)
 render.set_cull_face(graphics.FACE_TYPE_FRONT)
 ```
  */
-	export function set_cull_face(face_type: number): void;
+	export function set_cull_face(face_type: any): void;
 	/**
  * Specifies the function that should be used to compare each incoming pixel
 depth value with the value present in the depth buffer.
 The comparison is performed only if depth testing is enabled and specifies
 the conditions under which a pixel will be drawn.
-Function constants:
-
-`graphics.COMPARE_FUNC_NEVER` (never passes)
-`graphics.COMPARE_FUNC_LESS` (passes if the incoming depth value is less than the stored value)
-`graphics.COMPARE_FUNC_LEQUAL` (passes if the incoming depth value is less than or equal to the stored value)
-`graphics.COMPARE_FUNC_GREATER` (passes if the incoming depth value is greater than the stored value)
-`graphics.COMPARE_FUNC_GEQUAL` (passes if the incoming depth value is greater than or equal to the stored value)
-`graphics.COMPARE_FUNC_EQUAL` (passes if the incoming depth value is equal to the stored value)
-`graphics.COMPARE_FUNC_NOTEQUAL` (passes if the incoming depth value is not equal to the stored value)
-`graphics.COMPARE_FUNC_ALWAYS` (always passes)
-
 The depth function is initially set to `graphics.COMPARE_FUNC_LESS`.
  * @param func depth test function, see the description for available values
  * @example Enable depth test and set the depth test function to "not equal".
@@ -11860,7 +15056,7 @@ render.enable_state(graphics.STATE_DEPTH_TEST)
 render.set_depth_func(graphics.COMPARE_FUNC_NOTEQUAL)
 ```
  */
-	export function set_depth_func(func: number): void;
+	export function set_depth_func(func: any): void;
 	/**
  * Specifies whether the depth buffer is enabled for writing. The supplied mask governs
 if depth buffer writing is enabled (`true`) or disabled (`false`).
@@ -11873,18 +15069,9 @@ render.set_depth_mask(false)
  */
 	export function set_depth_mask(depth: boolean): void;
 	/**
- * Set or remove listener. Currenly only only two type of events can arrived:
-`render.CONTEXT_EVENT_CONTEXT_LOST` - when rendering context lost. Rending paused and all graphics resources become invalid.
-`render.CONTEXT_EVENT_CONTEXT_RESTORED` - when rendering context was restored. Rendering still paused and graphics resources still
-invalid but can be reloaded.
+ * Set or remove the rendering-context event listener.
  * @param callback A callback that receives all render related events.
 Pass `nil` if want to remove listener.
-
-`self`
-object The render script
-`event_type`
-string Rendering event. Possible values: `render.CONTEXT_EVENT_CONTEXT_LOST`, `render.CONTEXT_EVENT_CONTEXT_RESTORED`
-
  * @example Set listener and handle render context events.
 ```lua
 --- custom.render_script
@@ -11899,9 +15086,7 @@ function init(self)
 end
 ```
  */
-	export function set_listener(
-		callback: ((this: any, event_type: any) => void) | undefined,
-	): void;
+	export function set_listener(callback: any | undefined): void;
 	/**
  * Sets the scale and units used to calculate depth values.
 If `graphics.STATE_POLYGON_OFFSET_FILL` is enabled, each fragment's depth value
@@ -11942,19 +15127,8 @@ render.set_projection(vmath.matrix4_orthographic(0, render.get_width(), 0, rende
  * Sets a render target. Subsequent draw operations will be to the
 render target until it is replaced by a subsequent call to set_render_target.
 This function supports render targets created by a render script, or a render target resource.
- * @param render_target render target to set. render.RENDER_TARGET_DEFAULT to set the default render target
- * @param options optional table with behaviour parameters
-
-`transient`
-table Transient frame buffer types are only valid while the render target is active, i.e becomes undefined when a new target is set by a subsequent call to set_render_target.
- Default is all non-transient. Be aware that some hardware uses a combined depth stencil buffer and when this is the case both are considered non-transient if exclusively selected!
- A buffer type defined that doesn't exist in the render target is silently ignored.
-
-
-`graphics.BUFFER_TYPE_COLOR0_BIT`
-`graphics.BUFFER_TYPE_DEPTH_BIT`
-`graphics.BUFFER_TYPE_STENCIL_BIT`
-
+ * @param render_target render target to set. Omit it, pass `nil`, or use render.RENDER_TARGET_DEFAULT to set the default render target
+ * @param options optional render-target activation options
  * @example How to set a render target and draw to it and then switch back to the default render target
 The render target defines the depth/stencil buffers as transient, when set_render_target is called the next time the buffers may be invalidated and allow for optimisations depending on driver support
 ```lua
@@ -11987,10 +15161,15 @@ end
 ```
  */
 	export function set_render_target(
-		render_target: render_target,
+		render_target?: render_target,
 		options?: { transient: LuaSet<number> | number[] },
 	): void;
-	/**
+	export namespace set_render_target_options {
+		/**
+		 * Buffers whose contents become undefined after the target is deactivated. Missing buffers are ignored; combined depth-stencil buffers remain non-transient unless both are selected.
+		 */
+		export let transient_: unknown;
+	} /**
  * Sets the render target size for a render target created from
 either a render script, or from a render target resource.
  * @param render_target render target to set size for
@@ -12014,24 +15193,13 @@ Second, geometry and images are rendered but using the stencil planes to mask ou
 where to draw.
 The stencil test discards a pixel based on the outcome of a comparison between the
 reference value `ref` and the corresponding value in the stencil buffer.
-`func` specifies the comparison function. See the table below for values.
+`func` specifies the comparison function.
 The initial value is `graphics.COMPARE_FUNC_ALWAYS`.
 `ref` specifies the reference value for the stencil test. The value is clamped to
 the range [0, 2n-1], where n is the number of bitplanes in the stencil buffer.
 The initial value is `0`.
 `mask` is ANDed with both the reference value and the stored stencil value when the test
 is done. The initial value is all `1`'s.
-Function constant:
-
-`graphics.COMPARE_FUNC_NEVER` (never passes)
-`graphics.COMPARE_FUNC_LESS` (passes if (ref & mask) < (stencil & mask))
-`graphics.COMPARE_FUNC_LEQUAL` (passes if (ref & mask) <= (stencil & mask))
-`graphics.COMPARE_FUNC_GREATER` (passes if (ref & mask) > (stencil & mask))
-`graphics.COMPARE_FUNC_GEQUAL` (passes if (ref & mask) >= (stencil & mask))
-`graphics.COMPARE_FUNC_EQUAL` (passes if (ref & mask) = (stencil & mask))
-`graphics.COMPARE_FUNC_NOTEQUAL` (passes if (ref & mask) != (stencil & mask))
-`graphics.COMPARE_FUNC_ALWAYS` (always passes)
-
  * @param func stencil test function, see the description for available values
  * @param ref reference value for the stencil test
  * @param mask mask that is ANDed with both the reference value and the stored stencil value when the test is done
@@ -12040,11 +15208,7 @@ Function constant:
 render.set_stencil_func(graphics.COMPARE_FUNC_EQUAL, 0, 1)
 ```
  */
-	export function set_stencil_func(
-		func: number,
-		ref: number,
-		mask: number,
-	): void;
+	export function set_stencil_func(func: any, ref: number, mask: number): void;
 	/**
  * The stencil mask controls the writing of individual bits in the stencil buffer.
 The least significant `n` bits of the parameter `mask`, where `n` is the number of
@@ -12068,17 +15232,6 @@ This function takes three arguments that control what happens to the stored sten
 value while stenciling is enabled. If the stencil test fails, no change is made to the
 pixel's color or depth buffers, and `sfail` specifies what happens to the stencil buffer
 contents.
-Operator constants:
-
-`graphics.STENCIL_OP_KEEP` (keeps the current value)
-`graphics.STENCIL_OP_ZERO` (sets the stencil buffer value to 0)
-`graphics.STENCIL_OP_REPLACE` (sets the stencil buffer value to `ref`, as specified by render.set_stencil_func)
-`graphics.STENCIL_OP_INCR` (increments the stencil buffer value and clamp to the maximum representable unsigned value)
-`graphics.STENCIL_OP_INCR_WRAP` (increments the stencil buffer value and wrap to zero when incrementing the maximum representable unsigned value)
-`graphics.STENCIL_OP_DECR` (decrements the current stencil buffer value and clamp to 0)
-`graphics.STENCIL_OP_DECR_WRAP` (decrements the current stencil buffer value and wrap to the maximum representable unsigned value when decrementing zero)
-`graphics.STENCIL_OP_INVERT` (bitwise inverts the current stencil buffer value)
-
 `dppass` and `dpfail` specify the stencil buffer actions depending on whether subsequent
 depth buffer tests succeed (dppass) or fail (dpfail).
 The initial value for all operators is `graphics.STENCIL_OP_KEEP`.
@@ -12093,11 +15246,7 @@ render.set_stencil_func(graphics.COMPARE_FUNC_NEVER, 1, 0xFF)
 render.set_stencil_op(graphics.STENCIL_OP_REPLACE, graphics.STENCIL_OP_KEEP, graphics.STENCIL_OP_KEEP)
 ```
  */
-	export function set_stencil_op(
-		sfail: number,
-		dpfail: number,
-		dppass: number,
-	): void;
+	export function set_stencil_op(sfail: any, dpfail: any, dppass: any): void;
 	/**
  * Sets the view matrix to use when rendering.
  * @param matrix view matrix to set
@@ -12150,15 +15299,104 @@ declare namespace render {
 
 /** @see {@link https://defold.com/ref/stable/resource/|API Documentation} */
 declare namespace resource {
-	/**
+	export namespace animation {
+		/**
+		 * Whether to flip the animation horizontally. The default is false.
+		 */
+		export let flip_horizontal_: boolean;
+		/**
+		 * Whether to flip the animation vertically. The default is false.
+		 */
+		export let flip_vertical_: boolean;
+		/**
+		 * Animation frame rate. The default is 30.
+		 */
+		export let fps_: number;
+		/**
+		 * Non-inclusive last geometry index for the legacy contiguous frame range.
+		 */
+		export let frame_end_: number;
+		/**
+		 * First geometry index for the legacy contiguous frame range.
+		 */
+		export let frame_start_: number;
+		/**
+		 * Geometry indices for the animation frames.
+		 */
+		export let frames_: unknown;
+		/**
+		 * Animation height.
+		 */
+		export let height: number;
+		/**
+		 * Animation id.
+		 */
+		export let id: string;
+		/**
+		 * Playback mode. The default is `go.PLAYBACK_ONCE_FORWARD`.
+		 */
+		export let playback_: unknown;
+		/**
+		 * Animation width.
+		 */
+		export let width: number;
+	}
+	export namespace animation_data {
+		/**
+		 * Whether the animation is flipped horizontally.
+		 */
+		export let flip_horizontal: boolean;
+		/**
+		 * Whether the animation is flipped vertically.
+		 */
+		export let flip_vertical: boolean;
+		/**
+		 * Animation frame rate.
+		 */
+		export let fps: number;
+		/**
+		 * Geometry indices for the animation frames.
+		 */
+		export let frames: unknown;
+		/**
+		 * Animation height.
+		 */
+		export let height: number;
+		/**
+		 * Animation id.
+		 */
+		export let id: string;
+		/**
+		 * Playback mode.
+		 */
+		export let playback: unknown;
+		/**
+		 * Animation width.
+		 */
+		export let width: number;
+	}
+	export namespace atlas {
+		/**
+		 * Animations in the atlas.
+		 */
+		export let animations: unknown;
+		/**
+		 * Geometries that map to the texture data.
+		 */
+		export let geometries: unknown;
+		/**
+		 * Path to the texture resource, for example `"/main/my_texture.texturec"`.
+		 */
+		export let texture: hash | string;
+	} /**
  * Constructor-like function with two purposes:
 
 Load the specified resource as part of loading the script
-Return a hash to the run-time version of the resource
+Create a resource reference that resolves to the hashed path of the run-time resource
 
 ⚠ This function can only be called within go.property function calls.
  * @param path optional resource path string to the resource
- * @returns a path hash to the binary version of the resource
+ * @returns a reference to the binary version of the resource
  * @example Load an atlas and set it to a sprite:
 ```lua
 go.property("my_atlas", resource.atlas("/atlas.atlas"))
@@ -12175,16 +15413,29 @@ function init(self)
 end
 ```
  */
-	export function atlas(path?: string): hash;
-	/**
+	export function atlas(path?: string): unknown;
+	export namespace atlas_data {
+		/**
+		 * Animations in the atlas.
+		 */
+		export let animations: unknown;
+		/**
+		 * Geometries that map to the texture data.
+		 */
+		export let geometries: unknown;
+		/**
+		 * Path to the texture resource.
+		 */
+		export let texture: hash | string;
+	} /**
  * Constructor-like function with two purposes:
 
 Load the specified resource as part of loading the script
-Return a hash to the run-time version of the resource
+Create a resource reference that resolves to the hashed path of the run-time resource
 
 ⚠ This function can only be called within go.property function calls.
  * @param path optional resource path string to the resource
- * @returns a path hash to the binary version of the resource
+ * @returns a reference to the binary version of the resource
  * @example Set a unique buffer it to a sprite:
 ```lua
 go.property("my_buffer", resource.buffer("/cube.buffer"))
@@ -12193,8 +15444,23 @@ function init(self)
 end
 ```
  */
-	export function buffer(path?: string): hash;
-	/**
+	export function buffer(path?: string): unknown;
+	export namespace buffer_creation_params {
+		/**
+		 * Buffer to bind to the resource.
+		 */
+		export let buffer: unknown;
+		/**
+		 * Whether the resource takes ownership of the buffer. The default is true.
+		 */
+		export let transfer_ownership_: boolean;
+	}
+	export namespace buffer_update_options {
+		/**
+		 * Whether the resource takes ownership of the buffer. The default is false.
+		 */
+		export let transfer_ownership_: boolean;
+	} /**
  * This function creates a new atlas resource that can be used in the same way as any atlas created during build time.
 The path used for creating the atlas must be unique, trying to create a resource at a path that is already
 registered will trigger an error. If the intention is to instead modify an existing atlas, use the resource.set_atlas
@@ -12206,135 +15472,7 @@ that created the resource and will automatically be released when that collectio
 Note that releasing a resource essentially means decreasing the reference count of that resource,
 and not necessarily that it will be deleted.
  * @param path The path to the resource.
- * @param table A table containing info about how to create the atlas. Supported entries:
-
-
-
-`texture`
-string | hash the path to the texture resource, e.g "/main/my_texture.texturec"
-
-
-
-
-`animations`
-table a list of the animations in the atlas. Supports the following fields:
-
-
-
-
-`id`
-string the id of the animation, used in e.g sprite.play_animation
-
-
-
-
-`width`
-number the width of the animation
-
-
-
-
-`height`
-number the height of the animation
-
-
-
-
-`frame_start`
-number index to the first geometry of the animation. Indices are lua based and must be in the range of 1 ..  in atlas.
-
-
-
-
-`frame_end`
-number index to the last geometry of the animation (non-inclusive). Indices are lua based and must be in the range of 1 ..  in atlas.
-
-
-
-
-`playback`
-constant optional playback mode of the animation, the default value is go.PLAYBACK_ONCE_FORWARD
-
-
-
-
-`fps`
-number optional fps of the animation, the default value is 30
-
-
-
-
-`flip_vertical`
-boolean optional flip the animation vertically, the default value is false
-
-
-
-
-`flip_horizontal`
-boolean optional flip the animation horizontally, the default value is false
-
-
-
-
-`geometries`
-table A list of the geometries that should map to the texture data. Supports the following fields:
-
-
-
-
-`id`
-string The name of the geometry. Used when matching animations between multiple atlases
-
-
-
-
-`width`
-number The width of the image the sprite geometry represents
-
-
-
-
-`height`
-number The height of the image the sprite geometry represents
-
-
-
-
-`pivot_x`
-number The pivot x value of the image in unit coords. (0,0) is upper left corner, (1,1) is bottom right. Default is 0.5.
-
-
-
-
-`pivot_y`
-number The pivot y value of the image in unit coords. (0,0) is upper left corner, (1,1) is bottom right. Default is 0.5.
-
-
-
-
-`rotated`
-boolean Whether the image is rotated 90 degrees counter-clockwise in the atlas. This affects UV coordinate generation for proper rendering. Default is false.
-
-
-
-
-`vertices`
-table a list of the vertices in image space of the geometry in the form {px0, py0, px1, py1, ..., pxn, pyn}
-
-
-
-
-`uvs`
-table a list of the uv coordinates in image space of the geometry in the form of {u0, v0, u1, v1, ..., un, vn}.
-
-
-
-
-`indices`
-table a list of the indices of the geometry in the form {i0, i1, i2, ..., in}. Each tripe in the list represents a triangle.
-
-
-
+ * @param table atlas creation data
  * @returns Returns the atlas resource path
  * @example Create a backing texture and an atlas
 ```lua
@@ -12431,21 +15569,7 @@ the buffer object will be copied and the new resource will effectively own a cop
 Note that the path to the new resource must have the '.bufferc' extension, "/path/my_buffer" is not a valid path but "/path/my_buffer.bufferc" is.
 The path must also be unique, attempting to create a buffer with the same name as an existing resource will raise an error.
  * @param path The path to the resource.
- * @param table A table containing info about how to create the buffer. Supported entries:
-
-
-
-`buffer`
-buffer the buffer to bind to this resource
-
-
-
-
-`transfer_ownership`
-boolean optional flag to determine whether or not the resource should take over ownership of the buffer object (default true)
-
-
-
+ * @param table buffer-resource creation parameters
  * @returns Returns the buffer resource path
  * @example Create a buffer object and bind it to a buffer resource
 ```lua
@@ -12480,8 +15604,9 @@ function init(self)
     local my_buffer = resource.create_buffer("/my_buffer.bufferc", { buffer = buffer_handle })
     go.set("/go#mesh", "vertices", my_buffer)
 end
-```Create a buffer resource from existing resource
+```
 
+Create a buffer resource from existing resource
 ```lua
 function init(self)
     local res = resource.get_buffer("/my_buffer_path.bufferc")
@@ -12492,23 +15617,12 @@ function init(self)
 end
 ```
  */
-	export function create_buffer(
-		path: string,
-		table?: { buffer: buffer; transfer_ownership?: boolean },
-	): hash;
+	export function create_buffer(path: string, table: any): hash;
 	/**
  * Creates a sound data resource
 Supported formats are .oggc, .opusc and .wavc
  * @param path the path to the resource. Must not already exist.
- * @param options A table containing parameters for the text. Supported entries:
-
-`data`
-string The raw data of the file. May be partial, but must include the header of the file
-`filesize`
-number If the file is partial, it must also specify the full size of the complete file.
-`partial`
-boolean Is the data not representing the full file, but just the initial chunk?
-
+ * @param options optional sound-data parameters
  * @returns the resulting path hash to the resource
  * @example ```lua
 function init(self)
@@ -12520,10 +15634,7 @@ function init(self)
 end
 ```
  */
-	export function create_sound_data(
-		path: string,
-		options?: { data: string; filesize?: number; partial?: boolean },
-	): hash;
+	export function create_sound_data(path: string, options?: any): hash;
 	/**
  * Creates a new texture resource that can be used in the same way as any texture created during build time.
 The path used for creating the texture must be unique, trying to create a resource at a path that is already
@@ -12532,91 +15643,24 @@ function. Also note that the path to the new texture resource must have a '.text
 meaning "/path/my_texture" is not a valid path but "/path/my_texture.texturec" is.
 If the texture is created without a buffer, the pixel data will be blank.
  * @param path The path to the resource.
- * @param table A table containing info about how to create the texture. Supported entries:
-
-`type`
-number The texture type. Supported values:
-
-
-`graphics.TEXTURE_TYPE_2D`
-`graphics.TEXTURE_TYPE_IMAGE_2D`
-`graphics.TEXTURE_TYPE_3D`
-`graphics.TEXTURE_TYPE_IMAGE_3D`
-`graphics.TEXTURE_TYPE_CUBE_MAP`
-
-
-`width`
-number The width of the texture (in pixels). Must be larger than 0.
-`height`
-number The width of the texture (in pixels). Must be larger than 0.
-`depth`
-number The depth of the texture (in pixels). Must be larger than 0. Only used when `type` is `graphics.TEXTURE_TYPE_3D` or `graphics.TEXTURE_TYPE_IMAGE_3D`.
-`format`
-number The texture format, note that some of these formats might not be supported by the running device. Supported values:
-
-
-`graphics.TEXTURE_FORMAT_LUMINANCE`
-`graphics.TEXTURE_FORMAT_RGB`
-`graphics.TEXTURE_FORMAT_RGBA`
-
-These constants might not be available on the device:
-
-`graphics.TEXTURE_FORMAT_RGB_PVRTC_2BPPV1`
-`graphics.TEXTURE_FORMAT_RGB_PVRTC_4BPPV1`
-`graphics.TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1`
-`graphics.TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1`
-`graphics.TEXTURE_FORMAT_RGB_ETC1`
-`graphics.TEXTURE_FORMAT_RGBA_ETC2`
-`graphics.TEXTURE_FORMAT_RGBA_ASTC_4X4`
-`graphics.TEXTURE_FORMAT_RGB_BC1`
-`graphics.TEXTURE_FORMAT_RGBA_BC3`
-`graphics.TEXTURE_FORMAT_R_BC4`
-`graphics.TEXTURE_FORMAT_RG_BC5`
-`graphics.TEXTURE_FORMAT_RGBA_BC7`
-`graphics.TEXTURE_FORMAT_RGB16F`
-`graphics.TEXTURE_FORMAT_RGB32F`
-`graphics.TEXTURE_FORMAT_RGBA16F`
-`graphics.TEXTURE_FORMAT_RGBA32F`
-`graphics.TEXTURE_FORMAT_R16F`
-`graphics.TEXTURE_FORMAT_RG16F`
-`graphics.TEXTURE_FORMAT_R32F`
-`graphics.TEXTURE_FORMAT_RG32F`
-
-You can test if the device supports these values by checking if a specific enum is nil or not:
-`if graphics.TEXTURE_FORMAT_RGBA16F ~= nil then
-    -- it is safe to use this format
-end
-`
-
-
-`flags`
-number Texture creation flags that can be used to dictate how the texture is created. The default value is graphics.TEXTURE_USAGE_FLAG_SAMPLE, which means that the texture can be sampled from a shader.
-These flags may or may not be supported on the running device and/or the underlying graphics API and is simply used internally as a 'hint' when creating the texture. There is no guarantee that any of these will have any effect. Supported values:
-
-
-`graphics.TEXTURE_USAGE_FLAG_SAMPLE` - The texture can be sampled from a shader (default)
-`graphics.TEXTURE_USAGE_FLAG_MEMORYLESS` - The texture can be used as a memoryless texture, i.e only transient memory for the texture is used during rendering
-`graphics.TEXTURE_USAGE_FLAG_STORAGE` - The texture can be used as a storage texture, which is required for a shader to write to the texture
-
-
-`max_mipmaps`
-number optional max number of mipmaps. Defaults to zero, i.e no mipmap support
-`compression_type`
-number optional specify the compression type for the data in the buffer object that holds the texture data. Will only be used when a compressed buffer has been passed into the function.
-Creating an empty texture with no buffer data is not supported as a core feature. Defaults to graphics.COMPRESSION_TYPE_DEFAULT, i.e no compression. Supported values:
-
-
-`COMPRESSION_TYPE_DEFAULT`
-`COMPRESSION_TYPE_BASIS_UASTC`
-
+ * @param table texture creation parameters
  * @param buffer optional buffer of precreated pixel data
  * @returns The path to the resource.
-⚠ 3D Textures are currently only supported on OpenGL and Vulkan adapters. To check if your device supports 3D textures, use:
+ * @example Check whether a texture format is supported by the device:
+```lua
+if graphics.TEXTURE_FORMAT_RGBA16F ~= nil then
+    -- It is safe to use this format.
+end
+```
+
+⚠ 3D textures are currently only supported on OpenGL and Vulkan adapters. Check whether the device supports 3D textures before using them:
 ```lua
 if graphics.TEXTURE_TYPE_3D ~= nil then
-    -- Device and graphics adapter support 3D textures
+    -- The device and graphics adapter support 3D textures.
 end
- * @example How to create an 128x128 RGBA texture resource and assign it to a model
+```
+
+How to create an 128x128 RGBA texture resource and assign it to a model
 ```lua
 function init(self)
     local tparams = {
@@ -12628,8 +15672,9 @@ function init(self)
    local my_texture_id = resource.create_texture("/my_custom_texture.texturec", tparams)
    go.set("#model", "texture0", my_texture_id)
 end
-```How to create an 128x128 floating point texture (RGBA32F) resource from a buffer object
+```
 
+How to create an 128x128 floating point texture (RGBA32F) resource from a buffer object
 ```lua
 function init(self)
     -- Create a new buffer with 4 components and FLOAT32 type
@@ -12661,8 +15706,9 @@ function init(self)
    -- assign the texture to a model
    go.set("#model", "texture0", my_texture_id)
 end
-```How to create a 32x32x32 floating point 3D texture that can be used to generate volumetric data in a compute shader
+```
 
+How to create a 32x32x32 floating point 3D texture that can be used to generate volumetric data in a compute shader
 ```lua
 function init(self)
     local t_volume = resource.create_texture("/my_backing_texture.texturec", {
@@ -12677,8 +15723,9 @@ function init(self)
     -- pass the backing texture to the render script
     msg.post("@render:", "add_textures", { t_volume })
 end
-```How to create 512x512 texture array with 5 pages.
+```
 
+How to create 512x512 texture array with 5 pages.
 ```lua
         local new_tex = resource.create_texture("/runtime/example_array.texturec", {
             type = graphics.TEXTURE_TYPE_2D_ARRAY,
@@ -12701,7 +15748,7 @@ end
 			max_mipmaps?: number;
 			compression_type?: number;
 		},
-		buffer?: buffer,
+		buffer?: any,
 	): hash;
 	/**
  * Creates a new texture resource that can be used in the same way as any texture created during build time.
@@ -12715,91 +15762,30 @@ in a graphics worker thread. The function will return a resource immediately tha
 immediately after the function call. When the new texture has been uploaded, the initial blank texture will be deleted and replaced with the
 new texture. Be careful when using the initial texture handle handle as it will not be valid after the upload has finished.
  * @param path The path to the resource.
- * @param table 
-A table containing info about how to create the texture. Supported entries:
-`type`
-number The texture type. Supported values:
-
-
-`graphics.TEXTURE_TYPE_2D`
-`graphics.TEXTURE_TYPE_IMAGE_2D`
-`graphics.TEXTURE_TYPE_3D`
-`graphics.TEXTURE_TYPE_IMAGE_3D`
-`graphics.TEXTURE_TYPE_CUBE_MAP`
-
-
-`width`
-number The width of the texture (in pixels). Must be larger than 0.
-`height`
-number The width of the texture (in pixels). Must be larger than 0.
-`depth`
-number The depth of the texture (in pixels). Must be larger than 0. Only used when `type` is `graphics.TEXTURE_TYPE_3D` or `graphics.TEXTURE_TYPE_IMAGE_3D`.
-`format`
-number The texture format, note that some of these formats might not be supported by the running device. Supported values:
-
-
-`graphics.TEXTURE_FORMAT_LUMINANCE`
-`graphics.TEXTURE_FORMAT_RGB`
-`graphics.TEXTURE_FORMAT_RGBA`
-
-These constants might not be available on the device:
-
-`graphics.TEXTURE_FORMAT_RGB_PVRTC_2BPPV1`
-`graphics.TEXTURE_FORMAT_RGB_PVRTC_4BPPV1`
-`graphics.TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1`
-`graphics.TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1`
-`graphics.TEXTURE_FORMAT_RGB_ETC1`
-`graphics.TEXTURE_FORMAT_RGBA_ETC2`
-`graphics.TEXTURE_FORMAT_RGBA_ASTC_4X4`
-`graphics.TEXTURE_FORMAT_RGB_BC1`
-`graphics.TEXTURE_FORMAT_RGBA_BC3`
-`graphics.TEXTURE_FORMAT_R_BC4`
-`graphics.TEXTURE_FORMAT_RG_BC5`
-`graphics.TEXTURE_FORMAT_RGBA_BC7`
-`graphics.TEXTURE_FORMAT_RGB16F`
-`graphics.TEXTURE_FORMAT_RGB32F`
-`graphics.TEXTURE_FORMAT_RGBA16F`
-`graphics.TEXTURE_FORMAT_RGBA32F`
-`graphics.TEXTURE_FORMAT_R16F`
-`graphics.TEXTURE_FORMAT_RG16F`
-`graphics.TEXTURE_FORMAT_R32F`
-`graphics.TEXTURE_FORMAT_RG32F`
-
-You can test if the device supports these values by checking if a specific enum is nil or not:
-`if graphics.TEXTURE_FORMAT_RGBA16F ~= nil then
-    -- it is safe to use this format
-end
-`
-
-
-`flags`
-number Texture creation flags that can be used to dictate how the texture is created. Supported values:
-
-
-`graphics.TEXTURE_USAGE_FLAG_SAMPLE` - The texture can be sampled from a shader (default)
-`graphics.TEXTURE_USAGE_FLAG_MEMORYLESS` - The texture can be used as a memoryless texture, i.e only transient memory for the texture is used during rendering
-`graphics.TEXTURE_USAGE_FLAG_STORAGE` - The texture can be used as a storage texture, which is required for a shader to write to the texture
-
-
-`max_mipmaps`
-number optional max number of mipmaps. Defaults to zero, i.e no mipmap support
-`compression_type`
-number optional specify the compression type for the data in the buffer object that holds the texture data. Will only be used when a compressed buffer has been passed into the function.
-Creating an empty texture with no buffer data is not supported as a core feature. Defaults to graphics.COMPRESSION_TYPE_DEFAULT, i.e no compression. Supported values:
-
-
-`COMPRESSION_TYPE_DEFAULT`
-`COMPRESSION_TYPE_BASIS_UASTC`
-
+ * @param table texture creation parameters
  * @param buffer optional buffer of precreated pixel data
- * @param callback callback function when texture is created (self, request_id, resource)
- * @example Create a texture resource asyncronously with a buffer and a callback
+ * @param callback callback function invoked when the texture is created
+ * @example Check whether a texture format is supported by the device:
 ```lua
-function callback(self, request_id, resource)
+if graphics.TEXTURE_FORMAT_RGBA16F ~= nil then
+    -- It is safe to use this format.
+end
+```
+
+⚠ 3D textures are currently only supported on OpenGL and Vulkan adapters. Check whether the device supports 3D textures before using them:
+```lua
+if graphics.TEXTURE_TYPE_3D ~= nil then
+    -- The device and graphics adapter support 3D textures.
+end
+```
+
+Create a texture resource asyncronously with a buffer and a callback
+```lua
+function callback(self, request_id, result)
     -- The resource has been updated with a new texture,
     -- so we can update other systems with the new handle,
     -- or update components to use the resource if we want
-    local tinfo = resource.get_texture_info(resource)
+    local tinfo = resource.get_texture_info(result.path)
     msg.post("@render:", "set_backing_texture", tinfo.handle)
 end
 function init(self)
@@ -12831,8 +15817,9 @@ function init(self)
     -- that will be removed once the new texture has been updated
     go.set("#model", "texture0", tpath)
 end
-```Create a texture resource asyncronously without a callback
+```
 
+Create a texture resource asyncronously without a callback
 ```lua
 function init(self)
     -- Create a texture resource async
@@ -12866,7 +15853,7 @@ end
 ```
  */
 	export function create_texture_async(
-		path: hash | string,
+		path: string,
 		table: {
 			type: number;
 			width: number;
@@ -12877,18 +15864,18 @@ end
 			max_mipmaps?: number;
 			compression_type?: number;
 		},
-		buffer: buffer,
+		buffer?: any,
 		callback?: (this: any, request_id: number, resource: hash) => void,
 	): LuaMultiReturn<[hash, number]>;
 	/**
  * Constructor-like function with two purposes:
 
 Load the specified resource as part of loading the script
-Return a hash to the run-time version of the resource
+Create a resource reference that resolves to the hashed path of the run-time resource
 
 ⚠ This function can only be called within go.property function calls.
  * @param path optional resource path string to the resource
- * @returns a path hash to the binary version of the resource
+ * @returns a reference to the binary version of the resource
  * @example Load a font and set it to a label:
 ```lua
 go.property("my_font", resource.font("/font.font"))
@@ -12905,20 +15892,83 @@ function init(self)
 end
 ```
  */
-	export function font(path?: string): hash;
-	/**
- * Returns the atlas data for an atlas
- * @param path The path to the atlas resource
- * @returns A table with the following entries:
-
-texture
-geometries
-animations
-
-Each animation entry also contains a `frames` table with indices into
-`geometries`, preserving the frame-to-geometry mapping used by the atlas.
-See resource.set_atlas for a detailed description of each field
- */
+	export function font(path?: string): unknown;
+	export namespace geometry {
+		/**
+		 * Height of the image represented by the geometry. If omitted, it is calculated from the vertices.
+		 */
+		export let height_: number;
+		/**
+		 * Geometry name, used when matching animations between atlases.
+		 */
+		export let id_: string;
+		/**
+		 * Geometry indices where each group of three entries represents a triangle.
+		 */
+		export let indices: unknown;
+		/**
+		 * Horizontal pivot in unit coordinates. The default is 0.5.
+		 */
+		export let pivot_x_: number;
+		/**
+		 * Vertical pivot in unit coordinates. The default is 0.5.
+		 */
+		export let pivot_y_: number;
+		/**
+		 * Whether the image is rotated 90 degrees counter-clockwise in the atlas.
+		 */
+		export let rotated_: boolean;
+		/**
+		 * UV coordinates in image space as `{u0, v0, u1, v1, ...}`.
+		 */
+		export let uvs: unknown;
+		/**
+		 * Vertex coordinates in image space as `{px0, py0, px1, py1, ...}`.
+		 */
+		export let vertices: unknown;
+		/**
+		 * Width of the image represented by the geometry. If omitted, it is calculated from the vertices.
+		 */
+		export let width_: number;
+	}
+	export namespace geometry_data {
+		/**
+		 * Height of the image represented by the geometry.
+		 */
+		export let height: number;
+		/**
+		 * Geometry indices where each group of three entries represents a triangle.
+		 */
+		export let indices: unknown;
+		/**
+		 * Horizontal pivot in unit coordinates.
+		 */
+		export let pivot_x: number;
+		/**
+		 * Vertical pivot in unit coordinates.
+		 */
+		export let pivot_y: number;
+		/**
+		 * Whether the image is rotated 90 degrees counter-clockwise in the atlas.
+		 */
+		export let rotated: boolean;
+		/**
+		 * UV coordinates in image space as `{u0, v0, u1, v1, ...}`.
+		 */
+		export let uvs: unknown;
+		/**
+		 * Vertex coordinates in image space as `{px0, py0, px1, py1, ...}`.
+		 */
+		export let vertices: unknown;
+		/**
+		 * Width of the image represented by the geometry.
+		 */
+		export let width: number;
+	} /**
+	 * Returns the atlas data for an atlas
+	 * @param path The path to the atlas resource
+	 * @returns atlas data
+	 */
 	export function get_atlas(path: hash | string): {
 		texture: hash | string;
 		animations: {
@@ -12956,52 +16006,11 @@ function init(self)
 end
 ```
  */
-	export function get_buffer(path: hash | string): buffer;
+	export function get_buffer(path: hash | string): unknown;
 	/**
  * Gets render target info from a render target resource path or a render target handle
  * @param path The path to the resource or a render target handle
- * @returns A table containing info about the render target:
-
-`handle`
-number the opaque handle to the texture resource
-'attachments'
-table a table of attachments, where each attachment contains the following entries:
-`width`
-number width of the texture
-`height`
-number height of the texture
-`depth`
-number depth of the texture (i.e 1 for a 2D texture and 6 for a cube map)
-`mipmaps`
-number number of mipmaps of the texture
-`type`
-number The texture type. Supported values:
-
-
-`graphics.TEXTURE_TYPE_2D`
-`graphics.TEXTURE_TYPE_CUBE_MAP`
-`graphics.TEXTURE_TYPE_2D_ARRAY`
-
-
-`buffer_type`
-number The attachment buffer type. Supported values:
-
-
-`resource.BUFFER_TYPE_COLOR0`
-`resource.BUFFER_TYPE_COLOR1`
-`resource.BUFFER_TYPE_COLOR2`
-`resource.BUFFER_TYPE_COLOR3`
-`resource.BUFFER_TYPE_DEPTH`
-
-`resource.BUFFER_TYPE_STENCIL`
-
-
-
-`texture`
-hash The hashed path to the attachment texture resource. This field is only available if the render target passed in is a resource.
-
-
-
+ * @returns render-target information
  * @example Get the metadata from a render target resource
 ```lua
 function init(self)
@@ -13011,8 +16020,9 @@ function init(self)
     -- just to show that it's possible:
     local info_attachment_1 = resource.get_texture_info(info.attachments[1].handle)
 end
-```Get a texture attachment from a render target and set it on a model component
+```
 
+Get a texture attachment from a render target and set it on a model component
 ```lua
 function init(self)
     local info = resource.get_render_target_info("/my_render_target.render_targetc")
@@ -13039,27 +16049,13 @@ end
 		};
 	}[];
 	/**
- * Gets the text metrics from a font
+ * Gets the text metrics from a font. Rich text markup is measured using its
+visible text and font sizes. If markup cannot be parsed, the text is measured literally.
+Inline sprites reserve their specified dimensions, or one em by default.
  * @param url the font to get the (unscaled) metrics from
  * @param text text to measure
- * @param options A table containing parameters for the text. Supported entries:
-
-`width`
-number The width of the text field. Not used if `line_break` is false.
-`leading`
-number The leading (default 1.0)
-`tracking`
-number The tracking (default 0.0)
-`line_break`
-boolean If the calculation should consider line breaks (default false)
-
- * @returns a table with the following fields:
-
-width
-height
-max_ascent
-max_descent
-
+ * @param options optional text-metric options
+ * @returns measured text metrics
  * @example ```lua
 function init(self)
     local font = go.get("#label", "font")
@@ -13081,33 +16077,7 @@ end
 	/**
  * Gets texture info from a texture resource path or a texture handle
  * @param path The path to the resource or a texture handle
- * @returns A table containing info about the texture:
-
-`handle`
-number the opaque handle to the texture resource
-`width`
-number width of the texture
-`height`
-number height of the texture
-`depth`
-number depth of the texture (i.e 1 for a 2D texture, 6 for a cube map, the actual depth of a 3D texture)
-`page_count`
-number number of pages of the texture array. For 2D texture value is 1. For cube map - 6
-`mipmaps`
-number number of mipmaps of the texture
-`flags`
-number usage hints of the texture.
-`type`
-number The texture type. Supported values:
-
-
-`graphics.TEXTURE_TYPE_2D`
-`graphics.TEXTURE_TYPE_2D_ARRAY`
-`graphics.TEXTURE_TYPE_IMAGE_2D`
-`graphics.TEXTURE_TYPE_3D`
-`graphics.TEXTURE_TYPE_IMAGE_3D`
-`graphics.TEXTURE_TYPE_CUBE_MAP`
-
+ * @returns texture information
  * @example Create a new texture and get the metadata from it
 ```lua
 function init(self)
@@ -13134,8 +16104,9 @@ function init(self)
     --      flags = graphics.TEXTURE_USAGE_FLAG_SAMPLE
     -- }
 end
-```Get the meta data from an atlas resource
+```
 
+Get the meta data from an atlas resource
 ```lua
 function init(self)
     local my_atlas_info   = resource.get_atlas("/my_atlas.a.texturesetc")
@@ -13173,16 +16144,16 @@ version = 0.1
 custom_resources = resources/,assets/level_data.json
 ```
  */
-	export function load(path: string): buffer;
+	export function load(path: string): unknown;
 	/**
  * Constructor-like function with two purposes:
 
 Load the specified resource as part of loading the script
-Return a hash to the run-time version of the resource
+Create a resource reference that resolves to the hashed path of the run-time resource
 
 ⚠ This function can only be called within go.property function calls.
  * @param path optional resource path string to the resource
- * @returns a path hash to the binary version of the resource
+ * @returns a reference to the binary version of the resource
  * @example Load a material and set it to a sprite:
 ```lua
 go.property("my_material", resource.material("/material.material"))
@@ -13199,7 +16170,7 @@ function init(self)
 end
 ```
  */
-	export function material(path?: string): hash;
+	export function material(path?: string): unknown;
 	/**
  * Release a resource.
 ⚠ This is a potentially dangerous operation, releasing resources currently being used can cause unexpected behaviour.
@@ -13210,11 +16181,11 @@ end
  * Constructor-like function with two purposes:
 
 Load the specified resource as part of loading the script
-Return a hash to the run-time version of the resource
+Create a resource reference that resolves to the hashed path of the run-time resource
 
 ⚠ This function can only be called within go.property function calls.
  * @param path optional resource path string to the resource
- * @returns a path hash to the binary version of the resource
+ * @returns a reference to the binary version of the resource
  * @example Set a render target color attachment as a model texture:
 ```lua
 go.property("my_render_target", resource.render_target("/rt.render_target"))
@@ -13224,8 +16195,63 @@ function init(self)
 end
 ```
  */
-	export function render_target(path?: string): hash;
-	/**
+	export function render_target(path?: string): unknown;
+	export namespace render_target_attachment_info {
+		/**
+		 * Render-target buffer type.
+		 */
+		export let buffer_type: unknown;
+		/**
+		 * Texture depth or layer count.
+		 */
+		export let depth: number;
+		/**
+		 * Texture usage flags.
+		 */
+		export let flags: unknown;
+		/**
+		 * Opaque texture handle.
+		 */
+		export let handle: number;
+		/**
+		 * Texture height.
+		 */
+		export let height: number;
+		/**
+		 * Number of mipmaps.
+		 */
+		export let mipmaps: number;
+		/**
+		 * Texture page count.
+		 */
+		export let page_count: number;
+		/**
+		 * Backing texture resource, when present.
+		 */
+		export let texture_: hash;
+		/**
+		 * Texture type.
+		 */
+		export let type: unknown;
+		/**
+		 * Texture width.
+		 */
+		export let width: number;
+	}
+	export namespace render_target_info {
+		/**
+		 * Render-target attachments.
+		 */
+		export let attachments: unknown;
+		/**
+		 * Opaque render-target handle.
+		 */
+		export let handle: number;
+		/**
+		 * Effective sample count shared by all render-target attachments.
+		 */
+		export let sample_count: number;
+	} /**
  * Sets the resource data for a specific resource
  * @param path The path to the resource
  * @param buffer The buffer of precreated data, suitable for the intended resource type
@@ -13236,7 +16262,7 @@ local buffer = resource.load("/res/new.texturec")
 resource.set(go.get("#sprite", "texture0"), buffer)
 ```
  */
-	export function set(path: hash | string, buffer: buffer): void;
+	export function set(path: hash | string, buffer: any): void;
 	/**
  * Sets the data for a specific atlas resource. Setting new atlas data is specified by passing in
 a texture path for the backing texture of the atlas, a list of geometries and a list of animations
@@ -13250,99 +16276,7 @@ which could potentially cause filtering artifacts if used with a material sample
 If that is an issue, you need to calculate padding and margins manually before passing in the geometry data to
 this function.
  * @param path The path to the atlas resource
- * @param table A table containing info about the atlas. Supported entries:
-
-
-
-`texture`
-string | hash the path to the texture resource, e.g "/main/my_texture.texturec"
-
-
-
-
-`animations`
-table a list of the animations in the atlas. Supports the following fields:
-
-
-
-
-`id`
-string the id of the animation, used in e.g sprite.play_animation
-
-
-
-
-`width`
-number the width of the animation
-
-
-
-
-`height`
-number the height of the animation
-
-
-
-
-`frame_start`
-number index to the first geometry of the animation. Indices are lua based and must be in the range of 1 ..  in atlas.
-
-
-
-
-`frame_end`
-number index to the last geometry of the animation (non-inclusive). Indices are lua based and must be in the range of 1 ..  in atlas.
-
-
-
-
-`playback`
-constant optional playback mode of the animation, the default value is go.PLAYBACK_ONCE_FORWARD
-
-
-
-
-`fps`
-number optional fps of the animation, the default value is 30
-
-
-
-
-`flip_vertical`
-boolean optional flip the animation vertically, the default value is false
-
-
-
-
-`flip_horizontal`
-boolean optional flip the animation horizontally, the default value is false
-
-
-
-
-`geometries`
-table A list of the geometries that should map to the texture data. Supports the following fields:
-
-
-
-
-`vertices`
-table a list of the vertices in texture space of the geometry in the form {px0, py0, px1, py1, ..., pxn, pyn}
-
-
-
-
-`uvs`
-table a list of the uv coordinates in texture space of the geometry in the form of {u0, v0, u1, v1, ..., un, vn}
-
-
-
-
-`indices`
-table a list of the indices of the geometry in the form {i0, i1, i2, ..., in}. Each tripe in the list represents a triangle.
-
-
-
+ * @param table atlas data
  * @example Add a new animation to an existing atlas
 ```lua
 function init(self)
@@ -13359,8 +16293,9 @@ function init(self)
     table.insert(data.animations, my_animation)
     resource.set_atlas("/main/my_atlas.a.texturesetc", data)
 end
-```Sets atlas data for a 256x256 texture with a single animation being rendered as a quad
+```
 
+Sets atlas data for a 256x256 texture with a single animation being rendered as a quad
 ```lua
 function init(self)
     local params = {
@@ -13427,15 +16362,7 @@ when the lua reference to the buffer is garbage collected.
 Note: When setting a buffer with `transfer_ownership = true`, the currently bound buffer in the resource will be destroyed.
  * @param path The path to the resource
  * @param buffer The resource buffer
- * @param table A table containing info about how to set the buffer. Supported entries:
-
-
-
-`transfer_ownership`
-boolean optional flag to determine whether or not the resource should take over ownership of the buffer object (default false)
-
-
-
+ * @param table optional buffer-resource update options
  * @example How to set the data from a buffer
 ```lua
 local function fill_stream(stream, verts)
@@ -13472,8 +16399,8 @@ end
  */
 	export function set_buffer(
 		path: hash | string,
-		buffer: buffer,
-		table?: { transfer_ownership?: boolean },
+		buffer: any,
+		table?: any,
 	): void;
 	/**
 	 * Update internal sound resource (wavc/oggc/opusc) with new data
@@ -13484,84 +16411,25 @@ end
 	/**
  * Sets the pixel data for a specific texture.
  * @param path The path to the resource
- * @param table A table containing info about the texture. Supported entries:
-
-`type`
-number The texture type. Supported values:
-
-
-`graphics.TEXTURE_TYPE_2D`
-`graphics.TEXTURE_TYPE_IMAGE_2D`
-`graphics.TEXTURE_TYPE_3D`
-`graphics.TEXTURE_TYPE_IMAGE_3D`
-`graphics.TEXTURE_TYPE_CUBE_MAP`
-
-
-`width`
-number The width of the texture (in pixels)
-`height`
-number The width of the texture (in pixels)
-`format`
-number The texture format, note that some of these formats are platform specific. Supported values:
-
-
-`graphics.TEXTURE_FORMAT_LUMINANCE`
-`graphics.TEXTURE_FORMAT_RGB`
-`graphics.TEXTURE_FORMAT_RGBA`
-
-These constants might not be available on the device:
-- `graphics.TEXTURE_FORMAT_RGB_PVRTC_2BPPV1`
-- `graphics.TEXTURE_FORMAT_RGB_PVRTC_4BPPV1`
-- `graphics.TEXTURE_FORMAT_RGBA_PVRTC_2BPPV1`
-- `graphics.TEXTURE_FORMAT_RGBA_PVRTC_4BPPV1`
-- `graphics.TEXTURE_FORMAT_RGB_ETC1`
-- `graphics.TEXTURE_FORMAT_RGBA_ETC2`
-- `graphics.TEXTURE_FORMAT_RGBA_ASTC_4X4`
-- `graphics.TEXTURE_FORMAT_RGB_BC1`
-- `graphics.TEXTURE_FORMAT_RGBA_BC3`
-- `graphics.TEXTURE_FORMAT_R_BC4`
-- `graphics.TEXTURE_FORMAT_RG_BC5`
-- `graphics.TEXTURE_FORMAT_RGBA_BC7`
-- `graphics.TEXTURE_FORMAT_RGB16F`
-- `graphics.TEXTURE_FORMAT_RGB32F`
-- `graphics.TEXTURE_FORMAT_RGBA16F`
-- `graphics.TEXTURE_FORMAT_RGBA32F`
-- `graphics.TEXTURE_FORMAT_R16F`
-- `graphics.TEXTURE_FORMAT_RG16F`
-- `graphics.TEXTURE_FORMAT_R32F`
-- `graphics.TEXTURE_FORMAT_RG32F`
-You can test if the device supports these values by checking if a specific enum is nil or not:
-`if graphics.TEXTURE_FORMAT_RGBA16F ~= nil then
-    -- it is safe to use this format
-end
-`
-
-
-`x`
-number optional x offset of the texture (in pixels)
-`y`
-number optional y offset of the texture (in pixels)
-`z`
-number optional z offset of the texture (in pixels). Only applies to 3D textures
-`page`
-number optional slice of the array texture. Only applies to 2D texture arrays. Zero-based
-`mipmap`
-number optional mipmap to upload the data to
-`compression_type`
-number optional specify the compression type for the data in the buffer object that holds the texture data. Defaults to graphics.COMPRESSION_TYPE_DEFAULT, i.e no compression. Supported values:
-
-
-`COMPRESSION_TYPE_DEFAULT`
-`COMPRESSION_TYPE_BASIS_UASTC`
-
+ * @param table texture update parameters
  * @param buffer The buffer of precreated pixel data
 ⚠ To update a cube map texture you need to pass in six times the amount of data via the buffer, since a cube map has six sides!
-⚠ 3D Textures are currently only supported on OpenGL and Vulkan adapters. To check if your device supports 3D textures, use:
+⚠ 3D textures are currently only supported on OpenGL and Vulkan adapters.
+ * @example Check whether a texture format is supported by the device:
+```lua
+if graphics.TEXTURE_FORMAT_RGBA16F ~= nil then
+    -- It is safe to use this format.
+end
+```
+
+Check whether the device supports 3D textures before using them:
 ```lua
 if graphics.TEXTURE_TYPE_3D ~= nil then
-    -- Device and graphics adapter support 3D textures
+    -- The device and graphics adapter support 3D textures.
 end
- * @example How to set all pixels of an atlas
+```
+
+How to set all pixels of an atlas
 ```lua
 function init(self)
   self.height = 128
@@ -13582,8 +16450,9 @@ function init(self)
   local args = { width=self.width, height=self.height, type=graphics.TEXTURE_TYPE_2D, format=graphics.TEXTURE_FORMAT_RGB, num_mip_maps=1 }
   resource.set_texture( resource_path, args, self.buffer )
 end
-```How to update a specific region of an atlas by using the x,y values. Assumes the already set atlas is a 128x128 texture.
+```
 
+How to update a specific region of an atlas by using the x,y values. Assumes the already set atlas is a 128x128 texture.
 ```lua
 function init(self)
   self.x = 16
@@ -13606,7 +16475,9 @@ function init(self)
   local args = { width=self.width, height=self.height, x=self.x, y=self.y, type=graphics.TEXTURE_TYPE_2D, format=graphics.TEXTURE_FORMAT_RGB, num_mip_maps=1 }
   resource.set_texture(resource_path, args, self.buffer )
 end
-```Update a texture from a buffer resource
+```
+
+Update a texture from a buffer resource
 ```lua
 go.property("my_buffer", resource.buffer("/my_default_buffer.buffer"))
 
@@ -13624,10 +16495,10 @@ function init(self)
     -- and not an actual buffer object or buffer resource.
     resource.set_texture(resource_path, args, resource.get_buffer(self.my_buffer))
 end
-```Update an existing 3D texture from a lua buffer
+```
 
+Update an existing 3D texture from a lua buffer
 ```lua
-
 function init(self)
     -- create a buffer that can hold the data of a 8x8x8 texture
     local tbuffer = buffer.create(8 * 8 * 8, { {name=hash("rgba"), type=buffer.VALUE_TYPE_FLOAT32, count=4} } )
@@ -13659,8 +16530,10 @@ function init(self)
     -- and is a 3D texture resource. To create a dynamic 3D texture resource
     -- use the "resource.create_texture" function.
     resource.set_texture("/my_3d_texture.texturec", t_args, tbuffer)
-endUpdate texture 2nd array page with loaded texture from png
+end
+```
 
+Update texture 2nd array page with loaded texture from png
 ```lua
     -- new_tex is resource handle of texture which was created via resource.create_resource
     local tex_path = "/bundle_resources/page_02.png"
@@ -13690,17 +16563,66 @@ endUpdate texture 2nd array page with loaded texture from png
 			mipmap?: number;
 			compression_type?: number;
 		},
-		buffer: buffer,
+		buffer: any,
 	): void;
-	/**
+	export namespace sound_data_options {
+		/**
+		 * Raw sound file data, including the file header.
+		 */
+		export let data_: string;
+		/**
+		 * Complete file size when `data` is partial.
+		 */
+		export let filesize_: number;
+		/**
+		 * Whether `data` contains only the initial file chunk.
+		 */
+		export let partial_: boolean;
+	}
+	export namespace text_metrics {
+		/**
+		 * Text height.
+		 */
+		export let height: number;
+		/**
+		 * Maximum ascent.
+		 */
+		export let max_ascent: number;
+		/**
+		 * Maximum descent.
+		 */
+		export let max_descent: number;
+		/**
+		 * Text width.
+		 */
+		export let width: number;
+	}
+	export namespace text_metrics_options {
+		/**
+		 * Line leading. The default is 1.
+		 */
+		export let leading_: number;
+		/**
+		 * Whether to account for line breaks. The default is false.
+		 */
+		export let line_break_: boolean;
+		/**
+		 * Character tracking. The default is 0.
+		 */
+		export let tracking_: number;
+		/**
+		 * Text-field width; unused when `line_break` is false.
+		 */
+		export let width_: number;
+	} /**
  * Constructor-like function with two purposes:
 
 Load the specified resource as part of loading the script
-Return a hash to the run-time version of the resource
+Create a resource reference that resolves to the hashed path of the run-time resource
 
 ⚠ This function can only be called within go.property function calls.
  * @param path optional resource path string to the resource
- * @returns a path hash to the binary version of the resource
+ * @returns a reference to the binary version of the resource
  * @example Load a texture and set it to a model:
 ```lua
 go.property("my_texture", resource.texture("/texture.png"))
@@ -13709,16 +16631,139 @@ function init(self)
 end
 ```
  */
-	export function texture(path?: string): hash;
-	/**
+	export function texture(path?: string): unknown;
+	export namespace texture_creation_params {
+		/**
+		 * Compression used by the supplied buffer. The default is graphics.COMPRESSION_TYPE_DEFAULT.
+		 */
+		export let compression_type_: unknown;
+		/**
+		 * Texture depth; used by 3D texture types and must be greater than zero.
+		 */
+		export let depth_: number;
+		/**
+		 * Creation-usage hints. The default is graphics.TEXTURE_USAGE_FLAG_SAMPLE.
+		 */
+		export let flags_: unknown;
+		/**
+		 * Texture format. Device-specific unsupported constants evaluate to `nil`.
+		 */
+		export let format: unknown;
+		/**
+		 * Texture height in pixels; must be greater than zero.
+		 */
+		export let height: number;
+		/**
+		 * Maximum mipmap count. The default is zero.
+		 */
+		export let max_mipmaps_: number;
+		/**
+		 * Number of pages for a 2D array texture.
+		 */
+		export let page_count_: number;
+		/**
+		 * Texture type.
+		 */
+		export let type: unknown;
+		/**
+		 * Texture width in pixels; must be greater than zero.
+		 */
+		export let width: number;
+	}
+	export namespace texture_creation_result {
+		/**
+		 * Created texture resource path.
+		 */
+		export let path: hash;
+	}
+	export namespace texture_info {
+		/**
+		 * Texture depth or layer count.
+		 */
+		export let depth: number;
+		/**
+		 * Texture usage flags.
+		 */
+		export let flags: unknown;
+		/**
+		 * Opaque texture handle.
+		 */
+		export let handle: number;
+		/**
+		 * Texture height.
+		 */
+		export let height: number;
+		/**
+		 * Number of mipmaps.
+		 */
+		export let mipmaps: number;
+		/**
+		 * Texture page count.
+		 */
+		export let page_count: number;
+		/**
+		 * Texture type.
+		 */
+		export let type: unknown;
+		/**
+		 * Texture width.
+		 */
+		export let width: number;
+	}
+	export namespace texture_update_params {
+		/**
+		 * Compression used by the supplied buffer. The default is graphics.COMPRESSION_TYPE_DEFAULT.
+		 */
+		export let compression_type_: unknown;
+		/**
+		 * Update depth for a 3D texture.
+		 */
+		export let depth_: number;
+		/**
+		 * Texture format. Device-specific unsupported constants evaluate to `nil`.
+		 */
+		export let format: unknown;
+		/**
+		 * Update height in pixels.
+		 */
+		export let height: number;
+		/**
+		 * Mipmap level to update.
+		 */
+		export let mipmap_: number;
+		/**
+		 * Zero-based page of a 2D array texture.
+		 */
+		export let page_: number;
+		/**
+		 * Texture type.
+		 */
+		export let type: unknown;
+		/**
+		 * Update width in pixels.
+		 */
+		export let width: number;
+		/**
+		 * X offset in pixels.
+		 */
+		export let x_: number;
+		/**
+		 * Y offset in pixels.
+		 */
+		export let y_: number;
+		/**
+		 * Z offset for a 3D texture.
+		 */
+		export let z_: number;
+	} /**
  * Constructor-like function with two purposes:
 
 Load the specified resource as part of loading the script
-Return a hash to the run-time version of the resource
+Create a resource reference that resolves to the hashed path of the run-time resource
 
 ⚠ This function can only be called within go.property function calls.
  * @param path optional resource path string to the resource
- * @returns a path hash to the binary version of the resource
+ * @returns a reference to the binary version of the resource
  * @example Load tile source and set it to a tile map:
 ```lua
 go.property("my_tile_source", resource.tile_source("/tilesource.tilesource"))
@@ -13727,19 +16772,21 @@ function init(self)
 end
 ```
  */
-	export function tile_source(path?: string): hash;
+	export function tile_source(path?: string): unknown;
 }
 
 /** @see {@link https://defold.com/ref/stable/socket/|API Documentation} */
 declare namespace socket {
 	/**
 	 * This constant contains the maximum number of sockets that the select function can handle.
+	 * @param value
 	 */
 	export const _SETSIZE: number;
 	/**
 	 * This constant has a string describing the current LuaSocket version.
+	 * @param value
 	 */
-	export const _VERSION: string;
+	export function _VERSION(value: string): void;
 	/**
  * This function is a shortcut that creates and returns a TCP client object connected to a remote
 address at a given port. Optionally, the user can also specify the local address and port to
@@ -13759,7 +16806,7 @@ your system configuration.
 		locaddr?: string,
 		locport?: number,
 		family?: string,
-	): LuaMultiReturn<[typeof socket.client | undefined, string | undefined]>;
+	): LuaMultiReturn<[unknown | undefined, string | undefined]>;
 	/**
  * Returns the time in seconds, relative to the system epoch (Unix epoch time since January 1, 1970 (UTC) or Windows file time since January 1, 1601 (UTC)).
 You should use the values returned by this function for relative measurements only.
@@ -13821,26 +16868,30 @@ The returned tables are doubly keyed both by integers and also by the sockets th
 ⚠ Calling select with a server socket in the receive parameter before a call to accept does not guarantee accept will return immediately. Use the settimeout method or accept might block forever.
 ⚠ If you close a socket and pass it to select, it will be ignored.
 (Using select with non-socket objects: Any object that implements `getfd` and `dirty` can be used with select, allowing objects from other libraries to be used within a socket.select driven loop.)
- * @param recvt array with the sockets to test for characters available for reading.
- * @param sendt array with sockets that are watched to see if it is OK to immediately write on them.
+ * @param recvt array with the sockets or compatible objects to test for characters available for reading.
+ * @param sendt array with sockets or compatible objects that are watched to see if it is OK to immediately write on them.
  * @param timeout the maximum amount of time (in seconds) to wait for a change in status. Nil, negative or omitted timeout value allows the function to block indefinitely.
- * @returns a list with the sockets ready for reading. & a list with the sockets ready for writing. & an error message. "timeout" if a timeout condition was met, otherwise `nil`.
+ * @returns sockets ready for reading, keyed both by array index and by socket. & sockets ready for writing, keyed both by array index and by socket. & an error message. "timeout" if a timeout condition was met, otherwise `nil`.
  */
 	export function select(
-		recvt: object,
-		sendt: object,
+		recvt: any,
+		sendt: any,
 		timeout?: number,
-	): LuaMultiReturn<[object, object, string | undefined]>;
+	): LuaMultiReturn<
+		[
+			unknown    ,
+			unknown    ,
+			string | undefined,
+		]
+	>;
 	/**
  * This function drops a number of arguments and returns the remaining.
 It is useful to avoid creation of dummy variables:
 `D` is the number of arguments to drop. `Ret1` to `retN` are the arguments.
 The function returns `retD+1` to `retN`.
  * @param d the number of arguments to drop.
- * @param ret1 argument 1.
- * @param ret2 argument 2.
- * @param retN argument N.
- * @returns argument D+1. & argument D+2. & argument N.
+ * @param __ the values from which to drop arguments.
+ * @returns the remaining values after the first `d` values are dropped.
  * @example Instead of doing the following with dummy variables:
 ```lua
 -- get the status code and separator from SMTP server reply
@@ -13853,12 +16904,7 @@ You can skip a number of variables:
 local code, sep = socket.skip(2, string.find(line, "^(%d%d%d)(.?)"))
 ```
  */
-	export function skip(
-		d: number,
-		ret1?: any,
-		ret2?: any,
-		retN?: any,
-	): LuaMultiReturn<[any | undefined, any | undefined, any | undefined]>;
+	export function skip(d: number, __: any): any;
 	/**
 	 * Freezes the program execution during a given amount of time.
 	 * @param time the number of seconds to sleep for.
@@ -13869,7 +16915,7 @@ local code, sep = socket.skip(2, string.find(line, "^(%d%d%d)(.?)"))
 	 * @returns a new IPv4 TCP master object, or `nil` in case of error. & the error message, or `nil` if no error occurred.
 	 */
 	export function tcp(): LuaMultiReturn<
-		[typeof socket.master | undefined, string | undefined]
+		[unknown | undefined, string | undefined]
 	>;
 	/**
  * Creates and returns an IPv6 TCP master object. A master object can be transformed into a server object with the method `listen` (after a call to `bind`) or into a client object with the method connect. The only other method supported by a master object is the close method.
@@ -13877,14 +16923,14 @@ Note: The TCP object returned will have the option "ipv6-v6only" set to true.
  * @returns a new IPv6 TCP master object, or `nil` in case of error. & the error message, or `nil` if no error occurred.
  */
 	export function tcp6(): LuaMultiReturn<
-		[typeof socket.master | undefined, string | undefined]
+		[unknown | undefined, string | undefined]
 	>;
 	/**
 	 * Creates and returns an unconnected IPv4 UDP object. Unconnected objects support the `sendto`, `receive`, `receivefrom`, `getoption`, `getsockname`, `setoption`, `settimeout`, `setpeername`, `setsockname`, and `close` methods. The `setpeername` method is used to connect the object.
 	 * @returns a new unconnected IPv4 UDP object, or `nil` in case of error. & the error message, or `nil` if no error occurred.
 	 */
 	export function udp(): LuaMultiReturn<
-		[typeof socket.unconnected | undefined, string | undefined]
+		[unknown | undefined, string | undefined]
 	>;
 	/**
  * Creates and returns an unconnected IPv6 UDP object. Unconnected objects support the `sendto`, `receive`, `receivefrom`, `getoption`, `getsockname`, `setoption`, `settimeout`, `setpeername`, `setsockname`, and `close` methods. The `setpeername` method is used to connect the object.
@@ -13892,34 +16938,28 @@ Note: The UDP object returned will have the option "ipv6-v6only" set to true.
  * @returns a new unconnected IPv6 UDP object, or `nil` in case of error. & the error message, or `nil` if no error occurred.
  */
 	export function udp6(): LuaMultiReturn<
-		[typeof socket.unconnected | undefined, string | undefined]
+		[unknown | undefined, string | undefined]
 	>;
 	export namespace dns {
-		/**
+		export namespace address_info {
+			/**
+			 * resolved IP address
+			 */
+			export let addr: string;
+			/**
+			 * `"inet"` for IPv4 or `"inet6"` for IPv6
+			 */
+			export let family: string;
+		} /**
  * This function converts a host name to IPv4 or IPv6 address.
 The supplied address can be an IPv4 or IPv6 address or host name.
-The function returns a table with all information returned by the resolver:
-`{
- [1] = {
-    family = family-name-1,
-    addr = address-1
-  },
-  ...
-  [n] = {
-    family = family-name-n,
-    addr = address-n
-  }
-}
-`
-
-Here, family contains the string `"inet"` for IPv4 addresses, and `"inet6"` for IPv6 addresses.
 In case of error, the function returns nil followed by an error message.
  * @param address a hostname or an IPv4 or IPv6 address.
- * @returns a table with all information returned by the resolver, or if an error occurs, `nil`. & the error message, or `nil` if no error occurred.
+ * @returns resolver information, or `nil` on error & the error message, or `nil` if no error occurred.
  */
 		export function getaddrinfo(
 			address: string,
-		): LuaMultiReturn<[object | undefined, string | undefined]>;
+		): LuaMultiReturn<[unknown | undefined, string | undefined]>;
 		/**
 		 * Returns the standard host name for the machine as a string.
 		 * @returns the host name for the machine.
@@ -13940,32 +16980,46 @@ The function returns a table with all information returned by the resolver:
  */
 		export function getnameinfo(
 			address: string,
-		): LuaMultiReturn<[object | undefined, string | undefined]>;
-		/**
+		): LuaMultiReturn<[unknown | undefined, string | undefined]>;
+		export namespace host_info {
+			/**
+			 * host aliases
+			 */
+			export let alias: unknown;
+			/**
+			 * resolved IPv4 addresses
+			 */
+			export let ip: unknown;
+			/**
+			 * canonical host name
+			 */
+			export let name: string;
+		} /**
  * This function converts from an IPv4 address to host name.
 The address can be an IPv4 address or a host name.
  * @param address an IPv4 address or host name.
- * @returns the canonic host name of the given address, or `nil` in case of an error. & a table with all information returned by the resolver, or if an error occurs, the error message string.
+ * @returns the canonic host name of the given address, or `nil` in case of an error. & resolver information, or an error message string
  */
 		export function tohostname(
 			address: string,
-		): LuaMultiReturn<[string | undefined, object | string]>;
+		): LuaMultiReturn<[string | undefined, string | unknown]>;
 		/**
  * This function converts a host name to IPv4 address.
 The address can be an IP address or a host name.
  * @param address a hostname or an IP address.
- * @returns the first IP address found for the hostname, or `nil` in case of an error. & a table with all information returned by the resolver, or if an error occurs, the error message string.
+ * @returns the first IP address found for the hostname, or `nil` in case of an error. & resolver information, or an error message string
  */
 		export function toip(
 			address: string,
-		): LuaMultiReturn<[string | undefined, object | string]>;
+		): LuaMultiReturn<[string | undefined, string | unknown]>;
 	}
 	class client {
 		/**
  * Closes the TCP object. The internal socket used by the object is closed and the local address to which the object was bound is made available to other applications. No further operations (except for further calls to the close method) are allowed on a closed socket.
 ⚠ It is important to close all used sockets once they are not needed, since, in many systems, each socket uses a file descriptor, which are limited system resources. Garbage-collected objects are automatically closed before destruction, though.
+ * @returns the value `1`.
  */
-		close(): void;
+		close(): number;
 		/**
  * Check the read buffer status.
 ⚠ This is an internal method, any use is unlikely to be portable.
@@ -13995,19 +17049,23 @@ The address can be an IP address or a host name.
 		/**
  * Returns information about the remote side of a connected client object.
 ⚠ It makes no sense to call this method on server objects.
- * @returns a string with the IP address of the peer, the port number that peer is using for the connection, and the family ("inet" or "inet6"). In case of error, the method returns `nil`.
+ * @returns the IP address of the peer, or `nil` in case of error. & the peer port number, or the error message in case of error. & the socket family (`"inet"` or `"inet6"`), or `nil` in case of error.
  */
-		getpeername(): string;
+		getpeername(): LuaMultiReturn<
+			[string | undefined, number | string, string | undefined]
+		>;
 		/**
 		 * Returns the local address information associated to the object.
-		 * @returns a string with local IP address, the local port number, and the family ("inet" or "inet6"). In case of error, the method returns `nil`.
+		 * @returns the local IP address, or `nil` in case of error. & the local port, or the error message in case of error. & the socket family (`"inet"` or `"inet6"`), or `nil` in case of error.
 		 */
-		getsockname(): string;
+		getsockname(): LuaMultiReturn<
+			[string | undefined, string, string | undefined]
+		>;
 		/**
 		 * Returns accounting information on the socket, useful for throttling of bandwidth.
-		 * @returns a string with the number of bytes received, the number of bytes sent, and the age of the socket object in seconds.
+		 * @returns the number of bytes received. & the number of bytes sent. & the age of the socket object in seconds.
 		 */
-		getstats(): string;
+		getstats(): LuaMultiReturn<[number, number, number]>;
 		/**
  * Reads data from a client object, according to the specified `read pattern`. Patterns follow the Lua file I/O format, and the difference in performance between patterns is negligible.
  * @param pattern the read pattern that can be any of the following:
@@ -14080,12 +17138,16 @@ Setting this option to `true` restricts an inet6 socket to sending and receiving
 		): LuaMultiReturn<[number | undefined, string | undefined]>;
 		/**
 		 * Resets accounting information on the socket, useful for throttling of bandwidth.
-		 * @param received the new number of bytes received.
-		 * @param sent the new number of bytes sent.
-		 * @param age the new age in seconds.
-		 * @returns the value `1` in case of success, or `nil` in case of error.
+		 * @param received the new number of bytes received, or `nil` to preserve it.
+		 * @param sent the new number of bytes sent, or `nil` to preserve it.
+		 * @param age the new age in seconds, or `nil` to preserve it.
+		 * @returns the value `1`.
 		 */
-		setstats(received: number, sent: number, age: number): number | undefined;
+		setstats(
+			received?: number  ,
+			sent?: number  ,
+			age?: number  ,
+		): number;
 		/**
  * Changes the timeout values for the object. By default, all I/O operations are blocking. That is, any call to the methods `send`, `receive`, and `accept` will block indefinitely, until the operation completes. The `settimeout` method defines a limit on the amount of time the I/O methods can block. When a timeout is set and the specified amount of time has elapsed, the affected methods give up and fail with an error code.
 There are two timeout modes and both can be used together for fine tuning.
@@ -14098,8 +17160,9 @@ block timeout. Specifies the upper limit on the amount of time LuaSocket can be 
 `"t"`
 total timeout. Specifies the upper limit on the amount of time LuaSocket can block a Lua script before returning from a call.
 
+ * @returns the value `1`.
  */
-		settimeout(value: number, mode?: string): void;
+		settimeout(value?: number  , mode?: string): number;
 		/**
  * Shuts down part of a full-duplex connection.
  * @param mode which way of the connection should be shut down:
@@ -14119,8 +17182,9 @@ disallow further receives on the object.
 		/**
  * Closes a UDP object. The internal socket used by the object is closed and the local address to which the object was bound is made available to other applications. No further operations (except for further calls to the close method) are allowed on a closed socket.
 ⚠ It is important to close all used sockets once they are not needed, since, in many systems, each socket uses a file descriptor, which are limited system resources. Garbage-collected objects are automatically closed before destruction, though.
+ * @returns the value `1`.
  */
-		close(): void;
+		close(): number;
 		/**
  * Gets an option value from the UDP object. See connected:setoption for description of the option names and values.
  * @param option the name of the option to get:
@@ -14144,15 +17208,19 @@ disallow further receives on the object.
 		/**
  * Retrieves information about the peer associated with a connected UDP object.
 ⚠ It makes no sense to call this method on unconnected objects.
- * @returns a string with the IP address of the peer, the port number that peer is using for the connection, and the family ("inet" or "inet6"). In case of error, the method returns `nil`.
+ * @returns the IP address of the peer, or `nil` in case of error. & the peer port number, or the error message in case of error. & the socket family (`"inet"` or `"inet6"`), or `nil` in case of error.
  */
-		getpeername(): string;
+		getpeername(): LuaMultiReturn<
+			[string | undefined, number | string, string | undefined]
+		>;
 		/**
  * Returns the local address information associated to the object.
 ⚠ UDP sockets are not bound to any address until the `setsockname` or the `sendto` method is called for the first time (in which case it is bound to an ephemeral port and the wild-card address).
- * @returns a string with local IP address, a number with the local port, and the family ("inet" or "inet6"). In case of error, the method returns `nil`.
+ * @returns the local IP address, or `nil` in case of error. & the local port, or the error message in case of error. & the socket family (`"inet"` or `"inet6"`), or `nil` in case of error.
  */
-		getsockname(): string;
+		getsockname(): LuaMultiReturn<
+			[string | undefined, string, string | undefined]
+		>;
 		/**
 		 * Receives a datagram from the UDP object. If the UDP object is connected, only datagrams coming from the peer are accepted. Otherwise, the returned datagram can come from any host.
 		 * @param size optional maximum size of the datagram to be retrieved. If there are more than size bytes available in the datagram, the excess bytes are discarded. If there are less then size bytes available in the current datagram, the available bytes are returned. If size is omitted, the maximum datagram size is used (which is currently limited by the implementation to 8192 bytes).
@@ -14215,18 +17283,19 @@ string `interface` (IP address)
  * Changes the peer of a UDP object. This method turns an unconnected UDP object into a connected UDP object or vice versa.
 For connected objects, outgoing datagrams will be sent to the specified peer, and datagrams received from other peers will be discarded by the OS. Connected UDP objects must use the `send` and `receive` methods instead of `sendto` and `receivefrom`.
 ⚠ Since the address of the peer does not have to be passed to and from the OS, the use of connected UDP objects is recommended when the same peer is used for several transmissions and can result in up to 30% performance gains.
- * @param ___ if address is "*" and the object is connected, the peer association is removed and the object becomes an unconnected object again.
+ * @param address must be `"*"`. The peer association is removed and the object becomes an unconnected object again.
  * @returns the value `1` on success, or `nil` in case of error. & the error message, or `nil` if no error occurred.
  */
 		setpeername(
-			___: string,
+			address: string,
 		): LuaMultiReturn<[number | undefined, string | undefined]>;
 		/**
  * Changes the timeout values for the object. By default, the `receive` and `receivefrom`  operations are blocking. That is, any call to the methods will block indefinitely, until data arrives. The `settimeout` function defines a limit on the amount of time the functions can block. When a timeout is set and the specified amount of time has elapsed, the affected methods give up and fail with an error code.
 ⚠ In UDP, the `send` and `sendto` methods never block (the datagram is just passed to the OS and the call returns immediately). Therefore, the `settimeout` method has no effect on them.
  * @param value the amount of time to wait, in seconds. The `nil` timeout value allows operations to block indefinitely. Negative timeout values have the same effect.
+ * @returns the value `1`.
  */
-		settimeout(value: number): void;
+		settimeout(value?: number  ): number;
 	}
 	class master {
 		/**
@@ -14242,8 +17311,9 @@ For connected objects, outgoing datagrams will be sent to the specified peer, an
 		/**
  * Closes the TCP object. The internal socket used by the object is closed and the local address to which the object was bound is made available to other applications. No further operations (except for further calls to the close method) are allowed on a closed socket.
 ⚠ It is important to close all used sockets once they are not needed, since, in many systems, each socket uses a file descriptor, which are limited system resources. Garbage-collected objects are automatically closed before destruction, though.
+ * @returns the value `1`.
  */
-		close(): void;
+		close(): number;
 		/**
  * Attempts to connect a master object to a remote host, transforming it into a client object. Client objects support methods send, receive, getsockname, getpeername, settimeout, and close.
 Note that the function `socket.connect` is available and is a shortcut for the creation of client sockets.
@@ -14269,14 +17339,11 @@ Note that the function `socket.connect` is available and is a shortcut for the c
 		getfd(): number;
 		/**
 		 * Returns the local address information associated to the object.
-		 * @returns a string with local IP address, the local port number, and the family ("inet" or "inet6"). In case of error, the method returns `nil`.
+		 * @returns the local IP address, or `nil` in case of error. & the local port, or the error message in case of error. & the socket family (`"inet"` or `"inet6"`), or `nil` in case of error.
 		 */
-		getsockname(): string;
-		/**
-		 * Returns accounting information on the socket, useful for throttling of bandwidth.
-		 * @returns a string with the number of bytes received, the number of bytes sent, and the age of the socket object in seconds.
-		 */
-		getstats(): string;
+		getsockname(): LuaMultiReturn<
+			[string | undefined, string, string | undefined]
+		>;
 		/**
 		 * Specifies the socket is willing to receive connections, transforming the object into a server object. Server objects support the `accept`, `getsockname`, `setoption`, `settimeout`, and `close` methods.
 		 * @param backlog the number of client connections that can be queued waiting for service. If the queue is full and another client attempts connection, the connection is refused.
@@ -14291,14 +17358,6 @@ Note that the function `socket.connect` is available and is a shortcut for the c
 		 */
 		setfd(handle: number): void;
 		/**
-		 * Resets accounting information on the socket, useful for throttling of bandwidth.
-		 * @param received the new number of bytes received.
-		 * @param sent the new number of bytes sent.
-		 * @param age the new age in seconds.
-		 * @returns the value `1` in case of success, or `nil` in case of error.
-		 */
-		setstats(received: number, sent: number, age: number): number | undefined;
-		/**
  * Changes the timeout values for the object. By default, all I/O operations are blocking. That is, any call to the methods `send`, `receive`, and `accept` will block indefinitely, until the operation completes. The `settimeout` method defines a limit on the amount of time the I/O methods can block. When a timeout is set and the specified amount of time has elapsed, the affected methods give up and fail with an error code.
 There are two timeout modes and both can be used together for fine tuning.
 ⚠ Although timeout values have millisecond precision in LuaSocket, large blocks can cause I/O functions not to respect timeout values due to the time the library takes to transfer blocks to and from the OS and to and from the Lua interpreter. Also, function that accept host names and perform automatic name resolution might be blocked by the resolver for longer than the specified timeout value.
@@ -14310,8 +17369,9 @@ block timeout. Specifies the upper limit on the amount of time LuaSocket can be 
 `"t"`
 total timeout. Specifies the upper limit on the amount of time LuaSocket can block a Lua script before returning from a call.
 
+ * @returns the value `1`.
  */
-		settimeout(value: number, mode?: string): void;
+		settimeout(value?: number  , mode?: string): number;
 	}
 	class server {
 		/**
@@ -14319,14 +17379,13 @@ total timeout. Specifies the upper limit on the amount of time LuaSocket can blo
 ⚠ Calling `socket.select` with a server object in the `recvt` parameter before a call to accept does not guarantee accept will return immediately. Use the `settimeout` method or accept might block until another client shows up.
  * @returns if a connection is successfully initiated, a client object is returned, or `nil` in case of error. & the error message, or `nil` if no error occurred. The error is `"timeout"` if a timeout condition is met.
  */
-		accept(): LuaMultiReturn<
-			[typeof socket.client | undefined, string | undefined]
-		>;
+		accept(): LuaMultiReturn<[unknown | undefined, string | undefined]>;
 		/**
  * Closes the TCP object. The internal socket used by the object is closed and the local address to which the object was bound is made available to other applications. No further operations (except for further calls to the close method) are allowed on a closed socket.
 ⚠ It is important to close all used sockets once they are not needed, since, in many systems, each socket uses a file descriptor, which are limited system resources. Garbage-collected objects are automatically closed before destruction, though.
+ * @returns the value `1`.
  */
-		close(): void;
+		close(): number;
 		/**
  * Check the read buffer status.
 ⚠ This is an internal method, any use is unlikely to be portable.
@@ -14355,14 +17414,11 @@ total timeout. Specifies the upper limit on the amount of time LuaSocket can blo
 		): LuaMultiReturn<[any | undefined, string | undefined]>;
 		/**
 		 * Returns the local address information associated to the object.
-		 * @returns a string with local IP address, the local port number, and the family ("inet" or "inet6"). In case of error, the method returns `nil`.
+		 * @returns the local IP address, or `nil` in case of error. & the local port, or the error message in case of error. & the socket family (`"inet"` or `"inet6"`), or `nil` in case of error.
 		 */
-		getsockname(): string;
-		/**
-		 * Returns accounting information on the socket, useful for throttling of bandwidth.
-		 * @returns a string with the number of bytes received, the number of bytes sent, and the age of the socket object in seconds.
-		 */
-		getstats(): string;
+		getsockname(): LuaMultiReturn<
+			[string | undefined, string, string | undefined]
+		>;
 		/**
 		 * Sets the underling socket descriptor or handle associated to the object. The current one is simply replaced, not closed, and no other change to the object state is made
 		 * @param handle the descriptor or handle to set.
@@ -14398,14 +17454,6 @@ Setting this option to `true` restricts an inet6 socket to sending and receiving
 			value?: any,
 		): LuaMultiReturn<[number | undefined, string | undefined]>;
 		/**
-		 * Resets accounting information on the socket, useful for throttling of bandwidth.
-		 * @param received the new number of bytes received.
-		 * @param sent the new number of bytes sent.
-		 * @param age the new age in seconds.
-		 * @returns the value `1` in case of success, or `nil` in case of error.
-		 */
-		setstats(received: number, sent: number, age: number): number | undefined;
-		/**
  * Changes the timeout values for the object. By default, all I/O operations are blocking. That is, any call to the methods `send`, `receive`, and `accept` will block indefinitely, until the operation completes. The `settimeout` method defines a limit on the amount of time the I/O methods can block. When a timeout is set and the specified amount of time has elapsed, the affected methods give up and fail with an error code.
 There are two timeout modes and both can be used together for fine tuning.
 ⚠ Although timeout values have millisecond precision in LuaSocket, large blocks can cause I/O functions not to respect timeout values due to the time the library takes to transfer blocks to and from the OS and to and from the Lua interpreter. Also, function that accept host names and perform automatic name resolution might be blocked by the resolver for longer than the specified timeout value.
@@ -14417,15 +17465,17 @@ block timeout. Specifies the upper limit on the amount of time LuaSocket can be 
 `"t"`
 total timeout. Specifies the upper limit on the amount of time LuaSocket can block a Lua script before returning from a call.
 
+ * @returns the value `1`.
  */
-		settimeout(value: number, mode?: string): void;
+		settimeout(value?: number  , mode?: string): number;
 	}
 	class unconnected {
 		/**
  * Closes a UDP object. The internal socket used by the object is closed and the local address to which the object was bound is made available to other applications. No further operations (except for further calls to the close method) are allowed on a closed socket.
 ⚠ It is important to close all used sockets once they are not needed, since, in many systems, each socket uses a file descriptor, which are limited system resources. Garbage-collected objects are automatically closed before destruction, though.
+ * @returns the value `1`.
  */
-		close(): void;
+		close(): number;
 		/**
  * Gets an option value from the UDP object. See unconnected:setoption for description of the option names and values.
  * @param option the name of the option to get:
@@ -14449,9 +17499,11 @@ total timeout. Specifies the upper limit on the amount of time LuaSocket can blo
 		/**
  * Returns the local address information associated to the object.
 ⚠ UDP sockets are not bound to any address until the `setsockname` or the `sendto` method is called for the first time (in which case it is bound to an ephemeral port and the wild-card address).
- * @returns a string with local IP address, a number with the local port, and the family ("inet" or "inet6"). In case of error, the method returns `nil`.
+ * @returns the local IP address, or `nil` in case of error. & the local port, or the error message in case of error. & the socket family (`"inet"` or `"inet6"`), or `nil` in case of error.
  */
-		getsockname(): string;
+		getsockname(): LuaMultiReturn<
+			[string | undefined, string, string | undefined]
+		>;
 		/**
 		 * Receives a datagram from the UDP object. If the UDP object is connected, only datagrams coming from the peer are accepted. Otherwise, the returned datagram can come from any host.
 		 * @param size optional maximum size of the datagram to be retrieved. If there are more than size bytes available in the datagram, the excess bytes are discarded. If there are less then size bytes available in the current datagram, the available bytes are returned. If size is omitted, the maximum datagram size is used (which is currently limited by the implementation to 8192 bytes).
@@ -14549,8 +17601,9 @@ For connected objects, outgoing datagrams will be sent to the specified peer, an
  * Changes the timeout values for the object. By default, the `receive` and `receivefrom`  operations are blocking. That is, any call to the methods will block indefinitely, until data arrives. The `settimeout` function defines a limit on the amount of time the functions can block. When a timeout is set and the specified amount of time has elapsed, the affected methods give up and fail with an error code.
 ⚠ In UDP, the `send` and `sendto` methods never block (the datagram is just passed to the OS and the call returns immediately). Therefore, the `settimeout` method has no effect on them.
  * @param value the amount of time to wait, in seconds. The `nil` timeout value allows operations to block indefinitely. Negative timeout values have the same effect.
+ * @returns the value `1`.
  */
-		settimeout(value: number): void;
+		settimeout(value?: number  ): number;
 	}
 }
 declare namespace socket {
@@ -14730,34 +17783,15 @@ sound.pause("#sound", true)
  * Make the sound component play its sound. Multiple voices are supported. The limit is set to 32 voices per sound component.
 ⚠ A sound will continue to play even if the game object the sound component belonged to is deleted. You can call `sound.stop()` to stop the sound.
  * @param url the sound that should play
- * @param play_properties 
-optional table with properties:
-`delay`
-number delay in seconds before the sound starts playing, default is 0.
-`gain`
-number sound gain between 0 and 1, default is 1. The final gain of the sound will be a combination of this gain, the group gain and the master gain.
-`pan`
-number sound pan between -1 and 1, default is 0. The final pan of the sound will be an addition of this pan and the sound pan.
-`speed`
-number sound speed where 1.0 is normal speed, 0.5 is half speed and 2.0 is double speed. Valid range is 0.0 to 50.0. The final speed of the sound will be a multiplication of this speed and the sound speed.
-`start_time`
-number start playback offset (seconds). Optional, mutually exclusive with `start_frame`.
-`start_frame`
-number start playback offset (frames/samples). Optional, mutually exclusive with `start_time`. If both are provided, `start_frame` is used.
-
+ * @param play_properties optional playback properties
  * @param complete_function function to call when the sound has finished playing or stopped manually via sound.stop.
 
 `self`
-object The current object.
+script_instance The current script instance.
 `message_id`
 hash The name of the completion message, which can be either `"sound_done"` if the sound has finished playing, or `"sound_stopped"` if it was stopped manually.
 `message`
-table Information about the completion:
-
-
-number `play_id` - the sequential play identifier that was given by the sound.play function.
-
-
+sound.play_completion Information about the completed or stopped playback.
 `sender`
 url The invoker of the callback: the sound component.
 
@@ -14799,7 +17833,38 @@ end
 			sender: url,
 		) => void,
 	): number;
-	/**
+	export namespace play_completion {
+		/**
+		 * The sequential play identifier for the playback.
+		 */
+		export let play_id: number;
+	}
+	export namespace play_properties {
+		/**
+		 * Delay in seconds before playback starts. The default is 0.
+		 */
+		export let delay_: number;
+		/**
+		 * Gain from 0 to 1. The default is 1; this combines with the group and master gains.
+		 */
+		export let gain_: number;
+		/**
+		 * Pan from -1 to 1. The default is 0; this is added to the component pan.
+		 */
+		export let pan_: number;
+		/**
+		 * Playback speed from 0 to 50. The default is 1; this is multiplied by the component speed.
+		 */
+		export let speed_: number;
+		/**
+		 * Playback offset in frames or samples. Takes precedence over `start_time`.
+		 */
+		export let start_frame_: number;
+		/**
+		 * Playback offset in seconds. Mutually exclusive with `start_frame`.
+		 */
+		export let start_time_: number;
+	} /**
  * Set gain on all active playing voices of a sound.
  * @param url the sound to set the gain of
  * @param gain sound gain between 0 and 1 [-60dB .. 0dB]. The final gain of the sound will be a combination of this gain, the group gain and the master gain.
@@ -14836,11 +17901,7 @@ sound.set_pan("#sound", 0.5) -- pan to the right
 	/**
  * Stop playing all active voices or just one voice if `play_id` provided
  * @param url the sound component that should stop
- * @param stop_properties 
-optional table with properties:
-`play_id`
-number the sequential play identifier that should be stopped (was given by the sound.play() function)
-
+ * @param stop_properties optional playback to stop
  * @example Assuming the script belongs to an instance with a sound-component with id "sound", this will make the component stop all playing voices:
 ```lua
 sound.stop("#sound")
@@ -14853,6 +17914,12 @@ sound.stop("#sound", {play_id = id})
 		url: hash | url | string,
 		stop_properties?: { play_id: ReturnType<typeof play> },
 	): void;
+	export namespace stop_properties {
+		/**
+		 * Sequential playback identifier returned by sound.play.
+		 */
+		export let play_id: number;
+	}
 }
 
 /** @see {@link https://defold.com/ref/stable/sprite/|API Documentation} */
@@ -14867,27 +17934,15 @@ a animation_done message is sent to the script that started the animation.
  * @param complete_function function to call when the animation has completed.
 
 `self`
-object The current object.
+script_instance The current script instance.
 `message_id`
 hash The name of the completion message, `"animation_done"`.
 `message`
-table Information about the completion:
-
-
-number `current_tile` - the current tile of the sprite.
-hash `id` - id of the animation that was completed.
-
-
+message.sprite.animation_done Information about the completion.
 `sender`
 url The invoker of the callback: the sprite component.
 
- * @param play_properties optional table with properties:
-
-`offset`
-number the normalized initial value of the animation cursor when the animation starts playing.
-`playback_rate`
-number the rate with which the animation will be played. Must be positive.
-
+ * @param play_properties optional playback properties
  * @example The following examples assumes that the model has id "sprite".
 How to play the "jump" animation followed by the "run" animation:
 ```lua
@@ -14920,7 +17975,16 @@ end
 		) => void,
 		play_properties?: { offset?: number; playback_rate?: number },
 	): void;
-	/**
+	export namespace play_properties {
+		/**
+		 * Normalized initial animation cursor.
+		 */
+		export let offset_: number;
+		/**
+		 * Positive animation playback rate.
+		 */
+		export let playback_rate_: number;
+	} /**
  * Resets a shader constant for a sprite component.
 The constant must be defined in the material assigned to the sprite.
 Resetting a constant through this function implies that the value defined in the material will be used.
@@ -14981,31 +18045,40 @@ It is assumed that the sprite component has id "sprite" and that the original an
 
 /** @see {@link https://defold.com/ref/stable/sys/|API Documentation} */
 declare namespace sys {
-	/**
-	 * network connected through other, non cellular, connection
-	 */
-	export const NETWORK_CONNECTED: number;
-	/**
-	 * network connected through mobile cellular
-	 */
-	export const NETWORK_CONNECTED_CELLULAR: number;
-	/**
-	 * no network connection found
-	 */
-	export const NETWORK_DISCONNECTED: number;
-	/**
-	 * an asyncronous request is unable to read the resource
-	 */
-	export const REQUEST_STATUS_ERROR_IO_ERROR: number;
-	/**
-	 * an asyncronous request is unable to locate the resource
-	 */
-	export const REQUEST_STATUS_ERROR_NOT_FOUND: number;
-	/**
-	 * an asyncronous request has finished successfully
-	 */
-	export const REQUEST_STATUS_FINISHED: number;
-	/**
+	export namespace NETWORK {
+		/**
+		 * Connected through Wi-Fi or another non-cellular network.
+		 */
+		export const NETWORK_CONNECTED: unknown;
+		/**
+		 * Connected through a cellular network.
+		 */
+		export const NETWORK_CONNECTED_CELLULAR: unknown;
+		/**
+		 * No network connection was found.
+		 */
+		export const NETWORK_DISCONNECTED: unknown;
+	}
+	export namespace REQUEST_STATUS {
+		/**
+		 * An I/O error occurred.
+		 */
+		export const REQUEST_STATUS_ERROR_IO_ERROR: unknown;
+		/**
+		 * The requested resource was not found.
+		 */
+		export const REQUEST_STATUS_ERROR_NOT_FOUND: unknown;
+		/**
+		 * The request completed successfully.
+		 */
+		export const REQUEST_STATUS_FINISHED: unknown;
+	}
+	export namespace application_info {
+		/**
+		 * Whether the queried application is installed.
+		 */
+		export let installed: boolean;
+	} /**
  * This function will raise a Lua error if an error occurs while deserializing the buffer.
  * @param buffer buffer to deserialize from
  * @example Deserialize a lua table that was previously serialized:
@@ -15016,7 +18089,20 @@ local table = sys.deserialize(buffer)
 * @see {@link https://defold.com/ref/stable/sys/#sys.deserialize|API Documentation}
  */
 	export function deserialize(buffer: string): unknown;
-	/**
+	export namespace engine_info {
+		/**
+		 * Whether this is a debug engine build.
+		 */
+		export let is_debug: boolean;
+		/**
+		 * Defold engine version.
+		 */
+		export let version: string;
+		/**
+		 * Engine build SHA-1.
+		 */
+		export let version_sha1: string;
+	} /**
  * Check if a path exists
 Good for checking if a file exists before loading a large file
  * @param path path to check
@@ -15166,7 +18252,7 @@ local speed = sys.get_config_number("my_game.speed", 20.0)
  * @returns config value as a string. default_value if the config key does not exist. nil if no default value was supplied.
  * @example Get user config value
 ```lua
-local text = sys.get_config_string("my_game.text", "default text"))
+local text = sys.get_config_string("my_game.text", "default text")
 ```
 
 Start the engine with a bootstrap config override and add a custom config value
@@ -15183,17 +18269,12 @@ local testmode = sys.get_config_int("mygame.testmode")
 	export function get_config_string(
 		key: string,
 		default_value?: string,
-	): string;
+	): string | undefined;
 	/**
  *  🤖 Returns the current network connectivity status
 on mobile platforms.
 On desktop, this function always return `sys.NETWORK_CONNECTED`.
- * @returns network connectivity status:
-
-`sys.NETWORK_DISCONNECTED` (no network connection is found)
-`sys.NETWORK_CONNECTED_CELLULAR` (connected through mobile cellular)
-`sys.NETWORK_CONNECTED` (otherwise, Wifi)
-
+ * @returns network connectivity status
  * @example Check if we are connected through a cellular connection
 ```lua
 if (sys.NETWORK_CONNECTED_CELLULAR == sys.get_connectivity()) then
@@ -15202,7 +18283,7 @@ end
 ```
 * @see {@link https://defold.com/ref/stable/sys/#sys.get_connectivity|API Documentation}
  */
-	export function get_connectivity(): number;
+	export function get_connectivity(): unknown;
 	/**
  * Returns a table with engine information.
  * @returns table with engine information
@@ -15295,8 +18376,7 @@ print(my_file_path) --> /data/.my_game/my_file
 	): string;
 	/**
  * Returns a table with system information.
- * @param options optional options table
-- ignore_secure boolean this flag ignores values might be secured by OS e.g. `device_ident`
+ * @param options optional system-information options
  * @returns table with system information
  * @example How to get system information:
 ```lua
@@ -15320,7 +18400,28 @@ end
 		device_ident?: string;
 		user_agent?: string;
 	};
-	/**
+	export namespace interface_info {
+		/**
+		 * IP address, when available.
+		 */
+		export let address_: string;
+		/**
+		 * Hardware MAC address, when available.
+		 */
+		export let mac_: string;
+		/**
+		 * Interface name.
+		 */
+		export let name: string;
+		/**
+		 * Whether the interface is running.
+		 */
+		export let running: boolean;
+		/**
+		 * Whether the interface can transmit and receive data.
+		 */
+		export let up: boolean;
+	} /**
  * If the file exists, it must have been created by `sys.save` to be loaded.
 This function will raise a Lua error if an error occurs while loading the file.
  * @param filename file to read from
@@ -15362,7 +18463,7 @@ local asset_2 = sys.load_buffer("/my/absolute/path")
 ```
 * @see {@link https://defold.com/ref/stable/sys/#sys.load_buffer|API Documentation}
  */
-	export function load_buffer(path: string): buffer;
+	export function load_buffer(path: string): unknown;
 	/**
  * The sys.load_buffer function will first try to load the resource
 from any of the mounted resource locations and return the data if
@@ -15375,29 +18476,16 @@ in the resource list, all files and directories in that directory is recursively
 included:
 For example "main/data/,assets/level_data.json".
 Note that issuing multiple requests of the same resource will yield
-individual buffers per request. There is no implic caching of the buffers
+individual buffers per request. There is no implicit caching of the buffers
 based on request path.
  * @param path the path to load the buffer from
- * @param status_callback A status callback that will be invoked when a request has been handled, or an error occured. The result is a table containing:
-
-`status`
-number The status of the request, supported values are:
-
-
-`resource.REQUEST_STATUS_FINISHED`
-`resource.REQUEST_STATUS_ERROR_IO_ERROR`
-`resource.REQUEST_STATUS_ERROR_NOT_FOUND`
-
-
-`buffer`
-buffer If the request was successfull, this will contain the request payload in a buffer object, and nil otherwise. Make sure to check the status before doing anything with the buffer value!
-
+ * @param status_callback callback invoked when the request completes or fails
  * @returns a handle to the request
  * @example Load binary data from a custom project resource and update a texture resource:
 ```lua
 function my_callback(self, request_id, result)
-  if result.status == resource.REQUEST_STATUS_FINISHED then
-     resource.set_texture("/my_texture", { ... }, result.buf)
+  if result.status == sys.REQUEST_STATUS_FINISHED then
+     resource.set_texture("/my_texture", { ... }, result.buffer)
   end
 end
 
@@ -15409,18 +18497,16 @@ Load binary data from non-custom resource files on disk:
 function my_callback(self, request_id, result)
   if result.status ~= sys.REQUEST_STATUS_FINISHED then
     -- uh oh! File could not be found, do something graceful
-  elseif request_id == self.first_asset then
+  elseif request_id == self.first_request then
     -- result.buffer contains data from my_level_asset.bin
-  elif request_id == self.second_asset then
+  elseif request_id == self.second_request then
     -- result.buffer contains data from 'my_level.bin'
   end
 end
 
 function init(self)
-  self.first_asset = hash("folder_next_to_binary/my_level_asset.bin")
-  self.second_asset = hash("/some_absolute_path/my_level.bin")
-  self.first_request = sys.load_buffer_async(self.first_asset, my_callback)
-  self.second_request = sys.load_buffer_async(self.second_asset, my_callback)
+  self.first_request = sys.load_buffer_async("folder_next_to_binary/my_level_asset.bin", my_callback)
+  self.second_request = sys.load_buffer_async("/some_absolute_path/my_level.bin", my_callback)
 end
 ```
 * @see {@link https://defold.com/ref/stable/sys/#sys.load_buffer_async|API Documentation}
@@ -15433,7 +18519,16 @@ end
 			result: { status: number; buffer: buffer | undefined },
 		) => void,
 	): number;
-	/**
+	export namespace load_buffer_result {
+		/**
+		 * Loaded payload for a successful request.
+		 */
+		export let buffer_: unknown;
+		/**
+		 * Request status.
+		 */
+		export let status: unknown;
+	} /**
  * Loads a custom resource. Specify the full filename of the resource that you want
 to load. When loaded, the file data is returned as a string.
 If loading fails, the function returns `nil` plus the error message.
@@ -15463,14 +18558,7 @@ end
 	/**
  * Open URL in default application, typically a browser
  * @param url url to open
- * @param attributes table with attributes
-`target`
-- string 🌎: Optional. Specifies the target attribute or the name of the window. The following values are supported:
-- `_self` - (default value) URL replaces the current page.
-- `_blank` - URL is loaded into a new window, or tab.
-- `_parent` - URL is loaded into the parent frame.
-- `_top` - URL replaces any framesets that may be loaded.
-- `name` - The name of the window (Note: the name does not specify the title of the new window).
+ * @param attributes optional URL opening attributes
  * @returns a boolean indicating if the url could be opened or not
  * @example Open an URL:
 ```lua
@@ -15485,7 +18573,12 @@ end
 		url: string,
 		attributes?: { target?: string },
 	): boolean;
-	/**
+	export namespace open_url_attributes {
+		/**
+		 * HTML5 browsing context: `_self`, `_blank`, `_parent`, `_top`, or a named window.
+		 */
+		export let target_: string;
+	} /**
  * Reboots the game engine with a specified set of arguments.
 Arguments will be translated into command line arguments. Calling reboot
 function is equivalent to starting the engine with the same arguments.
@@ -15534,7 +18627,7 @@ sys.save(my_file_path, my_table)
 ```
 * @see {@link https://defold.com/ref/stable/sys/#sys.save|API Documentation}
  */
-	export function save(filename: string, table: object): void;
+	export function save(filename: string, table: any): void;
 	/**
  * The buffer can later deserialized by `sys.deserialize`.
 This function has all the same limitations as `sys.save`.
@@ -15549,7 +18642,7 @@ local buffer = sys.serialize(my_table)
 ```
 * @see {@link https://defold.com/ref/stable/sys/#sys.serialize|API Documentation}
  */
-	export function serialize(table: object): string;
+	export function serialize(table: any): string;
 	/**
  * Sets the host that is used to check for network connectivity against.
  * @param host hostname to check against
@@ -15622,12 +18715,23 @@ sys.set_render_enable(false)
  */
 	export function set_render_enable(enable: boolean): void;
 	/**
- * Set game update-frequency (frame cap). This option is equivalent to `display.update_frequency` in
-the "game.project" settings but set in run-time. If `Vsync` checked in "game.project", the rate will
-be clamped to a swap interval that matches any detected main monitor refresh rate. If `Vsync` is
-unchecked the engine will try to respect the rate in software using timers. There is no
-guarantee that the frame cap will be achieved depending on platform specifics and hardware settings.
- * @param frequency target frequency. 60 for 60 fps
+ * Set game update-frequency (frame cap). This option is equivalent to
+`display.update_frequency` in the "game.project" settings but set at run-time.
+On platforms where Defold owns the application loop, a positive value uses
+timer pacing and requests a swap interval of 0 to avoid an additional vsync
+wait where supported. Setting the frequency to 0 restores the requested swap
+interval and uses variable-rate updates. Platform-owned loops, such as HTML5
+and iOS, retain their platform scheduling and presentation behavior. There is
+no guarantee that the frame cap will be achieved depending on platform and
+hardware constraints.
+With engine-side timer pacing, the update dt can be shortened or enlarged to
+account for elapsed time; the frame cap does not guarantee a constant dt.
+Elapsed time beyond max(engine.max_time_step, 1 / frequency) is discarded,
+so accumulated dt can trail wall-clock time after hitches. An intentional
+fixed interval longer than engine.max_time_step is allowed. This setting
+is separate from the fixed_update() timestep.
+ * @param frequency target frequency in hertz. 0 selects a variable
+frame rate; negative values are treated as 0.
  * @example Setting the update frequency to 60 frames per second
 ```lua
 sys.set_update_frequency(60)
@@ -15636,48 +18740,103 @@ sys.set_update_frequency(60)
  */
 	export function set_update_frequency(frequency: number): void;
 	/**
- * Set the vsync swap interval. The interval with which to swap the front and back buffers
-in sync with vertical blanks (v-blank), the hardware event where the screen image is updated
-with data from the front buffer. A value of 1 swaps the buffers at every v-blank, a value of
-2 swaps the buffers every other v-blank and so on. A value of 0 disables waiting for v-blank
-before swapping the buffers. Default value is 1.
-When setting the swap interval to 0 and having `vsync` disabled in
-"game.project", the engine will try to respect the set frame cap value from
-"game.project" in software instead.
+ * Request a presentation interval relative to vertical blanks (v-blank).
+0 requests disabling vsync and 1 requests presenting every refresh (the default).
+OpenGL may support larger intervals, such as 2 for every other refresh.
+Vulkan and Metal treat any nonzero interval as enabling vsync; DX12 clamps
+intervals to the supported range 0 through 4. Actual behavior depends on
+the backend, platform, and driver.
+On platforms where Defold owns the application loop, a positive
+`display.update_frequency` or a positive value set by `sys.set_update_frequency()`
+uses timer pacing and requests a swap interval of 0. The requested
+swap interval is retained and applied again when the update frequency is set to 0.
 This setting may be overridden by driver settings.
  * @param swap_interval target swap interval.
- * @example Setting the swap intervall to swap every v-blank
+ * @example Setting the swap interval to swap every v-blank
 ```lua
 sys.set_vsync_swap_interval(1)
 ```
 * @see {@link https://defold.com/ref/stable/sys/#sys.set_vsync_swap_interval|API Documentation}
  */
 	export function set_vsync_swap_interval(swap_interval: number): void;
+	export namespace sys_info {
+		/**
+		 * Platform API version.
+		 */
+		export let api_version: string;
+		/**
+		 * Operating-system-protected device identifier.
+		 */
+		export let device_ident_: string;
+		/**
+		 * Preferred device language, optionally followed by an ISO 15924 script code.
+		 */
+		export let device_language: string;
+		/**
+		 * Device model on iOS and Android.
+		 */
+		export let device_model_: string;
+		/**
+		 * Current GMT offset in minutes.
+		 */
+		export let gmt_offset: number;
+		/**
+		 * ISO 639 language code.
+		 */
+		export let language: string;
+		/**
+		 * Device manufacturer on iOS and Android.
+		 */
+		export let manufacturer_: string;
+		/**
+		 * Operating-system name.
+		 */
+		export let system_name: string;
+		/**
+		 * Operating-system version.
+		 */
+		export let system_version: string;
+		/**
+		 * ISO 3166-1 alpha-2 country code or UN M.49 numeric region code.
+		 */
+		export let territory: string;
+		/**
+		 * HTTP user agent on HTML5.
+		 */
+		export let user_agent_: string;
+	}
+	export namespace sys_info_options {
+		/**
+		 * Omit operating-system-protected values such as `device_ident`.
+		 */
+		export let ignore_secure_: boolean;
+	}
 }
 
 /** @see {@link https://defold.com/ref/stable/tilemap/|API Documentation} */
 declare namespace tilemap {
-	/**
-	 * flip tile horizontally
-	 */
-	export const H_FLIP: number;
-	/**
-	 * rotate tile 180 degrees clockwise
-	 */
-	export const ROTATE_180: number;
-	/**
-	 * rotate tile 270 degrees clockwise
-	 */
-	export const ROTATE_270: number;
-	/**
-	 * rotate tile 90 degrees clockwise
-	 */
-	export const ROTATE_90: number;
-	/**
-	 * flip tile vertically
-	 */
-	export const V_FLIP: number;
-	/**
+	export namespace TRANSFORM {
+		/**
+		 * flip tile horizontally
+		 */
+		export const H_FLIP: unknown;
+		/**
+		 * rotate tile 180 degrees clockwise
+		 */
+		export const ROTATE_180: unknown;
+		/**
+		 * rotate tile 270 degrees clockwise
+		 */
+		export const ROTATE_270: unknown;
+		/**
+		 * rotate tile 90 degrees clockwise
+		 */
+		export const ROTATE_90: unknown;
+		/**
+		 * flip tile vertically
+		 */
+		export const V_FLIP: unknown;
+	} /**
  * Get the bounds for a tile map. This function returns multiple values:
 The lower left corner index x and y coordinates (1-indexed),
 the tile map width and the tile map height.
@@ -15806,9 +18965,6 @@ Tiles to the left of and below origin are indexed 0, -1, -2 and so forth.
 The coordinates must be within the bounds of the tile map as it were created.
 That is, it is not possible to extend the size of a tile map by setting tiles outside the edges.
 To clear a tile, set the tile to number 0. Which tile map and layer to manipulate is identified by the URL and the layer name parameters.
-Transform bitmask is arithmetic sum of one or both FLIP constants (`tilemap.H_FLIP`, `tilemap.V_FLIP`) and/or one of ROTATION constants
-(`tilemap.ROTATE_90`, `tilemap.ROTATE_180`, `tilemap.ROTATE_270`).
-Flip always applies before rotation (clockwise).
  * @param url the tile map
  * @param layer name of the layer for the tile
  * @param x x-coordinate of the tile
@@ -15832,7 +18988,7 @@ tilemap.set_tile("#tilemap", "layer1", x, y, 0, tilemap.ROTATE_180)
 		x: number,
 		y: number,
 		tile: number,
-		transform_bitmask?: number,
+		transform_bitmask?: any,
 	): void;
 	/**
  * Sets the visibility of the tilemap layer
@@ -15855,24 +19011,25 @@ tilemap.set_visible("/level#tilemap", "foreground", false)
 declare namespace timer {
 	/**
 	 * Indicates an invalid timer handle
+	 * @param value
 	 */
 	export const INVALID_TIMER_HANDLE: number;
 	/**
  * You may cancel a timer from inside a timer callback.
 Cancelling a timer that is already executed or cancelled is safe.
  * @param handle the timer handle returned by timer.delay()
- * @returns if the timer was active, false if the timer is already cancelled / complete
+ * @returns `true` if the timer was active and cancelled, `false` if the timer was already cancelled or complete
  * @example ```lua
 self.handle = timer.delay(1, true, function() print("print every second") end)
 ...
-local result = timer.cancel(self.handle)
-if not result then
+local cancelled = timer.cancel(self.handle)
+if not cancelled then
    print("the timer is already cancelled")
 end
 ```
 * @see {@link https://defold.com/ref/stable/timer/#timer.cancel|API Documentation}
  */
-	export function cancel(handle: number): boolean;
+	export function cancel(handle: any): boolean;
 	/**
  * Adds a timer and returns a unique handle.
 You may create more timers from inside a timer callback.
@@ -15885,9 +19042,9 @@ Timers created within a script will automatically die when the script is deleted
  * @param callback timer callback function
 
 `self`
-object The current object
+script_instance The current script instance
 `handle`
-number The handle of the timer
+timer_handle The handle of the timer
 `time_elapsed`
 number The elapsed time - on first trigger it is time since timer.delay call, otherwise time since last trigger
 
@@ -15916,19 +19073,11 @@ timer.delay(1, true, call_every_second)
 		delay: number,
 		repeating: boolean,
 		callback: (this: any, handle: number, time_elapsed: number) => void,
-	): number;
+	): unknown;
 	/**
  * Get information about timer.
  * @param handle the timer handle returned by timer.delay()
- * @returns table or `nil` if timer is cancelled/completed. table with data in the following fields:
-
-`time_remaining`
-number Time remaining until the next time a timer.delay() fires.
-`delay`
-number Time interval.
-`repeating`
-boolean true = repeat timer until cancel, false = one-shot timer.
-
+ * @returns timer information, or `nil` if the timer is cancelled or complete
  * @example ```lua
 self.handle = timer.delay(1, true, function() print("print every second") end)
 ...
@@ -15942,23 +19091,36 @@ end
 * @see {@link https://defold.com/ref/stable/timer/#timer.get_info|API Documentation}
  */
 	export function get_info(
-		handle: number,
+		handle: any,
 	): { time_remaining: number; delay: number; repeating: boolean } | undefined;
-	/**
+	export namespace info {
+		/**
+		 * Timer interval.
+		 */
+		export let delay: number;
+		/**
+		 * Whether the timer repeats until cancelled.
+		 */
+		export let repeating: boolean;
+		/**
+		 * Time remaining until the next callback.
+		 */
+		export let time_remaining: number;
+	} /**
  * Manual triggering a callback for a timer.
  * @param handle the timer handle returned by timer.delay()
- * @returns if the timer was active, false if the timer is already cancelled / complete
+ * @returns `true` if the timer was active and triggered, `false` if the timer was already cancelled or complete
  * @example ```lua
 self.handle = timer.delay(1, true, function() print("print every second or manually by timer.trigger") end)
 ...
-local result = timer.trigger(self.handle)
-if not result then
+local triggered = timer.trigger(self.handle)
+if not triggered then
    print("the timer is already cancelled or complete")
 end
 ```
 * @see {@link https://defold.com/ref/stable/timer/#timer.trigger|API Documentation}
  */
-	export function trigger(handle: number): boolean;
+	export function trigger(handle: any): boolean;
 }
 
 declare namespace types {
@@ -16111,8 +19273,8 @@ print(vmath.euler_to_quat(v)) --> vmath.quat(0, 0, 0.70710676908493, 0.707106769
  */
 	export function euler_to_quat(
 		x: vmath.vector3 | number,
-		y: number,
-		z: number,
+		y?: number,
+		z?: number,
 	): vmath.quaternion;
 	/**
  * The resulting matrix is the inverse of the supplied matrix.
@@ -16257,7 +19419,88 @@ end
 * @see {@link https://defold.com/ref/stable/vmath/#vmath.lerp|API Documentation}
  */
 	export function lerp(t: number, n1: number, n2: number): number;
-	/**
+	export namespace matrix4 {
+		/**
+		 * column 0
+		 */
+		export let c0: vmath.vector4;
+		/**
+		 * column 1
+		 */
+		export let c1: vmath.vector4;
+		/**
+		 * column 2
+		 */
+		export let c2: vmath.vector4;
+		/**
+		 * column 3
+		 */
+		export let c3: vmath.vector4;
+		/**
+		 * row 0, column 0
+		 */
+		export let m00: number;
+		/**
+		 * row 0, column 1
+		 */
+		export let m01: number;
+		/**
+		 * row 0, column 2
+		 */
+		export let m02: number;
+		/**
+		 * row 0, column 3
+		 */
+		export let m03: number;
+		/**
+		 * row 1, column 0
+		 */
+		export let m10: number;
+		/**
+		 * row 1, column 1
+		 */
+		export let m11: number;
+		/**
+		 * row 1, column 2
+		 */
+		export let m12: number;
+		/**
+		 * row 1, column 3
+		 */
+		export let m13: number;
+		/**
+		 * row 2, column 0
+		 */
+		export let m20: number;
+		/**
+		 * row 2, column 1
+		 */
+		export let m21: number;
+		/**
+		 * row 2, column 2
+		 */
+		export let m22: number;
+		/**
+		 * row 2, column 3
+		 */
+		export let m23: number;
+		/**
+		 * row 3, column 0
+		 */
+		export let m30: number;
+		/**
+		 * row 3, column 1
+		 */
+		export let m31: number;
+		/**
+		 * row 3, column 2
+		 */
+		export let m32: number;
+		/**
+		 * row 3, column 3
+		 */
+		export let m33: number;
+	} /**
  * The resulting identity matrix describes a transform with
 no translation or rotation.
  * @returns identity matrix
@@ -16794,7 +20037,24 @@ print(v) --> vmath.vector3(0, 45, 90)
 	export function quat_to_euler(
 		q: vmath.quaternion,
 	): LuaMultiReturn<[number, number, number]>;
-	/**
+	export namespace quaternion {
+		/**
+		 * w component
+		 */
+		export let w: number;
+		/**
+		 * x component
+		 */
+		export let x: number;
+		/**
+		 * y component
+		 */
+		export let y: number;
+		/**
+		 * z component
+		 */
+		export let z: number;
+	} /**
  * Returns a new vector from the supplied vector that is
 rotated by the rotation described by the supplied
 quaternion.
@@ -16895,7 +20155,20 @@ print(vec[2]) --> 0.5
 * @see {@link https://defold.com/ref/stable/vmath/#vmath.vector|API Documentation}
  */
 	export function vector(t: LuaSet<number> | number[]): vector;
-	/**
+	export namespace vector3 {
+		/**
+		 * x component
+		 */
+		export let x: number;
+		/**
+		 * y component
+		 */
+		export let y: number;
+		/**
+		 * z component
+		 */
+		export let z: number;
+	} /**
  * Creates a new zero vector with all components set to 0.
  * @returns new zero vector
  * @example ```lua
@@ -16954,7 +20227,24 @@ print(vec - vmath.vector3(2.0)) --> vmath.vector3(-1, 0, 1)
 * @see {@link https://defold.com/ref/stable/vmath/#vmath.vector3|API Documentation}
  */
 	export function vector3(x: number, y: number, z: number): vmath.vector3;
-	/**
+	export namespace vector4 {
+		/**
+		 * w component
+		 */
+		export let w: number;
+		/**
+		 * x component
+		 */
+		export let x: number;
+		/**
+		 * y component
+		 */
+		export let y: number;
+		/**
+		 * z component
+		 */
+		export let z: number;
+	} /**
  * Creates a new zero vector with all components set to 0.
  * @returns new zero vector
  * @example ```lua
@@ -17162,57 +20452,59 @@ declare namespace vmath {
 
 /** @see {@link https://defold.com/ref/stable/window/|API Documentation} */
 declare namespace window {
-	/**
-	 * Dimming mode is used to control whether or not a mobile device should dim the screen after a period without user interaction.
-	 */
-	export const DIMMING_OFF: number;
-	/**
-	 * Dimming mode is used to control whether or not a mobile device should dim the screen after a period without user interaction.
-	 */
-	export const DIMMING_ON: number;
-	/**
- * Dimming mode is used to control whether or not a mobile device should dim the screen after a period without user interaction.
-This mode indicates that the dim mode can't be determined, or that the platform doesn't support dimming.
- */
-	export const DIMMING_UNKNOWN: number;
-	/**
- * 📱 🪟 🐧 This event is sent to a window event listener when the game window or app screen is
-restored after being iconified.
- */
-	export const WINDOW_EVENT_DEICONIFIED: number;
-	/**
- * This event is sent to a window event listener when the game window or app screen has
-gained focus.
-This event is also sent at game startup and the engine gives focus to the game.
- */
-	export const WINDOW_EVENT_FOCUS_GAINED: number;
-	/**
-	 * This event is sent to a window event listener when the game window or app screen has lost focus.
-	 */
-	export const WINDOW_EVENT_FOCUS_LOST: number;
-	/**
- * 📱 🪟 🐧 This event is sent to a window event listener when the game window or app screen is
-iconified (reduced to an application icon in a toolbar, application tray or similar).
- */
-	export const WINDOW_EVENT_ICONFIED: number;
-	/**
- * This event is sent to a window event listener when the game window or app screen is resized.
-The new size is passed along in the data field to the event listener.
- */
-	export const WINDOW_EVENT_RESIZED: number;
-	/**
+	export namespace DIMMING {
+		/**
+		 * dimming mode off Dimming mode is used to control whether or not a mobile device should dim the screen after a period without user interaction.
+		 */
+		export const DIMMING_OFF: unknown;
+		/**
+		 * dimming mode on Dimming mode is used to control whether or not a mobile device should dim the screen after a period without user interaction.
+		 */
+		export const DIMMING_ON: unknown;
+		/**
+		 * dimming mode unknown Dimming mode is used to control whether or not a mobile device should dim the screen after a period without user interaction. This mode indicates that the dim mode can't be determined, or that the platform doesn't support dimming.
+		 */
+		export const DIMMING_UNKNOWN: unknown;
+	}
+	export namespace WINDOW_EVENT {
+		/**
+		 * deiconified window event 📱 🪟 🐧 This event is sent to a window event listener when the game window or app screen is restored after being iconified.
+		 */
+		export const WINDOW_EVENT_DEICONIFIED: unknown;
+		/**
+		 * focus gained window event This event is sent to a window event listener when the game window or app screen has gained focus. This event is also sent at game startup and the engine gives focus to the game.
+		 */
+		export const WINDOW_EVENT_FOCUS_GAINED: unknown;
+		/**
+		 * focus lost window event This event is sent to a window event listener when the game window or app screen has lost focus.
+		 */
+		export const WINDOW_EVENT_FOCUS_LOST: unknown;
+		/**
+		 * iconify window event 📱 🪟 🐧 This event is sent to a window event listener when the game window or app screen is iconified (reduced to an application icon in a toolbar, application tray or similar).
+		 */
+		export const WINDOW_EVENT_ICONIFIED: unknown;
+		/**
+		 * resized window event This event is sent to a window event listener when the game window or app screen is resized. The new size is passed along in the data field to the event listener.
+		 */
+		export const WINDOW_EVENT_RESIZED: unknown;
+	}
+	export namespace event_data {
+		/**
+		 * Window height after a resize.
+		 */
+		export let height_: number;
+		/**
+		 * Window width after a resize.
+		 */
+		export let width_: number;
+	} /**
  *  🤖 Returns the current dimming mode set on a mobile device.
 The dimming mode specifies whether or not a mobile device should dim the screen after a period without user interaction.
 On platforms that does not support dimming, `window.DIMMING_UNKNOWN` is always returned.
  * @returns The mode for screen dimming
-
-`window.DIMMING_UNKNOWN`
-`window.DIMMING_ON`
-`window.DIMMING_OFF`
 * @see {@link https://defold.com/ref/stable/window/#window.get_dim_mode|API Documentation}
-
  */
-	export function get_dim_mode(): number;
+	export function get_dim_mode(): unknown;
 	/**
 	 * This returns the content scale of the current display.
 	 * @returns The display scale
@@ -17230,21 +20522,7 @@ On platforms that does not support dimming, `window.DIMMING_UNKNOWN` is always r
 values relative to the window edges. On platforms without a safe area,
 this returns the full window size and zero insets.
  * @returns safe area data
-
-`safe_area`
-table table containing these keys:
-
-
-number `x`
-number `y`
-number `width`
-number `height`
-number `inset_left`
-number `inset_top`
-number `inset_right`
-number `inset_bottom`
 * @see {@link https://defold.com/ref/stable/window/#window.get_safe_area|API Documentation}
-
  */
 	export function get_safe_area(): {
 		x: number;
@@ -17262,50 +20540,58 @@ number `inset_bottom`
 	 * @see {@link https://defold.com/ref/stable/window/#window.get_size|API Documentation}
 	 */
 	export function get_size(): LuaMultiReturn<[number, number]>;
-	/**
+	export namespace safe_area {
+		/**
+		 * Safe-area height.
+		 */
+		export let height: number;
+		/**
+		 * Inset from the bottom window edge.
+		 */
+		export let inset_bottom: number;
+		/**
+		 * Inset from the left window edge.
+		 */
+		export let inset_left: number;
+		/**
+		 * Inset from the right window edge.
+		 */
+		export let inset_right: number;
+		/**
+		 * Inset from the top window edge.
+		 */
+		export let inset_top: number;
+		/**
+		 * Safe-area width.
+		 */
+		export let width: number;
+		/**
+		 * Safe-area x-coordinate.
+		 */
+		export let x: number;
+		/**
+		 * Safe-area y-coordinate.
+		 */
+		export let y: number;
+	} /**
  *  🤖 Sets the dimming mode on a mobile device.
 The dimming mode specifies whether or not a mobile device should dim the screen after a period without user interaction. The dimming mode will only affect the mobile device while the game is in focus on the device, but not when the game is running in the background.
 This function has no effect on platforms that does not support dimming.
  * @param mode The mode for screen dimming
-
-`window.DIMMING_ON`
-`window.DIMMING_OFF`
 * @see {@link https://defold.com/ref/stable/window/#window.set_dim_mode|API Documentation}
-
  */
-	export function set_dim_mode(mode: number): void;
+	export function set_dim_mode(mode: any): void;
 	/**
  * Sets a window event listener. Only one window event listener can be set at a time.
  * @param callback A callback which receives info about window events. Pass an empty function or `nil` if you no longer wish to receive callbacks.
-
-`self`
-object The calling script
-`event`
-constant The type of event. Can be one of these:
-
-
-`window.WINDOW_EVENT_FOCUS_LOST`
-`window.WINDOW_EVENT_FOCUS_GAINED`
-`window.WINDOW_EVENT_RESIZED`
-`window.WINDOW_EVENT_ICONIFIED`
-`window.WINDOW_EVENT_DEICONIFIED`
-
-
-`data`
-table The callback value `data` is a table which currently holds these values
-
-
-number `width`: The width of a resize event. nil otherwise.
-number `height`: The height of a resize event. nil otherwise.
-
  * @example ```lua
 function window_callback(self, event, data)
     if event == window.WINDOW_EVENT_FOCUS_LOST then
         print("window.WINDOW_EVENT_FOCUS_LOST")
     elseif event == window.WINDOW_EVENT_FOCUS_GAINED then
         print("window.WINDOW_EVENT_FOCUS_GAINED")
-    elseif event == window.WINDOW_EVENT_ICONFIED then
-        print("window.WINDOW_EVENT_ICONFIED")
+    elseif event == window.WINDOW_EVENT_ICONIFIED then
+        print("window.WINDOW_EVENT_ICONIFIED")
     elseif event == window.WINDOW_EVENT_DEICONIFIED then
         print("window.WINDOW_EVENT_DEICONIFIED")
     elseif event == window.WINDOW_EVENT_RESIZED then
