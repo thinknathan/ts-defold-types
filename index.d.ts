@@ -4,7 +4,7 @@
 /// <reference types="lua-types/special/jit-only" />
 /// <reference types="./deprecated.d.ts" />
 
-// DEFOLD. stable version 1.13.2 (055a6e163cb952d023ffe7becf9eab88d7e84a74)
+// DEFOLD. stable version 1.14.0 (a81dbb0478e8b73931dc2d671563204f6ac0ef82)
 
 /**
  * Pretty printing of Lua values. This function prints Lua values
@@ -381,6 +381,17 @@ declare namespace b2d {
 	export function get_body(
 		url: hash | url | string,
 	): typeof b2d.body | undefined;
+	/**
+ * Returns the id of the game object that owns the body's collision-object component.
+Raises a Lua error if the body handle is invalid or its game object has been deleted.
+ * @param body the Box2D body
+ * @returns the game object id, or `nil` if the body has no associated game object
+ * @example ```lua
+local body = b2d.get_body("#collisionobject")
+local id = b2d.get_gameobject_id(body)
+```
+ */
+	export function get_gameobject_id(body: typeof b2d.body): hash | undefined;
 	/**
 	 * Get the Box2D version information for the active backend.
 	 * @returns version information
@@ -4497,6 +4508,19 @@ This function raises an error unless the collection uses 3D physics.
 		url: hash | url | string,
 	): unknown | undefined;
 	/**
+ * Returns the id of the game object that owns the collision-object component.
+Accepts both rigid bodies and ghost trigger objects.
+Raises a Lua error if the handle is invalid or its game object has been deleted.
+ * @param object the Bullet collision object
+ * @returns the game object id, or `nil` if the collision object has no associated game object
+ * @example ```lua
+local object = bullet3d.get_collision_object("#collisionobject")
+local id = bullet3d.get_gameobject_id(object)
+```
+* @see {@link https://defold.com/ref/stable/bullet3d/#bullet3d.get_gameobject_id|API Documentation}
+ */
+	export function get_gameobject_id(object: any  ): hash | undefined;
+	/**
  * Trigger components are ghost objects, so this function returns `nil` for them.
 This function raises an error unless the collection uses 3D physics.
  * @param url collision object component URL
@@ -7652,9 +7676,13 @@ font.remove_font(font_hash, ttf_hash)
 A `link` tag uses `link` by default. Callers may select another named style,
 such as `link:hover` or `link:active`, in response to input.
 Font collections initially define these named styles. Each default contains
-a normalized RGBA face-color multiplier and no effects. The default `link`
-style also uses a solid underline, which remains when hover or active colors
-are applied:
+a normalized RGBA face color and no effects. Style RGB overrides the base
+text color, while alpha uses the lower of the style and base text alpha.
+Gradients override RGB and use the lower alpha in the same way. Inline colors
+and gradients take precedence over object styles, which take precedence over
+the named base style. Nested color or gradient tags override enclosing RGB
+in inline markup and named style definitions. The default `link` style also
+uses a solid underline, which remains when hover or active colors are applied:
 
 `link`: `(0.10, 0.45, 0.90, 1.0)`, solid underline
 `link:hover`: `(0.30, 0.65, 1.00, 1.0)`
@@ -9161,6 +9189,14 @@ declare namespace graphics {
 		 */
 		export const COORDINATE_SPACE_WORLD: unknown;
 	}
+	export namespace CUBEMAP_FACE {
+		export const CUBEMAP_FACE_NEGATIVE_X: unknown;
+		export const CUBEMAP_FACE_NEGATIVE_Y: unknown;
+		export const CUBEMAP_FACE_NEGATIVE_Z: unknown;
+		export const CUBEMAP_FACE_POSITIVE_X: unknown;
+		export const CUBEMAP_FACE_POSITIVE_Y: unknown;
+		export const CUBEMAP_FACE_POSITIVE_Z: unknown;
+	}
 	export namespace DATA_TYPE {
 		/**
 		 * Signed 8-bit vertex attribute data.
@@ -10479,7 +10515,7 @@ The radius is defined along the x-axis.
 	/**
  * Returns the sprites and links found in the text node's current layout.
 Each object's `x` and `y` identify its lower-left corner relative to the
-text node's upper-left layout origin.
+text node's pivot, before applying the node's scale and rotation.
  * @param node text node to inspect
  * @returns layout objects in source order
 * @see {@link https://defold.com/ref/stable/gui/#gui.get_layout_objects|API Documentation}
@@ -10790,11 +10826,11 @@ Disabled nodes are not rendered and animations acting on them are not evaluated.
 		 */
 		export let width: number;
 		/**
-		 * lower-left x-coordinate relative to the text node's upper-left layout origin
+		 * unscaled lower-left x-coordinate relative to the text node's pivot
 		 */
 		export let x: number;
 		/**
-		 * lower-left y-coordinate relative to the text node's upper-left layout origin
+		 * unscaled lower-left y-coordinate relative to the text node's pivot
 		 */
 		export let y: number;
 	} /**
@@ -11282,7 +11318,8 @@ Blend mode defines how the node will be blended with the background.
 	export function set_clipping_visible(node: node, visible: boolean): void;
 	/**
  * Sets the color of the supplied node. The components
-of the supplied vector3 or vector4 should contain the color channel values:
+of the supplied vector3 or vector4 should contain the color channel values
+in the range 0 to 1:
 
 
 
@@ -12234,7 +12271,7 @@ declare namespace label {
 Each entry contains `type`, `id`, the zero-based UTF-32 `text_offset`,
 `text_length`, resolved `x`, `y`, `width`
 and `height`, and an `attributes` table. The position is the lower-left
-object corner relative to the label's upper-left layout origin.
+object corner relative to the label's pivot, before applying scale and rotation.
 Inline resource rendering is not part of this MVP; sprites use their explicit
 dimensions or a one-em square fallback.
  * @param url the label to inspect
@@ -12296,11 +12333,11 @@ end
 		 */
 		export let width: number;
 		/**
-		 * lower-left x-coordinate relative to the label's upper-left layout origin
+		 * unscaled lower-left x-coordinate relative to the label's pivot
 		 */
 		export let x: number;
 		/**
-		 * lower-left y-coordinate relative to the label's upper-left layout origin
+		 * unscaled lower-left y-coordinate relative to the label's pivot
 		 */
 		export let y: number;
 	} /**
@@ -15129,6 +15166,18 @@ render target until it is replaced by a subsequent call to set_render_target.
 This function supports render targets created by a render script, or a render target resource.
  * @param render_target render target to set. Omit it, pass `nil`, or use render.RENDER_TARGET_DEFAULT to set the default render target
  * @param options optional render-target activation options
+
+`face`
+number Cubemap face selected for rendering. This option is valid only for cubemap render targets and defaults to `graphics.CUBEMAP_FACE_POSITIVE_X`.
+
+
+`graphics.CUBEMAP_FACE_POSITIVE_X`
+`graphics.CUBEMAP_FACE_NEGATIVE_X`
+`graphics.CUBEMAP_FACE_POSITIVE_Y`
+`graphics.CUBEMAP_FACE_NEGATIVE_Y`
+`graphics.CUBEMAP_FACE_POSITIVE_Z`
+`graphics.CUBEMAP_FACE_NEGATIVE_Z`
+
  * @example How to set a render target and draw to it and then switch back to the default render target
 The render target defines the depth/stencil buffers as transient, when set_render_target is called the next time the buffers may be invalidated and allow for optimisations depending on driver support
 ```lua
@@ -15166,12 +15215,17 @@ end
 	): void;
 	export namespace set_render_target_options {
 		/**
+		 * Cubemap face selected for rendering. Valid only for cubemap render targets.
+		 */
+		export let face_: unknown;
+		/**
 		 * Buffers whose contents become undefined after the target is deactivated. Missing buffers are ignored; combined depth-stencil buffers remain non-transient unless both are selected.
 		 */
 		export let transient_: unknown;
 	} /**
  * Sets the render target size for a render target created from
 either a render script, or from a render target resource.
+Cubemap render targets require equal width and height.
  * @param render_target render target to set size for
  * @param width new render target width
  * @param height new render target height
