@@ -4,7 +4,7 @@
 /// <reference types="lua-types/special/jit-only" />
 /// <reference types="./deprecated.d.ts" />
 
-// DEFOLD. stable version 1.14.0 (a81dbb0478e8b73931dc2d671563204f6ac0ef82)
+// DEFOLD. stable version 1.14.1 (ee283d4dad9fa451dd6399d83602e1dc25133681)
 
 /**
  * Pretty printing of Lua values. This function prints Lua values
@@ -86,6 +86,109 @@ declare type buffer = object;
  * A data stream derived from a buffer.
  */
 declare type bufferstream = LuaUserdata & number[] & object;
+
+declare namespace missingName {
+	/**
+	 * Allocates scratch data for one generation batch.
+	 * @param params Generation settings and callbacks. The values are copied.
+	 * @param num_glyphs Maximum number of glyphs in the batch.
+	 * @returns Job data, or null when unsupported.
+	 * @see {@link https://defold.com/ref/stable/missingName/#missingName.FontGenCreateJobData|API Documentation}
+	 */
+	export function FontGenCreateJobData(params: any, num_glyphs: any): unknown;
+	/**
+ * Batches started with FontGenStartGlyphs cancel and wait for their own jobs.
+Other batches must already have finished or been canceled by the caller.
+ * @param jobdata Batch to release.
+* @see {@link https://defold.com/ref/stable/missingName/#missingName.FontGenDestroyJobData|API Documentation}
+ */
+	export function FontGenDestroyJobData(jobdata: any): void;
+	/**
+	 * Tests whether runtime glyph generation is linked into the engine.
+	 * @returns True when the full font_gen library is linked.
+	 * @see {@link https://defold.com/ref/stable/missingName/#missingName.FontGenIsSupported|API Documentation}
+	 */
+	export function FontGenIsSupported(): boolean;
+	export namespace FontGenParams {
+		/**
+		 * Glyph insertion callback.
+		 */
+		export let m_AddGlyph: unknown;
+		/**
+		 * Generate RGB vector effect bitmaps on the CPU.
+		 */
+		export let m_BitmapEffects: unknown;
+		/**
+		 * Batch completion callback.
+		 */
+		export let m_Complete: unknown;
+		/**
+		 * Include the authored outline in the effect bitmaps.
+		 */
+		export let m_HasOutline: unknown;
+		/**
+		 * Generate the authored shadow bitmap.
+		 */
+		export let m_HasShadow: unknown;
+		/**
+		 * Cache lookup callback.
+		 */
+		export let m_IsGlyphCached: unknown;
+		/**
+		 * Non-zero when SDF output is requested.
+		 */
+		export let m_IsSdf: unknown;
+		/**
+		 * Non-zero when Vector glyph output is requested.
+		 */
+		export let m_IsVector: unknown;
+		/**
+		 * Job system used for asynchronous generation.
+		 */
+		export let m_Jobs: unknown;
+		/**
+		 * Outline width in pixels.
+		 */
+		export let m_OutlineWidth: number;
+		/**
+		 * Shadow blur spread in pixels.
+		 */
+		export let m_ShadowBlur: number;
+		/**
+		 * Glyph generation size in pixels.
+		 */
+		export let m_Size: number;
+		/**
+		 * Opaque context passed to all callbacks.
+		 */
+		export let m_UserContext: unknown;
+	} /**
+ * Worker jobs generate glyphs without invoking callbacks. Call FontGenUpdateGlyphs
+on the resource's creation thread to install the results. That update can take
+over queued glyphs, including when the caller occupies the last worker. With
+no workers it generates all glyphs. The job context must outlive the batch.
+ * @param jobdata Fresh batch; keep alive until completion or destruction.
+ * @param glyphs Input glyphs, copied during this call.
+ * @param num_glyphs Number of input glyphs.
+ * @returns False when runtime generation is unsupported.
+* @see {@link https://defold.com/ref/stable/missingName/#missingName.FontGenStartGlyphs|API Documentation}
+ */
+	export function FontGenStartGlyphs(
+		jobdata: any,
+		glyphs: any,
+		num_glyphs: any,
+	): boolean;
+	/**
+ * Generates queued glyphs or consumes finished results without dispatching other
+jobs or callbacks. Running jobs keep ownership until they finish. The completion
+callback may destroy the batch. Calls for one batch must be serialized by its owner.
+ * @param jobdata Batch to advance.
+ * @param time_limit Soft time limit in microseconds; 0 processes at most one glyph.
+ * @returns True once all glyphs and the completion callback have been processed.
+* @see {@link https://defold.com/ref/stable/missingName/#missingName.FontGenUpdateGlyphs|API Documentation}
+ */
+	export function FontGenUpdateGlyphs(jobdata: any, time_limit: any): boolean;
+}
 
 /** @see {@link https://defold.com/ref/stable/b2d/|Box2D Documentation} @since 1.8.0 */
 declare namespace b2d {
@@ -7633,7 +7736,7 @@ font.add_font(font_hash, ttf_hash)
 		 */
 		export let path: hash;
 	} /**
- * prepopulates the font glyph cache with rasterised glyphs
+ * prepopulates the font glyph cache with generated glyphs
  * @param fontc The path to the .fontc resource
  * @param text The text to layout
  * @param callback (optional) A callback function that is called after the request is finished
@@ -7919,11 +8022,11 @@ declare namespace go {
 		 */
 		export let acc_z_: number;
 		/**
-		 * Change in the pointer x-coordinate; absent for gamepad, key, and text input.
+		 * Change in the pointer x-coordinate; absent for gamepad, key, text, and accelerometer input.
 		 */
 		export let dx_: number;
 		/**
-		 * Change in the pointer y-coordinate; absent for gamepad, key, and text input.
+		 * Change in the pointer y-coordinate; absent for gamepad, key, text, and accelerometer input.
 		 */
 		export let dy_: number;
 		/**
@@ -7959,33 +8062,37 @@ declare namespace go {
 		 */
 		export let gamepad_unknown_: boolean;
 		/**
-		 * Whether the input was pressed this frame; absent for pointer movement and text input.
+		 * Whether the input was pressed this frame; absent for pointer movement, accelerometer samples, and text input.
 		 */
 		export let pressed_: boolean;
 		/**
-		 * Whether the input was released this frame; absent for pointer movement and text input.
+		 * Whether the input was released this frame; absent for pointer movement, accelerometer samples, and text input.
 		 */
 		export let released_: boolean;
 		/**
-		 * Whether the input was repeated this frame; absent for pointer movement and text input.
+		 * Whether the input was repeated this frame; absent for pointer movement, accelerometer samples, and text input.
 		 */
 		export let repeated_: boolean;
 		/**
-		 * Change in the pointer x-coordinate in screen space; absent for gamepad, key, and text input.
+		 * Change in the pointer x-coordinate in screen space; absent for gamepad, key, text, and accelerometer input.
 		 */
 		export let screen_dx_: number;
 		/**
-		 * Change in the pointer y-coordinate in screen space; absent for gamepad, key, and text input.
+		 * Change in the pointer y-coordinate in screen space; absent for gamepad, key, text, and accelerometer input.
 		 */
 		export let screen_dy_: number;
 		/**
-		 * Pointer x-coordinate in screen space; absent for gamepad, key, and text input.
+		 * Pointer x-coordinate in screen space; absent for gamepad, key, text, and accelerometer input.
 		 */
 		export let screen_x_: number;
 		/**
-		 * Pointer y-coordinate in screen space; absent for gamepad, key, and text input.
+		 * Pointer y-coordinate in screen space; absent for gamepad, key, text, and accelerometer input.
 		 */
 		export let screen_y_: number;
+		/**
+		 * Input device category: `hash("keyboard")`, `hash("text")`, `hash("mouse")`, `hash("touch")`, `hash("gamepad")`, or `hash("accelerometer")`.
+		 */
+		export let source: hash;
 		/**
 		 * Text entered by a text action, or the current sequence for marked-text composition such as Japanese Kana.
 		 */
@@ -7999,15 +8106,15 @@ declare namespace go {
 		 */
 		export let userid_: number;
 		/**
-		 * Amount of input, usually 1 for buttons or between 0 and 1 for analogue input; absent for pointer movement and text input.
+		 * Amount of input, usually 1 for buttons or between 0 and 1 for analogue input; absent for pointer movement, accelerometer samples, and text input.
 		 */
 		export let value_: number;
 		/**
-		 * Pointer x-coordinate; absent for gamepad, key, and text input.
+		 * Pointer x-coordinate; absent for gamepad, key, text, and accelerometer input.
 		 */
 		export let x_: number;
 		/**
-		 * Pointer y-coordinate; absent for gamepad, key, and text input.
+		 * Pointer y-coordinate; absent for gamepad, key, text, and accelerometer input.
 		 */
 		export let y_: number;
 	} /**
@@ -8484,7 +8591,7 @@ to signal that it wants input to be consumed.
 See the documentation of acquire_input_focus for more
 information.
  * @param this script instance used for storing state
- * @param action_id id of the received input action, as mapped in the input_binding-file, or `nil` for mouse movement
+ * @param action_id id of the received input action, as mapped in the input_binding-file, or `nil` for pointer movement and accelerometer samples; check `action.source` to distinguish them
  * @param action input data for the action
  * @returns optional boolean to signal if the input should be consumed (not passed on to others) or not, default is false
  * @example This example demonstrates how a game object instance can be moved as a response to user input.
@@ -9142,6 +9249,10 @@ declare namespace graphics {
 		 * Context feature flag indicating support for ASTC compressed 2D array textures. Some WebGL/GLES drivers fail array texture ASTC uploads while 2D ASTC works.
 		 */
 		export const CONTEXT_FEATURE_ASTC_ARRAY_TEXTURES: unknown;
+		/**
+		 * Context feature flag indicating backbuffer readback support for the current surface. On WebGPU, availability is established when the surface is configured.
+		 */
+		export const CONTEXT_FEATURE_BACKBUFFER_READBACK: unknown;
 		/**
 		 * Context feature flag indicating support for BC (S3TC/RGTC/BPTC) compressed 2D array and 3D textures. WebGL2 forbids these compressed families on array/3D targets while allowing them on 2D.
 		 */
@@ -10968,7 +11079,7 @@ to signal that it wants input to be consumed.
 See the documentation of acquire_input_focus for more
 information.
  * @param this script instance used for storing state
- * @param action_id id of the received input action, as mapped in the input_binding-file, or `nil` for mouse movement
+ * @param action_id id of the received input action, as mapped in the input_binding-file, or `nil` for pointer movement and accelerometer samples; check `action.source` to distinguish them
  * @param action input data for the action
  * @returns optional boolean to signal if the input should be consumed (not passed on to others) or not, default is false
  * @example ```lua
@@ -13527,7 +13638,8 @@ end
  */
 	export function get_maskbit(url: hash | url | string, group: string): boolean;
 	/**
- * Gets collision shape data from a collision object
+ * Gets collision shape data from a collision object. Dimensions are in game units,
+independent of the `physics.scale` setting.
  * @param url the collision object.
  * @param shape the name of the shape to get data for.
  * @example ```lua
@@ -13951,7 +14063,8 @@ end
 		maskbit: boolean,
 	): void;
 	/**
- * Sets collision shape data for a collision object. Please note that updating data in 3D
+ * Sets collision shape data for a collision object. Dimensions are in game units,
+independent of the `physics.scale` setting. Please note that updating data in 3D
 can be quite costly for box and capsules. Because of the physics engine, the cost
 comes from having to recreate the shape objects when certain shapes needs to be updated.
  * @param url the collision object.
@@ -14315,6 +14428,108 @@ profiler.view_recorded_frame({distance = -1})
 		distance?: number;
 		frame?: number;
 	}): void;
+}
+
+declare namespace recorder {
+	export namespace EVENT {
+		/**
+		 * Recording failed; result.error contains the reason.
+		 */
+		export const EVENT_ERROR: unknown;
+		/**
+		 * Recording has started.
+		 */
+		export const EVENT_STARTED: unknown;
+		/**
+		 * Recording has stopped and the MP4 is ready to read.
+		 */
+		export const EVENT_STOPPED: unknown;
+	}
+	export namespace options {
+		/**
+		 * Record application audio; defaults to false.
+		 */
+		export let audio_: boolean;
+		/**
+		 * Capture rate from 1 to 60; defaults to 30.
+		 */
+		export let fps_: number;
+		/**
+		 * Writable MP4 output path, for example from sys.get_save_file. Uses the host path encoding (Windows ANSI code page; UTF-8 elsewhere). The parent directory must exist.
+		 */
+		export let path: string;
+	}
+	export namespace result {
+		/**
+		 * Whether application audio is included.
+		 */
+		export let audio: boolean;
+		/**
+		 * Failure reason, present for recorder.EVENT_ERROR.
+		 */
+		export let error_: string;
+		/**
+		 * Capture rate.
+		 */
+		export let fps: number;
+		/**
+		 * Recorded video height in pixels.
+		 */
+		export let height: number;
+		/**
+		 * Output file path, preserving the path supplied to recorder.start.
+		 */
+		export let path: string;
+		/**
+		 * Recorded video width in pixels.
+		 */
+		export let width: number;
+	} /**
+ * Starts an asynchronous recording of the game window at its native pixel size.
+The caller owns the output file, which remains on disk after engine shutdown.
+An existing file at the specified path may be overwritten.
+A successful return only means the request was accepted. The callback receives
+recorder.EVENT_STARTED when capture starts, followed by
+recorder.EVENT_STOPPED or recorder.EVENT_ERROR. Startup failure produces
+only EVENT_ERROR. Callbacks run during engine update, never inside start/stop.
+Window resizing stops and finalizes the recording. Deleting the calling script
+discards its callback but does not stop recording. Engine shutdown finalizes
+recording without invoking callbacks.
+ * @param options recording options
+ * @param callback recording event callback
+ * @returns true if accepted, otherwise nil & reason the request was rejected
+ * @example ```lua
+local ok, err = recorder.start({
+    path = sys.get_save_file("my_game", "capture.mp4"),
+    fps = 30,
+    audio = false,
+}, function(self, event, result)
+    if event == recorder.EVENT_STOPPED then
+        print("Saved:", result.path)
+    elseif event == recorder.EVENT_ERROR then
+        print(result.error)
+    end
+end)
+if not ok then print(err) end
+```
+* @see {@link https://defold.com/ref/stable/recorder/#recorder.start|API Documentation}
+ */
+	export function start(
+		options: any,
+		callback: any,
+	): LuaMultiReturn<[boolean | undefined, string | undefined]>;
+	/**
+ * Requests finalization of the current recording, including one started through
+HTTP. Wait for recorder.EVENT_STARTED before calling stop for a Lua recording.
+The original start callback receives recorder.EVENT_STOPPED only after the
+MP4 is finalized and ready to read, or recorder.EVENT_ERROR on failure.
+Returns an error if no recording is active or an operation is pending.
+ * @returns true if accepted, otherwise nil & reason the request was rejected
+* @see {@link https://defold.com/ref/stable/recorder/#recorder.stop|API Documentation}
+ */
+	export function stop(): LuaMultiReturn<
+		[boolean | undefined, string | undefined]
+	>;
 }
 
 /** @see {@link https://defold.com/ref/stable/render/|API Documentation} */
@@ -17822,7 +18037,12 @@ end
 * @see {@link https://defold.com/ref/stable/sound/#sound.is_phone_call_active|API Documentation}
  */
 	export function is_phone_call_active(): boolean;
-	/**
+	export namespace parameter_properties {
+		/**
+		 * Playback identifier returned by sound.play. If omitted, all voices and the component defaults are updated.
+		 */
+		export let play_id_: number;
+	} /**
  * Pause all active voices
  * @param url the sound that should pause
  * @param pause true if the sound should pause
@@ -17919,16 +18139,27 @@ end
 		 */
 		export let start_time_: number;
 	} /**
- * Set gain on all active playing voices of a sound.
+ * Set gain on all voices of a sound, or just the voice identified by `play_id`.
+Without `play_id`, this also updates the component gain used for future playback.
+With `play_id`, other voices and the component gain are unchanged. Delayed and paused
+voices can be updated. If the voice no longer exists, this call has no effect.
+The gain is multiplied by the gain in the sound resource.
  * @param url the sound to set the gain of
  * @param gain sound gain between 0 and 1 [-60dB .. 0dB]. The final gain of the sound will be a combination of this gain, the group gain and the master gain.
+ * @param properties optional playback to update
  * @example Assuming the script belongs to an instance with a sound-component with id "sound", this will set the gain to 0.9
 ```lua
 sound.set_gain("#sound", 0.9)
+local id = sound.play("#sound")
+sound.set_gain("#sound", 0.4, { play_id = id })
 ```
 * @see {@link https://defold.com/ref/stable/sound/#sound.set_gain|API Documentation}
  */
-	export function set_gain(url: hash | url | string, gain?: number): void;
+	export function set_gain(
+		url: hash | url | string,
+		gain?: number,
+		properties?: any,
+	): void;
 	/**
  * Set mixer group gain
  * @param group group name
@@ -17941,17 +18172,28 @@ sound.set_group_gain("soundfx", 0.5)
  */
 	export function set_group_gain(group: hash | string, gain: number): void;
 	/**
- * Set panning on all active playing voices of a sound.
+ * Set panning on all voices of a sound, or just the voice identified by `play_id`.
+Without `play_id`, this also updates the component pan used for future playback.
+With `play_id`, other voices and the component pan are unchanged. Delayed and paused
+voices can be updated. If the voice no longer exists, this call has no effect.
+The pan is added to the pan in the sound resource.
 The valid range is from -1.0 to 1.0, representing -45 degrees left, to +45 degrees right.
  * @param url the sound to set the panning value to
  * @param pan sound panning between -1.0 and 1.0
- * @example Assuming the script belongs to an instance with a sound-component with id "sound", this will set the gain to 0.5
+ * @param properties optional playback to update
+ * @example Assuming the script belongs to an instance with a sound-component with id "sound", this will set the pan to 0.5
 ```lua
 sound.set_pan("#sound", 0.5) -- pan to the right
+local id = sound.play("#sound")
+sound.set_pan("#sound", -0.5, { play_id = id }) -- pan this voice to the left
 ```
 * @see {@link https://defold.com/ref/stable/sound/#sound.set_pan|API Documentation}
  */
-	export function set_pan(url: hash | url | string, pan?: number): void;
+	export function set_pan(
+		url: hash | url | string,
+		pan?: number,
+		properties?: any,
+	): void;
 	/**
  * Stop playing all active voices or just one voice if `play_id` provided
  * @param url the sound component that should stop
@@ -18063,6 +18305,7 @@ end
  * Sets horizontal flipping of the provided sprite's animations.
 The sprite is identified by its URL.
 If the currently playing animation is flipped by default, flipping it again will make it appear like the original texture.
+The sprite is flipped around the pivot of its image, which gives the same result as a negative x scale.
  * @param url the sprite that should flip its animations
  * @param flip `true` if the sprite should flip its animations, `false` if not
  * @example How to flip a sprite so it faces the horizontal movement:
@@ -18081,6 +18324,7 @@ It is assumed that the sprite component has id "sprite" and that the original an
  * Sets vertical flipping of the provided sprite's animations.
 The sprite is identified by its URL.
 If the currently playing animation is flipped by default, flipping it again will make it appear like the original texture.
+The sprite is flipped around the pivot of its image, which gives the same result as a negative y scale.
  * @param url the sprite that should flip its animations
  * @param flip `true` if the sprite should flip its animations, `false` if not
  * @example How to flip a sprite in a game which negates gravity as a game mechanic:
@@ -18644,6 +18888,8 @@ project root.
  * @param arg4 argument 4
  * @param arg5 argument 5
  * @param arg6 argument 6
+ * @param arg7 argument 7
+ * @param arg8 argument 8
  * @example How to reboot engine with a specific bootstrap collection.
 ```lua
 local arg1 = '--config=bootstrap.main_collection=/my.collectionc'
@@ -18659,6 +18905,8 @@ sys.reboot(arg1, arg2)
 		arg4?: string,
 		arg5?: string,
 		arg6?: string,
+		arg7?: string,
+		arg8?: string,
 	): void;
 	/**
  * The table can later be loaded by `sys.load`.
@@ -20538,7 +20786,7 @@ declare namespace window {
 		 */
 		export const WINDOW_EVENT_ICONIFIED: unknown;
 		/**
-		 * resized window event This event is sent to a window event listener when the game window or app screen is resized. The new size is passed along in the data field to the event listener.
+		 * resized window event This event is sent to a window event listener when the game window or app screen is resized. On iOS, it is also sent after orientation transitions and safe-area inset changes, even when the size is unchanged. After window.get_reserved_areas has been queried, changes to reserved areas also trigger this event on supported platforms. The current size is passed along in the data field to the event listener.
 		 */
 		export const WINDOW_EVENT_RESIZED: unknown;
 	}
@@ -20560,10 +20808,12 @@ On platforms that does not support dimming, `window.DIMMING_UNKNOWN` is always r
  */
 	export function get_dim_mode(): unknown;
 	/**
-	 * This returns the content scale of the current display.
-	 * @returns The display scale
-	 * @see {@link https://defold.com/ref/stable/window/#window.get_display_scale|API Documentation}
-	 */
+ * This returns the content scale of the current display.
+On HTML5, the scale respects `display.high_dpi`, `html5.min_pixel_ratio`
+and `html5.max_pixel_ratio`. When High DPI is disabled, the scale is 1.
+ * @returns The display scale
+* @see {@link https://defold.com/ref/stable/window/#window.get_display_scale|API Documentation}
+ */
 	export function get_display_scale(): number;
 	/**
 	 * This returns the current lock state of the mouse cursor
@@ -20571,6 +20821,41 @@ On platforms that does not support dimming, `window.DIMMING_UNKNOWN` is always r
 	 * @see {@link https://defold.com/ref/stable/window/#window.get_mouse_lock|API Documentation}
 	 */
 	export function get_mouse_lock(): boolean;
+	/**
+ * Returns an array of active occlusion rectangles intersecting the game window,
+such as camera cutouts and the Dynamic Island. Each rectangle is clipped to
+the window and uses a bottom-left origin and pixel units matching
+window.get_size. These coordinates are independent of GUI adjustment
+and the project's logical resolution.
+Supported on iOS 27.1+ and Android 9 (API level 28)+. On iOS, rectangles
+include the interaction margins supplied by UIKit. On Android, rectangles
+describe display cutouts. Folds, system bars, keyboards, and gesture areas
+are not reported by this API.
+Unsupported platforms and windows with no reported occlusions return an
+empty table. An empty result does not guarantee that the whole window is
+safe; use window.get_safe_area when a safe layout rectangle is needed.
+Query once during initialization and again following
+window.WINDOW_EVENT_RESIZED. On supported platforms this event also
+refreshes reserved areas when their geometry changes without a size change.
+The returned table is a snapshot and is not modified by subsequent events.
+ * @returns array of window.reserved_area rectangles
+ * @example ```lua
+local function update_reserved_areas(self)
+    self.reserved_areas = window.get_reserved_areas()
+end
+
+function init(self)
+    update_reserved_areas(self)
+    window.set_listener(function(self, event, data)
+        if event == window.WINDOW_EVENT_RESIZED then
+            update_reserved_areas(self)
+        end
+    end)
+end
+```
+* @see {@link https://defold.com/ref/stable/window/#window.get_reserved_areas|API Documentation}
+ */
+	export function get_reserved_areas(): unknown;
 	/**
  * This returns the safe area rectangle (x, y, width, height) and the inset
 values relative to the window edges. On platforms without a safe area,
@@ -20594,6 +20879,24 @@ this returns the full window size and zero insets.
 	 * @see {@link https://defold.com/ref/stable/window/#window.get_size|API Documentation}
 	 */
 	export function get_size(): LuaMultiReturn<[number, number]>;
+	export namespace reserved_area {
+		/**
+		 * Rectangle height in window pixels.
+		 */
+		export let height: number;
+		/**
+		 * Rectangle width in window pixels.
+		 */
+		export let width: number;
+		/**
+		 * Left edge in window pixels.
+		 */
+		export let x: number;
+		/**
+		 * Bottom edge in window pixels.
+		 */
+		export let y: number;
+	}
 	export namespace safe_area {
 		/**
 		 * Safe-area height.
